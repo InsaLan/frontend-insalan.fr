@@ -1,15 +1,21 @@
 <script setup lang="ts">
 import Hero from '../components/Hero.vue' 
+const info = [
+	//TODO: fill
+]
+const tournaments = [] // fetch tournaments
 </script>
 
 <template>
 <Hero/>
-<section id="info" class="content">
-<div class="title"> This is the home page</div>
-</section>
-<section id="tournament" class="content">
-</section>
-
+<div class="snap-y proximity overflow-hidden">
+	<section  class="block w-screen h-screen snap-start">
+	<div class="title text-white">Informations</div>
+	</section>
+	<section class="block w-screen h-screen snap-start">
+	<div class="title text-white">Tournois</div>
+	</section>
+</div>
 </template>
 
 <style scoped>
@@ -32,12 +38,5 @@ import Hero from '../components/Hero.vue'
 }
 .title::after {
 	margin-left: 1em;
-}
-#info {
-  background-color: #ff0000; 
-}
-.content {
-	height: 100vh;
-	width: 100vw;
 }
 </style>
