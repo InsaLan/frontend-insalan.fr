@@ -2,8 +2,11 @@
 import { useUserStore } from '../stores/user.store';
 import { ref } from 'vue';
 		
-let isConnected = ref(true)
-
+let isConnected = ref(false)
+const emit = defineEmits<{
+(e: 'showSidePanel', value:string):void
+}>()
+const showPanel = (value: string) => emit('showSidePanel', value)
 const items = [
 	{ url:"/public", text:"Public"},
 	{ url:"/tournament", text:"Tournois"},
@@ -22,12 +25,12 @@ const user = useUserStore();
 		<router-link class="transition duration-150 ease-in-out font-bold text-white mx-4 hover:text-blue-800" v-for="(item, i) in items" :key="i" :to="{ path:item.url}">{{item.text}}</router-link>
 	</div>
 	<div v-if="!isConnected" class="my-auto">
-		<button class="transition duration-150 ease-in-out p-2 font-bold text-white hover:bg-blue-800">Se connecter</button>
-		<button class="transition duration-150 ease-in-out p-2 font-bold text-white hover:bg-blue-800">S'inscrire</button>
+		<button @click="showPanel('login')" class="transition duration-150 ease-in-out p-2 font-bold text-white hover:bg-blue-800">Se connecter</button>
+		<button @click="showPanel('register')" class="transition duration-150 ease-in-out p-2 font-bold text-white hover:bg-blue-800">S'inscrire</button>
 	</div>
 	<div v-else class="my-auto">
 		<router-link class="transition duration-150 ease-in-out font-bold text-white mx-4 hover:text-blue-800" to="me">Mon compte</router-link>
-		<button @click="isConnected = false" class="transition duration-150 ease-in-out p-2 font-bold text-white hover:bg-blue-800">Se deconnecter</button>
+		<button  class="transition duration-150 ease-in-out p-2 font-bold text-white hover:bg-blue-800">Se deconnecter</button>
 	</div>
 </nav>
 </template>
