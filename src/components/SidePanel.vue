@@ -1,8 +1,11 @@
 <script setup lang="ts">
-
+import  register_user   from '../api/auth'
 defineProps<{
 	type: String
 }>();
+const register = () => {
+	register_user("test@test.com", "test@test.com", "test")
+}
 </script>
 
 <template>
@@ -29,22 +32,26 @@ defineProps<{
 		<form class="my-5">
 			<div class="flex flex-col">
 				<label class="text-white" for="email">Email</label>
-				<input type="email" />
+				<input class="border-2 bg-theme-bg" type="email" />
 			</div>
 			<div class="flex flex-col">
 				<label class="text-white" for="username">Nom d'utilisateur</label>
-				<input  type="text" />
+				<input  class="border-2 bg-theme-bg" type="text" />
 			</div>
 			<div class="flex flex-col">
 				<label  class="text-white" for="password">mot de passe</label>
-				<input class="text-white" type="password" />
+				<input class="border-2 bg-theme-bg" type="password" />
 			</div>
 			<div class="flex flex-col">
 				<label  class="text-white" for="password_confir">Repetition mot de passe</label>
-				<input type="password" />
+				<input  class="border-2 bg-theme-bg" type="password" />
+			</div>
+			<div class="flex flex-row">
+				<input class="border-2 bg-theme-bg" type="checkbox">
+				<label class="text-white" for="accept">J'accepte les <a class="text-cyan-800" href="#">GNU</a> de l'insalan</label>
 			</div>
 		</form>
-		<button class="rounded-3xl bg-black text-white p-3">Creer un compte</button>
+		<button @click="register" class="rounded-3xl bg-black text-white p-3">Creer un compte</button>
 		<p class="text-white">Deja inscrit? <a class="text-blue-800" href="#">connectez-vous</a></p>
 	</div>
 </aside>
