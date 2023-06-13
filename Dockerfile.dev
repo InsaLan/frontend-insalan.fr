@@ -1,0 +1,18 @@
+FROM alpine:latest
+
+RUN apk --no-cache add wget nodejs bash
+
+# CMD [ "cat", "/etc/resolv.conf" ]
+
+ENV PNPM_HOME=/root/.local/share/pnpm
+ENV PATH=$PATH:$PNPM_HOME
+ENV NODE_ENV=development
+
+RUN wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.shrc" SHELL="$(which sh)" sh -
+
+COPY . /src
+WORKDIR /src
+# TODO: freeze installed pnpm version (broken because of version incompability)
+# RUN source "$HOME/.shrc" && pnpm i --frozen-lockfile && pnpm run notsc-build
+
+ENTRYPOINT [ "./entrypoint-dev.sh" ]
