@@ -1,11 +1,12 @@
-import { createRouter, RouteConfig, createWebHashHistory} from 'vue-router'
+import { createRouter, createWebHashHistory} from 'vue-router'
 import Home from '../views/Home.vue'
 import  Tournament from '../views/Tournament.vue'
 import Informations from '../views/Informations.vue'
 import Public from '../views/Public.vue'
 import Eat from '../views/Eat.vue'
+import Me from '../views/Me.vue'
 
-const routes: Array<RouteConfig> = [
+const routes = [
 	{
 		path: '/',
 		component: Home,
@@ -23,8 +24,11 @@ const routes: Array<RouteConfig> = [
 	},{
 		path: '/eat',
 		component: Eat,
+	},{
+		path: '/me',
+		component: Me,
 	}
-];
+] as const;
 
 export const router = createRouter({
 	history: createWebHashHistory(),
