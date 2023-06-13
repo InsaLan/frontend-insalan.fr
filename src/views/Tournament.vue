@@ -3,6 +3,6 @@
 
 <template>
 <div>
-<h1> Tournament</h1>
+<h1> Tournaments </h1>
 </div>
 </template>
