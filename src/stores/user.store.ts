@@ -10,7 +10,7 @@ export const useUserStore = defineStore('user',() => {
 	}
 
 	async function signin(email: String, username: String, password: String) {
-		await axios.post('http://api.localhost/v1/user/register',{
+		await axios.post('http://api.localhost/v1/user/register/',{
 				username: username,
 				email: email,
 				password: password
