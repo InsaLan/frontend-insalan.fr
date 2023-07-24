@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import  register_user   from '../api/auth'
+	import { useUserStore} from '../stores/user.store';
 defineProps<{
 	type: String
 }>();
+const user = useUserStore()
+const { signin } = user
 const register = () => {
-	register_user("test@test.com", "test@test.com", "test")
+	signin("test@test.com", "test@test.com", "test")
 }
 </script>
 
@@ -48,7 +50,7 @@ const register = () => {
 			</div>
 			<div class="flex flex-row">
 				<input class="border-2 bg-theme-bg" type="checkbox">
-				<label class="text-white" for="accept">J'accepte les <a class="text-cyan-800" href="#">GNU</a> de l'insalan</label>
+				<label class="text-white" for="accept">J'accepte les <a class="text-cyan-800" href="#">CGU</a> de l'insalan</label>
 			</div>
 		</form>
 		<button @click="register" class="rounded-3xl bg-black text-white p-3">Creer un compte</button>
