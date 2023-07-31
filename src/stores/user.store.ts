@@ -19,7 +19,11 @@ export const useUserStore = defineStore('user',() => {
 		  'Content-Type': 'application/x-www-form-urlencoded'}
 		})
 	}
-	async function login() {
+	async function login(username: String, password: String) {
+		await axios.post("http://api.localhost/v1/api-auth/login",{
+			username: username,
+			password: password
+		})
 
 	}
 	return { user, signin }
