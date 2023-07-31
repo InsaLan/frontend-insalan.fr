@@ -13,9 +13,13 @@ const tournaments = [] // fetch tournaments
 	<section  class="block w-screen h-screen snap-start">
 	<div class="title text-white">Informations</div>
 	</section>
-	<section class="block w-screen h-screen snap-start">
 	<div class="title text-white">Tournois</div>
+	<section class="grid grid-cols-3 gap-4 block mx-5 w-screen h-screen snap-start">
 	<TournamentCard />
+	<TournamentCard />
+	</section>
+	<div class="title text-white">Cosplay</div>
+	<section class="block w-screen h-screen snap-start">
 	</section>
 </div>
 </template>
