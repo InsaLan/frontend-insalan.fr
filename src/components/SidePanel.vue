@@ -29,8 +29,8 @@ const register = () => {
 	</div>
 </aside>
 <aside v-else-if="type == 'register'" class="z-40 fixed right-0 bg-theme-bg w-1/4 h-screen">
-	<h1 class="text-center text-2xl text-white">Se creer un compte</h1>
 	<div class="flex items-center flex-col p-8 m-4">
+		<h1 class="text-center text-2xl text-white">Se creer un compte</h1>
 		<form class="my-5">
 			<div class="flex flex-col">
 				<label class="text-white" for="email">Email</label>
