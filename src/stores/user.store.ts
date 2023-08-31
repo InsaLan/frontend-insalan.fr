@@ -31,20 +31,28 @@ export const useUserStore = defineStore('user', () => {
 		await axios.post("/user/login/",{
 			username: username,
 			password: password
+		}).then(()=> {
+			const user_data = axios.get('/user/me/', {withCredentials: true})
+			user.value = user_data.data
+			isConnected.value = true
+
+
 		}).catch((err) => {
 			has_error.value = true
 			error.value = err.response.data
+			console.log(error.value)
+			console.log("wtf")
+			return
 		})
 
-		const user_data = await axios.get('/user/me/', {withCredentials: true})
-		user.value = user_data.data
-		isConnected.value = true
-
-	}
+			}
 	async function logout() {
-		await axios.post("/user/logout/")
-		isConnected.value = false
-		user.value = {}
+		await axios.post("/user/logout/").then(
+			()=> {		
+			isConnected.value = false
+			user.value = {}
+			})
+
 
 	}
 	return { user, 
@@ -52,6 +60,7 @@ export const useUserStore = defineStore('user', () => {
 			login,
 			logout,
 			isConnected,
-			error
+			error,
+			has_error
 	}
 })
