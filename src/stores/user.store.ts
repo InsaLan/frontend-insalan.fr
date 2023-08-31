@@ -1,30 +1,57 @@
 import { defineStore } from "pinia";
-import { ref, onMounted } from 'vue';
-import { User } from "../models/user.models";
+import { ref } from 'vue';
 import axios from "axios";
-export const useUserStore = defineStore('user',() => {
-	const user: User = {
-		id: 1,
-		username: "",
-		email: ""
+
+export const useUserStore = defineStore('user', () => {
+	let user = ref({})
+	let isConnected = ref(false)
+	let error = ref({})
+	let has_error = ref(false)
+	async function get_csrf() {
+		await axios.get('http://api.localhost/v1/user/get-csrf/')
 	}
 
-	async function signin(email: String, username: String, password: String) {
-		await axios.post('http://api.localhost/v1/user/register/',{
+	async function signin(email: String, username: String, password: String, password_validation: String) {
+		get_csrf()
+		const res =	await axios.post('/user/register/',{
 				username: username,
 				email: email,
-				password: password
+				password: password,
+				password_validation: password_validation
 			} , {
 		headers: {
-		  'Content-Type': 'application/x-www-form-urlencoded'}
+		  'Content-Type': 'application/json'}
+		}).catch((err) => {
+			console.log(err)
 		})
 	}
+
 	async function login(username: String, password: String) {
-		await axios.post("http://api.localhost/v1/api-auth/login",{
+		get_csrf()
+		await axios.post("/user/login/",{
 			username: username,
 			password: password
+		}).catch((err) => {
+			has_error.value = true
+			error.value = err.response.data
 		})
 
+		const user_data = await axios.get('/user/me/', {withCredentials: true})
+		user.value = user_data.data
+		isConnected.value = true
+
 	}
-	return { user, signin }
+	async function logout() {
+		await axios.post("/user/logout/")
+		isConnected.value = false
+		user.value = {}
+
+	}
+	return { user, 
+			signin, 
+			login,
+			logout,
+			isConnected,
+			error
+	}
 })

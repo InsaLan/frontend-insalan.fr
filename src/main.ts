@@ -5,6 +5,10 @@ import { createPinia } from 'pinia'
 import './style.css'
 import App from './App.vue'
 import { router } from './router/index.ts'
+import axios from 'axios'
+
+axios.defaults.baseURL = 'http://api.localhost/v1/'
+
 const pinia = createPinia()
 createApp(App).
 	use(pinia).

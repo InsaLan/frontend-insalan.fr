@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useUserStore } from '../stores/user.store';
 import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
 		
-let isConnected = ref(false)
 const emit = defineEmits<{
 (e: 'showSidePanel', value:string):void
 }>()
@@ -14,8 +14,12 @@ const items = [
 	{ url:"/eat", text: "Restauration"},
 ] as const;
 
-const user = useUserStore();
+const userStore = useUserStore()
+const { logout } = userStore
+const { isConnected, user } = storeToRefs(userStore)
 
+const logout_user = () => { logout() }
+console.log(isConnected)
 </script>
 
 <template>
@@ -30,7 +34,8 @@ const user = useUserStore();
 	</div>
 	<div v-else class="my-auto">
 		<router-link class="transition duration-150 ease-in-out font-bold text-white mx-4 hover:text-blue-800" to="me">Mon compte</router-link>
-		<button  class="transition duration-150 ease-in-out p-2 font-bold text-white hover:bg-blue-800">Se deconnecter</button>
+
+		<button @click="logout_user()" class="transition duration-150 ease-in-out p-2 font-bold text-white hover:bg-blue-800">Se deconnecter</button>
 	</div>
 </nav>
 </template>

@@ -4,10 +4,21 @@ defineProps<{
 	type: String
 }>();
 const user = useUserStore()
-const { signin } = user
+const { signin, login, logout } = user
+//add model
 const register = () => {
-	signin("test@test.com", "test@test.com", "test")
+
+	signin("t2222222es2t@test.com", "test2222222@test.com", "test123!", "test123!")
 }
+const login_user = () => {
+
+	login("test2222222@test.com", "test123!")
+}
+const logout_user = () => {
+	logout()
+}
+
+//TODO: anti spam bot
 </script>
 
 <template>
@@ -23,8 +34,9 @@ const register = () => {
 				<label class="text-white" for="password">mot de passe</label>
 				<input class="border-2 bg-theme-bg" type="password" />
 			</div>
+		
 		</form>
-		<button class="rounded-3xl bg-black text-white mt-3 mx-auto p-3">Se connecter</button>
+		<button @click="login_user" class="rounded-3xl bg-black text-white mt-3 mx-auto p-3">Se connecter</button>
 		<p class="mt-4 text-white">Pas de compte? <a class="text-blue-800" href="#">S'inscrire</a></p>
 	</div>
 </aside>
@@ -53,7 +65,7 @@ const register = () => {
 				<label class="text-white" for="accept">J'accepte les <a class="text-cyan-800" href="#">CGU</a> de l'insalan</label>
 			</div>
 		</form>
-		<button @click="register" class="rounded-3xl bg-black text-white p-3">Creer un compte</button>
+		<button @click="logout_user" class="rounded-3xl bg-black text-white p-3">Creer un compte</button>
 		<p class="text-white">Deja inscrit? <a class="text-blue-800" href="#">connectez-vous</a></p>
 	</div>
 </aside>

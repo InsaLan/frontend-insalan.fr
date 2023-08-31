@@ -1,17 +1,18 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import Hero from '../components/Hero.vue' 
 import TournamentCard from '../components/TournamentCard.vue'
-const info = [
-	//TODO: fill
-]
+import { useTournamentStore } from '../stores/tournament.store';
+const { fetchTournaments } = useTournamentStore()
 const tournaments = [] // fetch tournaments
+fetchTournaments()
 </script>
 
 <template>
 <Hero/>
 <div class="snap-y proximity overflow-hidden">
 	<section  class="block w-screen h-screen snap-start">
-	<div class="title text-white">Informations</div>
+		<div class="title text-white">Informations</div>
 	</section>
 	<div class="title text-white">Tournois</div>
 	<section class="grid grid-cols-3 gap-4 block mx-5 w-screen h-screen snap-start">
