@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+import Footer from '../components/Footer.vue'
 import Hero from '../components/Hero.vue' 
 import TournamentCard from '../components/TournamentCard.vue'
 import { useTournamentStore } from '../stores/tournament.store';
@@ -22,10 +23,11 @@ fetchTournaments()
 	<div class="title text-white">Cosplay</div>
 	<section class="block w-screen h-screen snap-start">
 	</section>
+	<Footer />
 </div>
 </template>
 
-<style scoped>
+<style>
 .title {
 	font-size: 2em;
 	font-weight: bold;

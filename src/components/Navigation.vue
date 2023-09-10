@@ -3,10 +3,6 @@ import { useUserStore } from '../stores/user.store';
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 		
-const emit = defineEmits<{
-(e: 'showSidePanel', value:string):void
-}>()
-const showPanel = (value: string) => emit('showSidePanel', value)
 const items = [
 	{ url:"/public", text:"Public"},
 	{ url:"/tournament", text:"Tournois"},
@@ -29,8 +25,8 @@ console.log(isConnected)
 		<router-link class="transition duration-150 ease-in-out font-bold text-white mx-4 hover:text-blue-800" v-for="(item, i) in items" :key="i" :to="{ path:item.url}">{{item.text}}</router-link>
 	</div>
 	<div v-if="!isConnected" class="my-auto">
-		<button @click="showPanel('login')" class="transition duration-150 ease-in-out p-2 font-bold text-white hover:bg-blue-800">Se connecter</button>
-		<button @click="showPanel('register')" class="transition duration-150 ease-in-out p-2 font-bold text-white hover:bg-blue-800">S'inscrire</button>
+		<router-link to="/register" class="transition duration-150 ease-in-out p-2 font-bold text-white hover:bg-blue-800">Se connecter/S'inscrire</router-link>
+
 	</div>
 	<div v-else class="my-auto">
 		<router-link class="transition duration-150 ease-in-out font-bold text-white mx-4 hover:text-blue-800" to="me">Mon compte</router-link>

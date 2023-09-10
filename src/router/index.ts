@@ -1,11 +1,15 @@
 import { createRouter, createWebHistory} from 'vue-router'
 import Home from '../views/Home.vue'
-import  Tournament from '../views/Tournament.vue'
+import Tournament from '../views/Tournament.vue'
 import Informations from '../views/Informations.vue'
 import Public from '../views/Public.vue'
 import Eat from '../views/Eat.vue'
 import Me from '../views/Me.vue'
-
+import TournamentDetail from '../views/TournamentDetail.vue'
+import Login from '../views/Login.vue'
+import Register from '../views/Register.vue'
+import { useUserStore } from '../stores/user.store'
+import { warn } from 'console'
 const routes = [
 	{
 		path: '/',
@@ -27,6 +31,23 @@ const routes = [
 	},{
 		path: '/me',
 		component: Me,
+		beforeEnter: () => {
+			const { isConnected } = useUserStore()
+			if (!isConnected){
+				console.log("guarding")
+				return {path:'/login'}
+
+			}
+		},
+	}, {
+		path: '/register',
+		component: Register
+	},
+	{
+		path: '/tournament/:id',
+		component: TournamentDetail, 
+		props: true
+
 	}
 ] as const;
 
