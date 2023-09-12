@@ -2,9 +2,11 @@
 import { useTournamentStore } from '../stores/tournament.store';
 import { storeToRefs } from 'pinia';
 const tournamentStore = useTournamentStore()
-const { fetchTournaments } = tournamentStore
+const { fetchTournaments, fetchThisYear } = tournamentStore
 const { tournaments } =storeToRefs(tournamentStore)
 fetchTournaments()
+fetchThisYear()
+
 </script>
 
 <template>

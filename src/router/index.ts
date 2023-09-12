@@ -6,10 +6,9 @@ import Public from '../views/Public.vue'
 import Eat from '../views/Eat.vue'
 import Me from '../views/Me.vue'
 import TournamentDetail from '../views/TournamentDetail.vue'
-import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
+import TournamentRegister  from '../views/TournamentRegister.vue'
 import { useUserStore } from '../stores/user.store'
-import { warn } from 'console'
 const routes = [
 	{
 		path: '/',
@@ -39,7 +38,21 @@ const routes = [
 
 			}
 		},
-	}, {
+	}, 
+	{
+		path: '/tournament/:id/register',
+		component: TournamentRegister,
+		props: true,
+		beforeEnter: () => {
+			const { isConnected } = useUserStore()
+			if (!isConnected){
+				console.log("guarding")
+				return {path:'/login'}
+
+			}
+		},
+	},
+	{
 		path: '/register',
 		component: Register
 	},
