@@ -6,13 +6,15 @@ const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
 </script>
 <template>
-	<div id="profile">
-		<h1> Mon compte </h1>
-		<p>{{user.username}}</p>
-		<p>{{user.email}}</p>
-	</div>
-	<div id="team">
-		<h1> Mes Equipes </h1>
+	<div class="flex">
+		<div id="profile">
+			<h1 class="text-xl">Mon compte </h1>
+			<p>{{user.username}}</p>
+			<p>{{user.email}}</p>
+		</div>
+		<div id="team">
+			<h1 class="text-xl">Mes Equipes </h1>
+		</div>
 	</div>
 </template>
 
