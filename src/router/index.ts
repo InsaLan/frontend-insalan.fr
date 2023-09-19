@@ -7,7 +7,9 @@ import Eat from '../views/Eat.vue'
 import Me from '../views/Me.vue'
 import TournamentDetail from '../views/TournamentDetail.vue'
 import Register from '../views/Register.vue'
+import Logout from '../views/Logout.vue'
 import TournamentRegister  from '../views/TournamentRegister.vue'
+import ResetPassword from '../views/ResetPassword.vue'
 import { useUserStore } from '../stores/user.store'
 const routes = [
 	{
@@ -19,7 +21,7 @@ const routes = [
 		component: Tournament,
 	},
 	{
-		path: '/informations',
+		path: '/info',
 		component: Informations,
 	},{
 		path: '/public',
@@ -33,8 +35,7 @@ const routes = [
 		beforeEnter: () => {
 			const { isConnected } = useUserStore()
 			if (!isConnected){
-				console.log("guarding")
-				return {path:'/login'}
+				return {path:'/register'}
 
 			}
 		},
@@ -46,8 +47,7 @@ const routes = [
 		beforeEnter: () => {
 			const { isConnected } = useUserStore()
 			if (!isConnected){
-				console.log("guarding")
-				return {path:'/login'}
+				return {path:'/register'}
 
 			}
 		},
@@ -61,6 +61,14 @@ const routes = [
 		component: TournamentDetail, 
 		props: true
 
+	},
+	{
+		path: '/user/reset',
+		component: ResetPassword
+	},
+	{
+		path: '/logout',
+		component: Logout
 	}
 ] as const;
 

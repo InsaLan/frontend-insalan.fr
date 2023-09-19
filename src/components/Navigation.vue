@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia';
 const items = [
 	{ url:"/public", text:"Public"},
 	{ url:"/tournament", text:"Tournois"},
-	{ url:"/infos", text:"Informations pratiques"},
+	{ url:"/info", text:"Informations pratiques"},
 	{ url:"/eat", text: "Restauration"},
 ] as const;
 

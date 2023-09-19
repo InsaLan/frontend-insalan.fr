@@ -2,20 +2,19 @@
 import { useTournamentStore } from '../stores/tournament.store';
 import { storeToRefs } from 'pinia';
 const tournamentStore = useTournamentStore()
-const { fetchTournaments, fetchThisYear } = tournamentStore
-const { tournaments } =storeToRefs(tournamentStore)
-fetchTournaments()
-fetchThisYear()
+const { fetchEvents, fetchThisYear } = tournamentStore
 
+fetchEvents()
+
+const { events } =storeToRefs(tournamentStore)
+console.log(events.value)
 </script>
 
 <template>
 <div>
-	<h1> Tournois </h1>
+	<h1 class="title"> Tournois </h1>
 	<ul>
-		<li v-for="tournament in tournaments">
-			{{tournament.name}}
-		</li>
+		<li v-for="event in events">{{event}}</li>	
 	</ul>
 </div>
 </template>

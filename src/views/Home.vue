@@ -4,9 +4,6 @@ import Footer from '../components/Footer.vue'
 import Hero from '../components/Hero.vue' 
 import TournamentCard from '../components/TournamentCard.vue'
 import { useTournamentStore } from '../stores/tournament.store';
-const { fetchTournaments } = useTournamentStore()
-const tournaments = [] // fetch tournaments
-fetchTournaments()
 </script>
 
 <template>

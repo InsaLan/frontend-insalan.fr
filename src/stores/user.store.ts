@@ -1,51 +1,56 @@
 import { defineStore } from "pinia";
 import { ref } from 'vue';
 import axios from "axios";
-
+import { useRouter } from "vue-router";
 export const useUserStore = defineStore('user', () => {
 	let user = ref({})
 	let isConnected = ref(false)
-	let error = ref({})
+	let errors = ref({})
 	let has_error = ref(false)
+	const router = useRouter()
 	async function get_csrf() {
-		await axios.get('http://api.localhost/v1/user/get-csrf/')
+		await axios.get('/user/get-csrf/')
 	}
 
 	async function signin(email: String, username: String, password: String, password_validation: String) {
 		get_csrf()
-		const res =	await axios.post('/user/register/',{
-				username: username,
-				email: email,
-				password: password,
-				password_validation: password_validation
-			} , {
-		headers: {
-		  'Content-Type': 'application/json'}
-		}).catch((err) => {
-			console.log(err)
-		})
+		try { 
+			const data = {
+				username,
+				email,
+				password,
+				password_validation
+			}
+
+			const res = await axios.post('/user/register/',data, { headers: { 'Content-Type': 'application/json'}}) 
+			errors.value = {}
+		} catch(err) {
+			errors.value = err.response
+		}
 	}
 
 	async function login(username: String, password: String) {
 		get_csrf()
-		await axios.post("/user/login/",{
-			username: username,
-			password: password
-		}).then(()=> {
-			const user_data = axios.get('/user/me/', {withCredentials: true})
-			user.value = user_data.data
-			isConnected.value = true
+		try {
 
-
-		}).catch((err) => {
-			has_error.value = true
-			error.value = err.response.data
-			console.log(error.value)
-			console.log("wtf")
-			return
+		const res = await axios.post("/user/login/",
+		{
+			username,
+			password
+		}, {
+			withCredentials: true
 		})
-
-			}
+		
+		const user_data = await axios.get('/user/me/', {withCredentials: true})
+		user.value = user_data.data
+		isConnected.value = true
+		router.push("/me")
+		} catch(err) {
+			has_error.value = true
+			errors.value = err.response
+			return
+		}
+	}
 	async function logout() {
 		await axios.post("/user/logout/").then(
 			()=> {		
@@ -60,7 +65,7 @@ export const useUserStore = defineStore('user', () => {
 			login,
 			logout,
 			isConnected,
-			error,
+			errors,
 			has_error
 	}
 })

@@ -1,16 +1,30 @@
 import { defineStore } from "pinia";
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import axios from "axios";
-
+const groupBy = (items, key) => items.reduce(
+  (result, item) => ({
+    ...result,
+    [item[key]]: [
+      ...(result[item[key]] || []),
+      item,
+    ],
+  }), 
+  {},
+);
 export const useTournamentStore = defineStore('tournament', () => {
-	let tournaments = ref({})
+	let events = ref({})
 	let tournament = ref({})
-	async function fetchTournaments() {
-		axios.get('/tournament/tournament').then((res)=>{
-			tournaments.value = res.data
-			console.log(res.data)
-		})
-
+	
+	async function fetchEvents() {
+		try {
+			const res = await axios.get('/tournament/event')
+			const ev = res.data
+			const years = groupBy(ev, 'year')
+			events.value = years
+			console.log(years)
+			} catch(error) {
+			console.log(error)	
+		}
 	}
 	async function fetchThisYear() {
 		const year = 2009 //new Date().getFullYear()
@@ -28,9 +42,10 @@ export const useTournamentStore = defineStore('tournament', () => {
 		}
 
 	}
-	return { tournaments, 
+	//const archives = computed(() => events.value.filter((event) => event.year <= new Date().getFullYear()))
+	return { events, 
 			 tournament,
-			 fetchTournaments,
+			 fetchEvents,
 			 fetchTournament,
 			 fetchThisYear
 	}
