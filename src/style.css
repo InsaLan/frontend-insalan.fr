@@ -1,6 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer components {
+.form-btn {
+	@apply rounded-3xl bg-black text-white mt-3 mx-auto p-3 hover:bg-sky-700
+	}
+.error {
+	@apply border-red-500
+}
+}
+
 html {
 	background-color: #2C292D;
 	font-family: Play, serif;
