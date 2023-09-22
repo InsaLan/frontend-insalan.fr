@@ -3,7 +3,7 @@
 @tailwind utilities;
 @layer components {
 .form-btn {
-	@apply rounded-3xl bg-black text-white mt-3 mx-auto p-3 hover:bg-sky-700
+	@apply rounded-3xl bg-black text-white mt-3 mx-auto p-3 hover:ring-2
 	}
 .error {
 	@apply border-red-500
