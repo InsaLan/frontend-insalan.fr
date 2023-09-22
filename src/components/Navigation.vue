@@ -24,7 +24,6 @@ const { isConnected, user } = storeToRefs(userStore)
 const logout_user = () => { logout() }
 let burger_menu = ref(false)
 </script>
-
 <template>
 <nav class="z-10 h-24 sticky top-0  bg-theme-bg">
 	<div id="desktop" class="border-b-2 border-white justify-around hidden md:flex">
@@ -42,7 +41,6 @@ let burger_menu = ref(false)
 			<button @click="logout_user()" class="transition duration-150 ease-in-out p-2 font-bold text-white hover:bg-blue-800">Se deconnecter</button>
 		</div>
 	</div>
-
 	<div class="md:hidden border-b-2 border-white">
 		<div id="top" class="flex justify-between">
 			<router-link class="my-2" to="/"><img class="h-[48px] w-[48px]" src="../assets/images/logo_home.png"/></router-link>
