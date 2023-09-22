@@ -63,8 +63,8 @@ const register_user = async () => {
 				</FormField>
 				<FormField v-slot="context" :validations="v$.accept_cgu" class="flex flex-col">
 					<div class="flex flex-row">
-						<input class="border-2 bg-theme-bg mr-2" type="checkbox" v-model="register_form.accept_cgu">
-						<label class="text-white" for="accept">J'accepte les <a class="text-cyan-800" href="#">CGU</a> de l'insalan</label>
+						<input class="mt-1 mr-1 bg-theme-bg border-2" type="checkbox" v-model="register_form.accept_cgu">
+						<label class="text-white" for="accept">J'accepte les <a class="text-gray-400 underline decoration-dashed" href="#">CGU</a> de l'insalan</label>
 					</div>
 				</FormField>
 			</form>
