@@ -32,7 +32,7 @@ let burger_menu = ref(false)
 			<router-link class="transition duration-150 ease-in-out font-bold text-white mx-2 hover:text-blue-800" v-for="(item, i) in items" :key="i" :to="{ path:item.url}">{{item.text}}</router-link>
 		</div>
 		<div v-if="!isConnected" class="my-auto">
-				<router-link to="/register" class="rounded transition duration-150 ease-in-out p-2 font-bold text-white bg-blue-800 hover:ring hover:ring-pink-500">Se connecter/S'inscrire</router-link>
+			<router-link to="/register" class="rounded transition duration-150 ease-in-out p-2 font-bold text-white hover:bg-blue-800">Se connecter/S'inscrire</router-link>
 
 		</div>
 		<div v-else class="my-auto">
@@ -40,6 +40,7 @@ let burger_menu = ref(false)
 
 			<button @click="logout_user()" class="transition duration-150 ease-in-out p-2 font-bold text-white hover:bg-blue-800">Se deconnecter</button>
 		</div>
+
 	</div>
 	<div class="md:hidden border-b-2 border-white">
 		<div id="top" class="flex justify-between">
