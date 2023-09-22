@@ -10,6 +10,7 @@ import Register from '../views/Register.vue'
 import Logout from '../views/Logout.vue'
 import TournamentRegister  from '../views/TournamentRegister.vue'
 import ResetPassword from '../views/ResetPassword.vue'
+import ScanQrCode from '../views/ScanQrCode.vue'
 import { useUserStore } from '../stores/user.store'
 const routes = [
 	{
@@ -63,12 +64,16 @@ const routes = [
 
 	},
 	{
-		path: '/user/reset',
+		path: '/reset-password',
 		component: ResetPassword
 	},
 	{
 		path: '/logout',
 		component: Logout
+	},
+	{
+		path: '/ticket/scan',
+		component: ScanQrCode
 	}
 ] as const;
 

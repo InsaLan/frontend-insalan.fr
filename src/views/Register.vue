@@ -4,7 +4,7 @@ import RegisterForm from '../components/RegisterForm.vue'
 </script>
 
 <template>
-	<div class="flex p-8 h-screen">
+	<div class="flex flex-col md:flex-row p-8 h-screen">
 		<RegisterForm />
 		<LoginForm />
 	</div>

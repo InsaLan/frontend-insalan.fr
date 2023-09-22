@@ -40,6 +40,12 @@ export const useUserStore = defineStore('user', () => {
 			router.push("/me")
 		} catch(err) {}
 	}
+	async function reset_password(email: String) {
+		get_csrf()
+		try {
+		const res = await axios.post('/user/password/reset/ask', {email})
+		} catch(err) {}
+	}
 	async function logout() {
 		await axios.post("/user/logout/").then(
 			()=> {		

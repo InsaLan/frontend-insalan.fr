@@ -41,6 +41,7 @@ const login_user = async () => {
 			</FormField>
 		</form>
 		<button @click="login_user" class="form-btn">Se connecter</button>
+		<a class="p-1 hover:text-blue-800" href="/reset-password">Mot de passe oublié?</a>
 	</div>
 </template>
 
