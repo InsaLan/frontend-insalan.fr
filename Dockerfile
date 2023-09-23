@@ -4,8 +4,6 @@ RUN apk --no-cache add wget nodejs npm
 
 # CMD [ "cat", "/etc/resolv.conf" ]
 
-RUN cat "$HOME/.shrc"
-
 # Build from source
 COPY . /src
 WORKDIR /src
