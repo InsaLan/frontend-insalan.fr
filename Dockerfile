@@ -1,10 +1,8 @@
 FROM alpine:latest
 
-RUN apk --no-cache add wget nodejs
+RUN apk --no-cache add wget nodejs npm
 
 # CMD [ "cat", "/etc/resolv.conf" ]
-
-RUN wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.shrc" SHELL="$(which sh)" sh -
 
 RUN cat "$HOME/.shrc"
 
