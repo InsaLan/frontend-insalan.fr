@@ -1,11 +1,16 @@
-import { createRouter, createWebHashHistory} from 'vue-router'
+import { createRouter, createWebHistory} from 'vue-router'
 import Home from '../views/Home.vue'
-import  Tournament from '../views/Tournament.vue'
+import Tournament from '../views/Tournament.vue'
 import Informations from '../views/Informations.vue'
 import Public from '../views/Public.vue'
 import Eat from '../views/Eat.vue'
 import Me from '../views/Me.vue'
-
+import TournamentDetail from '../views/TournamentDetail.vue'
+import Register from '../views/Register.vue'
+import Logout from '../views/Logout.vue'
+import TournamentRegister  from '../views/TournamentRegister.vue'
+import ResetPassword from '../views/ResetPassword.vue'
+import { useUserStore } from '../stores/user.store'
 const routes = [
 	{
 		path: '/',
@@ -16,7 +21,7 @@ const routes = [
 		component: Tournament,
 	},
 	{
-		path: '/informations',
+		path: '/info',
 		component: Informations,
 	},{
 		path: '/public',
@@ -27,11 +32,48 @@ const routes = [
 	},{
 		path: '/me',
 		component: Me,
+		beforeEnter: () => {
+			const { isConnected } = useUserStore()
+			if (!isConnected){
+				return {path:'/register'}
+
+			}
+		},
+	}, 
+	{
+		path: '/tournament/:id/register',
+		component: TournamentRegister,
+		props: true,
+		beforeEnter: () => {
+			const { isConnected } = useUserStore()
+			if (!isConnected){
+				return {path:'/register'}
+
+			}
+		},
+	},
+	{
+		path: '/register',
+		component: Register
+	},
+	{
+		path: '/tournament/:id',
+		component: TournamentDetail, 
+		props: true
+
+	},
+	{
+		path: '/user/reset',
+		component: ResetPassword
+	},
+	{
+		path: '/logout',
+		component: Logout
 	}
 ] as const;
 
 export const router = createRouter({
-	history: createWebHashHistory(),
+	history: createWebHistory(),
 	routes,
 });
 

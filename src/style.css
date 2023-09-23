@@ -1,9 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer components {
+.form-btn {
+	@apply rounded bg-blue-800 text-white mt-3 mx-auto p-3 hover:ring hover:ring-pink-500
+	}
+.error {
+	@apply border-red-500
+}
+}
+
 html {
 	background-color: #2C292D;
 	font-family: Play, serif;
+	color: #fff;
 }
 @font-face {
 	font-family: Play;
