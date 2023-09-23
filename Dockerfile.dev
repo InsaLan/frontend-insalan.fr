@@ -4,8 +4,6 @@ RUN apk --no-cache add wget nodejs bash npm
 
 # CMD [ "cat", "/etc/resolv.conf" ]
 
-ENV PNPM_HOME=/root/.local/share/pnpm
-ENV PATH=$PATH:$PNPM_HOME
 ENV NODE_ENV=development
 
 
