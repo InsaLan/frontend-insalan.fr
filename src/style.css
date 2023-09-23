@@ -8,6 +8,9 @@
 .error {
 	@apply border-red-500
 }
+.success {
+	@apply bg-green-400 ring-green-900
+}
 }
 
 html {

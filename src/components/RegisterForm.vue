@@ -70,8 +70,7 @@ const register_user = async () => {
 			</form>
 			<button @click="register_user" class="form-btn">Creer un compte</button>
 			<a class="p-1 hover:text-blue-800" href="/reset-password">Mot de passe oublié?</a>
-		</div>
-		
+		</div>	
 </template>
 
 <style scoped>

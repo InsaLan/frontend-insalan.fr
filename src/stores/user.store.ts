@@ -2,10 +2,16 @@ import { defineStore } from "pinia";
 import { ref } from 'vue';
 import axios from "axios";
 import { useRouter } from "vue-router";
+
+import { useToastStore } from './toast.store';
+
+
 export const useUserStore = defineStore('user', () => {
 	let user = ref({})
 	let isConnected = ref(false)
 	const router = useRouter()
+	const ToastStore = useToastStore()
+	const { setContent }  = ToastStore;
 	async function get_csrf() {
 		await axios.get('/user/get-csrf/')
 	}
@@ -20,6 +26,8 @@ export const useUserStore = defineStore('user', () => {
 		}
 		console.log(data)
 		const res = await axios.post('/user/register/', data, { headers: { 'Content-Type': 'application/json'}}) 
+		
+		setContent(`Un email de confirmation vous a été envoyé a ${email} pour confirmer votre compte` , "success")
 	}
 
 	async function login(username: String, password: String) {
@@ -37,6 +45,7 @@ export const useUserStore = defineStore('user', () => {
 			const user_data = await axios.get('/user/me/', {withCredentials: true})
 			user.value = user_data.data
 			isConnected.value = true
+			setContent(`Bienvenue ${username}`, "success")
 			router.push("/me")
 		} catch(err) {}
 	}

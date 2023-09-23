@@ -1,4 +1,6 @@
+
 <script setup>
+	//TODO: Refactor to Toast component
 import { useErrorStore } from '../stores/error.store'
 import { storeToRefs } from 'pinia'
 const props = defineProps(['context'])
