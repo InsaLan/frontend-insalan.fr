@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import axios from "axios";
 import { useRouter } from "vue-router";
 
@@ -64,10 +64,16 @@ export const useUserStore = defineStore('user', () => {
 
 
 	}
+	const role = computed(()=> {
+		if (user.value.is_superuser) {return "dev" }
+		else if(user.value.is_staff) { return "staff" }
+		else { return "joueur"}
+	})
 	return { user, 
 			signin, 
 			login,
 			logout,
+			role,
 			isConnected
 	}
 })
