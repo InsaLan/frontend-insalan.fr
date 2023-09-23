@@ -6,9 +6,6 @@ const websocket_url = `${process.env.PREFIX}.${process.env.WEBSITE_HOST}`
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
-  optimizeDeps: {
-    exclude: ['js-big-decimal']
-  },
   server: {
     host: true,
     port: 5173,

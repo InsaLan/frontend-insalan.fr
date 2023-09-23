@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import Navigation from './components/Navigation.vue'
-import Footer from './components/Footer.vue'
-import Error from './components/Error.vue'
+import SidePanel from './components/SidePanel.vue'
 import {ref} from 'vue'
+const panel = ref('')
+const showLoginPanel = (type: string) => {
+	setTimeout(() =>{panel.value=type}, 1)
+}
+const hidePanel = () => panel.value = ''
 </script>
 
 <template>
-<Navigation/>
-<Error />
+<SidePanel v-click-outside-element="hidePanel" :type="panel"/>
+<Navigation @showSidePanel="showLoginPanel"/>
 <routerView>
 </routerView>
 </template>
+
 <style scoped>
 
 </style>

@@ -1,6 +1,24 @@
 # Run the frontend in local
 
-The frontend has to be deployed from the docker-compose setup (so you need to install it!).
-Please refer to [this README](https://github.com/InsaLan/infra-insalan.fr/blob/main/README.md)
+Install packages
+`pnpm i`
+Run the dev server
+`pnpm run dev`
 
-The front is available here: dev.insalan.localhost
+# Deploy the frontend
+
+- (Temporary?) Add InsaLan trailer (or any video) as `src/assets/trailer.mp4`
+- To use Docker, you will need to mount a volume to `/dist`
+- ???
+- Deploy the content of the volume you mounted as a static website!
+
+## Copy-paste style
+
+```sh
+cp ~/Downloads/video.mp4 ./src/assets/trailer.mp4
+docker build . -t insalan/frontend
+docker run --rm -v dist:/dist insalan/frontend
+docker run -p 8080:80 -v dist:/usr/share/nginx/html:ro nginx
+```
+
+You can now connect to [http://localhost:8080] and get your website o/
