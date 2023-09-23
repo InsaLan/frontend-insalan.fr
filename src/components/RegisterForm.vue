@@ -35,7 +35,12 @@ const register_user = async () => {
 	const isValid = await v$.value.$validate()
 	if(!isValid) return
 
-	signin(register_form.email, register_form.username, register_form.password, register_form.password_confirm)
+	if(register_form.decoy == ''){
+		signin(register_form.email, register_form.username, register_form.password, register_form.password_confirm)
+	} else {
+		
+		signin(register_form.email, register_form.username, register_form.password, register_form.password_confirm)
+	}
 }
 
 </script>
@@ -46,22 +51,22 @@ const register_user = async () => {
 			
 			<form class="my-5">
 				<FormField  label="Email" v-slot="context" :validations="v$.email" class="flex flex-col">
-				<input :class="{error: context.invalid}" class="border-2 bg-theme-bg" type="text" v-model="register_form.email" placeholder="foo@insalan.fr" @blur="v$.email.$touch()" />
+				<input  required :class="{error: context.invalid}" class="border-2 bg-theme-bg" type="text" v-model="register_form.email" placeholder="foo@insalan.fr" @blur="v$.email.$touch()" />
 				</FormField>
 				<FormField label="Nom d'utilisateur" v-slot="context" class="flex flex-col" :validations="v$.username">
-					<input :class="{error: context.invalid}" class="border-2 bg-theme-bg" placeholder="john doe" type="text" v-model="register_form.username" @blur="v$.username.$touch()" />
+					<input required :class="{error: context.invalid}" class="border-2 bg-theme-bg" placeholder="john doe" type="text" v-model="register_form.username" @blur="v$.username.$touch()" />
 				</FormField>
 				<div class="hidden flex flex-col">
 					<label for="username" >username</label>
 					<input type="text" v-model="register_form.decoy" />
 				</div>
-				<FormField label="Mot de passe" v-slot="context" :validations="v$.password" class="flex flex-col">
+				<FormField required label="Mot de passe" v-slot="context" :validations="v$.password" class="flex flex-col">
 					<input :class="{error: context.invalid}" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password.$touch" v-model="register_form.password"/>
 				</FormField>
 				<FormField label="Répéter mot de passe" v-slot="context" :validations="v$.password_confirm" class="flex flex-col">
-					<input  :class="{error: context.invalid}" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe"  @blur="v$.password_confirm.$touch" v-model="register_form.password_confirm"/>
+					<input  required :class="{error: context.invalid}" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe"  @blur="v$.password_confirm.$touch" v-model="register_form.password_confirm"/>
 				</FormField>
-				<FormField v-slot="context" :validations="v$.accept_cgu" class="flex flex-col">
+				<FormField required v-slot="context" :validations="v$.accept_cgu" class="flex flex-col">
 					<div class="flex flex-row">
 						<input class="mt-1 mr-1 bg-theme-bg border-2" type="checkbox" v-model="register_form.accept_cgu">
 						<label class="text-white" for="accept">J'accepte les <a class="text-gray-400 underline decoration-dashed" href="#">CGU</a> de l'insalan</label>
