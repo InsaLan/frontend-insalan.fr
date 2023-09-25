@@ -1,9 +1,9 @@
 <script setup>
 import { useUserStore} from '../stores/user.store';
 import { storeToRefs } from 'pinia';
-
 const userStore = useUserStore()
-const { user, role } = storeToRefs(userStore)
+const { user, role, isConnected } = storeToRefs(userStore)
+
 </script>
 <template>
 	<div class="flex ml-1">

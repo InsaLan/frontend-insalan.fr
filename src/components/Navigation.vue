@@ -2,7 +2,7 @@
 import { useUserStore } from '../stores/user.store';
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
-		
+import { useRouter } from 'vue-router'
 const items = [
 	{ url:"/public", text:"Public"},
 	{ url:"/tournament", text:"Tournois"},
@@ -20,8 +20,11 @@ const mobile_items = [
 const userStore = useUserStore()
 const { logout } = userStore
 const { isConnected, user } = storeToRefs(userStore)
-
-const logout_user = () => { logout() }
+const router = useRouter()
+const logout_user = () => { 
+	router.push("/")
+	logout() 
+}
 let burger_menu = ref(false)
 </script>
 <template>
