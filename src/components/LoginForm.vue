@@ -30,7 +30,7 @@ const login_user = async () => {
 </script>
 
 <template>
-	<div class="hover:bg-cyan-400 flex items-center flex-col basis-1/2">
+	<div class="hover:border-solid hover:border-2 hover:border-sky-500 rounded-lg flex items-center flex-col basis-1/2">
 		<h1 class="text-center text-4xl text-white">Se connecter</h1>
 		<form class="my-2">
 			<FormField v-slot="context" label="Nom d'utilisateur" :validations="v$.username" class="flex flex-col">
