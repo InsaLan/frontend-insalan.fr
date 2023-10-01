@@ -46,7 +46,7 @@ const register_user = async () => {
 </script>
 
 <template>
-		<div class="flex hover:bg-cyan-400 items-center flex-col basis-1/2">
+		<div class="flex hover:border-solid hover:border-2 hover:border-sky-500 rounded-lg items-center flex-col basis-1/2">
 			<h1 class="text-center text-4xl text-white">S'enregistrer</h1>
 			
 			<form class="my-5">
