@@ -13,7 +13,7 @@ const placeholder = "./src/assets/images/placeholder_tournament.webp"
 
 <template>
 	<div>
-	<section
+		<section>
 		<div class="title text-white"> Nos partenaires</div>
 		<div class="p-1 grid grid-rows-4 grid-cols-4 gap-3">
 			<div class="container h-min  max-w-sm break-words bg-cyan-900" v-for="partner in partners" >
