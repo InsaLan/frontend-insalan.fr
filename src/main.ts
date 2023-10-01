@@ -14,26 +14,27 @@ import { faCirclePlus } from '@fortawesome/free-solid-svg-icons'
 /* add icons to the library */
 library.add(faCirclePlus)
 const website_host = import.meta.env.VITE_WEBSITE_HOST
-axios.defaults.baseURL = `http://api.${website_host}/v1/`
+axios.defaults.baseURL = `https://api.${website_host}/v1/`
 axios.defaults.withCredentials = true
 
 const pinia = createPinia()
 pinia.use(createPersistedState({
 	auto: true
-}))
+})
 createApp(App).
 	component('fa-awesome-icon', FontAwesomeIcon).
 	use(pinia).
 	use(vueClickOutsideElement).
-	use(router).mount('#app')
+  use(router).mount('#app')
 import { useErrorStore } from './stores/error.store'
 const { add_error } = useErrorStore()
+
 axios.interceptors.response.use(
 	res => res,
   	error => {
     	console.log(error.response.data)
 	console.log(error.response.status)
-	add_error({data: {status: error.response.status , messages: error.response.data}})
+	  add_error({data: {status: error.response.status , messages: error.response.data}})
 	return Promise.reject(error)});
 
 

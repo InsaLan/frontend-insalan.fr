@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-const websocket_url = `${process.env.PREFIX}.${process.env.VITE_WEBSITE_HOST}`
+const websocket_url = `${process.env.VITE_WEBSITE_HOST}`
 
 // https://vitejs.dev/config/
 export default defineConfig({
