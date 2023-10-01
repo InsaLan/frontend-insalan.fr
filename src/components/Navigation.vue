@@ -35,7 +35,7 @@ let burger_menu = ref(false)
 			<router-link class="transition duration-150 ease-in-out font-bold text-white mx-2 hover:text-blue-800" v-for="(item, i) in items" :key="i" :to="{ path:item.url}">{{item.text}}</router-link>
 		</div>
 		<div v-if="!isConnected" class="my-auto">
-			<router-link to="/register" class="rounded transition duration-150 ease-in-out p-2 font-bold text-white bg-blue-800 hover:ring hover:ring-pink-500">Se connecter/S'inscrire</router-link>
+			<router-link to="/register" class="block rounded transition duration-150 ease-in-out p-2 font-bold text-white bg-blue-800 hover:ring hover:ring-pink-500">Se connecter/S'inscrire</router-link>
 
 		</div>
 		<div v-else class="my-auto">
@@ -51,7 +51,7 @@ let burger_menu = ref(false)
 		<div class="flex center">
 			<div class="flex gap-4 px-4">
 				<div v-if="!isConnected" class="my-auto">
-					<router-link to="/register" class="rounded transition duration-150 ease-in-out p-2 font-bold text-white bg-blue-800 hover:ring hover:ring-pink-500">Se connecter/S'inscrire</router-link>
+					<router-link to="/register" class="block text-xs md:text-base rounded transition duration-150 ease-in-out p-2 font-bold text-white bg-blue-800 hover:ring hover:ring-pink-500">Se connecter/S'inscrire</router-link>
 				</div>
 				<div v-else class="my-auto">
 					<router-link class="transition duration-150 ease-in-out font-bold text-white mx-4 hover:text-blue-800" to="me">Mon compte</router-link>
