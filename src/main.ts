@@ -20,7 +20,7 @@ axios.defaults.withCredentials = true
 const pinia = createPinia()
 pinia.use(createPersistedState({
 	auto: true
-})
+}))
 createApp(App).
 	component('fa-awesome-icon', FontAwesomeIcon).
 	use(pinia).
