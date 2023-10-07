@@ -13,8 +13,7 @@ import { faCirclePlus } from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
 library.add(faCirclePlus)
-const website_host = import.meta.env.VITE_WEBSITE_HOST
-axios.defaults.baseURL = `https://api.${website_host}/v1/`
+axios.defaults.baseURL = import.meta.env.VITE_API_URL
 axios.defaults.withCredentials = true
 
 const pinia = createPinia()
