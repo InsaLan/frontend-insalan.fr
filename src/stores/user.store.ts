@@ -11,6 +11,7 @@ export const useUserStore = defineStore('user', () => {
 	let isConnected = ref(false)
 	const router = useRouter()
 	const ToastStore = useToastStore()
+	const inscriptions = ref({})
 	const { setContent }  = ToastStore;
 	async function get_csrf() {
 		await axios.get('/user/get-csrf/')
@@ -64,16 +65,54 @@ export const useUserStore = defineStore('user', () => {
 
 
 	}
+	async function fetch_user_inscription_full(user_id: String) {
+		try {
+			let ongoing = ref([])
+			let past = ref([])
+
+			let unpaid = ref({})
+
+			const InscriptionId = await axios.get(`/tournament/player/fromUserId/${user_id}`)
+			for(let i = 0; i < InscriptionId.data.length; i++){
+				let inscription_details = await axios.get(`/tournament/player/${InscriptionId.data[i]}`)
+				let teams_details = await axios.get(`/tournament/team/${inscription_details.data.team}`)
+				inscription_details.data.team = teams_details.data
+				let tournament_details = await axios.get(`/tournament/tournament/${teams_details.data.tournament}/full`)
+				inscription_details.data.team.tournament = tournament_details.data
+				console.log(inscription_details.data)
+		
+				if(inscription_details.data.payment_status == "NOTPAID") {
+					unpaid.value[inscription_details.data.team.id] = inscription_details.data
+				}
+		
+				if(teams_details.data.tournament.event.ongoing) {
+					ongoing.value.push(inscription_details.data)
+				} else {
+					past.value.push(inscription_details.data)
+				}
+			}
+			inscriptions.value = {
+				ongoing,
+				past,
+				unpaid
+			}
+		} catch(err) {
+			console.log(err)
+		}
+	}
 	const role = computed(()=> {
 		if (user.value.is_superuser) {return "dev" }
 		else if(user.value.is_staff) { return "staff" }
 		else { return "joueur"}
 	})
+
 	return { user, 
 			signin, 
 			login,
 			logout,
+			fetch_user_inscription_full,
 			role,
-			isConnected
+			isConnected,
+			inscriptions
 	}
 })
