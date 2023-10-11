@@ -9,10 +9,10 @@ import { router } from './router/index.ts'
 import axios from 'axios'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faCirclePlus } from '@fortawesome/free-solid-svg-icons'
+import { faCirclePlus, faPencil, faWarning, faFile } from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
-library.add(faCirclePlus)
+library.add(faCirclePlus, faPencil, faWarning, faFile)
 axios.defaults.baseURL = import.meta.env.VITE_API_URL
 axios.defaults.withCredentials = true
 
