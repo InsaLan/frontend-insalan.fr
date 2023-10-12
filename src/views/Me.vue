@@ -17,12 +17,24 @@ const placeholder = "/src/assets/images/logo_home.png"
 			<div class="myr-2 rounded-2xl">
 				<div class="my-2 flex flex-row justify-items-center place-items-center">
 					<div class="m-2 flex justify-items-center place-items-center">
-						<img class="m-2 rounded-full max-w-full max-h-full w-16" :src="user.image ? user.image : placeholder"/>
+						<a href=""><img class="m-2 rounded-full max-w-full max-h-full w-16 hover:blur-sm" :src="user.image ? user.image : placeholder"/></a>
 					</div>
 					<div>
-						<p class="text-xl">Pseudo : <em>{{user.username}}</em><fa-awesome-icon class="ml-2" size="2xs" icon="fa-solid fa-pencil" /></p>
-						<p class="text-xl">Email : <em>{{user.email}}</em><fa-awesome-icon class="ml-2" size="2xs" icon="fa-solid fa-pencil" /></p>
-						<p class="text-xl">Mot de passe : <em>**********</em><fa-awesome-icon class="ml-2" size="2xs" icon="fa-solid fa-pencil" /></p>
+						<p class="text-xl">Pseudo : <em>{{user.username}}</em>
+							<a href="" class="hover:text-blue-600">
+								<fa-awesome-icon class="ml-2" size="2xs" icon="fa-solid fa-pencil" />
+							</a>
+						</p>
+						<p class="text-xl">Email : <em>{{user.email}}</em>
+							<a href="" class="hover:text-blue-600">
+								<fa-awesome-icon class="ml-2" size="2xs" icon="fa-solid fa-pencil" />
+							</a>
+						</p>
+						<p class="text-xl">Mot de passe : <em>**********</em>
+							<a href="" class="hover:text-blue-600">
+								<fa-awesome-icon class="ml-2" size="2xs" icon="fa-solid fa-pencil" />
+							</a>
+						</p>
 						<div class="flex justify-items-center place-items-center"><p class="text-xl">Role : </p>
 							<div class="m-1 flex justify-around text-md bg-blue-700 rounded p-1 w-16">
 								<svg v-if="role=='dev'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
