@@ -6,6 +6,8 @@ const { user, role, isConnected, inscriptions } = storeToRefs(userStore)
 const { fetch_user_inscription_full } = userStore
 
 fetch_user_inscription_full(user.value.id)
+
+const placeholder = "/src/assets/images/logo_home.png"
 </script>
 
 <template>
@@ -15,7 +17,7 @@ fetch_user_inscription_full(user.value.id)
 			<div class="myr-2 rounded-2xl">
 				<div class="my-2 flex flex-row justify-items-center place-items-center">
 					<div class="m-2 flex justify-items-center place-items-center">
-						<img class="m-2 rounded-full max-w-full max-h-full w-16" :src="user.image"/>
+						<img class="m-2 rounded-full max-w-full max-h-full w-16" :src="user.image ? user.image : placeholder"/>
 					</div>
 					<div>
 						<p class="text-xl">Pseudo : <em>{{user.username}}</em><fa-awesome-icon class="ml-2" size="2xs" icon="fa-solid fa-pencil" /></p>
