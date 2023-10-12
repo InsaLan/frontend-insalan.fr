@@ -4,9 +4,9 @@ import { storeToRefs } from 'pinia';
 const tournamentStore = useTournamentStore()
 const { fetchEvents, fetchThisYear } = tournamentStore
 
-fetchEvents()
+fetchThisYear()
 
-const { events } =storeToRefs(tournamentStore)
+const { events } = storeToRefs(tournamentStore)
 console.log(events.value)
 </script>
 

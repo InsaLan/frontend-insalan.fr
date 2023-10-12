@@ -1,5 +1,4 @@
-
-<script setup>
+<script setup lang="ts">
 	//TODO: Refactor to Toast component
 import { useErrorStore } from '../stores/error.store'
 import { storeToRefs } from 'pinia'
