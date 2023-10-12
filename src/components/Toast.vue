@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { storeToRefs }  from 'pinia'
 import { useToastStore } from '../stores/toast.store'
