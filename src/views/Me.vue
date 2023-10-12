@@ -11,11 +11,11 @@ const placeholder = "/src/assets/images/logo_home.png"
 </script>
 
 <template>
-	<div class="flex ml-1">
-		<div id="profile" class="w-1/4 items-center">
+	<div class="flex md:flex-row flex-col ml-1">
+		<div id="profile" class="md:w-1/4 items-center">
 			<h1 class="text-center m-3 font-bold text-4xl">Mon compte </h1>
-			<div class="myr-2 rounded-2xl">
-				<div class="my-2 flex flex-row justify-items-center place-items-center">
+			<div class="myr-2 flex flex-col md:justify-items-start justify-items-center md:place-items-start place-items-center">
+				<div class="my-2 flex md:flex-row flex-col justify-items-center place-items-center">
 					<div class="m-2 flex justify-items-center place-items-center">
 						<a href=""><img class="m-2 rounded-full max-w-full max-h-full w-16 hover:blur-sm" :src="user.image ? user.image : placeholder"/></a>
 					</div>
@@ -45,13 +45,13 @@ const placeholder = "/src/assets/images/logo_home.png"
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="myr-2 ml-1">	
-				<button @click="delete_account()" class="center rounded transition duration-150 ease-in-out p-2 font-bold text-white bg-red-600 hover:ring hover:ring-pink-500" style="display: flex; align-items: center;">Supprimer son compte</button>
+				<div class="myr-2 ml-1">	
+					<button @click="delete_account()" class="center rounded transition duration-150 ease-in-out p-2 font-bold text-white bg-red-600 hover:ring hover:ring-pink-500" style="display: flex; align-items: center;">Supprimer son compte</button>
+				</div>
 			</div>
 		</div>
-		<div class="h-auto  bg-white w-[2px]"></div>
-		<div id="team" class="w-3/4">
+		<div class="h-auto bg-white w-[2px]"></div>
+		<div id="team" class="md:w-3/4">
 			<h1 class="text-center m-3 font-bold text-4xl">Mes Equipes </h1>
 			<div>
 				<div class="bg-red-900 rounded-xl text-center m-2 text-xl" v-if="Object.keys(inscriptions.unpaid).length">
@@ -61,18 +61,18 @@ const placeholder = "/src/assets/images/logo_home.png"
 			</div>
 			<div class="m-4" v-if="inscriptions.ongoing.length > 0">
 				<h1 class="text-xl">Edition Actuelle</h1>
-				<div class="m-1 grid grid-cols-4 gap-3">
+				<div class="m-1 grid md:grid-cols-4 gap-3">
 					<a class="container max-w-xs break-words bg-cyan-900 text-center" :class="{ [`bg-red-900`]: inscriptions.unpaid[inscription.team.id] }" v-for="inscription in inscriptions.ongoing" :href="'/team/' + inscription.team.id + '/detail'">
-						<img class="p-3 h-32 max-w-full w-32 overflow-hidden" :src="inscription.team.tournament.logo" style="width: 100%; object-fit: cover;"/>
+						<img class="h-32 max-w-full w-32 overflow-hidden" :src="inscription.team.tournament.logo" style="width: 100%; object-fit: cover;"/>
 						<p class="mx-2 mb-2 text-xl">{{inscription.team.name}}</p>
 					</a>
 				</div>
 			</div>
 			<div class="m-4" v-if="inscriptions.past.length > 0">
 				<h1 class="text-xl">Autres Editions</h1>
-				<div class="m-1 grid grid-cols-4 gap-3">
+				<div class="m-1 grid md:grid-cols-4 gap-3">
 					<a class="container max-w-xs break-words bg-cyan-900 text-center" v-for="inscription in inscriptions.past" :href="'/team/' + inscription.team.id + '/detail'">
-						<img class="p-3 h-32 max-w-full w-32 overflow-hidden" :src="inscription.team.tournament.logo" style="width: 100%; object-fit: cover;"/>
+						<img class="h-32 max-w-full w-32 overflow-hidden" :src="inscription.team.tournament.logo" style="width: 100%; object-fit: cover;"/>
 						<p class="mx-2 mb-2 text-xl">{{inscription.team.name}}</p>
 					</a>
 				</div>
