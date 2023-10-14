@@ -9,6 +9,7 @@ const team = ref(2)
 const maxTeam = ref(32)
 const cashprize = ref(1000000)
 const placeholder = "./src/assets/images/placeholder_tournament.webp"
+const registerUrl = "tournament/"+tour.id+"/register"
 </script>
 <template>
   <div class="max-w-1/3 min-w-1/3 container h-min bg-cyan-900 shadow-lg">
@@ -18,7 +19,7 @@ const placeholder = "./src/assets/images/placeholder_tournament.webp"
     </div>
     <div class="flex flex-col place-items-center pb-3">
       <a class="text-zinc-400 pb-2" href="#">Règlement du tournoi</a>
-      <button class="p-2 bg-green-600 center rounded">S'inscrire au tournoi</button> <!-- TODO: turns button into component-->
+      <a :href="registerUrl" class="p-2 bg-green-600 center rounded">S'inscrire au tournoi</a> <!-- TODO: turns button into component-->
     </div>
   </div>
 </template>
