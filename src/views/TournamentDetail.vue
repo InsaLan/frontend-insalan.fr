@@ -13,7 +13,6 @@ console.log(res)
 
 <template>
 <div>
-
 	<div class="text-4xl text-center text-white">{{tournament.name}}</div>
 	<section id="infos">
 	</section>

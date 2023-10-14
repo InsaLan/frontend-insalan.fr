@@ -3,7 +3,7 @@
 </script>
 
 <template>
-	<div class="bg-cyan-500 rounded  text-ellipsis overflow-hidden">
+	<div class="bg-cyan-500 rounded text-ellipsis overflow-hidden">
 		<h1 class="text-center font-black text-xl">{{team.id}}. {{team.name}}</h1>
 		<ul class="mx-1">
 			<li v-for="player in team.players"> <p class="">{{player}}</p></li>
