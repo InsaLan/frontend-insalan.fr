@@ -4,17 +4,19 @@ import axios from "axios";
 import { useRouter } from "vue-router";
 
 import { useToastStore } from './toast.store';
-
+import { useErrorStore } from './error.store';
 
 export const useUserStore = defineStore('user', () => {
 	let user = ref({})
 	let isConnected = ref(false)
 	const router = useRouter()
 	const ToastStore = useToastStore()
+	const ErrorStore = useErrorStore()
 	const inscriptions = ref({})
 	const { setContent }  = ToastStore;
+	const { add_error } = ErrorStore;
 	async function get_csrf() {
-		await axios.get('/user/get-csrf/')
+		const response = await axios.get('/user/get-csrf/')
 	}
 
 	async function signin(email: String, username: String, password: String, password_validation: String) {
@@ -100,6 +102,17 @@ export const useUserStore = defineStore('user', () => {
 			console.log(err)
 		}
 	}
+	async function patch_user(data: Object) {
+		await get_csrf()
+		/*try {
+			console.log(axios.defaults.headers.common['X-CSRFToken'])
+			const res = await axios.patch('/user/me/', data, {withCredentials: true})
+			user.value = res.data
+			setContent("Vos informations ont été modifiées", "success")
+		} catch(err) {
+			console.log(err)
+		}*/
+	} 
 	const role = computed(()=> {
 		if (user.value.is_superuser) {return "dev" }
 		else if(user.value.is_staff) { return "staff" }
@@ -111,6 +124,7 @@ export const useUserStore = defineStore('user', () => {
 			login,
 			logout,
 			fetch_user_inscription_full,
+			patch_user,
 			role,
 			isConnected,
 			inscriptions

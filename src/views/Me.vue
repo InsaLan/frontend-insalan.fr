@@ -1,11 +1,105 @@
 <script setup lang="ts">
 import { useUserStore} from '../stores/user.store';
 import { storeToRefs } from 'pinia';
+import { ref, reactive, computed } from 'vue'
+import { useVuelidate } from '@vuelidate/core'
+import { email, required, sameAs, minLength } from '@vuelidate/validators'
 const userStore = useUserStore()
 const { user, role, isConnected, inscriptions } = storeToRefs(userStore)
-const { fetch_user_inscription_full } = userStore
+const { fetch_user_inscription_full, patch_user } = userStore
+import Modal from '../components/Modal.vue';
+import FormField from '../components/FormField.vue'
 
 fetch_user_inscription_full(user.value.id)
+
+
+// Register form validation
+const data_pseudo = reactive({
+	username: '',
+})
+const rules_pseudo = computed(()=>{
+	return {
+	username: { required },
+}})
+const v$_pseudo = useVuelidate(rules_pseudo, data_pseudo)
+
+const data_email = reactive({
+	email: '',
+})
+const rules_email = computed(()=>{
+	return {
+	email: { required, email },
+}})
+const v$_email = useVuelidate(rules_email, data_email)
+
+const data_password = reactive({
+	new_password: '',
+	password_validation: '',
+	current_password: '',
+})
+const rules_password = computed(()=>{
+	return {
+	new_password: { required, minLengthValue: minLength(8) },
+	password_validation: { required, sameAsPassword: sameAs(computed(() => data_password.new_password)) },
+	current_password: { required },
+}})
+const v$_password = useVuelidate(rules_password, data_password)
+
+const focus = ref("")
+
+const title = ref("Test title")
+const form_fields = ref("")
+
+const showModal = ref(false);
+const openModal = () => {
+  showModal.value = true;
+};
+
+const closeModal = () => {
+  showModal.value = false;
+};
+
+const validateModal = async () => {
+	let data = {}
+	let isValid;
+	switch (focus.value) {
+		case "pseudo":
+			isValid = await v$_pseudo.value.$validate()
+			if(!isValid) return
+			data = data_pseudo
+			break;
+		case "email":
+			isValid = await v$_email.value.$validate()
+			if(!isValid) return
+			data = data_email
+			break;
+		case "password":
+		isValid = await v$_password.value.$validate()
+			if(!isValid) return
+			data = data_password
+			break;
+	}
+	patch_user(data)
+	closeModal()
+}
+
+const editField = (field: String) => {
+	switch (field) {
+		case "pseudo":
+			title.value = "Changer de pseudo"
+			focus.value = "pseudo"
+			break;
+		case "email":
+			title.value = "Changer d'email"
+			focus.value = "email"
+			break;
+		case "password":
+			title.value = "Changer son mot de passe"
+			focus.value = "password"
+			break;
+	}
+	openModal()
+}
 
 const placeholder = "/src/assets/images/logo_home.png"
 </script>
@@ -21,17 +115,17 @@ const placeholder = "/src/assets/images/logo_home.png"
 					</div>
 					<div>
 						<p class="text-xl">Pseudo : <em>{{user.username}}</em>
-							<a href="" class="hover:text-blue-600">
+							<a class="hover:text-blue-600 hover:cursor-pointer" @click="editField('pseudo')">
 								<fa-awesome-icon class="ml-2" size="2xs" icon="fa-solid fa-pencil" />
 							</a>
 						</p>
 						<p class="text-xl">Email : <em>{{user.email}}</em>
-							<a href="" class="hover:text-blue-600">
+							<a class="hover:text-blue-600 hover:cursor-pointer" @click="editField('email')">
 								<fa-awesome-icon class="ml-2" size="2xs" icon="fa-solid fa-pencil" />
 							</a>
 						</p>
 						<p class="text-xl">Mot de passe : <em>**********</em>
-							<a href="" class="hover:text-blue-600">
+							<a class="hover:text-blue-600 hover:cursor-pointer" @click="editField('password')">
 								<fa-awesome-icon class="ml-2" size="2xs" icon="fa-solid fa-pencil" />
 							</a>
 						</p>
@@ -50,7 +144,7 @@ const placeholder = "/src/assets/images/logo_home.png"
 				</div>
 			</div>
 		</div>
-		<div class="h-auto bg-white w-[2px]"></div>
+		<div class="sm:visible collapse h-auto bg-white w-[2px]"></div>
 		<div id="team" class="md:w-3/4">
 			<h1 class="text-center m-3 font-bold text-4xl">Mes Equipes </h1>
 			<!--div>
@@ -62,7 +156,7 @@ const placeholder = "/src/assets/images/logo_home.png"
 			<div class="m-4" v-if="inscriptions.ongoing.length > 0">
 				<h1 class="text-xl">Edition Actuelle</h1>
 				<div class="m-1 grid md:grid-cols-4 gap-3">
-					<div class="container flex flex-col-reverse max-w-xs break-words bg-cyan-900 text-center" :class="{ /*[`bg-red-900`]: inscriptions.unpaid[inscription.team.id]*/ }" v-for="inscription in inscriptions.ongoing" :href="'/team/' + inscription.team.id + '/detail'">
+					<a class="container flex flex-col-reverse max-w-xs break-words bg-cyan-900 text-center" :class="{ /*[`bg-red-900`]: inscriptions.unpaid[inscription.team.id]*/ }" v-for="inscription in inscriptions.ongoing" :href="'/team/' + inscription.team.id + '/detail'">
 						<div class="md:visible collapse my-1">
 							<div class="h-8 flex flex-col flex-1 justify-center m-1">
 								<div>
@@ -82,13 +176,13 @@ const placeholder = "/src/assets/images/logo_home.png"
 						<div class="flex flex-col flex-1 justify-center m-1">
 							<p class="text-xl">{{inscription.team.name}}</p>
 						</div>
-					</div>
+					</a>
 				</div>
 			</div>
 			<div class="m-4" v-if="inscriptions.past.length > 0">
 				<h1 class="text-xl">Autres Editions</h1>
 				<div class="m-1 grid md:grid-cols-4 gap-3">
-					<div class="container flex flex-col-reverse max-w-xs break-words bg-cyan-900 text-center" v-for="inscription in inscriptions.past" :href="'/team/' + inscription.team.id + '/detail'">
+					<a class="container flex flex-col-reverse max-w-xs break-words bg-cyan-900 text-center" v-for="inscription in inscriptions.past" :href="'/team/' + inscription.team.id + '/detail'">
 						<div class="md:visible collapse my-1">
 							<div class="h-8 flex flex-col flex-1 justify-center m-1">
 								<div>
@@ -107,10 +201,58 @@ const placeholder = "/src/assets/images/logo_home.png"
 						<div class="flex flex-col flex-1 justify-center m-1">
 							<p class="text-xl">{{inscription.team.name}}</p>
 						</div>
-					</div>
+					</a>
 				</div>
 			</div>
 		</div>
 	</div>
-</template>
 
+	<Modal v-if="showModal" @close="closeModal">
+		<template v-slot:icon>
+			<div></div>
+		</template>
+		<template v-slot:title>
+			<h3 class="text-base font-semibold leading-6 text-white-900" id="modal-title">{{ title }}</h3>
+		</template>
+		<template v-slot:body>
+			<form class="mt-2">
+				<div id="pseudo" v-if="focus == 'pseudo'">
+					<FormField v-slot="context" label="Nom d'utilisateur" :validations="v$_pseudo.username" class="flex flex-col m-2">
+						<input required:class="{error: context.invalid}" class="border-2 bg-theme-bg" v-model="data_pseudo.username" type="text" placeholder="John doe" @blur="v$_pseudo.username.$touch"/>
+					</FormField>
+				</div>
+
+				<div id="email" v-if="focus == 'email'">
+					<FormField v-slot="context" label="Email" :validations="v$_email.email" class="flex flex-col m-2">
+						<input required :class="{error: context.invalid}" class="border-2 bg-theme-bg" v-model="data_email.email" type="text" placeholder="John-doe@gmail.com" @blur="v$_email.email.$touch"/>
+					</FormField>
+				</div>
+
+				<div id="password" v-if="focus == 'password'">
+					<FormField v-slot="context" label="Nouveau mot de passe" :validations="v$_password.new_password" class="flex flex-col m-2">
+						<input required :class="{error: context.invalid}" class="border-2 bg-theme-bg" v-model="data_password.new_password" type="password" placeholder="Mot de passe" @blur="v$_password.new_password.$touch"/>
+					</FormField>
+					<FormField v-slot="context" label="Confirmer le mot de passe" :validations="v$_password.password_validation" class="flex flex-col m-2">
+						<input required :class="{error: context.invalid}" class="border-2 bg-theme-bg" v-model="data_password.password_validation" type="password" placeholder="Mot de passe" @blur="v$_password.password_validation.$touch"/>
+					</FormField>
+					<FormField v-slot="context" label="Mot de passe actuel" :validations="v$_password.current_password" class="flex flex-col m-2">
+						<input required :class="{error: context.invalid}" class="border-2 bg-theme-bg" v-model="data_password.current_password" type="password" placeholder="Mot de passe" @blur="v$_password.current_password.$touch"/>
+					</FormField>
+				</div>
+			</form>
+		</template>
+		<template v-slot:buttons>
+			<button 
+				type="button" 
+				class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+				@click="validateModal"
+			>Valider
+			</button>
+			<button 
+				type="button"
+				class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+				@click="closeModal"
+			>Anuler</button>
+		</template>
+	</Modal>
+</template>
