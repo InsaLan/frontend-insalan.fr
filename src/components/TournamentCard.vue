@@ -19,7 +19,7 @@ const registerUrl = "tournament/"+tour.id+"/register"
     </div>
     <div class="flex flex-col place-items-center pb-3">
       <a class="text-zinc-400 pb-2" href="#">Règlement du tournoi</a>
-      <a :href="registerUrl" class="p-2 bg-green-600 center rounded">S'inscrire au tournoi</a> <!-- TODO: turns button into component-->
+      <a :href="registerUrl" class="p-2 bg-green-600 center rounded">S'inscrire</a> <!-- TODO: turns button into component-->
     </div>
   </div>
 </template>
