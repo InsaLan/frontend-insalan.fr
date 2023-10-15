@@ -139,9 +139,9 @@ const placeholder = "/src/assets/images/logo_home.png"
 						</div>
 					</div>
 				</div>
-				<div class="myr-2 ml-1">	
+				<!--div class="myr-2 ml-1">	
 					<button @click="delete_account()" class="center rounded transition duration-150 ease-in-out p-2 font-bold text-white bg-red-600 hover:ring hover:ring-pink-500" style="display: flex; align-items: center;">Supprimer son compte</button>
-				</div>
+				</div-->
 			</div>
 		</div>
 		<div class="sm:visible collapse h-auto bg-white w-[2px]"></div>
