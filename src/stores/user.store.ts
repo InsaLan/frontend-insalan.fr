@@ -9,6 +9,7 @@ import { useErrorStore } from './error.store';
 export const useUserStore = defineStore('user', () => {
 	let user = ref({})
 	let isConnected = ref(false)
+	let csrf = ref("")
 	const router = useRouter()
 	const ToastStore = useToastStore()
 	const ErrorStore = useErrorStore()
@@ -16,7 +17,15 @@ export const useUserStore = defineStore('user', () => {
 	const { setContent }  = ToastStore;
 	const { add_error } = ErrorStore;
 	async function get_csrf() {
-		const response = await axios.get('/user/get-csrf/')
+		await axios.get('/user/get-csrf/')
+		const cookies = []
+		document.cookie.split(';').forEach(function(cookie) {
+			cookies.push({
+				name: cookie.split('=')[0],
+				value: cookie.split('=')[1]
+			})
+		});
+		csrf.value = cookies.find(cookie => cookie.name == "csrftoken")['value']
 	}
 
 	async function signin(email: String, username: String, password: String, password_validation: String) {
@@ -104,14 +113,17 @@ export const useUserStore = defineStore('user', () => {
 	}
 	async function patch_user(data: Object) {
 		await get_csrf()
-		/*try {
-			console.log(axios.defaults.headers.common['X-CSRFToken'])
-			const res = await axios.patch('/user/me/', data, {withCredentials: true})
-			user.value = res.data
+		try {
+			const res = await axios.patch('/user/me/', data, {
+				withCredentials: true,
+				headers: {
+					'X-CSRFToken': csrf.value,
+					'Content-Type': 'application/json'
+				}
+			})
 			setContent("Vos informations ont été modifiées", "success")
 		} catch(err) {
-			console.log(err)
-		}*/
+		}
 	} 
 	const role = computed(()=> {
 		if (user.value.is_superuser) {return "dev" }
