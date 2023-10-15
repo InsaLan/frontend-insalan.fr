@@ -73,7 +73,7 @@ export const useUserStore = defineStore('user', () => {
 			isConnected.value = false
 			user.value = {}
 			})
-
+		location = "/";
 
 	}
 	async function fetch_user_inscription_full(user_id: String) {
@@ -121,8 +121,28 @@ export const useUserStore = defineStore('user', () => {
 					'Content-Type': 'application/json'
 				}
 			})
-			setContent("Vos informations ont été modifiées", "success")
+			if(res.status == 200) {
+				if(data['current_password']) {
+					setContent("Vos informations ont été modifiées, vous devez vous reconnecter", "success")
+					logout()
+				} else {
+					for(let key in data) {
+						user.value[key] = data[key]
+					}
+					setContent("Vos informations ont été modifiées", "success")
+				}
+			}
 		} catch(err) {
+			if(err.request.status == 403) {
+				add_error({data: {status: err.request.status, messages: "Le mot de passe actuel est différent de celui que vous avez entré"}})
+			} else if(err.request.status == 400) {
+				const response = JSON.parse(err.request.response)
+				if(response["user"]) {
+					add_error({data: {status: err.request.status, messages: response["user"][0]}})
+				} else {
+					add_error({data: {status: err.request.status, messages: response["password"]}})
+				}
+			}
 		}
 	} 
 	const role = computed(()=> {
