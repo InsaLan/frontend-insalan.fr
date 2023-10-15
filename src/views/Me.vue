@@ -14,14 +14,16 @@ fetch_user_inscription_full(user.value.id)
 
 
 // Register form validation
-const data_pseudo = reactive({
-	username: '',
+const data_name = reactive({
+	first_name: '',
+	last_name: '',
 })
-const rules_pseudo = computed(()=>{
+const rules_name = computed(()=>{
 	return {
-	username: { required },
+	first_name: { required },
+	last_name: { required },
 }})
-const v$_pseudo = useVuelidate(rules_pseudo, data_pseudo)
+const v$_name = useVuelidate(rules_name, data_name)
 
 const data_email = reactive({
 	email: '',
@@ -63,10 +65,10 @@ const validateModal = async () => {
 	let data = {}
 	let isValid;
 	switch (focus.value) {
-		case "pseudo":
-			isValid = await v$_pseudo.value.$validate()
+		case "name":
+			isValid = await v$_name.value.$validate()
 			if(!isValid) return
-			data = data_pseudo
+			data = data_name
 			break;
 		case "email":
 			isValid = await v$_email.value.$validate()
@@ -85,9 +87,9 @@ const validateModal = async () => {
 
 const editField = (field: String) => {
 	switch (field) {
-		case "pseudo":
-			title.value = "Changer de pseudo"
-			focus.value = "pseudo"
+		case "name":
+			title.value = "Changer de Prénom et Nom"
+			focus.value = "name"
 			break;
 		case "email":
 			title.value = "Changer d'email"
@@ -106,16 +108,18 @@ const placeholder = "/src/assets/images/logo_home.png"
 
 <template>
 	<div class="flex md:flex-row flex-col ml-1">
-		<div id="profile" class="md:w-1/4 items-center">
+		<div id="profile" class="md:w-2/6 items-center">
 			<h1 class="text-center m-3 font-bold text-4xl">Mon compte </h1>
 			<div class="myr-2 flex flex-col md:justify-items-start justify-items-center md:place-items-start place-items-center">
 				<div class="my-2 flex md:flex-row flex-col justify-items-center place-items-center">
 					<div class="m-2 flex justify-items-center place-items-center">
-						<a href=""><img class="m-2 rounded-full max-w-full max-h-full w-16 hover:blur-sm" :src="user.image ? user.image : placeholder"/></a>
+						<a><img class="m-2 rounded-full max-w-full max-h-full w-16 hover:blur-sm" :src="user.image ? user.image : placeholder"/></a>
 					</div>
 					<div>
 						<p class="text-xl">Pseudo : <em>{{user.username}}</em>
-							<a class="hover:text-blue-600 hover:cursor-pointer" @click="editField('pseudo')">
+						</p>
+						<p class="text-xl">Prénom et Nom : <em>{{user.first_name}} {{user.last_name}}</em>
+							<a class="hover:text-blue-600 hover:cursor-pointer" @click="editField('name')">
 								<fa-awesome-icon class="ml-2" size="2xs" icon="fa-solid fa-pencil" />
 							</a>
 						</p>
@@ -145,7 +149,7 @@ const placeholder = "/src/assets/images/logo_home.png"
 			</div>
 		</div>
 		<div class="sm:visible collapse h-auto bg-white w-[2px]"></div>
-		<div id="team" class="md:w-3/4">
+		<div id="team" class="md:w-4/6">
 			<h1 class="text-center m-3 font-bold text-4xl">Mes Equipes </h1>
 			<!--div>
 				<div class="bg-red-900 rounded-xl text-center m-2 text-xl" v-if="Object.keys(inscriptions.unpaid).length">
@@ -155,7 +159,7 @@ const placeholder = "/src/assets/images/logo_home.png"
 			</div-->
 			<div class="m-4" v-if="inscriptions.ongoing.length > 0">
 				<h1 class="text-xl">Edition Actuelle</h1>
-				<div class="m-1 grid md:grid-cols-4 gap-3">
+				<div class="m-1 grid md:grid-cols-3 gap-3">
 					<a class="container flex flex-col-reverse max-w-xs break-words bg-cyan-900 text-center" :class="{ /*[`bg-red-900`]: inscriptions.unpaid[inscription.team.id]*/ }" v-for="inscription in inscriptions.ongoing" :href="'/team/' + inscription.team.id + '/detail'">
 						<div class="md:visible collapse my-1">
 							<div class="h-8 flex flex-col flex-1 justify-center m-1">
@@ -181,7 +185,7 @@ const placeholder = "/src/assets/images/logo_home.png"
 			</div>
 			<div class="m-4" v-if="inscriptions.past.length > 0">
 				<h1 class="text-xl">Autres Editions</h1>
-				<div class="m-1 grid md:grid-cols-4 gap-3">
+				<div class="m-1 grid md:grid-cols-3 gap-3">
 					<a class="container flex flex-col-reverse max-w-xs break-words bg-cyan-900 text-center" v-for="inscription in inscriptions.past" :href="'/team/' + inscription.team.id + '/detail'">
 						<div class="md:visible collapse my-1">
 							<div class="h-8 flex flex-col flex-1 justify-center m-1">
@@ -216,9 +220,12 @@ const placeholder = "/src/assets/images/logo_home.png"
 		</template>
 		<template v-slot:body>
 			<form class="mt-2">
-				<div id="pseudo" v-if="focus == 'pseudo'">
-					<FormField v-slot="context" label="Nom d'utilisateur" :validations="v$_pseudo.username" class="flex flex-col m-2">
-						<input required:class="{error: context.invalid}" class="border-2 bg-theme-bg" v-model="data_pseudo.username" type="text" placeholder="John doe" @blur="v$_pseudo.username.$touch"/>
+				<div id="name" v-if="focus == 'name'">
+					<FormField v-slot="context" label="Nouveau Prénom" :validations="v$_name.first_name" class="flex flex-col m-2">
+						<input required:class="{error: context.invalid}" class="border-2 bg-theme-bg" v-model="data_name.first_name" type="text" placeholder="John" @blur="v$_name.first_name.$touch"/>
+					</FormField>
+					<FormField v-slot="context" label="Nouveau Nom" :validations="v$_name.last_name" class="flex flex-col m-2">
+						<input required:class="{error: context.invalid}" class="border-2 bg-theme-bg" v-model="data_name.last_name" type="text" placeholder="Doe" @blur="v$_name.last_name.$touch"/>
 					</FormField>
 				</div>
 
