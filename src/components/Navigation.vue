@@ -39,7 +39,7 @@ let burger_menu = ref(false)
 
 		</div>
 		<div v-else class="my-auto">
-			<router-link class="transition duration-150 ease-in-out font-bold text-white mx-4 hover:text-blue-800" to="me">Mon compte</router-link>
+			<router-link class="transition duration-150 ease-in-out font-bold text-white mx-4 hover:text-blue-800" to="/me">Mon compte</router-link>
 
 			<button @click="logout_user()" class="rounded transition duration-150 ease-in-out p-2 font-bold text-white bg-blue-800 hover:ring hover:ring-pink-500">Se deconnecter</button>
 		</div>
@@ -54,7 +54,7 @@ let burger_menu = ref(false)
 					<router-link to="/register" class="block text-xs md:text-base rounded transition duration-150 ease-in-out p-2 font-bold text-white bg-blue-800 hover:ring hover:ring-pink-500">Se connecter/S'inscrire</router-link>
 				</div>
 				<div v-else class="my-auto">
-					<router-link class="transition duration-150 ease-in-out font-bold text-white mx-4 hover:text-blue-800" to="me">Mon compte</router-link>
+					<router-link class="transition duration-150 ease-in-out font-bold text-white mx-4 hover:text-blue-800" to="/me">Mon compte</router-link>
 					<button @click="logout_user()" class="rounded transition duration-150 ease-in-out p-2 font-bold text-white bg-blue-800 hover:ring hover:ring-pink-500">Se deconnecter</button>
 				</div>
 				<button @click="burger_menu = !burger_menu" class="mx-auto hover:text-white text-center rounded text-gray-400 h-8 w-8 ring-2 ring-gray-400 my-auto">
