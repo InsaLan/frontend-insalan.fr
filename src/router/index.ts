@@ -7,6 +7,7 @@ import Eat from '../views/Eat.vue'
 import Me from '../views/Me.vue'
 import TournamentDetail from '../views/TournamentDetail.vue'
 import Register from '../views/Register.vue'
+import EmailVerif from '../views/EmailVerif.vue'
 import Logout from '../views/Logout.vue'
 import TournamentRegister  from '../views/TournamentRegister.vue'
 import ResetPassword from '../views/ResetPassword.vue'
@@ -17,6 +18,10 @@ const routes = [
 		path: '/',
 		component: Home,
 
+	},{
+
+		path: '/verification',
+		component: EmailVerif,
 	},{
 		path: '/tournament',
 		component: Tournament,
