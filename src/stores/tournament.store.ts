@@ -68,6 +68,14 @@ export const useTournamentStore = defineStore('tournament', () => {
       // console.log(error);
     }
   }
+
+  function $reset() {
+    event.value = undefined;
+    events.value = {};
+    tournament.value = undefined;
+    tournaments.value = {};
+  }
+
   // const archives = computed(() => events.value.filter((event) => event.year <= new Date().getFullYear()))
   return {
     events,
@@ -79,5 +87,6 @@ export const useTournamentStore = defineStore('tournament', () => {
     fetchTournamentFull,
     fetchThisYear,
     fetchTournaments,
+    $reset,
   };
 });
