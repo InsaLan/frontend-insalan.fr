@@ -4,7 +4,10 @@ import { useUserStore} from '../stores/user.store';
 import { storeToRefs } from 'pinia';
 const userStore = useUserStore()
 const { user, role, isConnected, inscriptions } = storeToRefs(userStore)
-//let response = await axios.get(`/user/confirm/${user.value.name}`)
+const idName = defineProps(['idname']) 
+const idToken = defineProps(['idtoken']) 
+//Url must be /insalan.fr/verification/name/token to be sure to work even if he validates on a device not connected (like a phone)
+let response = await axios.get(`/user/confirm/${idName.idname}/${idToken.idtoken}`)
 //Call API -> stock result -> en focntion : Page vérif | Page erreur
 </script>
 
