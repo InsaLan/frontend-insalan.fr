@@ -4,16 +4,21 @@ import { useUserStore} from '../stores/user.store';
 import { storeToRefs } from 'pinia';
 const userStore = useUserStore()
 const { user, role, isConnected, inscriptions } = storeToRefs(userStore)
-const idName = defineProps(['idname']) 
-const idToken = defineProps(['idtoken']) 
+const props = defineProps(['idname','idtoken']) 
 //Url must be /insalan.fr/verification/name/token to be sure to work even if he validates on a device not connected (like a phone)
-let response = await axios.get(`/user/confirm/${idName.idname}/${idToken.idtoken}`)
-//Call API -> stock result -> en focntion : Page vérif | Page erreur
+let response = 0
+console.log("feur")
+try {
+    let result = await axios.get(`/user/confirm/${props.idname}/${props.idtoken}`)
+    response = result.data.value
+} catch (err) {
+    console.log("Token invalides")
+}//Call API -> stock result -> en focntion : Page vérif | Page erreur
 </script>
 
 <template>
         <!-- Cas fonctionnel -->
-    <div>
+    <div v-if="response===200">
         <div>
             <p class=" text-center text-5xl md:m-8"> Création de compte </p>
             <p class=" text-center text-2xl md:m-10"> Votre adresse Email a été vérifiée</p>
@@ -25,15 +30,15 @@ let response = await axios.get(`/user/confirm/${idName.idname}/${idToken.idtoken
         </div>
     </div>
     <!-- Cas où erreur verif -->
-    <div>
+    <div v-else>
         <div>
             <p class=" text-center text-5xl md:m-8"> Création de compte </p>
             <p class=" text-center text-2xl md:m-10"> Echec vérification</p>
-            <p class=" text-center text-2xl md:m-8"> Aled</p>
+            <p class=" text-center text-2xl md:m-8"> Welp, réessayez ?</p>
         </div>
 
         <div class="flex items-center justify-center m-25">
             <img alt="Logo Insalan XVIII" class="image-center" src="/src/assets/images/logo_home.png"/>
         </div>
-    </div>
+    //</div>
 </template>
