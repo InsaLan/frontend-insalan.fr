@@ -7,12 +7,13 @@ const { user, role, isConnected, inscriptions } = storeToRefs(userStore)
 const props = defineProps(['idname','idtoken']) 
 //Url must be /insalan.fr/verification/name/token to be sure to work even if he validates on a device not connected (like a phone)
 let response = 0
-console.log("feur")
+
 try {
     let result = await axios.get(`/user/confirm/${props.idname}/${props.idtoken}`)
-    response = result.data.value
+    response = result.data.value 
 } catch (err) {
     console.log("Token invalides")
+    response=0
 }//Call API -> stock result -> en focntion : Page vérif | Page erreur
 </script>
 
@@ -40,5 +41,5 @@ try {
         <div class="flex items-center justify-center m-25">
             <img alt="Logo Insalan XVIII" class="image-center" src="/src/assets/images/logo_home.png"/>
         </div>
-    //</div>
+    </div>
 </template>
