@@ -8,10 +8,10 @@ const {flush_errors } = ErrorStore
 const { errors, has_errors} = storeToRefs(ErrorStore)
 </script>
 <template>
-	<div  v-if="has_errors"  class="hover:ring-2 hover:ring-red-950 flex left-1/2 w-min-[500px] fixed bottom-1 -ml-[250px] z-40 items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-red-400 dark:bg-red-800">
+	<div v-if="has_errors" class="hover:ring-2 hover:ring-red-950 flex left-1/2 w-min-[500px] fixed bottom-1 -ml-[250px] z-40 items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-red-400 dark:bg-red-800">
 		<div class="ml-3 text-sm font-normal">
 			<ul>
-				<li v-for="error in errors"><em class="font-bold not-italic text-xl">{{error[0]}}</em><p v-for="msg in error[1]">{{msg}}</p></li>
+				<li v-for="error in errors"><em class="font-bold not-italic text-xl">- {{error[0]}}</em><p>{{error[1]}}</p></li>
 			</ul>
 		</div>
 		<button @click="flush_errors" class=" hover:ring-2  hover:bg-red-600 hover:ring-red-600 hover:text-white ml-auto -mx-1.5 -my-1.5  rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 " >
