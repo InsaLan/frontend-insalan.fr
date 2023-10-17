@@ -1,39 +1,137 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import { onMounted } from 'vue';
-import TeamCard from '@/components/TeamCard.vue';
-import type { Team } from '@/models/team';
-import { useTournamentStore } from '@/stores/tournament.store';
+import { useTournamentStore } from '../stores/tournament.store'
+import {storeToRefs } from 'pinia'
+import TeamCard  from '../components/TeamCard.vue'
+const tournamentStore = useTournamentStore()
+const { fetchTournament } = tournamentStore
+const { tournament } = storeToRefs(tournamentStore)
+const props = defineProps(['id'])
 
-const tournamentStore = useTournamentStore();
-const { fetchTournament } = tournamentStore;
-const { tournament } = storeToRefs(tournamentStore);
-const props = defineProps<{
-  id: number;
-}>();
+const res = fetchTournament(props.id)
+console.log(res)
 
-onMounted(async () => {
-  await fetchTournament(props.id);
-});
+const switch_tag = (e: Event) => {
+	const drop = document.getElementById("dropdown")
+	if (e.target.classList.contains("opened")) {
+		e.target.classList.remove("opened")
+		drop?.classList.remove("opened")
+	} else {
+		e.target.classList.add("opened")
+		drop?.classList.add("opened")
+	}
+}
+
+const select_tag = (e: Event) => {
+	const btn = document.getElementById("dropdown-btn")
+	const drop = document.getElementById("dropdown")
+
+	btn.innerHTML = e.target.innerHTML
+
+	if (btn?.classList.contains("opened")) {
+		btn?.classList.remove("opened")
+	}
+	drop?.classList.remove("opened")
+}
 </script>
 
 <template>
-  <div>
-    <div class="text-center text-4xl text-white">
-      {{ tournament !== undefined ? tournament.name : '' }}
-    </div>
-    <section id="infos"/>
-    <div class="grid grid-cols-1 gap-4 p-5 md:grid-cols-2">
-      <div v-if="tournament !== undefined">
-        <TeamCard v-for="team in (tournament.teams as Team[])" :key="team.id" :team="team"/>
-      </div>
-      <a href="#" class="flex flex-row items-center justify-center rounded bg-red-500">
-        <div class="rounded bg-red-500 text-center">
+<div class="flex flex-col items-center" style="height: calc();">
+	<div class="text-6xl text-center text-white font-bold">{{tournament.name}}</div>
 
-          <fa-awesome-icon size="5x" icon="fa-solid fa-circle-plus"/>
-          <p class="text-center text-4xl">inscrire son équipe</p>
-        </div>
-      </a>
-    </div>
-  </div>
+	<nav class="flex justify-center w-screen my-4">
+		<button id="dropdown-btn" class="md:hidden text-xl" @click="switch_tag($event)">Informations</button>
+		<div id="dropdown">
+			<a @click="select_tag($event)" href="#infos">Informations</a>
+			<a @click="select_tag($event)" href="#teams">Équipes</a>
+			<a @click="select_tag($event)" href="#groups">Poules</a>
+			<a @click="select_tag($event)" href="#brackets">Arbres</a>
+			<a @click="select_tag($event)" href="#planning">Planning</a>
+			<a @click="select_tag($event)" href="#rules">Règlement</a>
+		</div>
+	</nav>
+
+	<div class="flex w-screen overflow-hidden">
+	<div class="pager grid">
+		<section id="infos">
+			Blablablabla
+		</section>
+
+		<section id="teams">
+		<div class="grid md:grid-cols-2 grid-cols-1 p-5 gap-4">
+			<TeamCard v-for="team in tournament.teams" :team="team" />
+			<a href="#" class="flex flex-row justify-center items-center bg-red-500 rounded">
+				<div class="text-center rounded bg-red-500">
+
+					<fa-awesome-icon size="5x" icon="fa-solid fa-circle-plus" />
+					<p class="text-center text-4xl">inscrire son équipe</p>
+				</div>
+			</a>
+		</div>
+		</section>
+
+		<section id="groups">
+
+		</section>
+
+		<section id="brackets">
+
+		</section>
+
+		<section id="planning">
+
+		</section>
+
+		<section id="rules">
+
+		</section>
+	</div>
+</div>
+</div>
 </template>
+
+<style scoped>
+section {
+	width: 100%;
+}
+
+a {
+	@apply text-xl
+}
+
+.pager {
+	grid-template-columns: repeat(6, 100vw);
+}
+
+#dropdown-btn::after {
+	display: inline-block;
+	content: "\2039";
+	inline-size: 1em;
+	transform-origin: center center;
+	transform: rotate(-90deg);
+}
+
+.opened#dropdown-btn::after {
+	transform: translateX(5px) rotate(90deg);
+}
+
+.opened#dropdown {
+	display:flex;
+}
+
+#dropdown {
+	@apply flex justify-between w-screen md:w-2/3 xl:w-1/2
+}
+
+@media (max-width: 768px) {
+	#dropdown {
+		display: none;
+		position: absolute;
+		transform: translateY(2rem);
+		z-index: 99;
+		background-color: #2C292D;
+		width: 100vw;
+		flex-direction: column;
+		align-items: center;
+	}
+}
+</style>
