@@ -2,19 +2,35 @@
 import axios from "axios"
 import { useUserStore} from '../stores/user.store';
 import { storeToRefs } from 'pinia';
+import { onMounted } from "vue";
 const userStore = useUserStore()
 const { user, role, isConnected, inscriptions } = storeToRefs(userStore)
 const props = defineProps(['idname','idtoken']) 
-//Url must be /insalan.fr/verification/name/token to be sure to work even if he validates on a device not connected (like a phone)
-let response = 0
+console.log("Test : props")
+console.log(props.idname)
+console.log("Value props :")
+console.log(props)
 
-try {
-    let result = await axios.get(`/user/confirm/${props.idname}/${props.idtoken}`)
-    response = result.data.value 
-} catch (err) {
-    console.log("Token invalides")
-    response=0
-}//Call API -> stock result -> en focntion : Page vérif | Page erreur
+//Url must be /insalan.fr/verification/name/token to be sure to work even if he validates on a device not connected (like a phone)
+let fctAPI = onMounted(async() => {
+    try {
+        if (props.idname!=undefined && props.idtoken!=undefined){
+            let result = await axios.get(`/user/confirm/${props.idname}/${props.idtoken}`)
+            return result.data.value 
+        }
+        else {
+            console.log("Aucune spécification de Token")
+            return 0
+        }
+    } catch (err) {
+        console.log("Token invalides")
+        return 0
+    }
+})
+
+let response=200
+
+//Call API -> stock result -> en focntion : Page vérif | Page erreur
 </script>
 
 <template>
