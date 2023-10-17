@@ -6,10 +6,6 @@ import { onMounted } from "vue";
 const userStore = useUserStore()
 const { user, role, isConnected, inscriptions } = storeToRefs(userStore)
 const props = defineProps(['idname','idtoken']) 
-console.log("Test : props")
-console.log(props.idname)
-console.log("Value props :")
-console.log(props)
 
 //Url must be /insalan.fr/verification/name/token to be sure to work even if he validates on a device not connected (like a phone)
 let fctAPI = onMounted(async() => {
@@ -28,7 +24,7 @@ let fctAPI = onMounted(async() => {
     }
 })
 
-let response=200
+let response = fctAPI
 
 //Call API -> stock result -> en focntion : Page vérif | Page erreur
 </script>

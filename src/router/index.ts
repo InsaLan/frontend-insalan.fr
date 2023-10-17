@@ -20,7 +20,7 @@ const routes = [
 
 	},{
 
-		path: '/verification/:idnom/:idtoken',
+		path: '/verification/:idname/:idtoken',
 		component: EmailVerif,
 		props: true,
 
