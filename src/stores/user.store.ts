@@ -13,6 +13,7 @@ export const useUserStore = defineStore('user', () => {
 	const ToastStore = useToastStore()
 	const ErrorStore = useErrorStore()
 	const inscriptions = ref({})
+	const MailVerified = ref (false)
 	const { setContent }  = ToastStore;
 	const { add_error } = ErrorStore;
 	async function get_csrf() {
@@ -22,20 +23,9 @@ export const useUserStore = defineStore('user', () => {
 
 	//C'ets une dingz mais promis ça va marcher :
 	async function verifMail(idname: String , idtoken: String){
-		try {
-			if (idname!=undefined && idtoken!=undefined){
-				console.log("FEUR")
-				let result = await axios.get(`/user/confirm/${idname}/${idtoken}`)
-				return result.data.value 
-			}
-			else {
-				console.log("Aucune spécification de Token")
-				return 53
-			}
-		} catch (err) {
-			console.log("Token invalides")
-			return 53
-		}
+		MailVerified.value=false
+		let result = await axios.get(`/user/confirm/${idname}/${idtoken}`)
+		MailVerified.value=true
 	}
 
 	async function signin(email: String, username: String, password: String, password_validation: String) {
@@ -147,6 +137,7 @@ export const useUserStore = defineStore('user', () => {
 			verifMail,
 			role,
 			isConnected,
-			inscriptions
+			inscriptions,
+			MailVerified
 	}
 })

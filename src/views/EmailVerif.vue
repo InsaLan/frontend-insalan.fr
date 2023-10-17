@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia';
 import { onMounted } from "vue";
 const userStore = useUserStore()
 const {verifMail} = userStore
-const { user, role, isConnected, inscriptions } = storeToRefs(userStore)
+const { MailVerified } = storeToRefs(userStore)
 
 //On récup les id depuis l'URL (CF index.ts)
 const props = defineProps(['idname','idtoken']) 
@@ -15,13 +15,14 @@ const props = defineProps(['idname','idtoken'])
 let response = verifMail(props.idname,props.idtoken)
 
 console.log("Response : ",response)
+console.log(MailVerified)
 
 //Call API -> stock result -> en focntion : Page vérif | Page erreur
 </script>
 
 <template>
         <!-- Cas fonctionnel -->
-    <div>
+    <div v-if="MailVerified">
         <div>
             <p class=" text-center text-5xl md:m-8"> Création de compte </p>
             <p class=" text-center text-2xl md:m-10"> Votre adresse Email a été vérifiée</p>
@@ -33,7 +34,7 @@ console.log("Response : ",response)
         </div>
     </div>
     <!-- Cas où erreur verif -->
-    <div>
+    <div v-else>
         <div>
             <p class=" text-center text-5xl md:m-8"> Création de compte </p>
             <p class=" text-center text-2xl md:m-10"> Echec vérification</p>
