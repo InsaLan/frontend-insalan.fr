@@ -4,34 +4,24 @@ import { useUserStore} from '../stores/user.store';
 import { storeToRefs } from 'pinia';
 import { onMounted } from "vue";
 const userStore = useUserStore()
+const {verifMail} = userStore
 const { user, role, isConnected, inscriptions } = storeToRefs(userStore)
+
+//On récup les id depuis l'URL (CF index.ts)
 const props = defineProps(['idname','idtoken']) 
 
 //Url must be /insalan.fr/verification/name/token to be sure to work even if he validates on a device not connected (like a phone)
-let fctAPI = onMounted(async() => {
-    try {
-        if (props.idname!=undefined && props.idtoken!=undefined){
-            let result = await axios.get(`/user/confirm/${props.idname}/${props.idtoken}`)
-            return result.data.value 
-        }
-        else {
-            console.log("Aucune spécification de Token")
-            return 0
-        }
-    } catch (err) {
-        console.log("Token invalides")
-        return 0
-    }
-})
 
-let response = fctAPI
+let response = verifMail(props.idname,props.idtoken)
+
+console.log("Response : ",response)
 
 //Call API -> stock result -> en focntion : Page vérif | Page erreur
 </script>
 
 <template>
         <!-- Cas fonctionnel -->
-    <div v-if="response===200">
+    <div>
         <div>
             <p class=" text-center text-5xl md:m-8"> Création de compte </p>
             <p class=" text-center text-2xl md:m-10"> Votre adresse Email a été vérifiée</p>
@@ -43,7 +33,7 @@ let response = fctAPI
         </div>
     </div>
     <!-- Cas où erreur verif -->
-    <div v-else>
+    <div>
         <div>
             <p class=" text-center text-5xl md:m-8"> Création de compte </p>
             <p class=" text-center text-2xl md:m-10"> Echec vérification</p>

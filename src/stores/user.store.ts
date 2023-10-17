@@ -19,6 +19,25 @@ export const useUserStore = defineStore('user', () => {
 		const response = await axios.get('/user/get-csrf/')
 	}
 
+
+	//C'ets une dingz mais promis ça va marcher :
+	async function verifMail(idname: String , idtoken: String){
+		try {
+			if (idname!=undefined && idtoken!=undefined){
+				console.log("FEUR")
+				let result = await axios.get(`/user/confirm/${idname}/${idtoken}`)
+				return result.data.value 
+			}
+			else {
+				console.log("Aucune spécification de Token")
+				return 53
+			}
+		} catch (err) {
+			console.log("Token invalides")
+			return 53
+		}
+	}
+
 	async function signin(email: String, username: String, password: String, password_validation: String) {
 		get_csrf()
 		const data = {
@@ -125,6 +144,7 @@ export const useUserStore = defineStore('user', () => {
 			logout,
 			fetch_user_inscription_full,
 			patch_user,
+			verifMail,
 			role,
 			isConnected,
 			inscriptions
