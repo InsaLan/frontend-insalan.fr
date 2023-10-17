@@ -17,7 +17,7 @@ if (event.value.length) {
 </script>
 
 <template>
-<div v-if="Object.keys(tournaments).length" class="grid md:grid-cols-2 xl:grid-cols-4 gap-4 xl:w-full px-4">
+<div v-if="Object.keys(tournaments).length" class="grid md:grid-cols-2 xl:grid-cols-4 gap-4 w-full px-4">
     <TournamentCard v-for="tournament in tournaments" :tournament="tournament"/>
 </div>
 <div v-else>
