@@ -11,12 +11,13 @@ const res = fetchTournament(props.id)
 console.log(res)
 
 const switch_tag = (e: Event) => {
+	const target = e.target as HTMLInputElement
 	const drop = document.getElementById("dropdown")
-	if (e.target.classList.contains("opened")) {
-		e.target.classList.remove("opened")
+	if (target.classList.contains("opened")) {
+		target.classList.remove("opened")
 		drop?.classList.remove("opened")
 	} else {
-		e.target.classList.add("opened")
+		target.classList.add("opened")
 		drop?.classList.add("opened")
 	}
 }
@@ -25,7 +26,9 @@ const select_tag = (e: Event) => {
 	const btn = document.getElementById("dropdown-btn")
 	const drop = document.getElementById("dropdown")
 
-	btn.innerHTML = e.target.innerHTML
+	if (btn !== null) {
+		btn.innerHTML = (e.target as HTMLInputElement).innerHTML
+	}
 
 	if (btn?.classList.contains("opened")) {
 		btn?.classList.remove("opened")
@@ -39,14 +42,14 @@ const select_tag = (e: Event) => {
 	<div class="text-6xl text-center text-white font-bold">{{tournament.name}}</div>
 
 	<nav class="flex justify-center w-screen my-4">
-		<button id="dropdown-btn" class="md:hidden text-xl" @click="switch_tag($event)">Informations</button>
+		<button id="dropdown-btn" class="md:hidden text-xl" @click="switch_tag">Informations</button>
 		<div id="dropdown">
-			<a @click="select_tag($event)" href="#infos">Informations</a>
-			<a @click="select_tag($event)" href="#teams">Équipes</a>
-			<a @click="select_tag($event)" href="#groups">Poules</a>
-			<a @click="select_tag($event)" href="#brackets">Arbres</a>
-			<a @click="select_tag($event)" href="#planning">Planning</a>
-			<a @click="select_tag($event)" href="#rules">Règlement</a>
+			<a @click="select_tag" href="#infos">Informations</a>
+			<a @click="select_tag" href="#teams">Équipes</a>
+			<a @click="select_tag" href="#groups">Poules</a>
+			<a @click="select_tag" href="#brackets">Arbres</a>
+			<a @click="select_tag" href="#planning">Planning</a>
+			<a @click="select_tag" href="#rules">Règlement</a>
 		</div>
 	</nav>
 
