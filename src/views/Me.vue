@@ -5,13 +5,12 @@ import { ref, reactive, computed } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 import { email, required, sameAs, minLength } from '@vuelidate/validators'
 const userStore = useUserStore()
-const { user, role, isConnected, inscriptions } = storeToRefs(userStore)
+const { user, role, inscriptions } = storeToRefs(userStore)
 const { fetch_user_inscription_full, patch_user } = userStore
 import Modal from '../components/Modal.vue';
 import FormField from '../components/FormField.vue'
 
 fetch_user_inscription_full(user.value.id)
-
 
 // Register form validation
 const data_name = reactive({
@@ -76,10 +75,12 @@ const validateModal = async () => {
 			data = data_email
 			break;
 		case "password":
-		isValid = await v$_password.value.$validate()
+			isValid = await v$_password.value.$validate()
 			if(!isValid) return
 			data = data_password
 			break;
+		default:
+			return
 	}
 	patch_user(data)
 	closeModal()
