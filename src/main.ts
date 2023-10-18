@@ -33,7 +33,7 @@ axios.interceptors.response.use(
   	error => {
     	console.log(error.response.data)
 	console.log(error.response.status)
-	  add_error({data: {status: error.response.status , messages: error.response.data}})
+	  add_error({status: error.response.status , message: "Une erreur inattendue est survenue, veuillez réessayer plus tard. Si le problème persiste, contactez un administrateur"})
 	return Promise.reject(error)});
 
 
