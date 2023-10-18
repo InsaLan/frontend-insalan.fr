@@ -20,28 +20,28 @@ let response = verifMail(props.idname,props.idtoken)
         <!-- Cas fonctionnel -->
     <div v-if="MailVerified">
         <div>
-            <p class=" text-center text-5xl md:m-8"> Création de compte </p>
-            <p class=" text-center text-2xl md:m-10"> Votre adresse Email a été vérifiée</p>
-            <p class=" text-center text-2xl md:m-8"> Vous pouvez désormais vous connecter</p>
-            <p class="text-center text-2xl md:m-6" ><router-link class="hover:text-blue-800" to="/me">Mon compte</router-link></p>
+            <p class=" text-center md:text-5xl text-3xl md:m-8 mb-6"> - Création de compte - </p>
+            <p class=" text-center md:text-2xl  text-xl md:m-10 mb-4"> <em class="text-cyan-300">{{props.idname}}</em>, votre adresse Email a été vérifiée</p>
+            <p class=" text-center md:text-2xl md:m-8"> Vous pouvez désormais vous connecter à <router-link class="hover:text-cyan-300" to="/me">votre compte !</router-link></p>
+            <p class="text-center text-2xl md:m-6 m-8" ><router-link class="hover:text-cyan-300 border-white md:border-4 border p-4" to="/me">Mon compte</router-link></p>
         </div>
 
-        <div class="flex items-center justify-center m-25">
-            <img alt="Logo Insalan XVIII" class="image-center" src="/src/assets/images/logo_home.png"/>
+        <div class="flex items-center justify-center md:m-32 m-6">
+            <img alt="Logo Insalan XVIII" class="image-center justify-center m-6 md:max-w-full md:max-h-full md:w-max w-20" src="/src/assets/images/logo_home.png"/>
         </div>
     </div>
     <!-- Cas où erreur verif -->
     <div v-else>
         <div>
-            <p class=" text-center text-5xl md:m-8"> Création de compte </p>
-            <p class=" text-center text-2xl md:m-10"> Echec vérification</p>
-            <p class=" text-center text-2xl md:m-8"> L'adresse a déjà été vérifié ou le lien est invalide</p>
-            <p class=" text-center text-2xl md:m-8"> Revenir à :</p>
-            <p class="text-center text-3xl md:m-6" ><router-link class="hover:text-blue-800" to="/me">Mon compte</router-link></p>
+            <p class=" text-center md:text-5xl text-3xl md:m-8 mb-6" > - Création de compte - </p>
+            <p class=" text-center md:text-2xl  text-2xl md:m-10 mb-4"> Echec vérification</p>
+            <p class=" text-center md:text-2xl md:m-8"> L'adresse a déjà été vérifié ou le lien est invalide</p>
+            <p class=" text-center md:text-2xl md:m-8 m-4"> Revenir à :</p>
+            <p class="text-center text-2xl md:m-6 m-6" ><router-link class="hover:text-cyan-300 border-white border-4 p-4" to="/me">Mon compte</router-link></p>
         </div>
 
-        <div class="flex items-center justify-center m-32">
-            <img alt="Logo Insalan XVIII" class="image-center" src="/src/assets/images/logo_home.png"/>
+        <div class="flex items-center justify-center md:m-32 m-6">
+            <img alt="Logo Insalan XVIII" class="image-center justify-center m-6 md:max-w-full md:max-h-full md:w-max w-20" src="/src/assets/images/logo_home.png"/>
         </div>
     </div>
 </template>
