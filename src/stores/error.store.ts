@@ -36,7 +36,7 @@ export const useErrorStore = defineStore('error', () => {
 				return true;
 			}
 			if(error.message) {
-				const message = error.message.length > 200 ? error.message.substring(0, 247) + " ..." : error.message
+				const message = error.message.length > 247 ? error.message.substring(0, 247) + " ..." : error.message
 				// if error is {message: "message", status: "status"}
 				if (error.status){
 					errors.push([String(error.status), message])
