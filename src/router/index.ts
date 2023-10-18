@@ -11,6 +11,7 @@ import Logout from '../views/Logout.vue'
 import TournamentRegister  from '../views/TournamentRegister.vue'
 import ResetPassword from '../views/ResetPassword.vue'
 import ScanQrCode from '../views/ScanQrCode.vue'
+import NotFound from '../views/NotFound.vue'
 import { useUserStore } from '../stores/user.store'
 const routes = [
 	{
@@ -74,6 +75,10 @@ const routes = [
 	{
 		path: '/ticket/scan',
 		component: ScanQrCode
+	},
+	{
+		path: '/:pathMatch(.*)*',
+		component: NotFound
 	}
 ] as const;
 
