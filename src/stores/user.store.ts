@@ -21,10 +21,14 @@ export const useUserStore = defineStore('user', () => {
 	}
 
 
-	//C'ets une dingz mais promis ça va marcher :
+	// API Call to verify an email adress (an email with an URL made with the name and the token is sent, we take from it these information and verify them)
+	// If both value are correct, the back set the mail on verified, and return a response(), function continue and MailVerified is set on true
+	// If one (or both) values are incorrect, an error is returned and catch by the classic error catcher, stopping the function : MailVerified stays on false
 	async function verifMail(idname: String , idtoken: String){
+		//I set 
 		MailVerified.value=false
 		let result = await axios.get(`/user/confirm/${idname}/${idtoken}`)
+		//Active only if the API Call doesn't return an error
 		MailVerified.value=true
 	}
 
