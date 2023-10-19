@@ -1,0 +1,22 @@
+on: pull_request
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+
+      - name: Install modules
+        run: npm ci
+
+      - name: Save Code Linting Report JSON
+        run: npx eslint --output-file eslint_report.json --format json .
+        # Continue to the next step even if this fails
+        continue-on-error: true
+
+      - name: Annotate Code Linting Results
+        uses: ataylorme/eslint-annotate-action@v2
+        with:
+          markdown-report-on-step-summary: true
