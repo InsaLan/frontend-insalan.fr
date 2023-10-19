@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import Footer from '../components/Footer.vue'
 import Hero from '../components/Hero.vue' 
+import Partners from '../components/Partners.vue'
 import TournamentCard from '../components/TournamentCard.vue'
 import { useTournamentStore } from '../stores/tournament.store'
 
@@ -33,6 +33,7 @@ console.log(tournaments)
 	<section class="snap-start" style="height: calc(100vh - 6rem)">
 		<div class="title text-white my-2">Cosplay</div>
 	</section>
+	<Partners />
 </div>
 </template>
 

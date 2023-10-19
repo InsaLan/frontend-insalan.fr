@@ -12,7 +12,7 @@ import {ref} from 'vue'
 <Toast/>
 <routerView>
 </routerView>
-<Footer />
+<Footer/>
 </template>
 
 <style scoped>
