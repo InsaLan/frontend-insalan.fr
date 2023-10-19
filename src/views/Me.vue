@@ -149,7 +149,7 @@ const placeholder = "/src/assets/images/logo_home.png"
 				</div-->
 			</div>
 		</div>
-		<div class="sm:visible collapse h-auto bg-white w-[2px]"></div>
+		<div class="sm:visible h-auto bg-white w-[2px]"></div>
 		<div id="team" class="md:w-4/6">
 			<h1 class="text-center m-3 font-bold text-4xl">Mes Equipes </h1>
 			<!--div>
@@ -162,7 +162,7 @@ const placeholder = "/src/assets/images/logo_home.png"
 				<h1 class="text-xl">Edition Actuelle</h1>
 				<div class="m-1 grid md:grid-cols-3 gap-3">
 					<a class="container flex flex-col-reverse max-w-xs break-words bg-cyan-900 text-center" :class="{ /*[`bg-red-900`]: inscriptions.unpaid[inscription.team.id]*/ }" v-for="inscription in inscriptions.ongoing" :href="'/team/' + inscription.team.id + '/detail'">
-						<div class="md:visible collapse my-1">
+						<div class="md:visible my-1">
 							<div class="h-8 flex flex-col flex-1 justify-center m-1">
 								<div>
 									<a
@@ -174,7 +174,7 @@ const placeholder = "/src/assets/images/logo_home.png"
 								</div>
 							</div>
 						</div>
-						<div class="md:visible collapse flex flex-col">
+						<div class="md:visible flex flex-col">
 							<a href="" class="text-zinc-400 mt-auto">réglement du tournois</a>
 						</div>
 						<img class="h-32 max-w-full w-32 overflow-hidden" :src="inscription.team.tournament.logo" style="width: 100%; object-fit: cover;"/>
@@ -188,7 +188,7 @@ const placeholder = "/src/assets/images/logo_home.png"
 				<h1 class="text-xl">Autres Editions</h1>
 				<div class="m-1 grid md:grid-cols-3 gap-3">
 					<a class="container flex flex-col-reverse max-w-xs break-words bg-cyan-900 text-center" v-for="inscription in inscriptions.past" :href="'/team/' + inscription.team.id + '/detail'">
-						<div class="md:visible collapse my-1">
+						<div class="md:visible my-1">
 							<div class="h-8 flex flex-col flex-1 justify-center m-1">
 								<div>
 									<a
@@ -199,7 +199,7 @@ const placeholder = "/src/assets/images/logo_home.png"
 								</div>
 							</div>
 						</div>
-						<div class="md:visible collapse flex flex-col">
+						<div class="md:visible flex flex-col">
 							<a href="" class="text-zinc-400 mt-auto">réglement du tournois</a>
 						</div>
 						<img class="h-32 max-w-full w-32 overflow-hidden" :src="inscription.team.tournament.logo" style="width: 100%; object-fit: cover;"/>
