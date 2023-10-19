@@ -1,28 +1,27 @@
 <script setup lang="ts">
-import axios from "axios"
-import { ref } from 'vue'
-let partners = ref({})
-axios.get("/partners/").then((data) => {
-	partners.value = data.data.results
-	console.log(data.data.results)
-})
-
-const placeholder = "./src/assets/images/placeholder_tournament.webp"
-
 </script>
 
 <template>
-	<div>
-		<section>
-		<div class="title text-white"> Nos partenaires</div>
-		<div class="p-1 grid grid-rows-4 grid-cols-4 gap-3">
-			<div class="container h-min  max-w-sm break-words bg-cyan-900" v-for="partner in partners" >
-			<a :href="partner.url">
-				<img :src="placeholder" />
-				<p class="text-center">{{partner.name }}</p>
-			</a>
-			</div>
-		</div>
-	</section>
+	<section class="grid grid-cols-3 bottom-0 inset-x-0">
+	<div class="grid-span-2">
+		<h1 class="text-2xl text-center">Réseaux</h1>
+		<ul>
+			<li><a href="https://twitter.com/insalan">@insalan</a></li> 
+			<li><a href="https://www.instagram.com/insalan_officiel">@insalan_officiel</a></li> 
+		</ul>
 	</div>
+	<div class="grid">
+		<div class="grid">
+			<h1 class="text-center">Sitemap</h1>
+		</div>
+		<div class="grid">
+			<p class="text-center">Insalan 2023 - 2023</p>
+			<p class="text-center">Code & design: équipe web</p>
+		</div>
+	</div>
+	<div class="flex flex-col justify-center">
+		<a href="https://aeir.insa-rennes.fr"><img class="h-[64px]" src="../assets/images/logo_aeir.png" /></a>
+		<a href="https://insa-rennes.fr"><img class="h-[64px]" src="../assets/images/logo_insa.png" /></a>
+	</div>
+	</section>
 </template>
