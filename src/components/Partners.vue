@@ -13,10 +13,10 @@ const placeholder = "./src/assets/images/placeholder_tournament.webp"
 </script>
 <template>
 	<div>
-		<section>
+	<section>
 		<div class="title text-white"> Nos partenaires</div>
-		<div class="p-1 grid grid-rows-4 grid-cols-4 gap-3">
-			<div class="container h-min  max-w-sm break-words bg-cyan-900" v-for="partner in partners" >
+		<div class="px-4 grid grid-cols-4 gap-3 mb-12">
+			<div class="container h-min max-w-sm break-words bg-cyan-900" v-for="partner in partners" >
 			<a :href="partner.url">
 				<img :src="placeholder" />
 				<p class="text-center">{{partner.name }}</p>

@@ -64,7 +64,7 @@
 </script>
 
 <template>
-	<div class="main flex flex-col items-center" style="height: calc(100vh - 6rem);">
+	<div class="main flex flex-col items-center min-h-screen">
 		<img src="https://cdn.discordapp.com/attachments/1054010660939370509/1162797131837472879/lol_logo.jpg?ex=653d3e37&is=652ac937&hm=3890c6680e5d5d3d5ba6ead9debc9d264080440ed5069fe6635a576f8dfaec5f&" class="h-20 w-auto"/>
 		<div class="md:grid md:grid-cols-2 h-full w-full">
 			<div class="flex flex-col items-center justify-center h-full">

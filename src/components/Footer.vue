@@ -2,7 +2,7 @@
 </script>
 
 <template>
-	<section class="grid grid-cols-3 bottom-0 inset-x-0">
+	<section class="grid grid-cols-3 border-t-2 border-white">
 	<div class="grid-span-2">
 		<h1 class="text-2xl text-center">Réseaux</h1>
 		<ul>

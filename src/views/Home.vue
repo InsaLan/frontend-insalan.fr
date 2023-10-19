@@ -19,21 +19,20 @@ console.log(tournaments)
 </script>
 
 <template>
-<div class="snap-y snap-mandatory overflow-scroll" style="height: calc(100vh - 6rem)">
-	<section class="w-screen snap-start" style="height: calc(100vh - 6rem);">
+<div>
+	<section class="w-screen" style="height: calc(100vh - 6rem);">
 		<Hero/>
 		<div class="title text-white">Informations</div>
 	</section>
-	<section class="snap-start" style="height: calc(100vh - 6rem)">
+	<section>
 		<div class="title text-white my-2">Tournois</div>
-		<div class="grid md:grid-cols-2 xl:grid-cols-4 gap-4 xl:w-full px-4">
+		<div class="grid md:grid-cols-2 xl:grid-cols-4 gap-4 xl:w-full px-4 mb-12">
 			<TournamentCard v-for="tournament in tournaments" :tournament="tournament"/>
 		</div>
 	</section>
-	<section class="snap-start" style="height: calc(100vh - 6rem)">
-		<div class="title text-white my-2">Cosplay</div>
+	<section>
+		<Partners />
 	</section>
-	<Partners />
 </div>
 </template>
 
