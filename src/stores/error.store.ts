@@ -16,8 +16,10 @@ export const useErrorStore = defineStore('error', () => {
 		// if error is a string, add it to the errors array
 		if (typeof error === 'string'){
 			// limit to 197 characters + "..."
-			const message: string = error.length > 200 ? error.substring(0, 197) + "..." : error
-			errors.push(["Erreur", message])
+			if(error.length > 200) {
+				return false;
+			}
+			errors.push(["Erreur", error])
 			return true;
 		}
 		// if error is an array, add it to the errors array
@@ -36,19 +38,21 @@ export const useErrorStore = defineStore('error', () => {
 				return true;
 			}
 			if(error.message) {
-				const message = error.message.length > 247 ? error.message.substring(0, 247) + " ..." : error.message
+				if(error.message.length > 200) {
+					return false;
+				}
 				// if error is {message: "message", status: "status"}
 				if (error.status){
-					errors.push([String(error.status), message])
+					errors.push([String(error.status), error.message])
 					return true;
 				}
 				// if error is {message: "message", code: "status"}
 				if (error.code){
-					errors.push([String(error.code), message])
+					errors.push([String(error.code), error.message])
 					return true;
 				}
 				// if error is {message: "message",...}
-				errors.push(["Erreur", message])
+				errors.push(["Erreur", error.message])
 				return true;
 			}
 		}
