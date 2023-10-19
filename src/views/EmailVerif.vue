@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import axios from "axios"
 import { useUserStore} from '../stores/user.store';
 import { storeToRefs } from 'pinia';
 const userStore = useUserStore()
@@ -11,7 +10,7 @@ const props = defineProps(['idname','idtoken'])
 
 //Url must be /insalan.fr/verification/name/token to be sure to work even if he validates on a device not connected (like a phone)
 
-let response = verifMail(props.idname,props.idtoken)
+verifMail(props.idname,props.idtoken)
 // If the name and token are the right ones, boolean value Mailverified is set on true, else in any other case (problem if token, lack of token etc)
 // Html just need to check this value to show the right data to the user
 </script>

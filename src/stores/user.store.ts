@@ -27,7 +27,7 @@ export const useUserStore = defineStore('user', () => {
 	async function verifMail(idname: String , idtoken: String){
 		//I set 
 		MailVerified.value=false
-		let result = await axios.get(`/user/confirm/${idname}/${idtoken}`)
+		await axios.get(`/user/confirm/${idname}/${idtoken}`)
 		//Active only if the API Call doesn't return an error
 		MailVerified.value=true
 	}
