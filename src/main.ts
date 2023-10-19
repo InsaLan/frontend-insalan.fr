@@ -32,8 +32,20 @@ axios.interceptors.response.use(
 	res => res,
   	error => {
     	console.log(error.response.data)
-	console.log(error.response.status)
-	  add_error({status: error.response.status , message: "Une erreur inattendue est survenue, veuillez réessayer plus tard. Si le problème persiste, contactez un administrateur"})
-	return Promise.reject(error)});
+		console.log(error.response.status)
+		if(typeof error.response.data === 'object') {
+			for(const key in error.response.data) {
+				add_error({status: error.response.status , message: error.response.data[key]})
+			}
+		}
+		else if(typeof error.response.data === 'string') {
+			add_error({status: error.response.status , message: error.response.data})
+		}
+		else {
+			add_error({status: error.response.status , message: "Une erreur inattendue est survenue, veuillez réessayer plus tard. Si le problème persiste, contactez un administrateur"})
+		}
+		return Promise.reject(error)
+	}
+);
 
 
