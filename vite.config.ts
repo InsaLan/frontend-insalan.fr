@@ -1,13 +1,16 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { fileURLToPath, URL } from 'node:url';
+import vue from '@vitejs/plugin-vue';
+import { defineConfig } from 'vite';
 
-const websocket_url = `${process.env.VITE_WEBSITE_HOST}`
+const websocket_url = process.env.VITE_WEBSITE_HOST;
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
-  optimizeDeps: {
-    exclude: ['js-big-decimal']
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
   },
   server: {
     host: true,
@@ -17,5 +20,5 @@ export default defineConfig({
       host: websocket_url,
       clientPort: 80,
     },
-  }
-})
+  },
+});
