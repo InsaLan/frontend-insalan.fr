@@ -47,9 +47,9 @@ let burger_menu = ref(false)
 	</div>
 	<div class="md:hidden border-b-2 border-white">
 		<div id="top" class="flex justify-between">
-			<router-link class="my-2" to="/"><img class="h-[48px] w-[48px]" src="../assets/images/logo_home.png"/></router-link>
+			<router-link class="my-2 h-16 w-16" to="/"><img class="min-h-[48px] min-w-[48px]" src="../assets/images/logo_home.png"/></router-link>
 		<div class="flex center">
-			<div class="flex gap-4 px-4">
+			<div class="flex gap-4">
 				<div v-if="!isConnected" class="my-auto">
 					<router-link to="/register" class="block text-xs md:text-base rounded transition duration-150 ease-in-out p-2 font-bold text-white bg-blue-800 hover:ring hover:ring-pink-500">Se connecter/S'inscrire</router-link>
 				</div>
@@ -57,7 +57,7 @@ let burger_menu = ref(false)
 					<router-link class="transition duration-150 ease-in-out font-bold text-white mx-4 hover:text-blue-800" to="/me">Mon compte</router-link>
 					<button @click="logout_user()" class="rounded transition duration-150 ease-in-out p-2 font-bold text-white bg-blue-800 hover:ring hover:ring-pink-500">Se deconnecter</button>
 				</div>
-				<button @click="burger_menu = !burger_menu" class="mx-auto hover:text-white text-center rounded text-gray-400 h-8 w-8 ring-2 ring-gray-400 my-auto">
+				<button @click="burger_menu = !burger_menu" class="mx-auto hover:text-white text-center rounded text-gray-400 h-8 w-8 ring-2 ring-gray-400 my-auto mr-2">
 					<svg v-if="!burger_menu" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" class="stroke-2 w-6 h-6 m-auto">
 					  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
 					</svg>
