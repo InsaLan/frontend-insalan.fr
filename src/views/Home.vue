@@ -49,7 +49,7 @@ console.log(tournaments)
 	display: block;
 	height: 0.1em;
 	background-color: #fff;
-	min-width: 35vw;
+	min-width: calc(35vw - 3em);
 }
 .title::before {
 	margin-right: 1em;
