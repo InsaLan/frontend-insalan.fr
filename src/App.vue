@@ -10,8 +10,10 @@ import {ref} from 'vue'
 <Navigation/>
 <Error />
 <Toast/>
+<div class="flex-1">
 <routerView>
 </routerView>
+</div>
 <Footer/>
 </template>
 
