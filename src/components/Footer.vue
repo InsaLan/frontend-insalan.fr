@@ -6,7 +6,7 @@
 	<div class="flex flex-col justify-items-center items-center md:col-span-3 md:row-start-1 row-start-2">
 		<h1 class="text-2xl text-center md:block hidden">Réseaux</h1>
 		<div class="flex flex-row w-min">
-			<a href="https://www.instagram.com/insalan_officiel"><svg id="instagram" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 200 200" xml:space="preserve" class="md:w-14 md:h-14 w-10 h-10">
+			<a href="https://www.instagram.com/insalan_officiel" class="hover:blur-sm"><svg id="instagram" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 200 200" xml:space="preserve" class="md:w-14 md:h-14 w-10 h-10">
 				<g>
 					<g transform="matrix(2.0 0 0 2.0 100 100)">
 					<linearGradient id="SVGID_452" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 -1 -120.9449 379.3622)" x1="194.4528" y1="117.067" x2="259.0692" y2="190.3156">
@@ -46,7 +46,7 @@
 					</g>
 				</g>
 			</svg></a>
-			<a href="https://twitter.com/insalan"><svg id="X" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 200 200" xml:space="preserve" class="md:w-14 md:h-14 w-10 h-10">
+			<a href="https://twitter.com/insalan" class="hover:blur-sm"><svg id="X" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 200 200" xml:space="preserve" class="md:w-14 md:h-14 w-10 h-10">
 				<g>
 					<g transform="matrix(2.0 0 0 2.0 100 100)">
 					<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; is-custom-font: none; font-file-url: none; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" translate(-299.99, -225.9234)" d="M 339.84 212.96 c 7.16 22.01 -4.88 45.65 -26.89 52.81 c -22.01 7.16 -45.65 -4.88 -52.81 -26.89 c -7.16 -22.01 4.88 -45.65 26.89 -52.81 c 4.19 -1.36 8.57 -2.06 12.97 -2.06 C 318.15 184.02 334.23 195.7 339.84 212.96 z M 300.01 187.79 c -21.06 0.03 -38.11 17.12 -38.08 38.19 s 17.12 38.11 38.19 38.08 c 21.06 -0.03 38.11 -17.12 38.08 -38.19 c -0.01 -3.99 -0.64 -7.95 -1.87 -11.74 C 331.21 198.4 316.54 187.76 300.01 187.79 z" stroke-linecap="round"/>
@@ -56,7 +56,7 @@
 					</g>
 				</g>
 			</svg></a>
-			<a href="https://www.facebook.com/insalan/"><svg id="facebook" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 200 200" xml:space="preserve" class="md:w-14 md:h-14 w-10 h-10">
+			<a href="https://www.facebook.com/insalan/" class="hover:blur-sm"><svg id="facebook" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 200 200" xml:space="preserve" class="md:w-14 md:h-14 w-10 h-10">
 				<g>
 					<g transform="matrix(2.0 0 0 2.0 100 100)">
 					<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; is-custom-font: none; font-file-url: none; fill: rgb(77,119,172); fill-rule: nonzero; opacity: 1;" transform=" translate(-202.79, -225.9234)" d="M 242.64 212.96 c 7.16 22.01 -4.88 45.65 -26.89 52.81 c -22.01 7.16 -45.65 -4.88 -52.81 -26.89 c -7.16 -22.01 4.88 -45.65 26.89 -52.81 c 4.19 -1.36 8.57 -2.06 12.97 -2.06 C 220.95 184.02 237.03 195.7 242.64 212.96 z M 202.8 187.79 c -21.06 0.03 -38.11 17.12 -38.08 38.19 c 0.03 21.06 17.12 38.11 38.19 38.08 c 21.06 -0.03 38.11 -17.12 38.08 -38.19 c -0.01 -3.99 -0.64 -7.95 -1.87 -11.74 C 234.01 198.4 219.34 187.76 202.8 187.79 z" stroke-linecap="round"/>
