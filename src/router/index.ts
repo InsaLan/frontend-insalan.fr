@@ -72,8 +72,9 @@ const routes = [
 
 	},
 	{
-		path: '/reset-password',
-		component: ResetPassword
+		path: '/reset-password/:idname/:idtoken',
+		component: ResetPassword,
+		props: true
 	},
 	{
 		path: '/logout',
