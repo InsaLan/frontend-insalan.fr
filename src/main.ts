@@ -35,7 +35,16 @@ axios.interceptors.response.use(
 		console.log(error.response.status)
 		if(typeof error.response.data === 'object') {
 			for(const key in error.response.data) {
-				add_error({status: error.response.status , message: error.response.data[key]})
+				if(typeof error.response.data[key] === 'string') {
+					add_error({status: error.response.status , message: error.response.data[key]})
+				}
+				else if(typeof error.response.data[key] === 'object') {
+					for(const key2 in error.response.data[key]) {
+						if(typeof error.response.data[key][key2] === 'string') {
+							add_error({status: error.response.status , message: error.response.data[key][key2]})
+						}
+					}
+				}
 			}
 		}
 		else if(typeof error.response.data === 'string') {
