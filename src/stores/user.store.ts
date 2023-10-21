@@ -80,11 +80,16 @@ export const useUserStore = defineStore('user', () => {
 			router.push("/me")
 		} catch(err) {}
 	}
-	async function reset_password(email: String) {
+	async function ask_reset_password(email: String) {
 		get_csrf()
-		try {
-		const res = await axios.post('/user/password/reset/ask', {email})
-		} catch(err) {}
+		const response = await axios.post('/user/password-reset/ask/', {email})
+		setContent(`Un email de confirmation vous a été envoyé a ${email} pour réinitialiser votre compte`, "success")
+	}
+	async function reset_password(user: String, token: String, password: String, password_confirm: String) {
+		get_csrf()
+		const response = await axios.post(`/user/password-reset/submit/`, {user, token, password, password_confirm})
+		setContent(`Votre mot de passe a été réinitialisé`, "success")
+		router.push("/register")
 	}
 	async function logout() {
 		await axios.post("/user/logout/").then(
@@ -189,6 +194,8 @@ export const useUserStore = defineStore('user', () => {
 			fetch_user_inscription_full,
 			patch_user,
 			verifMail,
+			ask_reset_password,
+			reset_password,
 			role,
 			isConnected,
 			inscriptions,
