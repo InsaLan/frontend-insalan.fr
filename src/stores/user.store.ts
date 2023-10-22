@@ -63,6 +63,7 @@ export const useUserStore = defineStore('user', () => {
 
 	async function login(username: String, password: String) {
 		get_csrf()
+		const placeholder = import.meta.env.VITE_PLACEHOLDER==1 ? true : false
 
 		try {
 			const res = await axios.post("/user/login/",
@@ -77,7 +78,11 @@ export const useUserStore = defineStore('user', () => {
 			user.value = user_data.data
 			isConnected.value = true
 			setContent(`Bienvenue ${username}`, "success")
-			router.push("/me")
+			if(placeholder) {
+				router.push("/")
+			}else {
+				router.push("/me")
+			}
 		} catch(err) {}
 	}
 	async function reset_password(email: String) {

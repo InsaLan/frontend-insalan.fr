@@ -14,7 +14,39 @@ import ResetPassword from '../views/ResetPassword.vue'
 import ScanQrCode from '../views/ScanQrCode.vue'
 import NotFound from '../views/NotFound.vue'
 import { useUserStore } from '../stores/user.store'
-const routes = [
+
+const placeholder = import.meta.env.VITE_PLACEHOLDER==1 ? true : false
+
+const placeholder_routes = [
+	{
+		path: '/',
+		component: Home,
+	},{
+
+		path: '/verification/:idname/:idtoken',
+		component: EmailVerif,
+		props: true,
+
+	},,
+	{
+		path: '/register',
+		component: Register
+	},
+	{
+		path: '/reset-password',
+		component: ResetPassword
+	},
+	{
+		path: '/logout',
+		component: Logout
+	},
+	{
+		path: '/:pathMatch(.*)*',
+		component: NotFound
+	}
+] as const;
+
+const default_routes = [
 	{
 		path: '/',
 		component: Home,
@@ -89,8 +121,10 @@ const routes = [
 	}
 ] as const;
 
+const routes = placeholder ? placeholder_routes : default_routes 
+
 export const router = createRouter({
 	history: createWebHistory(),
-	routes,
+	routes
 });
 

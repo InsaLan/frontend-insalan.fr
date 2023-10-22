@@ -3,13 +3,14 @@ import { useUserStore } from '../stores/user.store';
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router'
-const items = [
+const placeholder = import.meta.env.VITE_PLACEHOLDER==1 ? true : false
+const items = placeholder ? [] : [
 	{ url:"/public", text:"Public"},
 	{ url:"/tournament", text:"Tournois"},
 	{ url:"/info", text:"Informations pratiques"},
 	{ url:"/eat", text: "Restauration"},
 ] as const;
-const mobile_items = [
+const mobile_items = placeholder ? [] : [
 	{ url:"/", text:"Accueil"},
 	{ url:"/public", text:"Public"},
 	{ url:"/tournament", text:"Tournois"},
@@ -39,7 +40,7 @@ let burger_menu = ref(false)
 
 		</div>
 		<div v-else class="my-auto">
-			<router-link class="transition duration-150 ease-in-out font-bold text-white mx-4 hover:text-blue-800" to="/me">Mon compte</router-link>
+			<router-link v-if="!placeholder" class="transition duration-150 ease-in-out font-bold text-white mx-4 hover:text-blue-800" to="/me">Mon compte</router-link>
 
 			<button @click="logout_user()" class="rounded transition duration-150 ease-in-out p-2 font-bold text-white bg-blue-800 hover:ring hover:ring-pink-500">Se deconnecter</button>
 		</div>
@@ -54,10 +55,10 @@ let burger_menu = ref(false)
 					<router-link to="/register" class="block text-xs md:text-base rounded transition duration-150 ease-in-out p-2 font-bold text-white bg-blue-800 hover:ring hover:ring-pink-500">Se connecter/S'inscrire</router-link>
 				</div>
 				<div v-else class="my-auto">
-					<router-link class="transition duration-150 ease-in-out font-bold text-white mx-4 hover:text-blue-800" to="/me">Mon compte</router-link>
+					<router-link v-if="!placeholder" class="transition duration-150 ease-in-out font-bold text-white mx-4 hover:text-blue-800" to="/me">Mon compte</router-link>
 					<button @click="logout_user()" class="rounded transition duration-150 ease-in-out p-2 font-bold text-white bg-blue-800 hover:ring hover:ring-pink-500">Se deconnecter</button>
 				</div>
-				<button @click="burger_menu = !burger_menu" class="mx-auto hover:text-white text-center rounded text-gray-400 h-8 w-8 ring-2 ring-gray-400 my-auto mr-2">
+				<button v-if="!placeholder" @click="burger_menu = !burger_menu" class="mx-auto hover:text-white text-center rounded text-gray-400 h-8 w-8 ring-2 ring-gray-400 my-auto mr-2">
 					<svg v-if="!burger_menu" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" class="stroke-2 w-6 h-6 m-auto">
 					  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
 					</svg>
@@ -68,7 +69,7 @@ let burger_menu = ref(false)
 			</div>
 		</div>
 		</div>
-		<div class="flex flex-col bg-theme-bg" >
+		<div class="flex flex-col bg-theme-bg" v-if="!placeholder">
 				<div v-if="burger_menu" class="text-white flex flex-col">
 					<router-link class="transition py-5 text-center duration-150 ease-in-out font-bold text-white mx-2 hover:text-blue-800" v-for="(item, i) in items" :key="i" :to="{ path:item.url}">{{item.text}}</router-link>
 				</div>
