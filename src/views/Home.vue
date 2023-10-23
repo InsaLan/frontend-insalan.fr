@@ -1,60 +1,69 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import Hero from '../components/Hero.vue' 
-import Partners from '../components/Partners.vue'
-import TournamentCard from '../components/TournamentCard.vue'
-import { useTournamentStore } from '../stores/tournament.store'
+import { onMounted } from 'vue';
 
-const tournamentStore = useTournamentStore()
-const { fetchThisYear, fetchTournaments, fetchTournament } = tournamentStore
+import Hero from '../components/Hero.vue';
+import Partners from '../components/Partners.vue';
+import TournamentCard from '../components/TournamentCard.vue';
+import { useTournamentStore } from '../stores/tournament.store';
 
-fetchThisYear()
+const tournamentStore = useTournamentStore();
+const { fetchThisYear, fetchTournaments } = tournamentStore;
+const { event } = storeToRefs(tournamentStore);
 
-const { event} = storeToRefs(tournamentStore)
+onMounted(async () => {
+  await fetchThisYear();
+  await fetchTournaments(event.value[0].tournaments);
+});
 
-fetchTournaments(event.value[0].tournaments)
-
-const { tournaments } = storeToRefs(tournamentStore)
-console.log(tournaments)
+const { tournaments } = storeToRefs(tournamentStore);
 </script>
 
 <template>
-<div>
-	<section class="w-screen" style="height: calc(100vh - 6rem);">
-		<Hero/>
-		<div class="title text-white">Informations</div>
-	</section>
-	<section>
-		<div class="title text-white my-2">Tournois</div>
-		<div class="grid md:grid-cols-2 xl:grid-cols-4 gap-4 xl:w-full px-4 mb-12">
-			<TournamentCard v-for="tournament in tournaments" :tournament="tournament"/>
-		</div>
-	</section>
-	<section>
-		<Partners />
-	</section>
-</div>
+  <div>
+    <section class="w-screen" style="height: calc(100vh - 6rem);">
+      <Hero/>
+      <div class="title text-white">
+        Informations
+      </div>
+    </section>
+    <section>
+      <div class="title my-2 text-white">
+        Tournois
+      </div>
+      <div class="mb-12 grid gap-4 px-4 md:grid-cols-2 xl:w-full xl:grid-cols-4">
+        <TournamentCard
+          v-for="tournament in tournaments"
+          :key="tournament"
+          :tournament="tournament"
+        />
+      </div>
+    </section>
+    <section>
+      <Partners/>
+    </section>
+  </div>
 </template>
 
 <style>
 .title {
-	font-size: 2em;
-	font-weight: bold;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+  font-size: 2em;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .title::after, .title::before {
-	content: '';
-	display: block;
-	height: 0.1em;
-	background-color: #fff;
-	min-width: calc(35vw - 3em);
+  content: '';
+  display: block;
+  height: 0.1em;
+  background-color: #fff;
+  min-width: calc(35vw - 3em);
 }
 .title::before {
-	margin-right: 1em;
+  margin-right: 1em;
 }
 .title::after {
-	margin-left: 1em;
+  margin-left: 1em;
 }
 </style>
