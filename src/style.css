@@ -31,3 +31,8 @@ html {
   src: url(./assets/fonts/play/Play-Bold.ttf);
 }
 
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
