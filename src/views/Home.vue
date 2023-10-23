@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
-
-import Hero from '../components/Hero.vue';
-import Partners from '../components/Partners.vue';
-import TournamentCard from '../components/TournamentCard.vue';
-import { useTournamentStore } from '../stores/tournament.store';
+import Hero from '@/components/Hero.vue';
+import Partners from '@/components/Partners.vue';
+import TournamentCard from '@/components/TournamentCard.vue';
+import { useTournamentStore } from '@/stores/tournament.store';
 
 const tournamentStore = useTournamentStore();
 const { fetchThisYear, fetchTournaments } = tournamentStore;

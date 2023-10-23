@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
 import { computed, reactive } from 'vue';
 
+export type ErrorMessage = { message: string; code?: number; status?: number };
+
 export const useErrorStore = defineStore('error', () => {
   const errors = reactive<string[][]>([]);
   // const default_duration = 200;
-
-  type ErrorMessage = { message: string; code?: number; status?: number };
 
   /**
    * Add an error message to the errors array

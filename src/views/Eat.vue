@@ -1,3 +1,6 @@
+<script setup lang="ts">
+</script>
+
 <template>
-  <h>Eat</h>
+  Eat
 </template>

@@ -1,20 +1,27 @@
 <script setup lang="ts">
-import { useTournamentStore } from '../stores/tournament.store';
 import { storeToRefs } from 'pinia';
-const tournamentStore = useTournamentStore()
-const { fetchEvents, fetchThisYear } = tournamentStore
+import { onMounted } from 'vue';
+import { useTournamentStore } from '@/stores/tournament.store';
 
-fetchThisYear()
+const tournamentStore = useTournamentStore();
+const { fetchThisYear } = tournamentStore;
 
-const { events } = storeToRefs(tournamentStore)
-console.log(events.value)
+onMounted(async () => {
+  await fetchThisYear();
+});
+
+const { events } = storeToRefs(tournamentStore);
 </script>
 
 <template>
-<div>
-	<h1 class="title"> Tournois </h1>
-	<ul>
-		<li v-for="event in events">{{event}}</li>	
-	</ul>
-</div>
+  <div>
+    <h1 class="title">
+      Tournois
+    </h1>
+    <ul>
+      <li v-for="(event, key) in events" :key="key">
+        {{ event }}
+      </li>
+    </ul>
+  </div>
 </template>
