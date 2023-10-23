@@ -2,5 +2,5 @@
 </script>
 
 <template>
-<h1>So much informations ici</h1>
+  <h1>So much informations ici</h1>
 </template>

@@ -1,97 +1,78 @@
-import { createRouter, createWebHistory} from 'vue-router'
-import Home from '../views/Home.vue'
-import Tournament from '../views/Tournament.vue'
-import Informations from '../views/Informations.vue'
-import Public from '../views/Public.vue'
-import Eat from '../views/Eat.vue'
-import Me from '../views/Me.vue'
-import TournamentDetail from '../views/TournamentDetail.vue'
-import Register from '../views/Register.vue'
-import EmailVerif from '../views/EmailVerif.vue'
-import Logout from '../views/Logout.vue'
-import TournamentRegister  from '../views/TournamentRegister.vue'
-import ResetPassword from '../views/ResetPassword.vue'
-import ScanQrCode from '../views/ScanQrCode.vue'
-import NotFound from '../views/NotFound.vue'
-import { useUserStore } from '../stores/user.store'
-const routes = [
-	{
-		path: '/',
-		component: Home,
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
+import { useUserStore } from '@/stores/user.store';
 
-	},{
-
-		path: '/verification/:idname/:idtoken',
-		component: EmailVerif,
-		props: true,
-
-	},{
-		path: '/tournament',
-		component: Tournament,
-	},
-	{
-		path: '/info',
-		component: Informations,
-	},{
-		path: '/public',
-		component:  Public,
-	},{
-		path: '/eat',
-		component: Eat,
-	},{
-		path: '/me',
-		component: Me,
-		beforeEnter: () => {
-			const { isConnected } = useUserStore()
-			if (!isConnected){
-				return {path:'/register'}
-
-			}
-		},
-	}, 
-	{
-		path: '/tournament/:id/register',
-		component: TournamentRegister,
-		props: true,
-		beforeEnter: () => {
-			const { isConnected } = useUserStore()
-			if (!isConnected){
-				return {path:'/register'}
-
-			}
-		},
-	},
-	{
-		path: '/register',
-		component: Register
-	},
-	{
-		path: '/tournament/:id',
-		component: TournamentDetail, 
-		props: true
-
-	},
-	{
-		path: '/reset-password/:idname/:idtoken',
-		component: ResetPassword,
-		props: true
-	},
-	{
-		path: '/logout',
-		component: Logout
-	},
-	{
-		path: '/ticket/scan',
-		component: ScanQrCode
-	},
-	{
-		path: '/:pathMatch(.*)*',
-		component: NotFound
-	}
-] as const;
+const routes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    component: () => import('@/views/Home.vue'),
+  },
+  {
+    path: '/verification/:idname/:idtoken',
+    component: () => import('@/views/EmailVerif.vue'),
+    props: true,
+  },
+  {
+    path: '/tournament',
+    component: () => import('@/views/Tournament.vue'),
+  },
+  {
+    path: '/info',
+    component: () => import('@/views/Informations.vue'),
+  },
+  {
+    path: '/public',
+    component: () => import('@/views/Public.vue'),
+  },
+  {
+    path: '/eat',
+    component: () => import('@/views/Eat.vue'),
+  },
+  {
+    path: '/me',
+    component: () => import('@/views/Me.vue'),
+    beforeEnter: () => {
+      const { isConnected } = useUserStore();
+      return !isConnected ? { path: '/register' } : true;
+    },
+  },
+  {
+    path: '/tournament/:id/register',
+    component: () => import('@/views/TournamentRegister.vue'),
+    props: true,
+    beforeEnter: () => {
+      const { isConnected } = useUserStore();
+      return !isConnected ? { path: '/register' } : true;
+    },
+  },
+  {
+    path: '/register',
+    component: () => import('@/views/Register.vue'),
+  },
+  {
+    path: '/tournament/:id',
+    component: () => import('@/views/TournamentDetail.vue'),
+    props: true,
+  },
+  {
+    path: '/reset-password/:idname/:idtoken',
+    component: () => import('@/views/ResetPassword.vue'),
+    props: true,
+  },
+  {
+    path: '/logout',
+    component: () => import('@/views/Logout.vue'),
+  },
+  {
+    path: '/ticket/scan',
+    component: () => import('@/views/ScanQrCode.vue'),
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    component: () => import('@/views/NotFound.vue'),
+  },
+];
 
 export const router = createRouter({
-	history: createWebHistory(),
-	routes,
+  history: createWebHistory(),
+  routes,
 });
-

@@ -1,8 +1,12 @@
 <script setup lang="ts">
-const props = defineProps(['idname','idtoken']) 
-import PasswordResetForm from '../components/PasswordResetForm.vue'
+import PasswordResetForm from '@/components/PasswordResetForm.vue';
 
+defineProps<{
+  idname: string;
+  idtoken: string;
+}>();
 </script>
+
 <template>
-	<PasswordResetForm :idname="props.idname" :idtoken="props.idtoken" />
+  <PasswordResetForm :idname="idname" :idtoken="idtoken"/>
 </template>

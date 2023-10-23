@@ -1,60 +1,65 @@
-import { createApp } from 'vue'
-import vueClickOutsideElement from 'vue-click-outside-element'
-import * as dotenv from 'dotenv'
-import { createPinia } from 'pinia'
-import { createPersistedState } from 'pinia-plugin-persistedstate'
-import './style.css'
-import App from './App.vue'
-import { router } from './router/index.ts'
-import axios from 'axios'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faCirclePlus, faPencil, faWarning, faFile } from '@fortawesome/free-solid-svg-icons'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faCirclePlus, faFile, faPencil, faWarning,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import axios, { type AxiosError } from 'axios';
+import { createPinia } from 'pinia';
+import { createPersistedState } from 'pinia-plugin-persistedstate';
+import { createApp } from 'vue';
+import vueClickOutsideElement from 'vue-click-outside-element';
+import { router } from '@/router';
+import { type ErrorMessage, useErrorStore } from '@/stores/error.store';
+
+import App from './App.vue';
+
+import './style.css';
 
 /* add icons to the library */
-library.add(faCirclePlus, faPencil, faWarning, faFile)
-axios.defaults.baseURL = import.meta.env.VITE_API_URL
-axios.defaults.withCredentials = true
+library.add(faCirclePlus, faPencil, faWarning, faFile);
 
-const pinia = createPinia()
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+axios.defaults.withCredentials = true;
+
+const pinia = createPinia();
+
 pinia.use(createPersistedState({
-	auto: true
-}))
-createApp(App).
-	component('fa-awesome-icon', FontAwesomeIcon).
-	use(pinia).
-	use(vueClickOutsideElement).
-  use(router).mount('#app')
-import { useErrorStore } from './stores/error.store'
-const { add_error } = useErrorStore()
+  auto: true,
+}));
+
+createApp(App)
+  .component('fa-awesome-icon', FontAwesomeIcon)
+  .use(pinia)
+  .use(vueClickOutsideElement)
+  .use(router)
+  .mount('#app');
+
+const { add_error } = useErrorStore();
 
 axios.interceptors.response.use(
-	res => res,
-  	error => {
-    	console.log(error.response.data)
-		console.log(error.response.status)
-		if(typeof error.response.data === 'object') {
-			for(const key in error.response.data) {
-				if(typeof error.response.data[key] === 'string') {
-					add_error({status: error.response.status , message: error.response.data[key]})
-				}
-				else if(typeof error.response.data[key] === 'object') {
-					for(const key2 in error.response.data[key]) {
-						if(typeof error.response.data[key][key2] === 'string') {
-							add_error({status: error.response.status , message: error.response.data[key][key2]})
-						}
-					}
-				}
-			}
-		}
-		else if(typeof error.response.data === 'string') {
-			add_error({status: error.response.status , message: error.response.data})
-		}
-		else {
-			add_error({status: error.response.status , message: "Une erreur inattendue est survenue, veuillez réessayer plus tard. Si le problème persiste, contactez un administrateur"})
-		}
-		return Promise.reject(error)
-	}
+  (res) => res,
+  (error: AxiosError<string | { [key: string]: string | ErrorMessage }, any>) => {
+    // console.log(error.response.data);
+    // console.log(error.response.status);
+
+    if (typeof error.response?.data === 'string') {
+      add_error({ status: error.response.status, message: error.response.data });
+    } else if (typeof error.response?.data === 'object') {
+      Object.values(error.response.data).forEach((val) => {
+        if (typeof val === 'object') {
+          Object.values(val)
+            .filter((item): item is string => typeof item === 'string')
+            .forEach((item) => add_error({ status: error.response?.status, message: item }));
+        } else {
+          add_error({ status: error.response?.status, message: val });
+        }
+      });
+    } else {
+      add_error({
+        status: error.response?.status,
+        message: 'Une erreur inattendue est survenue, veuillez réessayer plus tard. Si le problème persiste, contactez un administrateur',
+      });
+    }
+    return Promise.reject(error);
+  },
 );
-
-
