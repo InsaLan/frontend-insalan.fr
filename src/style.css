@@ -2,29 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 @layer components {
-.form-btn {
-	@apply rounded bg-blue-800 text-white mt-3 mx-auto p-3 hover:ring hover:ring-pink-500
-	}
-.error {
-	@apply border-red-500
-}
-.success {
-	@apply bg-green-400 ring-green-900
-}
+  .form-btn {
+    @apply rounded bg-blue-800 text-white mt-3 mx-auto p-3 hover:ring hover:ring-pink-500
+  }
+
+  .error {
+    @apply border-red-500
+  }
+
+  .success {
+    @apply bg-green-400 ring-green-900
+  }
 }
 
 html {
-	background-color: #2C292D;
-	font-family: Play, serif;
-	color: #fff;
+  background-color: #2C292D;
+  font-family: Play, serif;
+  color: #fff;
 }
 
 @font-face {
-	font-family: Play;
-	src: url(./assets/fonts/play/Play-Regular.ttf);
+  font-family: Play;
+  src: url(./assets/fonts/play/Play-Regular.ttf);
 }
+
 @font-face {
-	font-family: Play-bold;
-	src: url(./assets/fonts/play/Play-Bold.ttf);
+  font-family: Play-bold;
+  src: url(./assets/fonts/play/Play-Bold.ttf);
 }
 

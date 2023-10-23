@@ -63,6 +63,7 @@ module.exports = defineConfig({
         '@typescript-eslint/consistent-type-imports': ['error', {
           fixStyle: 'inline-type-imports',
         }],
+        '@typescript-eslint/member-delimiter-style': 'error',
         '@typescript-eslint/naming-convention': 'off',
         '@typescript-eslint/no-import-type-side-effects': 'error',
 
