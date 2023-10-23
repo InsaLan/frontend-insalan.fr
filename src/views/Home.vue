@@ -12,7 +12,7 @@ const { event } = storeToRefs(tournamentStore);
 
 onMounted(async () => {
   await fetchThisYear();
-  if (event.lenght > 0) {
+  if (event.length > 0) {
     await fetchTournaments(event.value[0].tournaments);
   }
 });
