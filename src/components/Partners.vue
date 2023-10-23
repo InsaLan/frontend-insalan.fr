@@ -1,14 +1,17 @@
 <script setup lang='ts'>
 import axios from 'axios';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import type { Partner } from './models/partner';
 
 const partners: Partner[] = ref([]);
-try {
-  const partnerData = await axios.get<Partner[]>('/partners/');
-  partners.value = partnerData.data;
-} catch (e) { /* empty */ }
+
+onMounted(async () => {
+  try {
+    const partnerData = await axios.get<Partner[]>('/partners/');
+    partners.value = partnerData.data;
+  } catch (e) { /* empty */ }
+});
 const placeholder = './src/assets/images/placeholder_tournament.webp';
 
 </script>
