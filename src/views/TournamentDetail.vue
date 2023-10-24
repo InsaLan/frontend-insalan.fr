@@ -1,31 +1,37 @@
 <script setup lang="ts">
-import { useTournamentStore } from '../stores/tournament.store'
-import {storeToRefs } from 'pinia'
-import TeamCard  from '../components/TeamCard.vue'
-const tournamentStore = useTournamentStore()
-const { fetchTournament } = tournamentStore
-const { tournament } =storeToRefs(tournamentStore)
-const props = defineProps(['id']) 
+import { storeToRefs } from 'pinia';
+import { onMounted } from 'vue';
+import TeamCard from '@/components/TeamCard.vue';
+import { useTournamentStore } from '@/stores/tournament.store';
 
-const res = fetchTournament(props.id)
-console.log(res)
+const tournamentStore = useTournamentStore();
+const { fetchTournament } = tournamentStore;
+const { tournament } = storeToRefs(tournamentStore);
+const props = defineProps<{
+  id: string;
+}>();
+
+onMounted(async () => {
+  const res = await fetchTournament(props.id);
+  console.log(res);
+});
 </script>
 
 <template>
-<div>
-	<div class="text-4xl text-center text-white">{{tournament.name}}</div>
-	<section id="infos">
-	</section>
-	<div class="grid md:grid-cols-2 grid-cols-1 p-5 gap-4">
-		<TeamCard v-for="team in tournament.teams" :team="team" />
-		<a href="#" class="flex flex-row justify-center items-center bg-red-500 rounded">
-			<div class="text-center rounded bg-red-500">
+  <div>
+    <div class="text-center text-4xl text-white">
+      {{ tournament.name }}
+    </div>
+    <section id="infos"/>
+    <div class="grid grid-cols-1 gap-4 p-5 md:grid-cols-2">
+      <TeamCard v-for="team in tournament.teams" :key="team.id" :team="team"/>
+      <a href="#" class="flex flex-row items-center justify-center rounded bg-red-500">
+        <div class="rounded bg-red-500 text-center">
 
-				<fa-awesome-icon size="5x" icon="fa-solid fa-circle-plus" />
-				<p class="text-center text-4xl">inscrire son équipe</p>
-			</div>
-		</a>
-	</div>
-</div>
+          <fa-awesome-icon size="5x" icon="fa-solid fa-circle-plus"/>
+          <p class="text-center text-4xl">inscrire son équipe</p>
+        </div>
+      </a>
+    </div>
+  </div>
 </template>
-
