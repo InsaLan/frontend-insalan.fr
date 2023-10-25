@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import errors_fr from '../support/locales/errors.fr';
+import errors_fr from '../support/locales/errors.fr.ts';
 
 const props = defineProps({
   validations: {
