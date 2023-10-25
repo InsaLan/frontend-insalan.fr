@@ -8,7 +8,7 @@ const { msg, visible, toastType } = storeToRefs(ToastStore);
 const { dismiss } = ToastStore;
 </script>
 <template>
-  <div v-if="visible" :class="toastType" class="w-min-[500px] fixed bottom-1 left-1/2 z-40 mb-4 ml-[250px] flex w-full max-w-xs items-center rounded-lg p-4 text-white shadow hover:ring-2">
+  <div v-if="visible" :class="toastType" class="w-min-[500px] fixed bottom-1 left-1/2 z-40 mb-4 ml-[-250px] flex w-full max-w-xs items-center rounded-lg p-4 text-white shadow hover:ring-2">
     <div class="ml-3 text-sm font-normal">
       <p> {{ msg }}</p>
     </div>
