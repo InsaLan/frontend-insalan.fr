@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { type PropType, ref } from 'vue';
+import type { Tournament } from '@/models/tournament';
 
-const props = defineProps({ tournament: { required: true, type: Object } });
+const props = defineProps({ tournament: { required: true, type: Object as PropType<Tournament> } });
 
 // TODO: make a ts struct fetched from api
 const maxTeam = ref(32);
