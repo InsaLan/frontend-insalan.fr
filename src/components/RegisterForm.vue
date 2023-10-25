@@ -33,16 +33,16 @@ const rules = computed(() => ({
   },
   accept_cgu: { acceptGCU },
 }));
-const v$ = useVuelidate(rules, register_form, { autoDirty: true });
+const v$ = useVuelidate(rules, register_form, { $autoDirty: true });
 
 const register_user = async () => {
   const isValid = await v$.value.$validate();
   if (!isValid) return;
 
-  if (register_form.decoy == '') {
-    signin(register_form.email, register_form.username, register_form.password, register_form.password_confirm);
+  if (register_form.decoy === '') {
+    await signin(register_form.email, register_form.username, register_form.password, register_form.password_confirm);
   } else {
-    signin(register_form.email, register_form.username, register_form.password, register_form.password_confirm);
+    await signin(register_form.email, register_form.username, register_form.password, register_form.password_confirm);
   }
 };
 
