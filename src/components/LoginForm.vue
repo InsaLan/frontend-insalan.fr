@@ -69,7 +69,7 @@ const openModal = () => {
         <input v-model="login_form.password" :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password.$touch"/>
       </FormField>
     </form>
-    <button class="form-btn" type="submit" @click="login_user">
+    <button class="form-btn" type="button" @click="login_user">
       Se connecter
     </button>
     <a class="p-1 hover:cursor-pointer hover:text-blue-800" @click="openModal()">Mot de passe oublié?</a>
