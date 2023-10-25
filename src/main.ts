@@ -39,7 +39,6 @@ const { add_error } = useErrorStore();
 axios.interceptors.response.use(
   (res) => res,
   (error: AxiosError<string | { [key: string]: string | ErrorMessage }, any>) => {
-
     if (typeof error.response?.data === 'string') {
       add_error({ status: error.response.status, message: error.response.data });
     } else if (typeof error.response?.data === 'object') {

@@ -20,7 +20,7 @@ const cashprize = ref(1000000);
     </div>
     <div class="flex flex-col place-items-center pb-3">
       <a class="pb-2 text-zinc-400" href="#">Règlement du tournoi</a>
-      <a :href="`tournament/${tournament.id}/registar`" class="center rounded bg-green-600 p-2">S'inscrire</a> <!-- TODO: turns button into component-->
+      <a :href="`tournament/${tournament.id}/register`" class="center rounded bg-green-600 p-2">S'inscrire</a> <!-- TODO: turns button into component-->
     </div>
   </div>
 </template>
