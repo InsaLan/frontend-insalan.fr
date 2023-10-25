@@ -1,4 +1,14 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
+import { useContentStore } from '@/stores/content.store';
+
+const contentStore = useContentStore();
+const { getConstant, fetchStatic } = contentStore;
+
+onMounted(async () => {
+  await fetchStatic();
+});
+
 const trailer_embed: string = 'https://www.youtube.com/embed/Bxi-4XEANbE?autoplay=1&mute=1&loop=1&color=white&controls=0&modestbranding=1&playsinline=1&rel=0&enablejsapi=1&playlist=Bxi-4XEANbE';
 </script>
 
@@ -16,7 +26,7 @@ const trailer_embed: string = 'https://www.youtube.com/embed/Bxi-4XEANbE?autopla
     <div class="w-f hover-title  absolute left-2/4 top-60 -translate-x-2/4">
       <img alt="logo insalan" class="w-[32rem]" src="../assets/images/logo_wide.png">
       <h1 class="text-center text-2xl font-bold text-white">
-        11, 12 & 13 février 2023
+        {{ getConstant('date_insalan') }}
       </h1>
       <div id="next" class="m-auto mt-4 h-20 w-20 cursor-pointer rounded-full bg-red-500">
         <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
