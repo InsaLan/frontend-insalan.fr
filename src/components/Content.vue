@@ -1,20 +1,21 @@
 <script setup lang="ts">
-import { useContentStore } from '../stores/content.store'
+import { useContentStore } from '../stores/content.store';
 
 interface Props {
-    name: string
+  name: string;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
-const contentStore = useContentStore()
-const { fetchStatic, getContent } = contentStore
+const contentStore = useContentStore();
+const { getContent } = contentStore;
 
-fetchStatic()
 </script>
 
 <template>
-    <div v-html="getContent(props.name)"></div>
+  <!-- we trust this HTML content -->
+  <!-- eslint-disable -->
+  <div v-html="getContent(props.name)"/>
 </template>
 
 <style scoped>
