@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
+import Content from '@/components/Content.vue';
 import Hero from '@/components/Hero.vue';
 import Partners from '@/components/Partners.vue';
 import TournamentCard from '@/components/TournamentCard.vue';
@@ -24,9 +25,7 @@ const { tournaments } = storeToRefs(tournamentStore);
   <div>
     <section class="w-screen" style="height: calc(100vh - 6rem);">
       <Hero/>
-      <div class="title text-white">
-        Informations
-      </div>
+      <Content name="main_page"/>
     </section>
     <section>
       <div class="title my-2 text-white">
@@ -40,9 +39,7 @@ const { tournaments } = storeToRefs(tournamentStore);
         />
       </div>
     </section>
-    <section>
-      <Partners/>
-    </section>
+    <Partners/>
   </div>
 </template>
 

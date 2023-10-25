@@ -44,6 +44,6 @@
     "vue-tsc": "^1.8.19",
     "vue-router": "^4.2.4",
     "markdown-it": "^13.0.2",
-    "markdown-it-class": "^1.0.0",
+    "markdown-it-class": "^1.0.0"
   }
 }
