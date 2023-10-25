@@ -19,7 +19,7 @@ defineProps<{
       </li>
     </ul>
     <p class="text-grey-400">
-      Managers: <em v-for="manager in team.managers" :key="manager">manager</em>
+      Managers: <em v-for="manager in team.managers" :key="manager">{{ manager }}</em>
     </p>
   </div>
 </template>
