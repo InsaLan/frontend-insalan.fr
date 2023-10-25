@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
 import {
-  email, helpers, minLength, required, sameAs,
+  helpers, minLength, required, sameAs,
 } from '@vuelidate/validators';
 import { computed, reactive } from 'vue';
 
@@ -10,12 +10,15 @@ import FormField from './FormField.vue';
 
 const { reset_password } = useUserStore();
 
-const props = defineProps(['idname', 'idtoken']);
+const props = defineProps<{
+  idname: string;
+  idtoken: string;
+}>();
 console.log(props);
 
 const acceptGCU = helpers.withParams(
   { type: 'acceptGcu' },
-  (value) => value == true,
+  (value) => value === true,
 );
 // Register form validation
 const data = reactive({
@@ -35,7 +38,7 @@ const v$ = useVuelidate(rules, data);
 const register_user = async () => {
   const isValid = await v$.value.$validate();
   if (!isValid) return;
-  reset_password(props.idname, props.idtoken, data.password, data.password_confirm);
+  await reset_password(props.idname, props.idtoken, data.password, data.password_confirm);
 };
 
 </script>

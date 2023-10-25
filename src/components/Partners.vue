@@ -1,10 +1,10 @@
 <script setup lang='ts'>
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
+import { onMounted, type Ref, ref } from 'vue';
 
-import type { Partner } from './models/partner';
+import type { Partner } from '../models/partner';
 
-const partners: Partner[] = ref([]);
+const partners: Ref<Partner[]> = ref([]);
 
 onMounted(async () => {
   try {
