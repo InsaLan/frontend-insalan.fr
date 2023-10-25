@@ -21,9 +21,9 @@ const userStore = useUserStore()
 const { logout } = userStore
 const { isConnected, user } = storeToRefs(userStore)
 const router = useRouter()
-const logout_user = () => { 
+const logout_user = () => {
 	router.push("/")
-	logout() 
+	logout()
 }
 let burger_menu = ref(false)
 </script>
@@ -40,7 +40,6 @@ let burger_menu = ref(false)
 		</div>
 		<div v-else class="my-auto">
 			<router-link class="transition duration-150 ease-in-out font-bold text-white mx-4 hover:text-blue-800" to="/me">Mon compte</router-link>
-
 			<button @click="logout_user()" class="rounded transition duration-150 ease-in-out p-2 font-bold text-white bg-blue-800 hover:ring hover:ring-pink-500">Se deconnecter</button>
 		</div>
 
