@@ -27,24 +27,41 @@ const rules = computed(() => ({
 const v$ = useVuelidate(rules, register_form, { $autoDirty: true });
 
 const register_team = () => {
-  // console.log('test');
+  console.log('test');
 };
+
+const create = ref(true);
 </script>
 
 <template>
-  <div class="main flex min-h-screen flex-col items-center">
-    <img alt="Logo du tournois" src="https://cdn.discordapp.com/attachments/1054010660939370509/1162797131837472879/lol_logo.jpg?ex=653d3e37&is=652ac937&hm=3890c6680e5d5d3d5ba6ead9debc9d264080440ed5069fe6635a576f8dfaec5f&" class="h-20 w-auto"/>
-    <div class="h-full w-full md:grid md:grid-cols-2">
-      <div class="flex h-full flex-col items-center justify-center">
-        <form>
-          <FormField v-slot="context" required label="Nom de l'équipe" :validations="v$.team">
-            <input aria-label="Nom de l'équipe" :class="{ error: context.invalid }" placeholder="Équipe 1" type="text" class="flex flex-col"/>
+  <div class="main flex h-min items-center justify-center py-10 2xl:h-[calc(100vh_-_6rem)] 2xl:py-0">
+    <!-- Design 3-->
+    <div class="w-11/12 md:w-9/12 2xl:w-1/2">
+      <div class="bg-[#63d1ff] py-8 text-center text-6xl font-bold text-white" style="text-shadow: black 0px 0px 5px;">
+        Inscription {{ name }}
+      </div>
+      <div class="flex hover:cursor-pointer">
+        <a class="w-full bg-[#2c292d] py-2 text-center text-2xl" :class="{ 'bg-slate-500': !create }" @click="create = !create">
+          Créer une équipe
+        </a>
+        <a class="w-full bg-[#2c292d] py-2 text-center text-2xl" :class="{ 'bg-slate-500': create }" @click="create = !create">
+          Rejoindre une équipe
+        </a>
+      </div>
+      <div class="flex flex-col bg-[#2c292d] p-8">
+        <form class="grid gap-x-14 gap-y-2 sm:grid-cols-2">
+          <FormField v-slot="context" required label="Nom de l'équipe" :validations="v$.team" class="flex flex-col text-xl">
+            <input :class="{ error: context.invalid }" placeholder="Équipe 1" type="text"/>
           </FormField>
-          <FormField v-slot="context" required label="Pseudo in game" :validations="v$.team">
-            <input aria-label="Pseudo en jeu" :class="{ error: context.invalid }" placeholder="xxxx" type="text" class="flex flex-col"/>
+          <FormField v-slot="context" required label="Pseudo en jeu" :validations="v$.team" class="flex flex-col text-xl">
+            <input :class="{ error: context.invalid }" placeholder="xxxx" type="text"/>
           </FormField>
-          <FormField v-slot="context" required label="Rôle dans l'équipe" :validations="v$.team" class="flex flex-col">
-            <select aria-label="Rôle dans l'équipe" :class="{ error: context.invalid }" class="text-black">
+          <FormField v-slot="context" required label="Mot de passe" :validations="v$.team" class="relative flex flex-col text-xl">
+            <input :class="{ error: context.invalid }" type="password"/>
+            <fa-awesome-icon v-if="create" class="absolute left-[93%] top-[56%] z-10" style="color: black;" size="s" icon="fa-solid fa-arrows-rotate"/>
+          </FormField>
+          <FormField v-slot="context" required label="Rôle dans l'équipe" :validations="v$.team" class="flex flex-col text-xl">
+            <select :class="{ error: context.invalid }" class="text-black">
               <option value="joueur" selected>
                 Joueur
               </option>
@@ -54,74 +71,42 @@ const register_team = () => {
             </select>
           </FormField>
         </form>
-      </div>
-      <div class="flex h-full flex-col items-center justify-center">
-        <span class="text-lg">Rappel du Règlement</span>
-        <ul class="my-5">
+
+        <span class="my-3 text-center text-4xl">Rappel du Règlement</span>
+        <ul class="my-5 text-2xl">
+          <li>Pas d'insulte</li>
+          <li>Apporter son propre matériel <b>filaire </b> </li>
+          <li>Pas d'insulte</li>
+          <li>Apporter son propre matériel <b>filaire </b> </li>
           <li>Pas d'insulte</li>
           <li>Apporter son propre matériel <b>filaire </b> </li>
         </ul>
-        <div>
-          <label><input type="checkbox"/> J'accepte les regles du tournoi</label>
+        <div class="self-center text-3xl">
+          <input id="check" type="checkbox"/>
+          <label for="check"> J'accepte les <a :href="trules" class="text-[#63d1ff]">règles du tournoi</a></label>
         </div>
       </div>
-    </div>
-    <button type="submit" class="mb-10 rounded border-solid bg-green-600 p-3 text-xl" @click="register_team">
-      Créer l'équipe
-    </button>
-    <!--
-      <div class="grid grid-cols-2 h-12">
-        <div id="team-btn" class="bg-blue-400 flex items-center justify-center cursor-pointer
-         hover:border-solid hover:border-2 hover:border-pink-500" @click="switch_form($event)">
-          <button  class="text-xl">Créer une équipe</button>
-        </div>
-      <div id="player-btn" class="bg-gray-500 flex items-center justify-center cursor-pointer
-       hover:border-solid hover:border-2 hover:border-pink-500" @click="switch_form($event)">
-        <button class="text-xl">Rejoindre une équipe</button>
+      <div class="flex justify-center bg-[#63d1ff] p-5">
+        <button v-if="create" class="rounded border-solid bg-green-600 p-3 text-3xl md:w-5/12" @click="register_team">
+          Créer l'équipe
+        </button>
+        <button v-else class="rounded border-solid bg-green-600 p-3 text-3xl md:w-5/12" @click="register_player">
+          Rejoindre
+        </button>
       </div>
-    </div>
-    <div class="overflow-hidden h-full">
-      <div id="forms" class="grid transition h-[calc(100%_-_2.5rem);grid-template-columns: repeat(2, 100vw);">
-        <div class="flex items-center justify-center flex-col">
-          <form>
-            <FormField required label="Nom de l'équipe" v-slot="context" :validations="v$.team">
-              <input :class="{error: context.invalid}" placeholder="Équipe 1" type="text" class="flex flex-col"/>
-            </FormField>
-            <FormField required label="Pseudo in game" v-slot="context" :validations="v$.team">
-              <input :class="{error: context.invalid}" placeholder="xxxx" type="text" class="flex flex-col"/>
-            </FormField>
-          </form>
-          <button @click="register_team" class="mt-10">Créer l'équipe</button>
+      <!--<div class="flex flex-col md:flex-row items-center justify-between p-5 bg-[#63d1ff]">
+          <button @click="register_team" class="mb-5 md:mb-0 md:w-5/12 border-solid bg-green-600 text-3xl p-3 rounded">Créer l'équipe</button>
+          <button @click="register_team_pay" class="md:w-5/12 border-solid bg-green-600 text-3xl p-3 rounded">Créer l'équipe & payer</button>
         </div>
-        <div class="flex items-center justify-center flex-col">
-          <form>
-            <FormField required label="Nom de l'équipe" v-slot="context" :validations="v$.team">
-              <input :class="{error: context.invalid}" placeholder="Équipe 1" type="text" class="flex flex-col"/>
-            </FormField>
-            <FormField required label="Mot de passe de l'équipe" v-slot="context" :validations="v$.team">
-              <input :class="{error: context.invalid}"  type="password" class="flex flex-col"/>
-            </FormField>
-            <FormField required label="Pseudo in game" v-slot="context" :validations="v$.team">
-              <input :class="{error: context.invalid}" placeholder="xxxx" type="text" class="flex flex-col"/>
-            </FormField>
-          </form>
-          <button @click="register_team" class="mt-10">Rejoindre l'équipe</button>
-        </div>
-      </div>
+      -->
     </div>
-    -->
   </div>
 </template>
 
 <style scoped>
 .main {
-  background-image: v-bind(logo_url);
-  background-size: cover;
-  background-color: gray;
-  background-blend-mode: multiply;
-}
-
-.translatePlayer {
-  transform: translateX(-100vw);
+	background-image: v-bind(logo_url);
+	background-size: cover;
+	background-position: center;
 }
 </style>
