@@ -9,9 +9,14 @@ import { useTournamentStore } from '@/stores/tournament.store';
 const props = defineProps<{
   id: number;
 }>();
+
 const tournamentStore = useTournamentStore();
 
 const { tournaments } = storeToRefs(tournamentStore);
+const logo = tournaments.value[props.id].logo;
+const name = tournaments.value[props.id].name;
+const trules = "/tournament/"+tournaments.value[props.id].id +"#rules";
+
 const logo_url = `url(${tournaments.value[props.id].logo as string})`;
 
 const register_form = reactive({
@@ -34,12 +39,10 @@ const create = ref(true);
 </script>
 
 <template>
-  <div class="main flex h-min items-center justify-center py-10 2xl:h-[calc(100vh_-_6rem)] 2xl:py-0">
-    <!-- Design 3-->
-    <div class="w-11/12 md:w-9/12 2xl:w-1/2">
-      <div class="bg-[#63d1ff] py-8 text-center text-6xl font-bold text-white" style="text-shadow: black 0px 0px 5px;">
-        Inscription {{ name }}
-      </div>
+	<div class="flex justify-center items-center 2xl:h-[calc(100vh_-_6rem)] h-min py-10 2xl:py-0 bg-cover bg-center" :style="{backgroundImage: 'url('+tournaments[props.id].logo+')'}">
+		<!-- Design 3-->
+		<div class="2xl:w-1/2 md:w-9/12 w-11/12">
+			<div class="text-6xl text-center text-white font-bold py-8 bg-[#63d1ff]" style="text-shadow: black 0px 0px 5px;">Inscription {{ name }}</div>
       <div class="flex hover:cursor-pointer">
         <a class="w-full bg-[#2c292d] py-2 text-center text-2xl" :class="{ 'bg-slate-500': !create }" @click="create = !create">
           Créer une équipe
@@ -104,9 +107,4 @@ const create = ref(true);
 </template>
 
 <style scoped>
-.main {
-	background-image: v-bind(logo_url);
-	background-size: cover;
-	background-position: center;
-}
 </style>
