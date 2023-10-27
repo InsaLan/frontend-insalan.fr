@@ -21,11 +21,11 @@ const mobile_items = [
 ] as const;
 const userStore = useUserStore();
 const { logout } = userStore;
-const { isConnected, user } = storeToRefs(userStore);
+const { isConnected } = storeToRefs(userStore);
 const router = useRouter();
-const logout_user = () => {
-  router.push('/');
-  logout();
+const logout_user = async () => {
+  await router.push('/');
+  await logout();
 };
 const burger_menu = ref(false);
 </script>
@@ -88,7 +88,7 @@ const burger_menu = ref(false);
       </div>
       <div class="flex flex-col bg-theme-bg">
         <div v-if="burger_menu" class="flex flex-col text-white">
-          <router-link v-for="(item, i) in items" :key="i" class="mx-2 py-5 text-center font-bold text-white transition duration-150 ease-in-out hover:text-blue-800" :to="{ path: item.url }">
+          <router-link v-for="(item, i) in mobile_items" :key="i" class="mx-2 py-5 text-center font-bold text-white transition duration-150 ease-in-out hover:text-blue-800" :to="{ path: item.url }">
             {{ item.text }}
           </router-link>
         </div>
