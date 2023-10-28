@@ -8,12 +8,11 @@ const tournamentStore = useTournamentStore();
 const { fetchTournament } = tournamentStore;
 const { tournament } = storeToRefs(tournamentStore);
 const props = defineProps<{
-  id: string;
+  id: number;
 }>();
 
 onMounted(async () => {
-  const res = await fetchTournament(props.id);
-  console.log(res);
+  await fetchTournament(props.id);
 });
 </script>
 

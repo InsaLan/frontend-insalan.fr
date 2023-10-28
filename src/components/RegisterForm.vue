@@ -11,7 +11,7 @@ import FormField from './FormField.vue';
 const { signin } = useUserStore();
 const acceptGCU = helpers.withParams(
   { type: 'acceptGcu' },
-  (value) => value == true,
+  (value) => value === true,
 );
 // Register form validation
 const register_form = reactive({
@@ -55,25 +55,37 @@ const register_user = async () => {
     </h1>
 
     <form class="my-5">
-      <FormField v-slot="context" label="Email" :validations="v$.email" class="flex flex-col">
-        <input v-model="register_form.email" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="text" placeholder="foo@insalan.fr" @blur="v$.email.$touch()"/>
+      <FormField v-slot="context" :validations="v$.email" class="flex flex-col">
+        <label for="email">
+          Email
+          <input id="email" v-model="register_form.email" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="text" placeholder="foo@insalan.fr" @blur="v$.email.$touch()"/>
+        </label>
       </FormField>
-      <FormField v-slot="context" label="Nom d'utilisateur" class="flex flex-col" :validations="v$.username">
-        <input v-model="register_form.username" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" placeholder="john doe" type="text" @blur="v$.username.$touch()"/>
+      <FormField v-slot="context" class="flex flex-col" :validations="v$.username">
+        <label for="username">
+          Nom d'utilisateur
+          <input id="username" v-model="register_form.username" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" placeholder="john doe" type="text" @blur="v$.username.$touch()"/>
+        </label>
       </FormField>
       <div class="hidden">
         <label for="username">username</label>
         <input v-model="register_form.decoy" type="text"/>
       </div>
-      <FormField v-slot="context" required label="Mot de passe" :validations="v$.password" class="flex flex-col">
-        <input v-model="register_form.password" :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password.$touch"/>
+      <FormField v-slot="context" required :validations="v$.password" class="flex flex-col">
+        <label for="password">
+          Mot de passe
+          <input id="password" v-model="register_form.password" :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password.$touch"/>
+        </label>
       </FormField>
-      <FormField v-slot="context" label="Répéter mot de passe" :validations="v$.password_confirm" class="flex flex-col">
-        <input v-model="register_form.password_confirm" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password_confirm.$touch"/>
+      <FormField v-slot="context" :validations="v$.password_confirm" class="flex flex-col">
+        <label for="repeat">
+          Répéter mot de passe
+          <input id="repeat" v-model="register_form.password_confirm" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password_confirm.$touch"/>
+        </label>
       </FormField>
       <FormField v-slot="context" required :validations="v$.accept_cgu" class="flex flex-col">
         <div class="flex flex-row">
-          <input v-model="register_form.accept_cgu" class="mr-1 mt-1 border-2 bg-theme-bg" type="checkbox">
+          <input v-model="register_form.accept_cgu" :class="{ error: context.invalid }" class="mr-1 mt-1 border-2 bg-theme-bg" type="checkbox">
           <label class="text-white" for="accept">J'accepte les <a class="text-gray-400 underline decoration-dashed" href="#">CGU</a> de l'insalan</label>
         </div>
       </FormField>

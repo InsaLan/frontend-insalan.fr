@@ -24,9 +24,8 @@ const v$ = useVuelidate(rules, login_form);
 
 const login_user = async () => {
   const isValid = await v$.value.$validate();
-  console.log(isValid);
   if (!isValid) return;
-  login(login_form.username, login_form.password);
+  await login(login_form.username, login_form.password);
 };
 
 const modal_open = ref(false);
@@ -46,7 +45,7 @@ const closeModal = () => {
 const validateModal = async () => {
   const isValid = await v$.value.$validate();
   if (!isValid) return;
-  ask_reset_password(data.email);
+  await ask_reset_password(data.email);
   closeModal();
 };
 
@@ -62,11 +61,17 @@ const openModal = () => {
       Se connecter
     </h1>
     <form class="my-2">
-      <FormField v-slot="context" label="Nom d'utilisateur" :validations="v$.username" class="flex flex-col">
-        <input v-model="login_form.username" :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="text" placeholder="John doe" @blur="v$.username.$touch"/>
+      <FormField v-slot="context" :validations="v$.username" class="flex flex-col">
+        <label for="username">
+          Nom d'utilisateur
+          <input id="username" v-model="login_form.username" :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="text" placeholder="John doe" @blur="v$.username.$touch"/>
+        </label>
       </FormField>
-      <FormField v-slot="context" label="Mot de passe" :validations="v$.password" class="flex flex-col">
-        <input v-model="login_form.password" :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password.$touch"/>
+      <FormField v-slot="context" :validations="v$.password" class="flex flex-col">
+        <label for="password">
+          Mot de passe
+          <input v-model="login_form.password" :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password.$touch"/>
+        </label>
       </FormField>
     </form>
     <button class="form-btn" type="button" @click="login_user">
@@ -86,8 +91,11 @@ const openModal = () => {
     </template>
     <template #body>
       <form class="mt-2">
-        <FormField v-slot="context" label="Email" :validations="v$_modal.email" class="m-2 flex flex-col">
-          <input v-model="data.email" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="text" placeholder="John-doe@gmail.com" @blur="v$_modal.email.$touch"/>
+        <FormField v-slot="context" :validations="v$_modal.email" class="m-2 flex flex-col">
+          <label for="email">
+            Email
+            <input v-model="data.email" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="text" placeholder="John-doe@gmail.com" @blur="v$_modal.email.$touch"/>
+          </label>
         </FormField>
       </form>
     </template>

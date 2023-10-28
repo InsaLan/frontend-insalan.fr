@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
 import {
-  helpers, minLength, required, sameAs,
+  minLength, required, sameAs,
 } from '@vuelidate/validators';
 import { computed, reactive } from 'vue';
 
@@ -14,12 +14,6 @@ const props = defineProps<{
   idname: string;
   idtoken: string;
 }>();
-console.log(props);
-
-const acceptGCU = helpers.withParams(
-  { type: 'acceptGcu' },
-  (value) => value === true,
-);
 // Register form validation
 const data = reactive({
   password: '',
@@ -49,11 +43,17 @@ const register_user = async () => {
       Réinitialiser votre mot de passe
     </h1>
     <form class="my-5">
-      <FormField v-slot="context" required label="Nouveau mot de passe" :validations="v$.password" class="flex flex-col">
-        <input v-model="data.password" :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password.$touch"/>
+      <FormField v-slot="context" required :validations="v$.password" class="flex flex-col">
+        <label for="password">
+          Nouveau mot de passe
+          <input id="password" v-model="data.password" :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password.$touch"/>
+        </label>
       </FormField>
-      <FormField v-slot="context" label="Répéter le mot de passe" :validations="v$.password_confirm" class="flex flex-col">
-        <input v-model="data.password_confirm" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password_confirm.$touch"/>
+      <FormField v-slot="context" required :validations="v$.password_confirm" class="flex flex-col">
+        <label for="repeat">
+          Répéter le mot de passe
+          <input id="repeat" v-model="data.password_confirm" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password_confirm.$touch"/>
+        </label>
       </FormField>
     </form>
     <button type="button" class="form-btn" @click="register_user">

@@ -4,15 +4,8 @@ import MarkdownItClass from 'markdown-it-class';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-interface Content {
-  name: string;
-  content: string;
-}
-
-interface Constant {
-  name: string;
-  value: string;
-}
+export type Constant = { name: string; value: string };
+export type Content = { name: string; content: string };
 
 export const useContentStore = defineStore('content', () => {
   const contents = ref<{ [key: string]: string }>({});
@@ -32,10 +25,10 @@ export const useContentStore = defineStore('content', () => {
   async function fetchStatic() {
     const fetch_content = await axios.get<Content[]>('/content/content/');
     const fetch_constant = await axios.get<Constant[]>('/content/constant/');
-    fetch_constant.data.forEach((constant) => {
+    fetch_constant.data.forEach((constant: Constant) => {
       constants.value[constant.name] = constant.value;
     });
-    fetch_content.data.forEach((content) => {
+    fetch_content.data.forEach((content: Content) => {
       contents.value[content.name] = md.render(content.content.replace(
         re,
         (_, name: string) => constants.value[name],
