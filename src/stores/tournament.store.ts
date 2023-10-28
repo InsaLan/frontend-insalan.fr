@@ -18,7 +18,7 @@ const groupBy = (items: Event[], key: string) => items.reduce<Record<number, Eve
 
 export const useTournamentStore = defineStore('tournament', () => {
   const events = ref<Record<number, Event[]>>({});
-  const event = ref<Event>();
+  const event = ref<Event[]>([]);
   const tournaments = ref<Record<number, Tournament>>({});
   const tournament = ref<Tournament>();
 
@@ -35,7 +35,7 @@ export const useTournamentStore = defineStore('tournament', () => {
   }
   async function fetchThisYear() {
     const year = new Date().getFullYear();
-    const res = await axios.get<Event>(`/tournament/event/year/${year}`);
+    const res = await axios.get<Event[]>(`/tournament/event/year/${year}`);
     event.value = res.data;
     // console.log(res.data)
   }
@@ -70,7 +70,7 @@ export const useTournamentStore = defineStore('tournament', () => {
   }
 
   function $reset() {
-    event.value = undefined;
+    event.value = [];
     events.value = {};
     tournament.value = undefined;
     tournaments.value = {};

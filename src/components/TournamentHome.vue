@@ -1,26 +1,28 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import TournamentCard from '../components/TournamentCard.vue'
-import { useTournamentStore } from '../stores/tournament.store'
+import { storeToRefs } from 'pinia';
+import { onMounted } from 'vue';
 
-const tournamentStore = useTournamentStore()
-const { fetchThisYear, fetchTournaments } = tournamentStore
-const { event } = storeToRefs(tournamentStore)
-const { tournaments } = storeToRefs(tournamentStore)
+import { useTournamentStore } from '../stores/tournament.store';
+import TournamentCard from './TournamentCard.vue';
 
-if (event.value.length) {
-    await fetchThisYear()
-    if (event.value.length) {
-	    await fetchTournaments(event.value.at(-1).tournaments)
-    }
-}
+const tournamentStore = useTournamentStore();
+const { fetchThisYear, fetchTournaments } = tournamentStore;
+const { event } = storeToRefs(tournamentStore);
+const { tournaments } = storeToRefs(tournamentStore);
+
+onMounted(async () => {
+  await fetchThisYear();
+  if (event.value.length) {
+    await fetchTournaments(event.value.at(-1)?.tournaments as number[]);
+  }
+});
 </script>
 
 <template>
-<div v-if="Object.keys(tournaments).length" class="grid md:grid-cols-2 xl:grid-cols-4 gap-4 w-full px-4">
-    <TournamentCard v-for="tournament in tournaments" :tournament="tournament"/>
-</div>
-<div v-else>
+  <div v-if="Object.keys(tournaments).length" class="grid w-full gap-4 px-4 md:grid-cols-2 xl:grid-cols-4">
+    <TournamentCard v-for="tournament in tournaments" :key="tournament.id" :tournament="tournament"/>
+  </div>
+  <div v-else>
     Les tournois n'ont pas encore été annoncé, Revenez plus tard !
-</div>
+  </div>
 </template>
