@@ -64,14 +64,14 @@ const openModal = () => {
       <FormField v-slot="context" :validations="v$.username" class="flex flex-col">
         <label for="username">
           Nom d'utilisateur
-          <input id="username" v-model="login_form.username" :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="text" placeholder="John doe" @blur="v$.username.$touch"/>
         </label>
+        <input id="username" v-model="login_form.username" :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="text" placeholder="John doe" @blur="v$.username.$touch"/>
       </FormField>
       <FormField v-slot="context" :validations="v$.password" class="flex flex-col">
         <label for="password">
           Mot de passe
-          <input v-model="login_form.password" :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password.$touch"/>
         </label>
+        <input id="password" v-model="login_form.password" :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password.$touch"/>
       </FormField>
     </form>
     <button class="form-btn" type="button" @click="login_user">
@@ -96,8 +96,8 @@ const openModal = () => {
         <FormField v-slot="context" :validations="v$_modal.email" class="m-2 flex flex-col">
           <label for="email">
             Email
-            <input v-model="data.email" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="text" placeholder="John-doe@gmail.com" @blur="v$_modal.email.$touch"/>
           </label>
+          <input id="email" v-model="data.email" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="text" placeholder="John-doe@gmail.com" @blur="v$_modal.email.$touch"/>
         </FormField>
       </form>
     </template>
