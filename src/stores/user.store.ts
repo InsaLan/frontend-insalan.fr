@@ -1,19 +1,17 @@
+import type { AxiosResponse } from 'axios';
 import axios from 'axios';
 import { defineStore } from 'pinia';
+import type { Ref } from 'vue';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
+import type { Tournament } from '../models/tournament';
+import type { User } from '../models/user';
 import { useErrorStore } from './error.store';
 import { useToastStore } from './toast.store';
 
-export type User = {
-  email: String;
-  username: String;
-  password: String;
-};
-
 export const useUserStore = defineStore('user', () => {
-  const user = ref({});
+  const user: Ref<User> = ref({} as User);
   const isConnected = ref(false);
   const csrf = ref('');
   const router = useRouter();
@@ -55,7 +53,7 @@ export const useUserStore = defineStore('user', () => {
     MailVerified.value = true;
   }
 
-  async function signin(email: String, username: String, password: String, password_validation: String) {
+  async function signin(email: string, username: string, password: string, password_validation: string) {
     await get_csrf();
     const data = {
       username,
@@ -68,7 +66,7 @@ export const useUserStore = defineStore('user', () => {
     setContent(`Un email de confirmation vous a été envoyé a ${email} pour confirmer votre compte`, 'success');
   }
 
-  async function login(username: String, password: String) {
+  async function login(username: string, password: string) {
     await get_csrf();
 
     try {
@@ -84,31 +82,31 @@ export const useUserStore = defineStore('user', () => {
         },
       );
 
-      const user_data = await axios.get('/user/me/', { withCredentials: true });
+      const user_data = await axios.get<User>('/user/me/', { withCredentials: true });
       user.value = user_data.data;
       isConnected.value = true;
       setContent(`Bienvenue ${username}`, 'success');
-      router.push('/me');
+      await router.push('/me');
     } catch (err) { /* empty */ }
   }
-  async function ask_reset_password(email: String) {
-    get_csrf();
+  async function ask_reset_password(email: string) {
+    await get_csrf();
     await axios.post('/user/password-reset/ask/', { email });
     setContent(`Un email de confirmation vous a été envoyé a ${email} pour réinitialiser votre compte`, 'success');
   }
-  async function reset_password(user: String, token: String, password: String, password_confirm: String) {
+  async function reset_password(username: String, token: String, password: String, password_confirm: String) {
     await get_csrf();
     await axios.post('/user/password-reset/submit/', {
-      user, token, password, password_confirm,
+      username, token, password, password_confirm,
     });
     setContent('Votre mot de passe a été réinitialisé', 'success');
-    router.push('/register');
+    await router.push('/register');
   }
   async function logout() {
     await axios.post('/user/logout/').then(
       () => {
         isConnected.value = false;
-        user.value = {};
+        user.value = {} as User;
       },
     );
   }
@@ -118,34 +116,35 @@ export const useUserStore = defineStore('user', () => {
     * @param user_id: the id of the user
     * @return Promise<void>
   */
-  async function fetch_user_inscription_full(user_id: String): Promise<void> {
+  async function fetch_user_inscription_full(user_id: string): Promise<void> {
     try {
       // ref object to store the data
       const ongoing = ref([]);
       const past = ref([]);
       const unpaid = ref({});
-
       // Get all the inscription of the user
-      const InscriptionId = await axios.get(`/tournament/player/fromUserId/${user_id}`);
+      // Get all the inscription of the user
+      const InscriptionId = await axios.get<number[]>(`/tournament/player/fromUserId/${user_id}`);
+      const inscription_details_promises = InscriptionId.data.map((id: number) => axios.get<Tournament>(`/tournament/player/${id}`));
+      const inscription_details_responses = await Promise.all(inscription_details_promises);
+      const teams_details_promises = inscription_details_responses.map((response: AxiosResponse<Tournament>) => axios.get(`/tournament/team/${response.data.teams}`));
+      const teams_details_responses = await Promise.all(teams_details_promises);
+      const tournament_details_promises = teams_details_responses.map((response) => axios.get(`/tournament/tournament/${response.data.tournament}/full`));
+      const tournament_details_responses = await Promise.all(tournament_details_promises);
+
       for (let i = 0; i < InscriptionId.data.length; i += 1) {
-        // Get the details of the inscription
-        const inscription_details = await axios.get(`/tournament/player/${InscriptionId.data[i]}`);
-        // Get the details of the team
-        const teams_details = await axios.get(`/tournament/team/${inscription_details.data.team}`);
-        inscription_details.data.team = teams_details.data;
-        // Get the details of the tournament
-        const tournament_details = await axios.get(`/tournament/tournament/${teams_details.data.tournament}/full`);
-        inscription_details.data.team.tournament = tournament_details.data;
+        inscription_details_responses[i].data.team = teams_details_responses[i].data;
+        inscription_details_responses[i].data.team.tournament = tournament_details_responses[i].data;
 
         // Add the inscription to the right array
-        if (inscription_details.data.payment_status === 'NOTPAID') {
-          unpaid.value[inscription_details.data.team.id] = inscription_details.data;
+        if (inscription_details_responses[i].data.payment_status === 'NOTPAID') {
+          unpaid.value[inscription_details_responses[i].data.team.id] = inscription_details_responses[i].data;
         }
         // Check if the tournament is ongoing or not
-        if (teams_details.data.tournament.event.ongoing) {
-          ongoing.value.push(inscription_details.data);
+        if (teams_details_responses[i].data.tournament.event.ongoing) {
+          ongoing.value.push(inscription_details_responses[i].data);
         } else {
-          past.value.push(inscription_details.data);
+          past.value.push(inscription_details_responses[i].data);
         }
       }
       // Set the value of the ref object
@@ -179,7 +178,7 @@ export const useUserStore = defineStore('user', () => {
           setContent('Vos informations ont été modifiées', 'success');
         }
       }
-    } catch (err) {
+    } catch (err: any) {
       if (err.request.status === 403) {
         add_error({ data: { status: err.request.status, messages: 'Le mot de passe actuel est différent de celui que vous avez entré' } });
       } else if (err.request.status === 400) {
