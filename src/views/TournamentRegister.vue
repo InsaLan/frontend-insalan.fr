@@ -2,7 +2,7 @@
 import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 import { storeToRefs } from 'pinia';
-import { computed, reactive } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import FormField from '@/components/FormField.vue';
 import { useTournamentStore } from '@/stores/tournament.store';
 
@@ -13,11 +13,8 @@ const props = defineProps<{
 const tournamentStore = useTournamentStore();
 
 const { tournaments } = storeToRefs(tournamentStore);
-const logo = tournaments.value[props.id].logo;
-const name = tournaments.value[props.id].name;
-const trules = "/tournament/"+tournaments.value[props.id].id +"#rules";
-
-const logo_url = `url(${tournaments.value[props.id].logo as string})`;
+const { name } = tournaments.value[props.id];
+const trules = `/tournament/${tournaments.value[props.id].id}#rules`;
 
 const register_form = reactive({
   team: '',
@@ -32,46 +29,64 @@ const rules = computed(() => ({
 const v$ = useVuelidate(rules, register_form, { $autoDirty: true });
 
 const register_team = () => {
-  console.log('test');
+  /* empty */
+};
+
+const register_player = () => {
+  /* empty */
 };
 
 const create = ref(true);
 </script>
 
 <template>
-	<div class="flex justify-center items-center 2xl:h-[calc(100vh_-_6rem)] h-min py-10 2xl:py-0 bg-cover bg-center" :style="{backgroundImage: 'url('+tournaments[props.id].logo+')'}">
-		<!-- Design 3-->
-		<div class="2xl:w-1/2 md:w-9/12 w-11/12">
-			<div class="text-6xl text-center text-white font-bold py-8 bg-[#63d1ff]" style="text-shadow: black 0px 0px 5px;">Inscription {{ name }}</div>
+  <div class="flex h-min items-center justify-center bg-cover bg-center py-10 2xl:h-[calc(100vh_-_6rem)] 2xl:py-0" :style="{ backgroundImage: 'url(' + tournaments[props.id].logo + ')' }">
+    <!-- Design 3-->
+    <div class="w-11/12 md:w-9/12 2xl:w-1/2">
+      <div class="bg-[#63d1ff] py-8 text-center text-6xl font-bold text-white" style="text-shadow: black 0px 0px 5px;">
+        Inscription {{ name }}
+      </div>
       <div class="flex hover:cursor-pointer">
-        <a class="w-full bg-[#2c292d] py-2 text-center text-2xl" :class="{ 'bg-slate-500': !create }" @click="create = !create">
+        <button type="button" class="w-full bg-[#2c292d] py-2 text-center text-2xl" :class="{ 'bg-slate-500': !create }" @click="create = !create">
           Créer une équipe
-        </a>
-        <a class="w-full bg-[#2c292d] py-2 text-center text-2xl" :class="{ 'bg-slate-500': create }" @click="create = !create">
+        </button>
+        <button type="button" class="w-full bg-[#2c292d] py-2 text-center text-2xl" :class="{ 'bg-slate-500': create }" @click="create = !create">
           Rejoindre une équipe
-        </a>
+        </button>
       </div>
       <div class="flex flex-col bg-[#2c292d] p-8">
         <form class="grid gap-x-14 gap-y-2 sm:grid-cols-2">
-          <FormField v-slot="context" required label="Nom de l'équipe" :validations="v$.team" class="flex flex-col text-xl">
-            <input :class="{ error: context.invalid }" placeholder="Équipe 1" type="text"/>
+          <FormField v-slot="context" required :validations="v$.team" class="flex flex-col text-xl">
+            <label>
+              Nom de l'équipe
+              <input :class="{ error: context.invalid }" placeholder="Équipe 1" type="text"/>
+            </label>
           </FormField>
-          <FormField v-slot="context" required label="Pseudo en jeu" :validations="v$.team" class="flex flex-col text-xl">
-            <input :class="{ error: context.invalid }" placeholder="xxxx" type="text"/>
+          <FormField v-slot="context" required :validations="v$.team" class="flex flex-col text-xl">
+            <label>
+              Pseudo en jeu
+              <input :class="{ error: context.invalid }" placeholder="xxxx" type="text"/>
+            </label>
           </FormField>
-          <FormField v-slot="context" required label="Mot de passe" :validations="v$.team" class="relative flex flex-col text-xl">
-            <input :class="{ error: context.invalid }" type="password"/>
+          <FormField v-slot="context" required :validations="v$.team" class="relative flex flex-col text-xl">
+            <label>
+              Mot de passe
+              <input :class="{ error: context.invalid }" type="password"/>
+            </label>
             <fa-awesome-icon v-if="create" class="absolute left-[93%] top-[56%] z-10" style="color: black;" size="s" icon="fa-solid fa-arrows-rotate"/>
           </FormField>
-          <FormField v-slot="context" required label="Rôle dans l'équipe" :validations="v$.team" class="flex flex-col text-xl">
-            <select :class="{ error: context.invalid }" class="text-black">
-              <option value="joueur" selected>
-                Joueur
-              </option>
-              <option value="manager">
-                Manager
-              </option>
-            </select>
+          <FormField v-slot="context" required :validations="v$.team" class="flex flex-col text-xl">
+            <label>
+              Rôle dans l'équipe
+              <select :class="{ error: context.invalid }" class="text-black">
+                <option value="joueur" selected>
+                  Joueur
+                </option>
+                <option value="manager">
+                  Manager
+                </option>
+              </select>
+            </label>
           </FormField>
         </form>
 
@@ -90,18 +105,13 @@ const create = ref(true);
         </div>
       </div>
       <div class="flex justify-center bg-[#63d1ff] p-5">
-        <button v-if="create" class="rounded border-solid bg-green-600 p-3 text-3xl md:w-5/12" @click="register_team">
+        <button v-if="create" type="button" class="rounded border-solid bg-green-600 p-3 text-3xl md:w-5/12" @click="register_team">
           Créer l'équipe
         </button>
-        <button v-else class="rounded border-solid bg-green-600 p-3 text-3xl md:w-5/12" @click="register_player">
+        <button v-else type="button" class="rounded border-solid bg-green-600 p-3 text-3xl md:w-5/12" @click="register_player">
           Rejoindre
         </button>
       </div>
-      <!--<div class="flex flex-col md:flex-row items-center justify-between p-5 bg-[#63d1ff]">
-          <button @click="register_team" class="mb-5 md:mb-0 md:w-5/12 border-solid bg-green-600 text-3xl p-3 rounded">Créer l'équipe</button>
-          <button @click="register_team_pay" class="md:w-5/12 border-solid bg-green-600 text-3xl p-3 rounded">Créer l'équipe & payer</button>
-        </div>
-      -->
     </div>
   </div>
 </template>
