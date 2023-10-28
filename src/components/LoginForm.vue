@@ -77,7 +77,9 @@ const openModal = () => {
     <button class="form-btn" type="button" @click="login_user">
       Se connecter
     </button>
-    <a class="p-1 hover:cursor-pointer hover:text-blue-800" @click="openModal()">Mot de passe oublié?</a>
+    <button type="button" class="p-1 hover:cursor-pointer hover:text-blue-800" @click="openModal()">
+      Mot de passe oublié ?
+    </button>
   </div>
 
   <Modal v-if="modal_open" @close="closeModal">
