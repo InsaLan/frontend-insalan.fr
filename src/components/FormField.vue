@@ -1,25 +1,21 @@
 <script setup lang="ts">
+import type { BaseValidation } from '@vuelidate/core';
 import { computed } from 'vue';
 
 import errors_fr from '../support/locales/errors.fr';
 
-const props = defineProps({
-  validations: {
-    required: true,
-    type: Object,
-  },
-  label: {
-    required: false,
-    type: String,
-    default: 'label',
-  },
+const props = withDefaults(defineProps<{
+  validations: BaseValidation;
+  label?: string;
+}>(), {
+  label: 'label',
 });
 
 const invalid = computed(() => props.validations.$error);
 const errors = computed(() => {
   const localized_err: String[] = [];
 
-  props.validations.$errors.map((e) => {
+  props.validations.$errors.forEach((e) => {
     localized_err.push(errors_fr.rules[e.$params.type]);
   });
 
