@@ -34,7 +34,7 @@ const { tournaments } = storeToRefs(tournamentStore);
       <div class="mb-12 grid gap-4 px-4 md:grid-cols-2 xl:w-full xl:grid-cols-4">
         <TournamentCard
           v-for="tournament in tournaments"
-          :key="tournament"
+          :key="tournament.id"
           :tournament="tournament"
         />
       </div>

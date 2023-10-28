@@ -20,6 +20,7 @@ export const useContentStore = defineStore('content', () => {
     h1: 'title',
     h2: 'title',
   };
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   md.use(MarkdownItClass, classessMapping);
 
   async function fetchStatic() {
