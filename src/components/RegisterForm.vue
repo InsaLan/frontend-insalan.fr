@@ -58,14 +58,14 @@ const register_user = async () => {
       <FormField v-slot="context" :validations="v$.email" class="flex flex-col">
         <label for="email">
           Email
-          <input id="email" v-model="register_form.email" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="text" placeholder="foo@insalan.fr" @blur="v$.email.$touch()"/>
         </label>
+        <input id="email" v-model="register_form.email" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="text" placeholder="foo@insalan.fr" @blur="v$.email.$touch()"/>
       </FormField>
       <FormField v-slot="context" class="flex flex-col" :validations="v$.username">
         <label for="username">
           Nom d'utilisateur
-          <input id="username" v-model="register_form.username" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" placeholder="john doe" type="text" @blur="v$.username.$touch()"/>
         </label>
+        <input id="username" v-model="register_form.username" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" placeholder="john doe" type="text" @blur="v$.username.$touch()"/>
       </FormField>
       <div class="hidden">
         <label for="username">username</label>
@@ -74,14 +74,14 @@ const register_user = async () => {
       <FormField v-slot="context" required :validations="v$.password" class="flex flex-col">
         <label for="password">
           Mot de passe
-          <input id="password" v-model="register_form.password" :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password.$touch"/>
         </label>
+        <input id="password" v-model="register_form.password" :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password.$touch"/>
       </FormField>
       <FormField v-slot="context" :validations="v$.password_confirm" class="flex flex-col">
         <label for="repeat">
           Répéter mot de passe
-          <input id="repeat" v-model="register_form.password_confirm" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password_confirm.$touch"/>
         </label>
+        <input id="repeat" v-model="register_form.password_confirm" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password_confirm.$touch"/>
       </FormField>
       <FormField v-slot="context" required :validations="v$.accept_cgu" class="flex flex-col">
         <div class="flex flex-row">
