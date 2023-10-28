@@ -11,5 +11,6 @@ export default {
       },
     },
   },
-  plugins: [import('@tailwindcss/forms')],
+  // eslint-disable-next-line global-require
+  plugins: [require('@tailwindcss/forms')],
 };
