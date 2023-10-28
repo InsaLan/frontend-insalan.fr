@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
 import TeamCard from '@/components/TeamCard.vue';
+import type { Team } from '@/models/team';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const tournamentStore = useTournamentStore();
@@ -19,11 +20,13 @@ onMounted(async () => {
 <template>
   <div>
     <div class="text-center text-4xl text-white">
-      {{ tournament.name }}
+      {{ tournament !== undefined ? tournament.name : '' }}
     </div>
     <section id="infos"/>
     <div class="grid grid-cols-1 gap-4 p-5 md:grid-cols-2">
-      <TeamCard v-for="team in tournament.teams" :key="team.id" :team="team"/>
+      <div v-if="tournament !== undefined">
+        <TeamCard v-for="team in (tournament.teams as Team[])" :key="team.id" :team="team"/>
+      </div>
       <a href="#" class="flex flex-row items-center justify-center rounded bg-red-500">
         <div class="rounded bg-red-500 text-center">
 
