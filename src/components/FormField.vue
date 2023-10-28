@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import errors_fr from '../support/locales/errors.fr.ts';
+import errors_fr from '../support/locales/errors.fr';
 
 const props = defineProps({
   validations: {
@@ -28,7 +28,6 @@ const errors = computed(() => {
 </script>
 <template>
   <div>
-    <label for="label">{{ label }}</label>
     <slot :errors="errors" :invalid="invalid"/>
     <span v-if="invalid" class="bg-red-500 text-center">{{ errors }}</span>
   </div>
