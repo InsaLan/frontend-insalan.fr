@@ -1,4 +1,5 @@
 interface UserPatch {
+  [index: string]: string | undefined;
   current_password?: string;
   new_password?: string;
   password_validation?: string;
@@ -8,6 +9,7 @@ interface UserPatch {
 }
 
 interface User {
+  [index: string]: number | Date | string | boolean | any[] | undefined;
   id: number;
   last_login: Date;
   username: string;
@@ -23,7 +25,13 @@ interface User {
   user_permissions: any[];
 }
 
+interface UserPatchError {
+  user?: string[];
+  password?: string;
+}
+
 export {
   type User,
   type UserPatch,
+  type UserPatchError,
 };
