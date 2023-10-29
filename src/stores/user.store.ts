@@ -1,11 +1,10 @@
-import axios from 'axios';
+import axios, { type AxiosError, isAxiosError } from 'axios';
 import { defineStore } from 'pinia';
 import type { Ref } from 'vue';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import type { Tournament } from '../models/tournament';
-import type { User } from '../models/user';
+import type { User, UserPatch, UserPatchError } from '../models/user';
 import { useErrorStore } from './error.store';
 import { useToastStore } from './toast.store';
 
@@ -135,7 +134,7 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  async function patch_user(data: Object) {
+  async function patch_user(data: UserPatch) {
     await get_csrf();
     try {
       const res = await axios.patch('/user/me/', data, {
@@ -150,21 +149,25 @@ export const useUserStore = defineStore('user', () => {
           setContent('Vos informations ont été modifiées, vous devez vous reconnecter', 'success');
           await logout();
         } else {
-          for (const key in data) {
+          Object.keys(data).forEach((key) => {
             user.value[key] = data[key];
-          }
+          });
           setContent('Vos informations ont été modifiées', 'success');
         }
       }
     } catch (err: any) {
-      if (err.request.status === 403) {
-        add_error({ data: { status: err.request.status, messages: 'Le mot de passe actuel est différent de celui que vous avez entré' } });
-      } else if (err.request.status === 400) {
-        const response = JSON.parse(err.request.response);
-        if (response.user) {
-          add_error({ data: { status: err.request.status, messages: response.user[0] } });
-        } else {
-          add_error({ data: { status: err.request.status, messages: response.password } });
+      const error = err as Error | AxiosError;
+      if (isAxiosError(error)) {
+        const request = error.request as XMLHttpRequest;
+        if (request.status === 403) {
+          add_error({ data: { status: request.status, message: 'Le mot de passe actuel est différent de celui que vous avez entré' } });
+        } else if (request.status === 400) {
+          const response = JSON.parse(request.responseText) as UserPatchError;
+          if (response.user) {
+            add_error({ data: { status: request.status, message: response.user[0] } });
+          } else {
+            add_error({ data: { status: request.status, message: response.password as string } });
+          }
         }
       }
     }
