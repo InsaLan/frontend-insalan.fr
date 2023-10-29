@@ -1,4 +1,13 @@
-export interface User {
+interface UserPatch {
+  current_password?: string;
+  new_password?: string;
+  password_validation?: string;
+  email?: string;
+  first_name?: string;
+  last_name?: string;
+}
+
+interface User {
   id: number;
   last_login: Date;
   username: string;
@@ -13,3 +22,8 @@ export interface User {
   groups: any[];
   user_permissions: any[];
 }
+
+export {
+  type User,
+  type UserPatch,
+};

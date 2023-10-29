@@ -7,7 +7,6 @@ import { storeToRefs } from 'pinia';
 import {
   computed, onMounted, reactive, ref,
 } from 'vue';
-import type { User } from '@/models/user';
 
 import FormField from '../components/FormField.vue';
 import Modal from '../components/Modal.vue';
@@ -18,9 +17,7 @@ const { user, role, inscriptions } = storeToRefs(userStore);
 const { fetch_user_inscription_full, patch_user } = userStore;
 
 onMounted(async () => {
-  if (Object.hasOwn(user.value, 'id')) {
-    await fetch_user_inscription_full((user.value as User).id);
-  }
+  await fetch_user_inscription_full();
 });
 
 // Register form validation
