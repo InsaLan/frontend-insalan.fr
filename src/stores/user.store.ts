@@ -1,4 +1,3 @@
-import type { AxiosResponse } from 'axios';
 import axios from 'axios';
 import { defineStore } from 'pinia';
 import type { Ref } from 'vue';
@@ -113,40 +112,18 @@ export const useUserStore = defineStore('user', () => {
 
   /*
     * Fetch all the inscription of a user
+    * TODO: ADD manager handling
     * @param user_id: the id of the user
     * @return Promise<void>
   */
-  async function fetch_user_inscription_full(user_id: string): Promise<void> {
+  async function fetch_user_inscription_full(): Promise<void> {
     try {
       // ref object to store the data
       const ongoing = ref([]);
       const past = ref([]);
       const unpaid = ref({});
       // Get all the inscription of the user
-      // Get all the inscription of the user
-      const InscriptionId = await axios.get<number[]>(`/tournament/player/fromUserId/${user_id}`);
-      const inscription_details_promises = InscriptionId.data.map((id: number) => axios.get<Tournament>(`/tournament/player/${id}`));
-      const inscription_details_responses = await Promise.all(inscription_details_promises);
-      const teams_details_promises = inscription_details_responses.map((response: AxiosResponse<Tournament>) => axios.get(`/tournament/team/${response.data.teams}`));
-      const teams_details_responses = await Promise.all(teams_details_promises);
-      const tournament_details_promises = teams_details_responses.map((response) => axios.get(`/tournament/tournament/${response.data.tournament}/full`));
-      const tournament_details_responses = await Promise.all(tournament_details_promises);
-
-      for (let i = 0; i < InscriptionId.data.length; i += 1) {
-        inscription_details_responses[i].data.team = teams_details_responses[i].data;
-        inscription_details_responses[i].data.team.tournament = tournament_details_responses[i].data;
-
-        // Add the inscription to the right array
-        if (inscription_details_responses[i].data.payment_status === 'NOTPAID') {
-          unpaid.value[inscription_details_responses[i].data.team.id] = inscription_details_responses[i].data;
-        }
-        // Check if the tournament is ongoing or not
-        if (teams_details_responses[i].data.tournament.event.ongoing) {
-          ongoing.value.push(inscription_details_responses[i].data);
-        } else {
-          past.value.push(inscription_details_responses[i].data);
-        }
-      }
+      // const Tournaments = await axios.get<{ 'player': Tournament[]; 'manager': Tournament[] }>('/tournament/me');
       // Set the value of the ref object
       inscriptions.value = {
         ongoing,
@@ -157,6 +134,7 @@ export const useUserStore = defineStore('user', () => {
       add_error('Impossible de récupérer vos inscriptions, veuillez réessayer plus tard ou contacter un administrateur');
     }
   }
+
   async function patch_user(data: Object) {
     await get_csrf();
     try {
@@ -191,6 +169,7 @@ export const useUserStore = defineStore('user', () => {
       }
     }
   }
+
   const role = computed(() => {
     if (user.value.is_superuser) { return 'dev'; }
     if (user.value.is_staff) { return 'staff'; }
