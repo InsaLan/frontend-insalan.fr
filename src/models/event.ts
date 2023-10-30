@@ -1,12 +1,19 @@
-import type { Tournament } from './tournament';
+import type { TournamentDeref } from './tournament';
 
-export interface Event {
+interface BaseEvent {
   id: number;
   name: string;
   description: string;
   year: number;
   month: number;
   ongoing: boolean;
-  tournaments?: Tournament[] | number[];
   logo?: string;
+}
+
+export interface Event extends BaseEvent {
+  tournaments?: number[];
+}
+
+export interface EventDeref extends BaseEvent {
+  tournaments?: TournamentDeref[];
 }
