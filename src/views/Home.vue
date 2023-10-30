@@ -42,7 +42,3 @@ const { tournaments } = storeToRefs(tournamentStore);
     <Partners/>
   </div>
 </template>
-
-<style>
-
-</style>
