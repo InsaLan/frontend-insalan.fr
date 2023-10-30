@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useContentStore } from '../stores/content.store';
+import { useContentStore } from '@/stores/content.store';
 
 interface Props {
   name: string;

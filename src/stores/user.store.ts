@@ -3,8 +3,8 @@ import { defineStore } from 'pinia';
 import type { Ref } from 'vue';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import type { User, UserPatch, UserPatchError } from '@/models/user';
 
-import type { User, UserPatch, UserPatchError } from '../models/user';
 import { useErrorStore } from './error.store';
 import { useToastStore } from './toast.store';
 
@@ -22,11 +22,10 @@ export const useUserStore = defineStore('user', () => {
 
   /*
   * Get a new csrf token from the server
-  * @return Promise<void>
   */
-  async function get_csrf():Promise<void> {
+  async function get_csrf() {
     await axios.get('/user/get-csrf/');
-    const cookies:{ name: string; value: string }[] = [];
+    const cookies: { name: string; value: string }[] = [];
     document.cookie.split(';').forEach((cookie) => {
       cookies.push({
         name: cookie.split('=')[0],
@@ -37,13 +36,13 @@ export const useUserStore = defineStore('user', () => {
     csrf.value = token ? token.value : '';
   }
 
-  /* API Call to verify an email adress (an email with an URL made with the name
+  /* API Call to verify an email address (an email with a URL made with the name
    * and the token is sent, we take from it these information and verify them)
    * If both value are correct, the back set the mail on verified, and return a
    * response(), function continue and MailVerified is set on true
    * If one (or both) values are incorrect, an error is returned and catch by the
    * classic error catcher, stopping the function : MailVerified stays on false */
-  async function verifMail(props: { idname: string; idtoken: string }): Promise<void> {
+  async function verifMail(props: { idname: string; idtoken: string }) {
     // I set
     MailVerified.value = false;
     await axios.get(`/user/confirm/${props.idname}/${props.idtoken}`);
@@ -68,31 +67,25 @@ export const useUserStore = defineStore('user', () => {
     await get_csrf();
 
     try {
-      await axios.post(
-        '/user/login/',
-        {
-          username,
-          password,
-        },
-
-        {
-          withCredentials: true,
-        },
-      );
+      await axios.post('/user/login/', { username, password }, { withCredentials: true });
 
       const user_data = await axios.get<User>('/user/me/', { withCredentials: true });
       user.value = user_data.data;
       isConnected.value = true;
       setContent(`Bienvenue ${username}`, 'success');
       await router.push('/me');
-    } catch (err) { /* empty */ }
+    } catch (err) {
+      /* empty */
+    }
   }
+
   async function ask_reset_password(email: string) {
     await get_csrf();
     await axios.post('/user/password-reset/ask/', { email });
     setContent(`Un email de confirmation vous a été envoyé a ${email} pour réinitialiser votre compte`, 'success');
   }
-  async function reset_password(username: String, token: String, password: String, password_confirm: String) {
+
+  async function reset_password(username: string, token: string, password: string, password_confirm: string) {
     await get_csrf();
     await axios.post('/user/password-reset/submit/', {
       username, token, password, password_confirm,
@@ -100,22 +93,19 @@ export const useUserStore = defineStore('user', () => {
     setContent('Votre mot de passe a été réinitialisé', 'success');
     await router.push('/register');
   }
+
   async function logout() {
-    await axios.post('/user/logout/').then(
-      () => {
-        isConnected.value = false;
-        user.value = {} as User;
-      },
-    );
+    await axios.post('/user/logout/');
+    isConnected.value = false;
+    user.value = {} as User;
   }
 
   /*
     * Fetch all the inscription of a user
     * TODO: ADD manager handling
     * @param user_id: the id of the user
-    * @return Promise<void>
   */
-  async function fetch_user_inscription_full(): Promise<void> {
+  async function fetch_user_inscription_full() {
     try {
       // ref object to store the data
       const ongoing = ref([]);
@@ -155,7 +145,7 @@ export const useUserStore = defineStore('user', () => {
           setContent('Vos informations ont été modifiées', 'success');
         }
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       const error = err as Error | AxiosError;
       if (isAxiosError(error)) {
         const request = error.request as XMLHttpRequest;
@@ -174,8 +164,8 @@ export const useUserStore = defineStore('user', () => {
   }
 
   const role = computed(() => {
-    if (user.value.is_superuser) { return 'dev'; }
-    if (user.value.is_staff) { return 'staff'; }
+    if (user.value.is_superuser) return 'dev';
+    if (user.value.is_staff) return 'staff';
     return 'joueur';
   });
 

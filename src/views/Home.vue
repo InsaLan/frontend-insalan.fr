@@ -51,16 +51,19 @@ const { tournaments } = storeToRefs(tournamentStore);
   align-items: center;
   justify-content: center;
 }
+
 .title::after, .title::before {
-  content: '';
   display: block;
-  height: 0.1em;
-  background-color: #fff;
   min-width: calc(35vw - 3em);
+  height: 0.1em;
+  content: '';
+  background-color: #fff;
 }
+
 .title::before {
   margin-right: 1em;
 }
+
 .title::after {
   margin-left: 1em;
 }

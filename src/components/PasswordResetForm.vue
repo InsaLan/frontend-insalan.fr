@@ -4,8 +4,8 @@ import {
   minLength, required, sameAs,
 } from '@vuelidate/validators';
 import { computed, reactive } from 'vue';
+import { useUserStore } from '@/stores/user.store';
 
-import { useUserStore } from '../stores/user.store';
 import FormField from './FormField.vue';
 
 const { reset_password } = useUserStore();
@@ -43,25 +43,38 @@ const register_user = async () => {
       Réinitialiser votre mot de passe
     </h1>
     <form class="my-5">
-      <FormField v-slot="context" required :validations="v$.password" class="flex flex-col">
+      <FormField v-slot="context" :validations="v$.password" class="flex flex-col" required>
         <label for="password">
           Nouveau mot de passe
-          <input id="password" v-model="data.password" :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password.$touch"/>
+          <input
+            id="password"
+            v-model="data.password"
+            :class="{ error: context.invalid }"
+            class="border-2 bg-theme-bg"
+            placeholder="Mot de passe"
+            type="password"
+            @blur="v$.password.$touch"
+          />
         </label>
       </FormField>
-      <FormField v-slot="context" required :validations="v$.password_confirm" class="flex flex-col">
+      <FormField v-slot="context" :validations="v$.password_confirm" class="flex flex-col" required>
         <label for="repeat">
           Répéter le mot de passe
-          <input id="repeat" v-model="data.password_confirm" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password_confirm.$touch"/>
+          <input
+            id="repeat"
+            v-model="data.password_confirm"
+            :class="{ error: context.invalid }"
+            class="border-2 bg-theme-bg"
+            placeholder="Mot de passe"
+            required
+            type="password"
+            @blur="v$.password_confirm.$touch"
+          />
         </label>
       </FormField>
     </form>
-    <button type="button" class="form-btn" @click="register_user">
+    <button class="form-btn" type="button" @click="register_user">
       Valider
     </button>
   </div>
 </template>
-
-<style scoped>
-
-</style>

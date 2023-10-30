@@ -4,8 +4,8 @@ import {
   email, helpers, minLength, required, sameAs,
 } from '@vuelidate/validators';
 import { computed, reactive } from 'vue';
+import { useUserStore } from '@/stores/user.store';
 
-import { useUserStore } from '../stores/user.store';
 import FormField from './FormField.vue';
 
 const { signin } = useUserStore();
@@ -59,43 +59,82 @@ const register_user = async () => {
         <label for="email">
           Email
         </label>
-        <input id="email" v-model="register_form.email" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="text" placeholder="foo@insalan.fr" @blur="v$.email.$touch()"/>
+        <input
+          id="email"
+          v-model="register_form.email"
+          :class="{ error: context.invalid }"
+          class="border-2 bg-theme-bg"
+          placeholder="foo@insalan.fr"
+          required
+          type="text"
+          @blur="v$.email.$touch()"
+        />
       </FormField>
-      <FormField v-slot="context" class="flex flex-col" :validations="v$.username">
+      <FormField v-slot="context" :validations="v$.username" class="flex flex-col">
         <label for="username">
           Nom d'utilisateur
         </label>
-        <input id="username" v-model="register_form.username" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" placeholder="john doe" type="text" @blur="v$.username.$touch()"/>
+        <input
+          id="username"
+          v-model="register_form.username"
+          :class="{ error: context.invalid }"
+          class="border-2 bg-theme-bg"
+          placeholder="john doe"
+          required
+          type="text"
+          @blur="v$.username.$touch()"
+        />
       </FormField>
       <div class="hidden">
         <label for="username">username</label>
         <input v-model="register_form.decoy" type="text"/>
       </div>
-      <FormField v-slot="context" required :validations="v$.password" class="flex flex-col">
+      <FormField v-slot="context" :validations="v$.password" class="flex flex-col" required>
         <label for="password">
           Mot de passe
         </label>
-        <input id="password" v-model="register_form.password" :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password.$touch"/>
+        <input
+          id="password"
+          v-model="register_form.password"
+          :class="{ error: context.invalid }"
+          class="border-2 bg-theme-bg"
+          placeholder="Mot de passe"
+          type="password"
+          @blur="v$.password.$touch"
+        />
       </FormField>
       <FormField v-slot="context" :validations="v$.password_confirm" class="flex flex-col">
         <label for="repeat">
           Répéter mot de passe
         </label>
-        <input id="repeat" v-model="register_form.password_confirm" required :class="{ error: context.invalid }" class="border-2 bg-theme-bg" type="password" placeholder="Mot de passe" @blur="v$.password_confirm.$touch"/>
+        <input
+          id="repeat"
+          v-model="register_form.password_confirm"
+          :class="{ error: context.invalid }"
+          class="border-2 bg-theme-bg"
+          placeholder="Mot de passe"
+          required
+          type="password"
+          @blur="v$.password_confirm.$touch"
+        />
       </FormField>
-      <FormField v-slot="context" required :validations="v$.accept_cgu" class="flex flex-col">
+      <FormField v-slot="context" :validations="v$.accept_cgu" class="flex flex-col" required>
         <div class="flex flex-row">
-          <input v-model="register_form.accept_cgu" :class="{ error: context.invalid }" class="mr-1 mt-1 border-2 bg-theme-bg" type="checkbox">
-          <label class="text-white" for="accept">J'accepte les <a class="text-gray-400 underline decoration-dashed" href="#">CGU</a> de l'insalan</label>
+          <input
+            v-model="register_form.accept_cgu"
+            :class="{ error: context.invalid }"
+            class="mr-1 mt-1 border-2 bg-theme-bg"
+            type="checkbox"
+          >
+          <label class="text-white" for="accept">J'accepte les <a
+            class="text-gray-400 underline decoration-dashed"
+            href="#"
+          >CGU</a> de l'insalan</label>
         </div>
       </FormField>
     </form>
-    <button type="button" class="form-btn" @click="register_user">
-      Creer un compte
+    <button class="form-btn" type="button" @click="register_user">
+      Créer un compte
     </button>
   </div>
 </template>
-
-<style scoped>
-
-</style>

@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import type { Event } from '@/models/event';
 import type { Tournament } from '@/models/tournament';
-
-import type { Event } from '../models/event';
 
 const groupBy = (items: Event[], key: string) => items.reduce<Record<number, Event[]>>(
   (result, item) => ({
@@ -26,19 +25,20 @@ export const useTournamentStore = defineStore('tournament', () => {
     try {
       const res = await axios.get<Event[]>('/tournament/event');
       const ev = res.data;
-      const years = groupBy(ev, 'year');
-      events.value = years;
+      events.value = groupBy(ev, 'year');
       // console.log(years)
     } catch (error) {
       // console.log(error);
     }
   }
+
   async function fetchThisYear() {
     const year = new Date().getFullYear();
     const res = await axios.get<Event[]>(`/tournament/event/year/${year}`);
     event.value = res.data;
     // console.log(res.data)
   }
+
   async function fetchTournaments(ids: number[]) {
     const promises = ids.map<Promise<Tournament | Error>>((id) => axios.get<Tournament>(`/tournament/tournament/${id}`).then((res) => res.data).catch((err: Error) => err));
 
@@ -50,6 +50,7 @@ export const useTournamentStore = defineStore('tournament', () => {
       }
     });
   }
+
   async function fetchTournamentFull(id: number) {
     try {
       const res = await axios.get<Tournament>(`/tournament/tournament/${id}/full`);
@@ -59,6 +60,7 @@ export const useTournamentStore = defineStore('tournament', () => {
       // console.log(error);
     }
   }
+
   async function fetchTournament(id: number) {
     try {
       const res = await axios.get<Tournament>(`/tournament/tournament/${id}`);

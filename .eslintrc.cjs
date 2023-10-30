@@ -1,5 +1,4 @@
 // @ts-check
-// eslint-disable-next-line
 const { defineConfig } = require('eslint-define-config');
 require('@rushstack/eslint-patch/modern-module-resolution');
 
@@ -60,6 +59,7 @@ module.exports = defineConfig({
         '@typescript-eslint/array-type': ['error', {
           default: 'array',
         }],
+        '@typescript-eslint/ban-types': 'error',
         '@typescript-eslint/consistent-type-imports': ['error', {
           fixStyle: 'inline-type-imports',
         }],
@@ -91,6 +91,7 @@ module.exports = defineConfig({
         '@vue/eslint-config-airbnb',
       ],
       rules: {
+        'global-require': 'off',
         'vue/max-len': ['error', 120],
       },
     },

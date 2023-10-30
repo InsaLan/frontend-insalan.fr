@@ -1,15 +1,15 @@
-interface UserPatch {
-  [index: string]: string | undefined;
+export interface UserPatch {
   current_password?: string;
   new_password?: string;
   password_validation?: string;
   email?: string;
   first_name?: string;
   last_name?: string;
+
+  [index: string]: string | undefined;
 }
 
-interface User {
-  [index: string]: number | Date | string | boolean | any[] | undefined;
+export interface User {
   id: number;
   last_login: Date;
   username: string;
@@ -23,15 +23,11 @@ interface User {
   is_active: boolean;
   groups: any[];
   user_permissions: any[];
+
+  [index: string]: number | Date | string | boolean | any[] | undefined;
 }
 
-interface UserPatchError {
+export interface UserPatchError {
   user?: string[];
   password?: string;
 }
-
-export {
-  type User,
-  type UserPatch,
-  type UserPatchError,
-};
