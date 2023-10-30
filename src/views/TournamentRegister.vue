@@ -2,8 +2,11 @@
 import useVuelidate from '@vuelidate/core';
 import { helpers, required } from '@vuelidate/validators';
 import { storeToRefs } from 'pinia';
-import { computed, reactive, ref } from 'vue';
+import {
+  computed, onMounted, reactive, ref,
+} from 'vue';
 import FormField from '@/components/FormField.vue';
+import type { Tournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const props = defineProps<{
@@ -12,9 +15,12 @@ const props = defineProps<{
 
 const tournamentStore = useTournamentStore();
 
-const { tournaments } = storeToRefs(tournamentStore);
-const { name } = tournaments.value[props.id];
-const trules = `/tournament/${tournaments.value[props.id].id}#rules`;
+const { getTournament } = storeToRefs(tournamentStore);
+const tournament = ref<Tournament>();
+
+onMounted(async () => {
+  tournament.value = await getTournament.value(props.id);
+});
 
 const acceptRules = helpers.withParams(
   { type: 'acceptRules' },
@@ -52,13 +58,13 @@ const create = ref(true);
 
 <template>
   <div
-    :style="{ backgroundImage: `url(${tournaments[props.id].logo})` }"
+    :style="{ backgroundImage: `url(${tournament?.logo})` }"
     class="flex h-min items-center justify-center bg-cover bg-center py-10 2xl:h-[calc(100vh_-_6rem)] 2xl:py-0"
   >
     <!-- Design 3-->
     <div class="w-11/12 md:w-9/12 2xl:w-1/2">
       <div class="bg-[#63d1ff] py-8 text-center text-6xl font-bold text-white" style="text-shadow: black 0 0 5px;">
-        Inscription {{ name }}
+        Inscription {{ tournament?.name }}
       </div>
       <div class="flex hover:cursor-pointer">
         <button
@@ -81,42 +87,43 @@ const create = ref(true);
       <div class="flex flex-col bg-[#2c292d] p-8">
         <form class="grid gap-x-14 gap-y-2 sm:grid-cols-2">
           <FormField v-slot="context" :validations="v$.team" class="flex flex-col text-xl" required>
-            <label>
+            <label for="team">
               Nom de l'équipe
-              <input :class="{ error: context.invalid }" placeholder="Équipe 1" type="text"/>
             </label>
+            <input id="team" :class="{ error: context.invalid }" placeholder="Équipe 1" type="text"/>
           </FormField>
           <FormField v-slot="context" :validations="v$.team" class="flex flex-col text-xl" required>
-            <label>
+            <label for="pseudo">
               Pseudo en jeu
-              <input :class="{ error: context.invalid }" placeholder="xxxx" type="text"/>
             </label>
+            <input id="pseudo" :class="{ error: context.invalid }" placeholder="xxxx" type="text"/>
           </FormField>
           <FormField v-slot="context" :validations="v$.team" class="relative flex flex-col text-xl" required>
-            <label>
+            <label for="pwd">
               Mot de passe
-              <input :class="{ error: context.invalid }" type="password"/>
             </label>
+            <input id="pwd" :class="{ error: context.invalid }" type="password"/>
             <fa-awesome-icon
               v-if="create"
               class="absolute left-[93%] top-[56%] z-10"
               icon="fa-solid fa-arrows-rotate"
               size="s"
+              title="Générer un mot de passe"
               style="color: black;"
             />
           </FormField>
           <FormField v-slot="context" :validations="v$.team" class="flex flex-col text-xl" required>
-            <label>
+            <label for="role">
               Rôle dans l'équipe
-              <select :class="{ error: context.invalid }" class="text-black">
-                <option selected value="joueur">
-                  Joueur
-                </option>
-                <option value="manager">
-                  Manager
-                </option>
-              </select>
             </label>
+            <select id="role" :class="{ error: context.invalid }" class="text-black">
+              <option selected value="joueur">
+                Joueur
+              </option>
+              <option value="manager">
+                Manager
+              </option>
+            </select>
           </FormField>
         </form>
 
@@ -131,7 +138,7 @@ const create = ref(true);
         </ul>
         <div class="self-center text-3xl">
           <input id="check" type="checkbox"/>
-          <label for="check"> J'accepte les <a :href="trules" class="text-[#63d1ff]">règles du tournoi</a></label>
+          <label for="check"> J'accepte les <a :href="`/tournament/${tournament?.id}#rules`" class="text-[#63d1ff]">règles du tournoi</a></label>
         </div>
       </div>
       <div class="flex justify-center bg-[#63d1ff] p-5">
