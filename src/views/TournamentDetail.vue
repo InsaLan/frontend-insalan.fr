@@ -26,7 +26,7 @@ const selected_section = reactive<Record<string, boolean>>({
   info: true,
   teams: false,
   groups: false,
-  branckets: false,
+  brackets: false,
   planning: false,
   rules: false,
 });
