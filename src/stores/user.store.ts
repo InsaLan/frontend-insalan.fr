@@ -1,6 +1,5 @@
 import axios, { type AxiosError, isAxiosError } from 'axios';
 import { defineStore } from 'pinia';
-import type { Ref } from 'vue';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import type { User, UserPatch, UserPatchError } from '@/models/user';
@@ -9,7 +8,7 @@ import { useErrorStore } from './error.store';
 import { useToastStore } from './toast.store';
 
 export const useUserStore = defineStore('user', () => {
-  const user: Ref<User> = ref({} as User);
+  const user = ref<User>({} as User);
   const isConnected = ref(false);
   const csrf = ref('');
   const router = useRouter();
@@ -139,9 +138,7 @@ export const useUserStore = defineStore('user', () => {
           setContent('Vos informations ont été modifiées, vous devez vous reconnecter', 'success');
           await logout();
         } else {
-          Object.keys(data).forEach((key) => {
-            user.value[key] = data[key];
-          });
+          user.value = { ...user.value, ...data };
           setContent('Vos informations ont été modifiées', 'success');
         }
       }
