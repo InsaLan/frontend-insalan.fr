@@ -18,7 +18,7 @@ onMounted(async () => {
     event = [...events.values()].at(-1);
   }
   if (event !== undefined && event.tournaments !== undefined) {
-    tournaments_id.value = event.tournaments as number[];
+    tournaments_id.value = event.tournaments;
   }
 });
 </script>
