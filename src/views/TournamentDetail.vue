@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { onMounted, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import type { Team } from '@/models/team';
 
 import TeamCard from '../components/TeamCard.vue';
@@ -23,11 +23,21 @@ onMounted(async () => {
 const open_drop = ref(false);
 const drop_label = ref('Informations');
 const trans = ref('translateX(0vw)');
+const selected_section = reactive({
+  info: true,
+  teams: false,
+  poules: false,
+  branckets: false,
+  planning: false,
+  rules: false,
+} as Record<string, boolean>);
 
 const select_tag = (e: Event) => {
   open_drop.value = false;
   drop_label.value = (e.target as HTMLInputElement).innerHTML;
   trans.value = `translateX(calc(-100vw * ${Array.from((e.target as HTMLElement).parentElement?.children).indexOf(e.target as HTMLInputElement)}))`;
+  Object.keys(selected_section).forEach((k) => { selected_section[k] = false; });
+  selected_section[(e.target as HTMLInputElement).id] = true;
   // console.log(trans);
 };
 </script>
@@ -39,27 +49,27 @@ const select_tag = (e: Event) => {
     </div>
 
     <nav class="mt-2 flex w-screen justify-center bg-gray-500 py-4">
-      <button type="button" class="text-xl after:inline-block after:w-4 after:origin-center after:content-['\2039'] md:hidden" :class="{ 'after:translate-x-[5px]': open_drop, 'after:rotate-90': open_drop, 'after:-rotate-90': !open_drop }" @click="open_drop = !open_drop">
+      <button type="button" class="text-xl after:inline-block after:w-4 after:origin-center after:content-['\2039'] md:hidden" :class="{ 'after:translate-x-[5px] after:rotate-90 ': open_drop, 'after:-rotate-90': !open_drop }" @click="open_drop = !open_drop">
         {{ drop_label }}
       </button> <!-- id="dropdown-btn"--> <!--@click="switch_tag"-->
-      <div class="absolute z-10 w-screen translate-y-8 flex-col items-center bg-gray-500 md:static md:z-0 md:flex md:w-2/3 md:translate-y-0 md:flex-row md:justify-between xl:w-1/2" :class="{ flex: open_drop, hidden: !open_drop }">
+      <div class="absolute z-10 w-screen grow translate-y-10 flex-col items-center bg-gray-500 md:static md:z-0 md:flex md:w-2/3 md:translate-y-0 md:flex-row md:justify-between xl:w-1/2" :class="{ 'flex border-t-2 border-white': open_drop, hidden: !open_drop }">
         <!--id="dropdown"-->
-        <button type="button" @click="select_tag">
+        <button id="info" type="button" class="my-2 text-xl md:my-0" :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': selected_section.info }" @click="select_tag">
           Informations
         </button> <!--href="#infos"-->
-        <button type="button" @click="select_tag">
+        <button id="teams" type="button" class="my-2 text-xl md:my-0" :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': selected_section.teams }" @click="select_tag">
           Équipes
         </button> <!--href="#teams"-->
-        <button type="button" @click="select_tag">
+        <button id="poules" type="button" class="my-2 text-xl md:my-0" :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': selected_section.poules }" @click="select_tag">
           Poules
         </button> <!--href="#groups"-->
-        <button type="button" @click="select_tag">
+        <button id="brackets" type="button" class="my-2 text-xl md:my-0" :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': selected_section.brackets }" @click="select_tag">
           Arbres
         </button> <!--href="#brackets"-->
-        <button type="button" @click="select_tag">
+        <button id="planning" type="button" class="my-2 text-xl md:my-0" :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': selected_section.planning }" @click="select_tag">
           Planning
         </button> <!--href="#planning"-->
-        <button type="button" @click="select_tag">
+        <button id="rules" type="button" class="my-2 text-xl md:my-0" :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': selected_section.rules }" @click="select_tag">
           Règlement
         </button> <!--href="#rules"-->
       </div>
@@ -144,5 +154,23 @@ section {
 
 a {
   @apply text-xl
+}
+
+.grow {
+  animation: 300ms ease-in-out growDown;
+  animation-direction: alternate;
+  transform-origin: top center;
+}
+
+@keyframes growDown {
+  0% {
+    transform: translateY(2.5rem) scaleY(0);
+  }
+  80% {
+    transform: translateY(2.5rem) scaleY(1.1);
+  }
+  100% {
+    transform: translateY(2.5rem) scaleY(1);
+  }
 }
 </style>

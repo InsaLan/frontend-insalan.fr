@@ -40,7 +40,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     // console.log(res.data)
   }
   async function fetchTournaments(ids: number[]) {
-    const promises = ids.map<Promise<Tournament | Error>>((id) => axios.get<Tournament>(`/tournament/tournamen/${id}`).then((res) => res.data).catch((err: Error) => err));
+    const promises = ids.map<Promise<Tournament | Error>>((id) => axios.get<Tournament>(`/tournament/tournament/${id}`).then((res) => res.data).catch((err: Error) => err));
 
     const data = await Promise.all<Tournament | Error>(promises);
 
