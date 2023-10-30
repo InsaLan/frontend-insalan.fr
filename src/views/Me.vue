@@ -218,20 +218,20 @@ const placeholder = '/src/assets/images/logo_home.png';
         <div class="m-1 grid gap-3 md:grid-cols-3">
           <a
             v-for="inscription in inscriptions.ongoing"
-            :key="inscription.id"
+            :key="inscription[1].id"
             :class="{ /*[`bg-red-900`]: inscriptions.unpaid[inscription.team.id]*/ }"
-            :href="`/team/${inscription.team.id}/detail`"
+            :href="`/team/${inscription[1].team.id}/detail`"
             class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
           >
             <div class="my-1 hidden md:block">
               <div class="m-1 flex h-8 flex-1 flex-col justify-center">
                 <div>
                   <a
-                    :class="{ [`bg-red-600`]: inscriptions.unpaid[inscription.team.id], [`bg-green-600`]: !inscriptions.unpaid[inscription.team.id] }"
+                    :class="{ [`bg-red-600`]: inscriptions.unpaid[inscription[1].team.id], [`bg-green-600`]: !inscriptions.unpaid[inscription[1].team.id] }"
                     class="center rounded p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
                     href=""
                   >
-                    {{ inscriptions.unpaid[inscription.team.id] ? 'Terminer l\'inscription' : inscription.team.players[0] === user.id ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
+                    {{ inscriptions.unpaid[inscription[1].team.id] ? 'Terminer l\'inscription' : (parseInt(inscription[1].team.players[0]) === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
                   </a>
                 </div>
               </div>
@@ -240,13 +240,13 @@ const placeholder = '/src/assets/images/logo_home.png';
               <a class="mt-auto text-zinc-400" href="">règlement du tournois</a>
             </div>
             <img
-              :src="inscription.team.tournament.logo"
+              :src="inscription[1].team.tournament.logo"
               alt="image du tournoi"
               class="h-32 w-32 max-w-full overflow-hidden"
               style="width: 100%; object-fit: cover;"
             />
             <div class="m-1 flex flex-1 flex-col justify-center">
-              <p class="text-xl">{{ inscription.team.name }}</p>
+              <p class="text-xl">{{ inscription[1].team.name }}</p>
             </div>
           </a>
         </div>
@@ -258,8 +258,8 @@ const placeholder = '/src/assets/images/logo_home.png';
         <div class="m-1 grid gap-3 md:grid-cols-3">
           <a
             v-for="inscription in inscriptions.past"
-            :key="inscription.id"
-            :href="`/team/${inscription.team.id}/detail`"
+            :key="inscription[1].id"
+            :href="`/team/${inscription[1].team.id}/detail`"
             class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
           >
             <div class="my-1 hidden md:block">
@@ -269,7 +269,7 @@ const placeholder = '/src/assets/images/logo_home.png';
                     class="center rounded bg-green-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
                     href=""
                   >
-                    {{ inscription.team.players[0] === user.id ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
+                    {{ (parseInt(inscription[1].team.players[0]) === user.id || inscription[0] === 'manager') ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
                   </a>
                 </div>
               </div>
@@ -278,13 +278,13 @@ const placeholder = '/src/assets/images/logo_home.png';
               <a class="mt-auto text-zinc-400" href="">règlement du tournois</a>
             </div>
             <img
-              :src="inscription.team.tournament.logo"
+              :src="inscription[1].team.tournament.logo"
               alt="image du tournoi"
               class="h-32 w-32 max-w-full overflow-hidden"
               style="width: 100%; object-fit: cover;"
             />
             <div class="m-1 flex flex-1 flex-col justify-center">
-              <p class="text-xl">{{ inscription.team.name }}</p>
+              <p class="text-xl">{{ inscription[1].team.name }}</p>
             </div>
           </a>
         </div>

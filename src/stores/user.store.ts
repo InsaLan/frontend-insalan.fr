@@ -1,7 +1,8 @@
 import axios, { type AxiosError, isAxiosError } from 'axios';
 import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed, type Ref, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import type { PlayerRegistrationDeref } from '@/models/registration';
 import type { User, UserPatch, UserPatchError } from '@/models/user';
 
 import { useErrorStore } from './error.store';
@@ -14,7 +15,15 @@ export const useUserStore = defineStore('user', () => {
   const router = useRouter();
   const ToastStore = useToastStore();
   const ErrorStore = useErrorStore();
-  const inscriptions = ref({});
+  const inscriptions = ref<{
+    ongoing: Ref<[string, PlayerRegistrationDeref][]>;
+    past: Ref<[string, PlayerRegistrationDeref][]>;
+    unpaid: Ref<{ [key: string]: boolean }>;
+  }>({
+    ongoing: ref([]),
+    past: ref([]),
+    unpaid: ref({}),
+  });
   const MailVerified = ref(false);
   const { setContent } = ToastStore;
   const { add_error } = ErrorStore;
@@ -107,12 +116,35 @@ export const useUserStore = defineStore('user', () => {
   async function fetch_user_inscription_full() {
     try {
       // ref object to store the data
-      const ongoing = ref([]);
-      const past = ref([]);
-      const unpaid = ref({});
+      const ongoing: [string, PlayerRegistrationDeref][] = [];
+      const past: [string, PlayerRegistrationDeref][] = [];
+      const unpaid: { [key: number]: boolean } = {};
       // Get all the inscription of the user
-      // const Tournaments = await axios.get<{ 'player': Tournament[]; 'manager': Tournament[] }>('/tournament/me');
+      const registrations = await axios.get<{ 'player': PlayerRegistrationDeref[]; 'manager': PlayerRegistrationDeref[] }>('/tournament/me');
       // Set the value of the ref object
+      registrations.data.player.forEach((registration) => {
+        if (registration.team.tournament.event.ongoing) {
+          ongoing.push(['player', registration]);
+        } else {
+          past.push(['player', registration]);
+        }
+        // If the registration is not paid, add the tournament to the unpaid object
+        if (registration.payment_status === 'NOT_PAID') {
+          unpaid[registration.id] = true;
+        }
+      });
+      registrations.data.manager.forEach((registration) => {
+        if (registration.team.tournament.event.ongoing) {
+          ongoing.push(['manager', registration]);
+        } else {
+          past.push(['manager', registration]);
+        }
+        // If the registration is not paid, add the tournament to the unpaid object
+        if (registration.payment_status === 'NOT_PAID') {
+          unpaid[registration.id] = true;
+        }
+      });
+
       inscriptions.value = {
         ongoing,
         past,
