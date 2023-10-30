@@ -4,16 +4,13 @@ import { ref } from 'vue';
 import type { Event } from '@/models/event';
 import type { Tournament } from '@/models/tournament';
 
-const groupBy = (items: Event[], key: string) => items.reduce<Record<number, Event[]>>(
-  (result, item) => ({
-    ...result,
-    [item[key] as number]: [
-      ...(result[item[key] as number] || []),
-      item,
-    ],
-  }),
-  {},
-);
+const groupBy = <T extends object, K extends keyof T>(items: T[], key: K) => items.reduce((result, item) => ({
+  ...result,
+  [item[key]]: [
+    ...(result[item[key]] || []),
+    item,
+  ],
+}), {} as Record<T[K], T[]>);
 
 export const useTournamentStore = defineStore('tournament', () => {
   const events = ref<Record<number, Event[]>>({});

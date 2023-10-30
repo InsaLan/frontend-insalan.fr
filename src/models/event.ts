@@ -9,6 +9,4 @@ export interface Event {
   ongoing: boolean;
   tournaments?: Tournament[] | number[];
   logo?: string;
-
-  [index: string]: number | string | boolean | Tournament[] | undefined | number[];
 }
