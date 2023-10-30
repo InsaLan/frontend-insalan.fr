@@ -14,3 +14,29 @@ import Toast from '@/components/Toast.vue';
   </div>
   <Footer/>
 </template>
+
+<style>
+.title {
+  font-size: 2em;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title::after, .title::before {
+  display: block;
+  min-width: calc(35vw - 3em);
+  height: 0.1em;
+  content: '';
+  background-color: #fff;
+}
+
+.title::before {
+  margin-right: 1em;
+}
+
+.title::after {
+  margin-left: 1em;
+}
+</style>
