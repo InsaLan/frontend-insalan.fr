@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
-import { required } from '@vuelidate/validators';
+import { helpers, required } from '@vuelidate/validators';
 import { storeToRefs } from 'pinia';
 import { computed, reactive, ref } from 'vue';
 import FormField from '@/components/FormField.vue';
@@ -16,14 +16,25 @@ const { tournaments } = storeToRefs(tournamentStore);
 const { name } = tournaments.value[props.id];
 const trules = `/tournament/${tournaments.value[props.id].id}#rules`;
 
+const acceptRules = helpers.withParams(
+  { type: 'acceptRules' },
+  (value) => value === true,
+);
+
 const register_form = reactive({
   team: '',
   pseudo: '',
+  password: '',
+  role: '',
+  accept_rules: false,
 });
 
 const rules = computed(() => ({
   team: { required },
   pseudo: { required },
+  password: { required },
+  role: { required },
+  accept_rules: { acceptRules },
 }));
 
 const v$ = useVuelidate(rules, register_form, { $autoDirty: true });
