@@ -8,20 +8,19 @@ export type Constant = { name: string; value: string };
 export type Content = { name: string; content: string };
 
 export const useContentStore = defineStore('content', () => {
-  const contents = ref<{ [key: string]: string }>({});
-  const constants = ref<{ [key: string]: string }>({});
+  const contents = ref<Record<string, string>>({});
+  const constants = ref<Record<string, string>>({});
   // captures named group matching the pattern ${name}
   const re = /\$\{(?<name>\w+)\}/gm;
 
   const md = new MarkdownIt({
     html: true,
   });
-  const classessMapping = {
+  const classesMapping = {
     h1: 'title',
     h2: 'title',
   };
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  md.use(MarkdownItClass, classessMapping);
+  md.use(MarkdownItClass, classesMapping);
 
   async function fetchStatic() {
     const fetch_content = await axios.get<Content[]>('/content/content/');
@@ -30,19 +29,14 @@ export const useContentStore = defineStore('content', () => {
       constants.value[constant.name] = constant.value;
     });
     fetch_content.data.forEach((content: Content) => {
-      contents.value[content.name] = md.render(content.content.replace(
-        re,
-        (_, name: string) => constants.value[name],
-      ));
+      contents.value[content.name] = md.render(content.content.replace(re, (_, name: string) => constants.value[name]));
     });
   }
 
   function getContent(name: string): string {
     if (contents.value[name] === undefined) return '';
 
-    return md.renderInline(
-      contents.value[name],
-    );
+    return md.renderInline(contents.value[name]);
   }
 
   function getConstant(name: string): string {

@@ -9,3 +9,9 @@ declare module '*.vue' {
 
   export default Vue;
 }
+
+declare module 'markdown-it-class' {
+  import type MarkdownIt from 'markdown-it';
+
+  export default function markdownitTagClass(md: MarkdownIt, mapping?: object = {}): void;
+}

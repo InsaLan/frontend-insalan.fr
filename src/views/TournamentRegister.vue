@@ -40,46 +40,65 @@ const create = ref(true);
 </script>
 
 <template>
-  <div class="flex h-min items-center justify-center bg-cover bg-center py-10 2xl:h-[calc(100vh_-_6rem)] 2xl:py-0" :style="{ backgroundImage: 'url(' + tournaments[props.id].logo + ')' }">
+  <div
+    :style="{ backgroundImage: `url(${tournaments[props.id].logo})` }"
+    class="flex h-min items-center justify-center bg-cover bg-center py-10 2xl:h-[calc(100vh_-_6rem)] 2xl:py-0"
+  >
     <!-- Design 3-->
     <div class="w-11/12 md:w-9/12 2xl:w-1/2">
-      <div class="bg-[#63d1ff] py-8 text-center text-6xl font-bold text-white" style="text-shadow: black 0px 0px 5px;">
+      <div class="bg-[#63d1ff] py-8 text-center text-6xl font-bold text-white" style="text-shadow: black 0 0 5px;">
         Inscription {{ name }}
       </div>
       <div class="flex hover:cursor-pointer">
-        <button type="button" class="w-full bg-[#2c292d] py-2 text-center text-2xl" :class="{ 'bg-slate-500': !create }" @click="create = !create">
+        <button
+          :class="{ 'bg-slate-500': !create }"
+          class="w-full bg-[#2c292d] py-2 text-center text-2xl"
+          type="button"
+          @click="create = !create"
+        >
           Créer une équipe
         </button>
-        <button type="button" class="w-full bg-[#2c292d] py-2 text-center text-2xl" :class="{ 'bg-slate-500': create }" @click="create = !create">
+        <button
+          :class="{ 'bg-slate-500': create }"
+          class="w-full bg-[#2c292d] py-2 text-center text-2xl"
+          type="button"
+          @click="create = !create"
+        >
           Rejoindre une équipe
         </button>
       </div>
       <div class="flex flex-col bg-[#2c292d] p-8">
         <form class="grid gap-x-14 gap-y-2 sm:grid-cols-2">
-          <FormField v-slot="context" required :validations="v$.team" class="flex flex-col text-xl">
+          <FormField v-slot="context" :validations="v$.team" class="flex flex-col text-xl" required>
             <label>
               Nom de l'équipe
               <input :class="{ error: context.invalid }" placeholder="Équipe 1" type="text"/>
             </label>
           </FormField>
-          <FormField v-slot="context" required :validations="v$.team" class="flex flex-col text-xl">
+          <FormField v-slot="context" :validations="v$.team" class="flex flex-col text-xl" required>
             <label>
               Pseudo en jeu
               <input :class="{ error: context.invalid }" placeholder="xxxx" type="text"/>
             </label>
           </FormField>
-          <FormField v-slot="context" required :validations="v$.team" class="relative flex flex-col text-xl">
+          <FormField v-slot="context" :validations="v$.team" class="relative flex flex-col text-xl" required>
             <label>
               Mot de passe
               <input :class="{ error: context.invalid }" type="password"/>
             </label>
-            <fa-awesome-icon v-if="create" class="absolute left-[93%] top-[56%] z-10" style="color: black;" size="s" icon="fa-solid fa-arrows-rotate"/>
+            <fa-awesome-icon
+              v-if="create"
+              class="absolute left-[93%] top-[56%] z-10"
+              icon="fa-solid fa-arrows-rotate"
+              size="s"
+              style="color: black;"
+            />
           </FormField>
-          <FormField v-slot="context" required :validations="v$.team" class="flex flex-col text-xl">
+          <FormField v-slot="context" :validations="v$.team" class="flex flex-col text-xl" required>
             <label>
               Rôle dans l'équipe
               <select :class="{ error: context.invalid }" class="text-black">
-                <option value="joueur" selected>
+                <option selected value="joueur">
                   Joueur
                 </option>
                 <option value="manager">
@@ -93,11 +112,11 @@ const create = ref(true);
         <span class="my-3 text-center text-4xl">Rappel du Règlement</span>
         <ul class="my-5 text-2xl">
           <li>Pas d'insulte</li>
-          <li>Apporter son propre matériel <b>filaire </b> </li>
+          <li>Apporter son propre matériel <b>filaire </b></li>
           <li>Pas d'insulte</li>
-          <li>Apporter son propre matériel <b>filaire </b> </li>
+          <li>Apporter son propre matériel <b>filaire </b></li>
           <li>Pas d'insulte</li>
-          <li>Apporter son propre matériel <b>filaire </b> </li>
+          <li>Apporter son propre matériel <b>filaire </b></li>
         </ul>
         <div class="self-center text-3xl">
           <input id="check" type="checkbox"/>
@@ -105,16 +124,23 @@ const create = ref(true);
         </div>
       </div>
       <div class="flex justify-center bg-[#63d1ff] p-5">
-        <button v-if="create" type="button" class="rounded border-solid bg-green-600 p-3 text-3xl md:w-5/12" @click="register_team">
+        <button
+          v-if="create"
+          class="rounded border-solid bg-green-600 p-3 text-3xl md:w-5/12"
+          type="button"
+          @click="register_team"
+        >
           Créer l'équipe
         </button>
-        <button v-else type="button" class="rounded border-solid bg-green-600 p-3 text-3xl md:w-5/12" @click="register_player">
+        <button
+          v-else
+          class="rounded border-solid bg-green-600 p-3 text-3xl md:w-5/12"
+          type="button"
+          @click="register_player"
+        >
           Rejoindre
         </button>
       </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-</style>

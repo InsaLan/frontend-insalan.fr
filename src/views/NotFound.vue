@@ -13,7 +13,7 @@
           n'hésitez pas à nous contacter
         </p>
       </div>
-      <router-link to="/" class="m-2">
+      <router-link class="m-2" to="/">
         <button
           class="rounded bg-blue-800 p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
           type="button"

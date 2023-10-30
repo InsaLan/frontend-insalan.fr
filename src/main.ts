@@ -7,7 +7,6 @@ import axios, { type AxiosError } from 'axios';
 import { createPinia } from 'pinia';
 import { createPersistedState } from 'pinia-plugin-persistedstate';
 import { createApp } from 'vue';
-import vueClickOutsideElement from 'vue-click-outside-element';
 import { router } from '@/router';
 import { type ErrorMessage, useErrorStore } from '@/stores/error.store';
 
@@ -30,7 +29,6 @@ pinia.use(createPersistedState({
 createApp(App)
   .component('fa-awesome-icon', FontAwesomeIcon)
   .use(pinia)
-  .use(vueClickOutsideElement)
   .use(router)
   .mount('#app');
 
@@ -38,7 +36,7 @@ const { add_error } = useErrorStore();
 
 axios.interceptors.response.use(
   (res) => res,
-  (error: AxiosError<string | { [key: string]: string | ErrorMessage }, any>) => {
+  (error: AxiosError<string | { [key: string]: string | ErrorMessage }, unknown>) => {
     if (typeof error.response?.data === 'string') {
       add_error({ status: error.response.status, message: error.response.data });
     } else if (typeof error.response?.data === 'object') {
