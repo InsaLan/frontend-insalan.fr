@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import Content from '@/components/Content.vue';
 import Hero from '@/components/Hero.vue';
 import Partners from '@/components/Partners.vue';
@@ -8,17 +8,19 @@ import TournamentCard from '@/components/TournamentCard.vue';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const tournamentStore = useTournamentStore();
-const { fetchThisYear, fetchTournaments } = tournamentStore;
-const { event } = storeToRefs(tournamentStore);
+const { getOngoingEvents } = storeToRefs(tournamentStore);
+const tournaments_id = ref<number[]>([]);
 
 onMounted(async () => {
-  await fetchThisYear();
-  if (event.value.length > 0) {
-    await fetchTournaments(event.value[0].tournaments as number[]);
+  const events = (await getOngoingEvents.value).value;
+  let event;
+  if (events.size > 0) {
+    event = [...events.values()].at(-1);
+  }
+  if (event !== undefined && event.tournaments !== undefined) {
+    tournaments_id.value = event.tournaments as number[];
   }
 });
-
-const { tournaments } = storeToRefs(tournamentStore);
 </script>
 
 <template>
@@ -33,9 +35,9 @@ const { tournaments } = storeToRefs(tournamentStore);
       </div>
       <div class="mb-12 grid gap-4 px-4 md:grid-cols-2 xl:w-full xl:grid-cols-4">
         <TournamentCard
-          v-for="tournament in tournaments"
-          :key="tournament.id"
-          :tournament="tournament"
+          v-for="tournament in tournaments_id"
+          :id="tournament"
+          :key="tournament"
         />
       </div>
     </section>

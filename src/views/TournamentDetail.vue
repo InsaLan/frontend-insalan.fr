@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia';
 import { onMounted, reactive, ref } from 'vue';
 import TeamCard from '@/components/TeamCard.vue';
 import type { Team } from '@/models/team';
+import type { Tournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const props = defineProps<{
@@ -10,13 +11,11 @@ const props = defineProps<{
 }>();
 
 const tournamentStore = useTournamentStore();
-const { fetchTournamentFull } = tournamentStore;
-const { tournament } = storeToRefs(tournamentStore);
+const { getTournamentFull } = storeToRefs(tournamentStore);
+const tournament = ref<Tournament>();
 
 onMounted(async () => {
-  if (tournament.value?.id !== props.id || typeof (tournament.value?.event) === 'number') {
-    await fetchTournamentFull(props.id);
-  }
+  tournament.value = await getTournamentFull.value(props.id);
 });
 
 const open_drop = ref(false);
@@ -173,9 +172,9 @@ const select_tag = (e: Event) => {
         </section>
 
         <section id="teams">
-          <div v-if="tournament !== undefined" class="grid grid-cols-[repeat(auto-fit,minmax(330px,1fr))] gap-4 p-5">
+          <div class="grid grid-cols-[repeat(auto-fit,minmax(330px,1fr))] gap-4 p-5">
             <!--md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 grid-cols-1-->
-            <TeamCard v-for="team in (tournament.teams as Team[])" :key="team.id" :team="team"/>
+            <TeamCard v-for="team in (tournament?.teams as Team[])" :key="team.id" :team="team"/>
             <!--<a href="#" class="flex flex-row justify-center items-center bg-red-500 rounded">
           <div class="text-center rounded bg-red-500">
 
