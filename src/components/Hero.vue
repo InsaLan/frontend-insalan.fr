@@ -48,7 +48,7 @@ const trailer_embed = 'https://www.youtube.com/embed/Bxi-4XEANbE?autoplay=1&mute
   </div>
 </template>
 
-<style scope>
+<style scoped>
 .youtube-container {
   overflow: hidden;
   width: 100%;
