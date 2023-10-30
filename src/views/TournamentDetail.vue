@@ -58,7 +58,10 @@ const select_tag = (e: Event) => {
       >
         {{ drop_label }}
       </button> <!-- id="dropdown-btn"--> <!--@click="switch_tag"-->
-      <div class="dropGrow absolute z-10 w-screen translate-y-10 flex-col items-center bg-gray-500 md:static md:z-0 md:flex md:w-2/3 md:translate-y-0 md:flex-row md:justify-between xl:w-1/2" :class="{ 'flex border-t-2 border-white': open_drop, hidden: !open_drop }">
+      <div
+        class="dropGrow absolute z-10 w-screen translate-y-10 flex-col items-center bg-gray-500 md:static md:z-0 md:flex md:w-2/3 md:translate-y-0 md:flex-row md:justify-between xl:w-1/2"
+        :class="{ 'flex border-t-2 border-white': open_drop, hidden: !open_drop }"
+      >
         <!--id="dropdown"-->
         <button
           id="info"
@@ -78,7 +81,13 @@ const select_tag = (e: Event) => {
         >
           Équipes
         </button> <!--href="#teams"-->
-        <button id="groups" type="button" class="my-2 text-xl md:my-0" :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': selected_section.groups }" @click="select_tag">
+        <button
+          id="groups"
+          type="button"
+          class="my-2 text-xl md:my-0"
+          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': selected_section.groups }"
+          @click="select_tag"
+        >
           Poules
         </button> <!--href="#groups"-->
         <button
