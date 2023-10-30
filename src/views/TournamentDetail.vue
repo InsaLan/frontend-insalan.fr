@@ -25,8 +25,8 @@ const trans = ref('translateX(0vw)');
 const selected_section = reactive<Record<string, boolean>>({
   info: true,
   teams: false,
-  poules: false,
-  brackets: false,
+  groups: false,
+  branckets: false,
   planning: false,
   rules: false,
 });
@@ -46,7 +46,7 @@ const select_tag = (e: Event) => {
 <template>
   <div class="flex h-min flex-col items-center 2xl:h-[calc(100vh_-_6rem)]">
     <div class="text-center text-6xl font-bold text-white">
-      {{ tournament !== undefined ? tournament.name : '' }}
+      {{ tournament?.name }}
     </div>
 
     <nav class="mt-2 flex w-screen justify-center bg-gray-500 py-4">
@@ -58,10 +58,7 @@ const select_tag = (e: Event) => {
       >
         {{ drop_label }}
       </button> <!-- id="dropdown-btn"--> <!--@click="switch_tag"-->
-      <div
-        :class="{ 'flex border-t-2 border-white': open_drop, hidden: !open_drop }"
-        class="absolute z-10 w-screen grow translate-y-10 flex-col items-center bg-gray-500 md:static md:z-0 md:flex md:w-2/3 md:translate-y-0 md:flex-row md:justify-between xl:w-1/2"
-      >
+      <div class="dropGrow absolute z-10 w-screen translate-y-10 flex-col items-center bg-gray-500 md:static md:z-0 md:flex md:w-2/3 md:translate-y-0 md:flex-row md:justify-between xl:w-1/2" :class="{ 'flex border-t-2 border-white': open_drop, hidden: !open_drop }">
         <!--id="dropdown"-->
         <button
           id="info"
@@ -81,13 +78,7 @@ const select_tag = (e: Event) => {
         >
           Équipes
         </button> <!--href="#teams"-->
-        <button
-          id="poules"
-          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': selected_section.poules }"
-          class="my-2 text-xl md:my-0"
-          type="button"
-          @click="select_tag"
-        >
+        <button id="groups" type="button" class="my-2 text-xl md:my-0" :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': selected_section.groups }" @click="select_tag">
           Poules
         </button> <!--href="#groups"-->
         <button
@@ -133,9 +124,14 @@ const select_tag = (e: Event) => {
           </h2>
 
           <div class="grid h-full w-full place-items-center gap-7 2xl:grid-cols-3">
-            <div class="text-3xl">
-              24 équipes de 5 joueurs <br/>
-              xx€ / joueur
+            <div class="flex h-full w-full flex-col items-center justify-around">
+              <h3 class="text-4xl">
+                Format
+              </h3>
+              <div class="text-3xl">
+                24 équipes de 5 joueurs <br/>
+                xx€ / joueur
+              </div>
             </div>
 
             <div class="flex h-full w-full flex-col items-center justify-around">
@@ -168,11 +164,9 @@ const select_tag = (e: Event) => {
         </section>
 
         <section id="teams">
-          <div class="grid grid-cols-[repeat(auto-fit,minmax(330px,1fr))] gap-4 p-5">
+          <div v-if="tournament !== undefined" class="grid grid-cols-[repeat(auto-fit,minmax(330px,1fr))] gap-4 p-5">
             <!--md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 grid-cols-1-->
-            <div v-if="tournament !== undefined">
-              <TeamCard v-for="team in (tournament.teams as Team[])" :key="team.id" :team="team"/>
-            </div>
+            <TeamCard v-for="team in (tournament.teams as Team[])" :key="team.id" :team="team"/>
             <!--<a href="#" class="flex flex-row justify-center items-center bg-red-500 rounded">
           <div class="text-center rounded bg-red-500">
 
@@ -205,8 +199,7 @@ a {
   @apply text-xl
 }
 
-.grow {
-  transform-origin: top center;
+.dropGrow {
   animation: 300ms ease-in-out growDown;
   animation-direction: alternate;
 }
