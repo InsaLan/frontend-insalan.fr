@@ -23,7 +23,9 @@
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.0",
     "vue": "^3.3.7",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "leaflet": "^1.9.4",
+    "@vue-leaflet/vue-leaflet": "^0.10.1"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.5.1",
