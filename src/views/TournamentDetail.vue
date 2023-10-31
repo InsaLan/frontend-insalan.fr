@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { onMounted, reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import TeamCard from '@/components/TeamCard.vue';
 import type { Team } from '@/models/team';
 import type { Tournament } from '@/models/tournament';
@@ -8,21 +9,18 @@ import { useTournamentStore } from '@/stores/tournament.store';
 
 const props = defineProps<{
   id: number;
+  section?: { s: string };
 }>();
 
 const tournamentStore = useTournamentStore();
 const { getTournamentFull } = storeToRefs(tournamentStore);
 const tournament = ref<Tournament>();
 
-onMounted(async () => {
-  tournament.value = await getTournamentFull.value(props.id);
-});
-
 const open_drop = ref(false);
 const drop_label = ref('Informations');
 const trans = ref('translateX(0vw)');
 const selected_section = reactive<Record<string, boolean>>({
-  info: true,
+  info: false,
   teams: false,
   groups: false,
   brackets: false,
@@ -40,6 +38,21 @@ const select_tag = (e: Event) => {
   });
   selected_section[target.id] = true;
 };
+
+const router = useRouter();
+onMounted(async () => {
+  try {
+    tournament.value = await getTournamentFull.value(props.id);
+  } catch (err: any) {
+    router.go(-1);
+  }
+  if (props.section !== undefined && props.section.s in selected_section) {
+    selected_section[props.section.s] = true;
+    document.getElementById(props.section.s)?.click();
+  } else {
+    selected_section.info = true;
+  }
+});
 </script>
 
 <template>

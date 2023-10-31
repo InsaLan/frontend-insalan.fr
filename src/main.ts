@@ -1,7 +1,6 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faArrowsRotate,
-  faCirclePlus, faFile, faPencil, faWarning,
+  faArrowsRotate, faCirclePlus, faFile, faPencil, faWarning,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import axios, { type AxiosError } from 'axios';

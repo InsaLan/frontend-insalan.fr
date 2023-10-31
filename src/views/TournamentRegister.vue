@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia';
 import {
   computed, onMounted, reactive, ref,
 } from 'vue';
+import { useRouter } from 'vue-router';
 import FormField from '@/components/FormField.vue';
 import type { Tournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
@@ -18,8 +19,13 @@ const tournamentStore = useTournamentStore();
 const { getTournament } = storeToRefs(tournamentStore);
 const tournament = ref<Tournament>();
 
+const router = useRouter();
 onMounted(async () => {
-  tournament.value = await getTournament.value(props.id);
+  try {
+    tournament.value = await getTournament.value(props.id);
+  } catch (err: any) {
+    router.go(-1);
+  }
 });
 
 const acceptRules = helpers.withParams(
@@ -138,7 +144,7 @@ const create = ref(true);
         </ul>
         <div class="self-center text-3xl">
           <input id="check" type="checkbox"/>
-          <label for="check"> J'accepte les <a :href="`/tournament/${tournament?.id}#rules`" class="text-[#63d1ff]">règles du tournoi</a></label>
+          <label for="check"> J'accepte les <a :href="`/tournament/${tournament?.id}?s=rules`" class="text-[#63d1ff]">règles du tournoi</a></label>
         </div>
       </div>
       <div class="flex justify-center bg-[#63d1ff] p-5">

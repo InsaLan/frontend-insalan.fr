@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import type { Event } from '@/models/event';
 import type { Tournament } from '@/models/tournament';
 
@@ -15,28 +16,20 @@ const groupBy = <T extends object, K extends keyof T>(items: T[], key: K) => ite
 export const useTournamentStore = defineStore('tournament', () => {
   const events = ref<Record<number, Event>>({});
   const tournaments = ref<Record<number, Tournament>>({});
+  const router = useRouter();
 
   async function fetchAllEvents() {
-    try {
-      const res = await axios.get<Event[]>('/tournament/event');
-      res.data.forEach((ev) => { events.value[ev.id] = ev; });
-      // console.log(years)
-    } catch (err: any) {
-      // console.log(error);
-    }
-  }
+    const res = await axios.get<Event[]>('/tournament/event');
+    res.data.forEach((ev) => { events.value[ev.id] = ev; });
+}
 
   async function fetchEventsByYear(year: number) {
-    try {
-      const res = await axios.get<Event[]>(`tournament/event/year/${year}`);
-      res.data.forEach((ev) => { events.value[ev.id] = ev; });
-    } catch (err: any) {
-      /* empty */
-    }
+    const res = await axios.get<Event[]>(`tournament/event/year/${year}`);
+    res.data.forEach((ev) => { events.value[ev.id] = ev; });
   }
 
   async function fetchEventsByYears(years: number[]) {
-    await Promise.all<void>(years.map<Promise<void>>((year) => fetchEventsByYear(year)));
+    await Promise.all(years.map((year) => fetchEventsByYear(year)));
   }
 
   async function fetchThisYear() {
@@ -45,16 +38,12 @@ export const useTournamentStore = defineStore('tournament', () => {
   }
 
   async function fetchEventById(id: number) {
-    try {
-      const res = await axios<Event>(`tournament/event/${id}`);
-      events.value[id] = res.data;
-    } catch (err: any) {
-      /* empty */
-    }
+    const res = await axios<Event>(`tournament/event/${id}`);
+    events.value[id] = res.data;
   }
 
   async function fetchEventByIds(ids: number[]) {
-    await Promise.all<void>(ids.map<Promise<void>>((id) => fetchEventById(id)));
+    await Promise.all(ids.map((id) => fetchEventById(id)));
   }
 
   async function fetchOngoingEvents() {
@@ -109,12 +98,8 @@ export const useTournamentStore = defineStore('tournament', () => {
    * Tournaments  *
    ************** */
   async function fetchTournament(id: number) {
-    try {
-      const res = await axios.get<Tournament>(`/tournament/tournament/${id}`);
-      tournaments.value[id] = res.data;
-    } catch (error) {
-      /* empty */
-    }
+    const res = await axios.get<Tournament>(`/tournament/tournament/${id}`);
+    tournaments.value[id] = res.data;
   }
 
   async function fetchTournaments(ids: number[]) {
@@ -122,13 +107,8 @@ export const useTournamentStore = defineStore('tournament', () => {
   }
 
   async function fetchTournamentFull(id: number) {
-    try {
-      const res = await axios.get<Tournament>(`/tournament/tournament/${id}/full`);
-      tournaments.value[id] = res.data;
-      // console.log(res.data);
-    } catch (error) {
-      // console.log(error);
-    }
+    const res = await axios.get<Tournament>(`/tournament/tournament/${id}/full`);
+    tournaments.value[id] = res.data;
   }
 
   async function fetchTournamentsFull(ids: number[]) {

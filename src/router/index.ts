@@ -51,7 +51,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/tournament/:id(\\d+)',
     component: () => import('@/views/TournamentDetail.vue'),
-    props: (route) => ({ id: Number(route.params.id) }),
+    props: (route) => ({ id: Number(route.params.id), section: route.query }),
   },
   {
     path: '/reset-password/:idname/:idtoken',
