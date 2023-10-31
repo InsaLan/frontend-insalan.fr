@@ -1,29 +1,26 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { onMounted, reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import TeamCard from '@/components/TeamCard.vue';
 import type { Team } from '@/models/team';
+import type { Tournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const props = defineProps<{
   id: number;
+  section?: { s: string };
 }>();
 
 const tournamentStore = useTournamentStore();
-const { fetchTournamentFull } = tournamentStore;
-const { tournament } = storeToRefs(tournamentStore);
-
-onMounted(async () => {
-  if (tournament.value?.id !== props.id || typeof (tournament.value?.event) === 'number') {
-    await fetchTournamentFull(props.id);
-  }
-});
+const { getTournamentFull } = storeToRefs(tournamentStore);
+const tournament = ref<Tournament>();
 
 const open_drop = ref(false);
 const drop_label = ref('Informations');
 const trans = ref('translateX(0vw)');
 const selected_section = reactive<Record<string, boolean>>({
-  info: true,
+  info: false,
   teams: false,
   groups: false,
   brackets: false,
@@ -41,6 +38,21 @@ const select_tag = (e: Event) => {
   });
   selected_section[target.id] = true;
 };
+
+const router = useRouter();
+onMounted(async () => {
+  try {
+    tournament.value = await getTournamentFull.value(props.id);
+  } catch (err: any) {
+    router.go(-1);
+  }
+  if (props.section !== undefined && props.section.s in selected_section) {
+    selected_section[props.section.s] = true;
+    document.getElementById(props.section.s)?.click();
+  } else {
+    selected_section.info = true;
+  }
+});
 </script>
 
 <template>
@@ -173,9 +185,9 @@ const select_tag = (e: Event) => {
         </section>
 
         <section id="teams">
-          <div v-if="tournament !== undefined" class="grid grid-cols-[repeat(auto-fit,minmax(330px,1fr))] gap-4 p-5">
+          <div class="grid grid-cols-[repeat(auto-fit,minmax(330px,1fr))] gap-4 p-5">
             <!--md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 grid-cols-1-->
-            <TeamCard v-for="team in (tournament.teams as Team[])" :key="team.id" :team="team"/>
+            <TeamCard v-for="team in (tournament?.teams as Team[])" :key="team.id" :team="team"/>
             <!--<a href="#" class="flex flex-row justify-center items-center bg-red-500 rounded">
           <div class="text-center rounded bg-red-500">
 

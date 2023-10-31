@@ -36,9 +36,9 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: '/tournament/:id/register',
+    path: '/tournament/:id(\\d+)/register',
     component: () => import('@/views/TournamentRegister.vue'),
-    props: true,
+    props: (route) => ({ id: Number(route.params.id) }),
     beforeEnter: () => {
       const { isConnected } = useUserStore();
       return !isConnected ? { path: '/register' } : true;
@@ -49,9 +49,9 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/Register.vue'),
   },
   {
-    path: '/tournament/:id',
+    path: '/tournament/:id(\\d+)',
     component: () => import('@/views/TournamentDetail.vue'),
-    props: true,
+    props: (route) => ({ id: Number(route.params.id), section: route.query }),
   },
   {
     path: '/reset-password/:idname/:idtoken',

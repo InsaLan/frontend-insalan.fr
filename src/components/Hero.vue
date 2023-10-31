@@ -23,7 +23,7 @@ const trailer_embed = 'https://www.youtube.com/embed/Bxi-4XEANbE?autoplay=1&mute
         title="Trailer insalan"
       />
     </div>
-    <div class="w-f hover-title  absolute left-2/4 top-60 -translate-x-2/4">
+    <div class="w-f hover-title absolute left-2/4 top-60 -translate-x-2/4">
       <img alt="logo insalan" class="w-[32rem]" src="../assets/images/logo_wide.png">
       <h1 class="text-center text-2xl font-bold text-white">
         {{ getConstant('date_insalan') }}
