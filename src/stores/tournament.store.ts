@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
-import { useRouter } from 'vue-router';
 import type { Event } from '@/models/event';
 import type { Tournament } from '@/models/tournament';
 
@@ -16,12 +15,11 @@ const groupBy = <T extends object, K extends keyof T>(items: T[], key: K) => ite
 export const useTournamentStore = defineStore('tournament', () => {
   const events = ref<Record<number, Event>>({});
   const tournaments = ref<Record<number, Tournament>>({});
-  const router = useRouter();
 
   async function fetchAllEvents() {
     const res = await axios.get<Event[]>('/tournament/event');
     res.data.forEach((ev) => { events.value[ev.id] = ev; });
-}
+  }
 
   async function fetchEventsByYear(year: number) {
     const res = await axios.get<Event[]>(`tournament/event/year/${year}`);
