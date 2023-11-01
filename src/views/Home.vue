@@ -25,11 +25,11 @@ onMounted(async () => {
 
 <template>
   <div>
-    <section class="w-screen" style="height: calc(100vh - 6rem);">
+    <section class="h-[calc(100vh_-_6rem)]">
       <Hero/>
       <Content name="main_page"/>
     </section>
-    <section>
+    <section class="h-min min-h-[calc(100vh_-_6rem)]">
       <div class="title my-2 text-white">
         Tournois
       </div>
@@ -44,3 +44,6 @@ onMounted(async () => {
     <Partners/>
   </div>
 </template>
+
+<style scoped>
+</style>
