@@ -19,6 +19,10 @@ export const useContentStore = defineStore('content', () => {
   const classesMapping = {
     h1: 'title',
     h2: 'title',
+    ul: 'list-disc',
+    li: 'ml-5',
+    a: 'underline underline-offset-2',
+    strong: 'text-blue-400',
   };
   md.use(MarkdownItClass, classesMapping);
 
