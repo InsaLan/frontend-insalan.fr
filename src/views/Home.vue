@@ -25,7 +25,7 @@ onMounted(async () => {
 
 <template>
   <div>
-    <section class="h-[calc(100vh_-_6rem)]">
+    <section class="h-min">
       <Hero/>
       <Content name="main_page"/>
     </section>
@@ -44,6 +44,3 @@ onMounted(async () => {
     <Partners/>
   </div>
 </template>
-
-<style scoped>
-</style>

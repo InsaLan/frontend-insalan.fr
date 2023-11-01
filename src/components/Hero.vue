@@ -13,7 +13,7 @@ const trailer_embed = 'https://www.youtube.com/embed/Bxi-4XEANbE?autoplay=1&mute
 </script>
 
 <template>
-  <div class="relative flex h-full items-center justify-center">
+  <div class="relative flex h-[calc(100vh_-_6rem)] items-center justify-center">
     <div class="absolute -z-10 flex h-full w-full items-center justify-center overflow-hidden">
       <iframe
         :src="trailer_embed"
