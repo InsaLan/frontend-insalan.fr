@@ -1,4 +1,4 @@
-enum PartnerType {
+export enum PartnerType {
   PARTNER = 'PA',
   SPONSOR = 'SP',
 }
