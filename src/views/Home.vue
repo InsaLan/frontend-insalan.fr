@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import Content from '@/components/Content.vue';
 import Hero from '@/components/Hero.vue';
 import Partners from '@/components/Partners.vue';
@@ -8,18 +8,13 @@ import TournamentCard from '@/components/TournamentCard.vue';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const tournamentStore = useTournamentStore();
-const { getOngoingEvents } = storeToRefs(tournamentStore);
-const tournaments_id = ref<number[]>([]);
+const { getOngoingEvents } = tournamentStore;
+const { ongoingEvents } = storeToRefs(tournamentStore);
+const event = computed(() => ongoingEvents.value.at(-1));
+const tournaments_id = computed(() => event.value?.tournaments);
 
 onMounted(async () => {
-  const events = (await getOngoingEvents.value).value;
-  let event;
-  if (events.size > 0) {
-    event = [...events.values()].at(-1);
-  }
-  if (event !== undefined && event.tournaments !== undefined) {
-    tournaments_id.value = event.tournaments;
-  }
+  await getOngoingEvents();
 });
 </script>
 
@@ -33,7 +28,7 @@ onMounted(async () => {
       <div class="title my-2 text-white">
         Tournois
       </div>
-      <div class="mb-12 grid gap-4 px-4 md:grid-cols-2 xl:w-full xl:grid-cols-4">
+      <div class="mb-12 grid w-full gap-4 px-4 md:grid-cols-2 xl:grid-cols-4">
         <TournamentCard
           v-for="tournament in tournaments_id"
           :id="tournament"

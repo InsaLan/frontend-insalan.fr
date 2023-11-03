@@ -18,9 +18,9 @@ const trailer_embed = 'https://www.youtube.com/embed/Bxi-4XEANbE?autoplay=1&mute
         title="Trailer insalan"
       />
     </div>
-    <div>
-      <img alt="logo insalan" class="w-[32rem]" src="@/assets/images/logo_wide.png">
-      <h1 class="text-center text-2xl font-bold text-white">
+    <div class="flex flex-col items-center">
+      <img alt="logo insalan" class="w-[32rem]" src="../assets/images/logo_wide.png">
+      <h1 class="text-shadow text-center text-6xl font-bold text-white">
         {{ getConstant('date_insalan') }}
       </h1>
       <div id="next" class="m-auto mt-4 h-20 w-20 cursor-pointer rounded-full bg-red-500">

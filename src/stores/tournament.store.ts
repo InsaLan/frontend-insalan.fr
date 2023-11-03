@@ -1,8 +1,14 @@
 import axios from 'axios';
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import type { Event } from '@/models/event';
+import type { Team } from '@/models/team';
 import type { Tournament } from '@/models/tournament';
+
+import { useUserStore } from './user.store';
+
+const { get_csrf } = useUserStore();
+const { csrf } = storeToRefs(useUserStore());
 
 function groupBy<T>(items: T[], key: keyof T): Record<string, T[]> {
   return items.reduce((result, item) => ({
@@ -15,17 +21,24 @@ function groupBy<T>(items: T[], key: keyof T): Record<string, T[]> {
 }
 
 export const useTournamentStore = defineStore('tournament', () => {
-  const events = ref<Record<number, Event>>({});
-  const tournaments = ref<Record<number, Tournament>>({});
+  const eventsList = ref<Record<number, Event>>({});
+  const tournamentsList = ref<Record<number, Tournament>>({});
+
+  const ongoingEvents = computed(() => Object.values(eventsList.value).reduce((res, item) => {
+    if (item.ongoing) {
+      res.push(item);
+    }
+    return res;
+  }, [] as Event[]));
 
   async function fetchAllEvents() {
     const res = await axios.get<Event[]>('/tournament/event');
-    res.data.forEach((ev) => { events.value[ev.id] = ev; });
+    res.data.forEach((ev) => { eventsList.value[ev.id] = ev; });
   }
 
   async function fetchEventsByYear(year: number) {
     const res = await axios.get<Event[]>(`tournament/event/year/${year}`);
-    res.data.forEach((ev) => { events.value[ev.id] = ev; });
+    res.data.forEach((ev) => { eventsList.value[ev.id] = ev; });
   }
 
   async function fetchEventsByYears(years: number[]) {
@@ -39,7 +52,7 @@ export const useTournamentStore = defineStore('tournament', () => {
 
   async function fetchEventById(id: number) {
     const res = await axios<Event>(`tournament/event/${id}`);
-    events.value[id] = res.data;
+    eventsList.value[id] = res.data;
   }
 
   async function fetchEventByIds(ids: number[]) {
@@ -48,58 +61,41 @@ export const useTournamentStore = defineStore('tournament', () => {
 
   async function fetchOngoingEvents() {
     const res = await axios<Event[]>('tournament/event/ongoing');
-    res.data.forEach((ev) => { events.value[ev.id] = ev; });
+    res.data.forEach((ev) => { eventsList.value[ev.id] = ev; });
   }
 
-  const getEvent = computed(() => async (id: number) => {
-    if (!(id in events.value)) {
+  async function getEvent(id: number) {
+    if (!(id in eventsList.value)) {
       await fetchEventById(id);
     }
-    return events.value[id];
-  });
+  }
 
-  const getEvents = computed(() => async (ids: number[]) => {
-    const res = ref<Record<number, Event>>({});
+  async function getEvents(ids: number[]) {
     const missing: number[] = [];
     ids.forEach((id) => {
-      if (!(id in events.value)) {
+      if (!(id in eventsList.value)) {
         missing.push(id);
       }
     });
     if (missing.length > 0) {
       await fetchEventByIds(missing);
     }
-    ids.forEach((id) => { res.value[id] = events.value[id]; });
-    return res;
-  });
+  }
 
-  const getEventsByYears = computed(() => async (years: number[]) => {
+  async function getEventsByYears(years: number[]) {
     await fetchEventsByYears(years);
-    const groups = groupBy(Object.values(events.value), 'year');
-    const res = ref<Record<number, Event[]>>({});
-    years.forEach((year) => {
-      res.value[year] = groups[year];
-    });
-    return res;
-  });
+  }
 
-  const getOngoingEvents = computed(async () => {
+  async function getOngoingEvents() {
     await fetchOngoingEvents();
-    const res = ref<Map<number, Event>>(new Map<number, Event>());
-    Object.values(events.value).forEach((ev) => {
-      if (ev.ongoing) {
-        res.value.set(ev.id, ev);
-      }
-    });
-    return res;
-  });
+  }
 
   /* **************
    * Tournaments  *
    ************** */
   async function fetchTournament(id: number) {
     const res = await axios.get<Tournament>(`/tournament/tournament/${id}`);
-    tournaments.value[id] = res.data;
+    tournamentsList.value[id] = res.data;
   }
 
   async function fetchTournaments(ids: number[]) {
@@ -108,66 +104,119 @@ export const useTournamentStore = defineStore('tournament', () => {
 
   async function fetchTournamentFull(id: number) {
     const res = await axios.get<Tournament>(`/tournament/tournament/${id}/full`);
-    tournaments.value[id] = res.data;
+    tournamentsList.value[id] = res.data;
   }
 
   async function fetchTournamentsFull(ids: number[]) {
     await Promise.all<void>(ids.map<Promise<void>>((id) => fetchTournamentFull(id)));
   }
 
-  const getTournament = computed(() => async (id: number) => {
-    if (!(id in tournaments.value)) {
+  async function getTournament(id: number) {
+    if (!(id in tournamentsList.value)) {
       await fetchTournament(id);
     }
-    return tournaments.value[id];
-  });
+  }
 
-  const getTournaments = computed(() => async (ids: number[]) => {
-    const res = ref<Tournament[]>([]);
+  async function getTournaments(ids: number[]) {
     const missing: number[] = [];
     ids.forEach((id) => {
-      if (!(id in tournaments.value)) {
+      if (!(id in tournamentsList.value)) {
         missing.push(id);
       }
     });
     if (missing.length > 0) {
       await fetchTournaments(missing);
     }
-    ids.forEach((id) => { res.value.push(tournaments.value[id]); });
-    return res;
-  });
+  }
 
-  const getTournamentFull = computed(() => async (id: number) => {
-    if (!(id in tournaments.value) || typeof tournaments.value[id].event === 'number') {
+  async function getTournamentFull(id: number) {
+    if (!(id in tournamentsList.value) || typeof tournamentsList.value[id].event === 'number') {
       await fetchTournamentFull(id);
     }
-    return tournaments.value[id];
-  });
+  }
 
-  const getTournamentsFull = computed(() => async (ids: number[]) => {
-    const res = ref<Tournament[]>([]);
+  async function getTournamentsFull(ids: number[]) {
     const missing: number[] = [];
     ids.forEach((id) => {
-      if (!(id in tournaments.value) || typeof tournaments.value[id].event === 'number') {
+      if (!(id in tournamentsList.value) || typeof tournamentsList.value[id].event === 'number') {
         missing.push(id);
       }
     });
     if (missing.length > 0) {
       await fetchTournamentsFull(missing);
     }
-    ids.forEach((id) => { res.value.push(tournaments.value[id]); });
-    return res;
-  });
-
-  function $reset() {
-    events.value = {};
-    tournaments.value = {};
   }
 
-  // const archives = computed(() => events.value.filter((event) => event.year <= new Date().getFullYear()))
+  async function registerPlayerOrManager(
+    team: number,
+    pseudo: string,
+    password: string,
+    role: string,
+    tournament_id: number,
+  ) {
+    await get_csrf();
+
+    const data = {
+      team,
+      password,
+    } as Record<string, unknown>;
+
+    if (role === 'player') {
+      data.pseudo = pseudo;
+    }
+
+    await axios.post(`tournament/${role}/`, data, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf.value,
+      },
+    });
+    await fetchTournamentFull(tournament_id);
+  }
+
+  async function registerTeam(
+    tournament_id: number,
+    team: string,
+    password: string,
+    role?: string,
+    pseudo?: string,
+    user_id?: number,
+  ): Promise<Team> {
+    await get_csrf();
+
+    const data = {
+      tournament: tournament_id,
+      name: team,
+      password,
+    } as Record<string, unknown>;
+
+    if (role === 'player') {
+      data.players = [user_id];
+      data.players_pseudos = [pseudo];
+    }
+    if (role === 'manager') {
+      data.managers = [user_id];
+    }
+
+    const res = await axios.post<Team>('/tournament/team/', data, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf.value,
+      },
+    });
+    await fetchTournamentFull(tournament_id).catch();
+    return res.data;
+  }
+
+  function $reset() {
+    eventsList.value = {};
+    tournamentsList.value = {};
+  }
+
   return {
-    events,
-    tournaments,
+    eventsList,
+    ongoingEvents,
+    tournamentsList,
     getEvent,
     getEvents,
     getEventsByYears,
@@ -187,6 +236,8 @@ export const useTournamentStore = defineStore('tournament', () => {
     fetchTournaments,
     fetchTournamentFull,
     fetchTournamentsFull,
+    registerTeam,
+    registerPlayerOrManager,
     $reset,
   };
 });
