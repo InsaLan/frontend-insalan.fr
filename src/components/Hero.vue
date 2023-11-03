@@ -9,21 +9,21 @@ onMounted(async () => {
   await fetchStatic();
 });
 
-const trailer_embed = 'https://www.youtube.com/embed/Bxi-4XEANbE?autoplay=1&mute=1&loop=1&color=white&controls=0&modestbranding=1&playsinline=1&rel=0&enablejsapi=1&playlist=Bxi-4XEANbE';
+const trailer_embed = 'https://www.youtube.com/embed/Bxi-4XEANbE?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&rel=0&enablejsapi=1&playlist=Bxi-4XEANbE&end=36';
 </script>
 
 <template>
-  <div class="h-f w-h relative -top-24">
-    <div class="youtube-container">
+  <div class="relative flex h-[calc(100vh_-_6rem)] items-center justify-center">
+    <div class="absolute -z-10 flex h-full w-full items-center justify-center overflow-hidden">
       <iframe
         :src="trailer_embed"
         allowfullscreen
-        class="object-cover blur-md"
+        class="aspect-video min-h-full grow object-cover blur-md"
         frameborder="0"
         title="Trailer insalan"
       />
     </div>
-    <div class="w-f hover-title absolute left-2/4 top-60 -translate-x-2/4">
+    <div>
       <img alt="logo insalan" class="w-[32rem]" src="../assets/images/logo_wide.png">
       <h1 class="text-center text-2xl font-bold text-white">
         {{ getConstant('date_insalan') }}
@@ -47,22 +47,3 @@ const trailer_embed = 'https://www.youtube.com/embed/Bxi-4XEANbE?autoplay=1&mute
     </div>
   </div>
 </template>
-
-<style scoped>
-.youtube-container {
-  overflow: hidden;
-  width: 100%;
-  /* No clicking/hover effects */
-  pointer-events: none;
-  /* Keep it the right aspect-ratio */
-  aspect-ratio: 16/9;
-
-  iframe {
-    /* Extend it beyond the viewport... */
-    width: 300%;
-    height: 100%;
-    /* ...and bring it back again */
-    margin-left: -100%;
-  }
-}
-</style>
