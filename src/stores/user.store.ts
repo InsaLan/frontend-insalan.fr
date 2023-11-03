@@ -58,13 +58,20 @@ export const useUserStore = defineStore('user', () => {
     MailVerified.value = true;
   }
 
-  async function signin(email: string, username: string, password: string, password_validation: string) {
+  async function signin(
+    email: string,
+    username: string,
+    password: string,
+    password_validation: string,
+    decoy?: string,
+  ) {
     await get_csrf();
     const data = {
       username,
       email,
       password,
       password_validation,
+      decoy,
     };
     await axios.post('/user/register/', data, { headers: { 'Content-Type': 'application/json' } });
 

@@ -42,7 +42,13 @@ const register_user = async () => {
   if (register_form.decoy === '') {
     await signin(register_form.email, register_form.username, register_form.password, register_form.password_confirm);
   } else {
-    await signin(register_form.email, register_form.username, register_form.password, register_form.password_confirm);
+    await signin(
+      register_form.email,
+      register_form.username,
+      register_form.password,
+      register_form.password_confirm,
+      register_form.decoy,
+    );
   }
 };
 
