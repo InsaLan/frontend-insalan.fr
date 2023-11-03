@@ -215,9 +215,11 @@ export const useUserStore = defineStore('user', () => {
     verifMail,
     ask_reset_password,
     reset_password,
+    get_csrf,
     role,
     isConnected,
     inscriptions,
     MailVerified,
+    csrf,
   };
 });

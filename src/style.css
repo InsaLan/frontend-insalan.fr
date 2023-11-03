@@ -21,6 +21,10 @@ html {
   background-color: #2C292D;
 }
 
+.text-shadow {
+  text-shadow: black 0 0 5px;
+}
+
 @font-face {
   font-family: Play;
   src: url(./assets/fonts/play/Play-Regular.ttf);

@@ -19,6 +19,7 @@ interface BaseTournament {
   games: Game | Game['id'];
   manager_online_product: number;
   player_online_product: number;
+  maxTeam: number;
 }
 
 export interface TournamentDeref extends BaseTournament {

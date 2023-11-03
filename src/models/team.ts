@@ -5,6 +5,7 @@ interface BaseTeam {
   name: string;
   players: string[];
   managers: string[];
+  validated: boolean;
 }
 
 export interface TeamDeref extends BaseTeam {

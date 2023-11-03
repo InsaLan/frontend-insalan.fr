@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { onMounted, reactive, ref } from 'vue';
+import {
+  computed, onMounted, reactive, ref,
+} from 'vue';
 import { useRouter } from 'vue-router';
 import TeamCard from '@/components/TeamCard.vue';
 import type { Team } from '@/models/team';
@@ -13,50 +15,52 @@ const props = defineProps<{
 }>();
 
 const tournamentStore = useTournamentStore();
-const { getTournamentFull } = storeToRefs(tournamentStore);
-const tournament = ref<Tournament>();
+const { getTournamentFull } = tournamentStore;
+const { tournamentsList } = storeToRefs(tournamentStore);
+const tournament = computed<Tournament | undefined>(() => tournamentsList.value[props.id]);
 
 const open_drop = ref(false);
 const drop_label = ref('Informations');
 const trans = ref('translateX(0vw)');
-const selected_section = reactive<Record<string, boolean>>({
-  info: false,
-  teams: false,
-  groups: false,
-  brackets: false,
-  planning: false,
-  rules: false,
+const sections = reactive<Record<string, [boolean, number]>>({
+  info: [false, 0],
+  teams: [false, 1],
+  groups: [false, 2],
+  brackets: [false, 3],
+  planning: [false, 4],
+  rules: [false, 5],
 });
 
 const select_tag = (e: Event) => {
   const target = e.target as HTMLInputElement;
   open_drop.value = false;
   drop_label.value = target.innerHTML;
-  trans.value = `translateX(calc(-100vw * ${Array.from(target.parentElement!.children).indexOf(target)}))`;
-  Object.keys(selected_section).forEach((k) => {
-    selected_section[k] = false;
+  trans.value = `translateX(calc(-100vw * ${sections[target.id][1]}))`;
+  Object.keys(sections).forEach((k) => {
+    sections[k][0] = false;
   });
-  selected_section[target.id] = true;
+  sections[target.id][0] = true;
 };
 
 const router = useRouter();
 onMounted(async () => {
   try {
-    tournament.value = await getTournamentFull.value(props.id);
-  } catch (err: unknown) {
+    await getTournamentFull(props.id);
+  } catch (err: any) {
     router.go(-1);
   }
-  if (props.section !== undefined && props.section.s in selected_section) {
-    selected_section[props.section.s] = true;
-    document.getElementById(props.section.s)?.click();
+  if (props.section !== undefined && props.section.s in sections) {
+    sections[props.section.s][0] = true;
+    drop_label.value = props.section.s;
+    trans.value = `translateX(calc(-100vw * ${sections[props.section.s][1]}`;
   } else {
-    selected_section.info = true;
+    sections.info[0] = true;
   }
 });
 </script>
 
 <template>
-  <div class="flex h-min flex-col items-center 2xl:h-[calc(100vh_-_6rem)]">
+  <div v-if="tournament?.is_announced" class="flex h-min flex-col items-center 2xl:h-[calc(100vh_-_6rem)]">
     <div class="text-center text-6xl font-bold text-white">
       {{ tournament?.name }}
     </div>
@@ -77,7 +81,7 @@ onMounted(async () => {
         <!--id="dropdown"-->
         <button
           id="info"
-          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': selected_section.info }"
+          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': sections.info[0] }"
           class="my-2 text-xl md:my-0"
           type="button"
           @click="select_tag"
@@ -86,7 +90,7 @@ onMounted(async () => {
         </button> <!--href="#infos"-->
         <button
           id="teams"
-          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': selected_section.teams }"
+          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': sections.teams[0] }"
           class="my-2 text-xl md:my-0"
           type="button"
           @click="select_tag"
@@ -97,14 +101,14 @@ onMounted(async () => {
           id="groups"
           type="button"
           class="my-2 text-xl md:my-0"
-          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': selected_section.groups }"
+          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': sections.groups[0] }"
           @click="select_tag"
         >
           Poules
         </button> <!--href="#groups"-->
         <button
           id="brackets"
-          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': selected_section.brackets }"
+          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': sections.brackets[0] }"
           class="my-2 text-xl md:my-0"
           type="button"
           @click="select_tag"
@@ -113,7 +117,7 @@ onMounted(async () => {
         </button> <!--href="#brackets"-->
         <button
           id="planning"
-          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': selected_section.planning }"
+          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': sections.planning[0] }"
           class="my-2 text-xl md:my-0"
           type="button"
           @click="select_tag"
@@ -122,7 +126,7 @@ onMounted(async () => {
         </button> <!--href="#planning"-->
         <button
           id="rules"
-          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': selected_section.rules }"
+          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': sections.rules[0] }"
           class="my-2 text-xl md:my-0"
           type="button"
           @click="select_tag"
@@ -185,7 +189,7 @@ onMounted(async () => {
         </section>
 
         <section id="teams">
-          <div class="grid grid-cols-[repeat(auto-fit,minmax(330px,1fr))] gap-4 p-5">
+          <div class="grid grid-cols-[repeat(auto-fill,minmax(330px,1fr))] gap-4 p-5">
             <!--md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 grid-cols-1-->
             <TeamCard v-for="team in (tournament?.teams as Team[])" :key="team.id" :team="team"/>
             <!--<a href="#" class="flex flex-row justify-center items-center bg-red-500 rounded">
@@ -208,6 +212,10 @@ onMounted(async () => {
         <section id="rules"/>
       </div>
     </div>
+  </div>
+
+  <div v-else class="text-center text-2xl">
+    Le tournoi que vous chercher n'a pas encore été annoncé, revenez plus tard !
   </div>
 </template>
 

@@ -34,7 +34,7 @@
                     </slot>
                   </div>
                 </div>
-                <div class="w-64">
+                <div class="min-w-64">
                   <slot name="body">
                     <div class="mt-2">
                       <p class="text-sm text-gray-300">
