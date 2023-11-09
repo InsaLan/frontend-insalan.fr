@@ -23,7 +23,7 @@ const router = useRouter();
 onMounted(async () => {
   try {
     tournament.value = await getTournament.value(props.id);
-  } catch (err: any) {
+  } catch (err: unknown) {
     router.go(-1);
   }
 });
