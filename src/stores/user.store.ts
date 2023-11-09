@@ -2,7 +2,7 @@ import axios, { type AxiosError, isAxiosError } from 'axios';
 import { defineStore } from 'pinia';
 import { computed, type Ref, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import type { PlayerRegistrationDeref } from '@/models/registration';
+import { PaymentStatus, type PlayerRegistrationDeref } from '@/models/registration';
 import type { User, UserPatch, UserPatchError } from '@/models/user';
 
 import { useErrorStore } from './error.store';
@@ -136,7 +136,7 @@ export const useUserStore = defineStore('user', () => {
           past.push(['player', registration]);
         }
         // If the registration is not paid, add the tournament to the unpaid object
-        if (registration.payment_status === 'NOT_PAID') {
+        if (registration.payment_status === PaymentStatus.NOT_PAID) {
           unpaid[registration.id] = true;
         }
       });
@@ -147,7 +147,7 @@ export const useUserStore = defineStore('user', () => {
           past.push(['manager', registration]);
         }
         // If the registration is not paid, add the tournament to the unpaid object
-        if (registration.payment_status === 'NOT_PAID') {
+        if (registration.payment_status === PaymentStatus.NOT_PAID) {
           unpaid[registration.id] = true;
         }
       });

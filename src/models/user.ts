@@ -16,8 +16,8 @@ export interface User {
   is_staff: boolean;
   is_superuser: boolean;
   is_active: boolean;
-  groups: any[];
-  user_permissions: any[];
+  groups: unknown[];
+  user_permissions: unknown[];
 }
 
 export interface UserPatchError {
