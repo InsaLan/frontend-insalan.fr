@@ -13,9 +13,7 @@ defineProps<{
     </h1>
     <ul class="mx-1">
       <li v-for="player in team.players" :key="player">
-        <p class="">
-          {{ player }}
-        </p>
+        <p>{{ player }}</p>
       </li>
     </ul>
     <p class="text-grey-400">

@@ -196,14 +196,14 @@
           <img
             alt="Logo de l'AEIR"
             class="h-[32px] md:h-[64px]"
-            src="../assets/images/logo_aeir.png"
+            src="@/assets/images/logo_aeir.png"
           />
         </a>
         <a class="ml-2 mt-2 md:mt-5" href="https://insa-rennes.fr">
           <img
             alt="Logo de l'INSA"
             class="h-[32px] md:h-[64px]"
-            src="../assets/images/logo_insa.png"
+            src="@/assets/images/logo_insa.png"
           />
         </a>
       </div>

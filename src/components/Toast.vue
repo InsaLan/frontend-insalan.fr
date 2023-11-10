@@ -16,7 +16,7 @@ const { dismiss } = ToastStore;
       <p>{{ msg }}</p>
     </div>
     <button
-      class="-m-1.5  ml-auto inline-flex h-8 w-8 items-center justify-center  rounded-lg p-1.5 hover:bg-green-600 hover:text-white hover:ring-2 hover:ring-green-600"
+      class="-m-1.5 ml-auto inline-flex h-8 w-8 items-center justify-center rounded-lg p-1.5 hover:bg-green-600 hover:text-white hover:ring-2 hover:ring-green-600"
       type="button"
       @click="dismiss"
     >
