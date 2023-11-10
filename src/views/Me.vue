@@ -7,6 +7,7 @@ import { storeToRefs } from 'pinia';
 import {
   computed, onMounted, reactive, ref,
 } from 'vue';
+import placeholder from '@/assets/images/logo_home.png';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import { useUserStore } from '@/stores/user.store';
@@ -108,8 +109,6 @@ const editField = (field: string) => {
   }
   openModal();
 };
-
-const placeholder = '/src/assets/images/logo_home.png';
 </script>
 
 <template>
@@ -342,7 +341,7 @@ const placeholder = '/src/assets/images/logo_home.png';
               :class="{ error: context.invalid }"
               aria-label="Email"
               class="border-2 bg-theme-bg"
-              placeholder="John-doe@gmail.com"
+              placeholder="john-doe@gmail.com"
               required
               type="text"
               @blur="v$_email.email.$touch"
@@ -362,7 +361,7 @@ const placeholder = '/src/assets/images/logo_home.png';
               :class="{ error: context.invalid }"
               aria-label="Nouveau mot de passe"
               class="border-2 bg-theme-bg"
-              placeholder="Mot de passe"
+              placeholder="Nouveau mot de passe"
               required
               type="password"
               @blur="v$_password.new_password.$touch"
@@ -379,7 +378,7 @@ const placeholder = '/src/assets/images/logo_home.png';
               :class="{ error: context.invalid }"
               aria-label="Confirmer le mot de passe"
               class="border-2 bg-theme-bg"
-              placeholder="Mot de passe"
+              placeholder="Confirmer le mot de passe"
               required
               type="password"
               @blur="v$_password.password_validation.$touch"
@@ -396,7 +395,7 @@ const placeholder = '/src/assets/images/logo_home.png';
               :class="{ error: context.invalid }"
               aria-label="mot de passe actuel"
               class="border-2 bg-theme-bg"
-              placeholder="Mot de passe"
+              placeholder="Mot de passe actuel"
               required
               type="password"
               @blur="v$_password.current_password.$touch"
