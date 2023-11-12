@@ -27,9 +27,9 @@ onMounted(async () => {
   <div>
     <section class="h-min">
       <Hero/>
-      <Content name="main_page"/>
     </section>
-    <section class="h-min min-h-[calc(100vh_-_6rem)]">
+    <Content name="main_page"/>
+    <section>
       <div class="title my-2 text-white">
         Tournois
       </div>

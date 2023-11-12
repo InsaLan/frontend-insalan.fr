@@ -96,4 +96,5 @@ module.exports = defineConfig({
       },
     },
   ],
+  reportUnusedDisableDirectives: true,
 });

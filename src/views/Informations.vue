@@ -1,8 +1,12 @@
 <script setup lang="ts">
+import Content from '@/components/Content.vue';
 import Map from '@/components/Map.vue';
+
 </script>
 
 <template>
-  <h1>So much informations ici</h1>
+  <Content name="informations"/>
   <Map/>
+
+  <Content name="contact"/>
 </template>

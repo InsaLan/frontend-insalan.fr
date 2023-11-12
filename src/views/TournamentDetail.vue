@@ -43,7 +43,7 @@ const router = useRouter();
 onMounted(async () => {
   try {
     tournament.value = await getTournamentFull.value(props.id);
-  } catch (err: any) {
+  } catch (err: unknown) {
     router.go(-1);
   }
   if (props.section !== undefined && props.section.s in selected_section) {

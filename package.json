@@ -13,36 +13,40 @@
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
-    "@fortawesome/vue-fontawesome": "^3.0.3",
+    "@fortawesome/vue-fontawesome": "^3.0.5",
     "@tailwindcss/forms": "^0.5.6",
+    "@vue-leaflet/vue-leaflet": "^0.10.1",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
-    "axios": "^1.6.0",
+    "axios": "^1.6.1",
+    "leaflet": "^1.9.4",
     "markdown-it": "^13.0.2",
     "markdown-it-class": "^1.0.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.0",
-    "vue": "^3.3.7",
-    "vue-router": "^4.2.5",
-    "leaflet": "^1.9.4",
-    "@vue-leaflet/vue-leaflet": "^0.10.1"
+    "vue": "^3.3.8",
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.5.1",
-    "@types/markdown-it": "^13.0.5",
-    "@types/node": "^20.8.9",
-    "@vitejs/plugin-vue": "^4.4.0",
+    "@types/markdown-it": "^13.0.6",
+    "@types/node": "^20.9.0",
+    "@vitejs/plugin-vue": "^4.4.1",
     "@vue/eslint-config-airbnb-with-typescript": "^7.0.0",
     "autoprefixer": "^10.4.16",
-    "eslint": "^8.52.0",
+    "eslint": "^8.53.0",
     "eslint-define-config": "^1.24.1",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-tailwindcss": "^3.13.0",
     "eslint-plugin-vue": "^9.18.1",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5",
-    "typescript": "~5.1.6",
+    "typescript": "^5.2.2",
     "vite": "^4.5.0",
     "vue-tsc": "^1.8.22"
+  },
+  "overrides": {
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0"
   }
 }
