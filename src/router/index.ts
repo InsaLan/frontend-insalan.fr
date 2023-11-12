@@ -20,8 +20,8 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/Informations.vue'),
   },
   {
-    path: '/public',
-    component: () => import('@/views/Public.vue'),
+    path: '/association',
+    component: () => import('@/views/Association.vue'),
   },
   {
     path: '/eat',

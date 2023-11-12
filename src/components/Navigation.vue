@@ -5,14 +5,14 @@ import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user.store';
 
 const items = [
-  { url: '/public', text: 'Public' },
+  { url: '/association', text: 'Association' },
   { url: '/tournament', text: 'Tournois' },
   { url: '/info', text: 'Informations pratiques' },
   { url: '/eat', text: 'Restauration' },
 ] as const;
 const mobile_items = [
   { url: '/', text: 'Accueil' },
-  { url: '/public', text: 'Public' },
+  { url: '/association', text: 'Association' },
   { url: '/tournament', text: 'Tournois' },
   { url: '/info', text: 'Informations pratiques' },
   { url: '/eat', text: 'Restauration' },
