@@ -45,18 +45,11 @@ onMounted(async () => {
 }
 
 .title::after, .title::before {
-  display: block;
-  min-width: calc(35vw - 3em);
+  flex-grow: 1;
+  margin-left: 1rem;
+  margin-right: 1rem;
   height: 0.1em;
   content: '';
   background-color: #fff;
-}
-
-.title::before {
-  margin-right: 1em;
-}
-
-.title::after {
-  margin-left: 1em;
 }
 </style>

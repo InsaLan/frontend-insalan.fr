@@ -18,7 +18,8 @@ export const useContentStore = defineStore('content', () => {
   });
   const classesMapping = {
     h1: 'title',
-    h2: 'title',
+    h2: 'text-3xl title',
+    h4: 'text-center text-2xl text-bold',
     ul: 'list-disc',
     li: 'ml-5',
     a: 'underline underline-offset-2',
@@ -49,5 +50,10 @@ export const useContentStore = defineStore('content', () => {
     return constants.value[name];
   }
 
-  return { fetchStatic, getContent, getConstant };
+  return {
+    md,
+    fetchStatic,
+    getContent,
+    getConstant,
+  };
 });

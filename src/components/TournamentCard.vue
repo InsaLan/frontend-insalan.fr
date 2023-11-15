@@ -27,14 +27,14 @@ onMounted(async () => {
       class="aspect-video w-screen text-clip"
     />
     <p class="text-lg">
-      {{ tournament?.teams.length }}/{{ tournament?.maxTeam }} Équipes | Cashprize:
+      {{ tournament?.validated_teams }}/{{ tournament?.maxTeam }} Équipes | Cashprize:
       {{ tournament?.cashprizes?.reduce((acc, val) => acc += Number(val), 0) }} €
     </p>
     <div class="mb-3 flex w-2/3 justify-between">
       <router-link :to="`tournament/${tournament?.id as number}`" class="rounded border-2 border-green-600 p-2 text-lg hover:border-green-500">
         Plus d'infos
       </router-link>
-      <router-link v-if="Date.parse(tournament?.registration_open) < Date.now()" :to="`tournament/${tournament?.id as number}/register`" class="rounded bg-green-600 p-2 text-lg hover:bg-green-500">
+      <router-link v-if="Date.parse(tournament?.registration_open) < Date.now() && tournament?.validated_teams < tournament?.maxTeam" :to="`tournament/${tournament?.id as number}/register`" class="rounded bg-green-600 p-2 text-lg hover:bg-green-500">
         S'inscrire
       </router-link>
       <button v-else type="button" class="rounded bg-green-600 p-2 text-lg opacity-60" disabled>
@@ -53,7 +53,7 @@ onMounted(async () => {
     >
       <g>
         <path
-          class="fill-black"
+          class="fill-white"
           d="M396.138,85.295c-13.172-25.037-33.795-45.898-59.342-61.03C311.26,9.2,280.435,0.001,246.98,0.001
           c-41.238-0.102-75.5,10.642-101.359,25.521c-25.962,14.826-37.156,32.088-37.156,32.088c-4.363,3.786-6.824,9.294-6.721,15.056
           c0.118,5.77,2.775,11.186,7.273,14.784l35.933,28.78c7.324,5.864,17.806,5.644,24.875-0.518c0,0,4.414-7.978,18.247-15.88
@@ -67,7 +67,7 @@ onMounted(async () => {
           C410.243,120.761,404.879,101.971,396.138,85.295z"
         />
         <path
-          class="st0"
+          class="st0 fill-white"
           d="M228.809,406.44c-29.152,0-52.788,23.644-52.788,52.788c0,29.136,23.637,52.772,52.788,52.772
           c29.136,0,52.763-23.636,52.763-52.772C281.572,430.084,257.945,406.44,228.809,406.44z"
         />
