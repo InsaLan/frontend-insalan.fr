@@ -3,7 +3,7 @@ import type { TournamentDeref } from '@/models/tournament';
 interface BaseTeam {
   id: number;
   name: string;
-  players: string[];
+  players: Record<string, string>[];
   managers: string[];
   validated: boolean;
 }

@@ -37,7 +37,7 @@ const register_form = reactive({
   team: '',
   pseudo: '',
   password: '',
-  role: '',
+  role: 'player',
   accept_rules: false,
 });
 
@@ -209,7 +209,7 @@ onMounted(async () => {
               Rôle dans l'équipe
             </label>
             <select id="role" v-model="register_form.role" :class="{ error: context.invalid }" class="text-black">
-              <option value="player" selected>
+              <option value="player">
                 Joueur
               </option>
               <option value="manager">

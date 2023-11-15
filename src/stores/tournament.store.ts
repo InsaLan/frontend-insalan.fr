@@ -239,5 +239,6 @@ export const useTournamentStore = defineStore('tournament', () => {
     registerTeam,
     registerPlayerOrManager,
     $reset,
+    groupBy,
   };
 });

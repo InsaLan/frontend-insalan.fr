@@ -20,6 +20,8 @@ interface BaseTournament {
   manager_online_product: number;
   player_online_product: number;
   maxTeam: number;
+  validated_teams: number;
+  description: string;
 }
 
 export interface TournamentDeref extends BaseTournament {

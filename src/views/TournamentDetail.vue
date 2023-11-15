@@ -7,6 +7,7 @@ import { useRouter } from 'vue-router';
 import TeamCard from '@/components/TeamCard.vue';
 import type { Team } from '@/models/team';
 import type { Tournament } from '@/models/tournament';
+import { useContentStore } from '@/stores/content.store';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const props = defineProps<{
@@ -14,10 +15,20 @@ const props = defineProps<{
   section?: { s: string };
 }>();
 
+const { md } = useContentStore();
+
 const tournamentStore = useTournamentStore();
 const { getTournamentFull } = tournamentStore;
 const { tournamentsList } = storeToRefs(tournamentStore);
 const tournament = computed<Tournament | undefined>(() => tournamentsList.value[props.id]);
+const teams = computed<Record<string, Team[]>>(() => (tournament.value?.teams as Team[]).reduce((ret, team) => {
+  if (team.validated) {
+    ret.validated_teams.push(team);
+  } else {
+    ret.non_validated_teams.push(team);
+  }
+  return ret;
+}, { validated_teams: [] as Team[], non_validated_teams: [] as Team[] }));
 
 const open_drop = ref(false);
 const drop_label = ref('Informations');
@@ -60,168 +71,207 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="tournament?.is_announced" class="flex h-min flex-col items-center 2xl:h-[calc(100vh_-_6rem)]">
-    <div class="text-center text-6xl font-bold text-white">
-      {{ tournament?.name }}
+  <div v-if="tournament?.is_announced" class="flex min-h-[calc(100vh_-_6rem)] flex-col items-center">
+    <div class="sticky top-24 bg-[#2c292d]">
+      <div class="text-center text-6xl font-bold text-white">
+        {{ tournament?.name }}
+      </div>
+
+      <nav class="mt-2 flex w-screen justify-center bg-gray-500 py-4">
+        <button
+          :class="{ 'after:translate-x-[5px] after:rotate-90 ': open_drop, 'after:-rotate-90': !open_drop }"
+          class="text-xl after:inline-block after:w-4 after:origin-center after:content-['\2039'] md:hidden"
+          type="button"
+          @click="open_drop = !open_drop"
+        >
+          {{ drop_label }}
+        </button> <!-- id="dropdown-btn"--> <!--@click="switch_tag"-->
+        <div
+          class="dropGrow absolute z-10 w-screen translate-y-10 flex-col items-center bg-gray-500 md:static md:z-0 md:flex md:w-2/3 md:translate-y-0 md:flex-row md:justify-between xl:w-1/2"
+          :class="{ 'flex border-t-2 border-white': open_drop, hidden: !open_drop }"
+        >
+          <!--id="dropdown"-->
+          <button
+            id="info"
+            :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': sections.info[0] }"
+            class="my-2 text-xl md:my-0"
+            type="button"
+            @click="select_tag"
+          >
+            Informations
+          </button> <!--href="#infos"-->
+          <button
+            id="teams"
+            :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': sections.teams[0] }"
+            class="my-2 text-xl md:my-0"
+            type="button"
+            @click="select_tag"
+          >
+            Équipes
+          </button> <!--href="#teams"-->
+          <button
+            id="groups"
+            type="button"
+            class="my-2 text-xl md:my-0"
+            :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': sections.groups[0] }"
+            @click="select_tag"
+          >
+            Poules
+          </button> <!--href="#groups"-->
+          <button
+            id="brackets"
+            :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': sections.brackets[0] }"
+            class="my-2 text-xl md:my-0"
+            type="button"
+            @click="select_tag"
+          >
+            Arbres
+          </button> <!--href="#brackets"-->
+          <button
+            id="planning"
+            :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': sections.planning[0] }"
+            class="my-2 text-xl md:my-0"
+            type="button"
+            @click="select_tag"
+          >
+            Planning
+          </button> <!--href="#planning"-->
+          <button
+            id="rules"
+            :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': sections.rules[0] }"
+            class="my-2 text-xl md:my-0"
+            type="button"
+            @click="select_tag"
+          >
+            Règlement
+          </button> <!--href="#rules"-->
+        </div>
+      </nav>
     </div>
 
-    <nav class="mt-2 flex w-screen justify-center bg-gray-500 py-4">
-      <button
-        :class="{ 'after:translate-x-[5px] after:rotate-90 ': open_drop, 'after:-rotate-90': !open_drop }"
-        class="text-xl after:inline-block after:w-4 after:origin-center after:content-['\2039'] md:hidden"
-        type="button"
-        @click="open_drop = !open_drop"
-      >
-        {{ drop_label }}
-      </button> <!-- id="dropdown-btn"--> <!--@click="switch_tag"-->
-      <div
-        class="dropGrow absolute z-10 w-screen translate-y-10 flex-col items-center bg-gray-500 md:static md:z-0 md:flex md:w-2/3 md:translate-y-0 md:flex-row md:justify-between xl:w-1/2"
-        :class="{ 'flex border-t-2 border-white': open_drop, hidden: !open_drop }"
-      >
-        <!--id="dropdown"-->
-        <button
-          id="info"
-          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': sections.info[0] }"
-          class="my-2 text-xl md:my-0"
-          type="button"
-          @click="select_tag"
-        >
-          Informations
-        </button> <!--href="#infos"-->
-        <button
-          id="teams"
-          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': sections.teams[0] }"
-          class="my-2 text-xl md:my-0"
-          type="button"
-          @click="select_tag"
-        >
-          Équipes
-        </button> <!--href="#teams"-->
-        <button
-          id="groups"
-          type="button"
-          class="my-2 text-xl md:my-0"
-          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': sections.groups[0] }"
-          @click="select_tag"
-        >
-          Poules
-        </button> <!--href="#groups"-->
-        <button
-          id="brackets"
-          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': sections.brackets[0] }"
-          class="my-2 text-xl md:my-0"
-          type="button"
-          @click="select_tag"
-        >
-          Arbres
-        </button> <!--href="#brackets"-->
-        <button
-          id="planning"
-          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': sections.planning[0] }"
-          class="my-2 text-xl md:my-0"
-          type="button"
-          @click="select_tag"
-        >
-          Planning
-        </button> <!--href="#planning"-->
-        <button
-          id="rules"
-          :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': sections.rules[0] }"
-          class="my-2 text-xl md:my-0"
-          type="button"
-          @click="select_tag"
-        >
-          Règlement
-        </button> <!--href="#rules"-->
+    <section
+      id="infos"
+      :style="{ backgroundImage: `url(${tournament?.logo})` }"
+      class="grid grid-rows-[min-content_1fr] bg-gray-500 bg-cover bg-center bg-blend-multiply"
+      :class="{ hidden: !sections.info[0] }"
+    >
+      <h2 class="font mx-auto my-8 w-3/4 text-center text-3xl font-bold">
+        {{ tournament?.description }}
+      </h2>
+
+      <div class="grid place-items-center gap-7 md:grid-cols-3">
+        <div class="relative top-14 flex w-full flex-col items-center">
+          <h3 class="mb-6 text-4xl">
+            Format
+          </h3>
+          <svg class="w-2/3 fill-[#fd5e96]" viewBox="0 0 12 8" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="0,0 8,0 8,4 12,4 12,8 4,8 4,4 0,4"/>
+            <rect fill="#d14d7b" x="0" y="3.5" width="4" height="0.5"/>
+            <rect fill="#d14d7b" x="4" y="7.5" width="8" height="0.5"/>
+            <text fill="white" font-size="1" text-anchor="middle" x="4" y="1.25">
+              {{ tournament?.maxTeam }} équipes
+            </text>
+            <text fill="white" font-size="1" text-anchor="middle" x="4" y="2.75">
+              de X joueurs
+            </text>
+            <text fill="white" font-size="1" text-anchor="middle" x="8" y="5.25">
+              {{ Number(tournament?.player_price_online) }}€ / joueur
+            </text>
+            <text fill="white" font-size="1" text-anchor="middle" x="8" y="6.75">
+              {{ Number(tournament?.manager_price_online) }}€ / manager
+            </text>
+          </svg>
+        </div>
+
+        <div class="relative -top-20 flex w-full flex-col items-center">
+          <h3 class="mb-6 text-4xl">
+            Cashprize
+          </h3>
+          <svg class="w-2/3 fill-[#45cae0]" viewBox="0 0 12 8" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="0,8 0,4 4,4 4,0 8,0 8,4 12,4 12,8"/>
+            <rect x="0" y="7.5" width="12" height="0.5" fill="#0aadbf"/>
+            <text font-size="2" text-anchor="middle" x="6" y="2">
+              🥇
+            </text>
+            <text fill="white" font-size="1" text-anchor="middle" x="6" y="3.25">
+              {{ Number(tournament?.cashprizes[0]) }} €
+            </text>
+            <text font-size="2" text-anchor="middle" x="2" y="6">
+              🥈
+            </text>
+            <text fill="white" font-size="1" text-anchor="middle" x="2" y="7.25">
+              {{ Number(tournament?.cashprizes[1]) }} €
+            </text>
+            <text font-size="2" text-anchor="middle" x="10" y="6">
+              🥉
+            </text>
+            <text fill="white" font-size="1" text-anchor="middle" x="10" y="7.25">
+              {{ Number(tournament?.cashprizes[2]) }} €
+            </text>
+          </svg>
+        </div>
+
+        <div class="relative top-14 flex w-full grow flex-col items-center">
+          <h3 class="mb-6 text-4xl">
+            Casteurs
+          </h3>
+          <svg class="w-1/2" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="8" height="8" fill="#B169BF"/>
+            <rect x="0" y="7.5" width="8" height="0.5" fill="#844A8F"/>
+            // eslint-disable-next-line tailwindcss/migration-from-tailwind-2
+            <image :href="tournament?.logo" class="overflow-clip" width="4" height="3.5"/>
+            <text fill="white" font-size="1" text-anchor="middle" x="6" y="6.25">
+              LGC
+            </text>
+          </svg>
+        </div>
       </div>
-    </nav>
+    </section>
 
-    <div class="flex h-full min-h-min w-screen overflow-x-hidden">
-      <div :style="{ transform: trans }" class="grid grid-cols-[repeat(6,100vw)]">
-        <section
-          id="infos"
-          :style="{ backgroundImage: `url(${tournament?.logo})` }"
-          class="grid place-items-center gap-5 bg-gray-500 bg-cover bg-center bg-blend-multiply 2xl:grid-rows-[1fr_3fr]"
-        >
-          <h2 class="font my-8 w-9/12 text-center text-3xl font-bold">
-            Viens prendre part à un tournoi palpitant et amusant. Lance toi dans la faille de l'invocateur
-            avec tes coéquipiers pour tenter de remporter la victoire ou tout simplement vous amuser tous ensemble !
-          </h2>
-
-          <div class="grid h-full w-full place-items-center gap-7 2xl:grid-cols-3">
-            <div class="flex h-full w-full flex-col items-center justify-around">
-              <h3 class="text-4xl">
-                Format
-              </h3>
-              <div class="text-3xl">
-                24 équipes de 5 joueurs <br/>
-                xx€ / joueur
-              </div>
-            </div>
-
-            <div class="flex h-full w-full flex-col items-center justify-around">
-              <h3 class="text-4xl">
-                Cashprize
-              </h3>
-              <svg class="mb-10 h-1/2 w-11/12" fill="white" viewBox="0 0 30 15" xmlns="http://www.w3.org/2000/svg">
-                <rect height="7.5" width="10" x="0" y="7.5"/>
-                <text fill="black" font-size="6" text-anchor="middle" x="5" y="14">2</text>
-                <rect height="10" width="10" x="10" y="5"/>
-                <text fill="black" font-size="7" text-anchor="middle" x="15" y="12">1</text>
-                <rect height="6" width="10" x="20" y="9"/>
-                <text fill="black" font-size="6" text-anchor="middle" x="25" y="14">3</text>
-                <text fill="white" font-size="3" text-anchor="middle" x="5" y="7.3">500 €</text>
-                <text fill="white" font-size="3" text-anchor="middle" x="15" y="4.8">1500 €</text>
-                <text fill="white" font-size="3" text-anchor="middle" x="25" y="8.8">300 €</text>
-              </svg>
-            </div>
-
-            <div class="flex h-full w-full flex-col items-center justify-around">
-              <h3 class="text-4xl">
-                Caster
-              </h3>
-              <div class="flex flex-col items-center">
-                <img :src="tournament?.logo" alt="caster" class="aspect-square w-1/2 text-clip rounded-full">
-                <span class="text-2xl">Adrien</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="teams">
-          <div class="grid grid-cols-[repeat(auto-fill,minmax(330px,1fr))] gap-4 p-5">
-            <!--md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 grid-cols-1-->
-            <TeamCard v-for="team in (tournament?.teams as Team[])" :key="team.id" :team="team"/>
-            <!--<a href="#" class="flex flex-row justify-center items-center bg-red-500 rounded">
-          <div class="text-center rounded bg-red-500">
-
-            <fa-awesome-icon size="5x" icon="fa-solid fa-circle-plus" />
-            <p class="text-center text-4xl">inscrire son équipe</p>
-          </div>
-        </a>
-      -->
-          </div>
-        </section>
-
-        <section id="groups"/>
-
-        <section id="brackets"/>
-
-        <section id="planning"/>
-
-        <section id="rules"/>
+    <section id="teams" :class="{ hidden: !sections.teams[0] }">
+      <h1 v-if="tournament.teams.length === 0" class="mt-6 text-center text-4xl">
+        Aucune équipe inscrite
+      </h1>
+      <div v-if="teams.validated_teams.length > 0">
+        <h1 class="title">
+          Équipes validées
+        </h1>
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(330px,1fr))] gap-4 p-5">
+          <TeamCard v-for="team in teams.validated_teams" :key="team.id" :team="team"/>
+        </div>
       </div>
-    </div>
+      <div v-if="teams.non_validated_teams.length > 0">
+        <h1 class="title">
+          Équipes en cours de validation
+        </h1>
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(330px,1fr))] gap-4 p-5">
+          <TeamCard v-for="team in teams.non_validated_teams" :key="team.id" :team="team"/>
+        </div>
+      </div>
+    </section>
+
+    <section id="groups" :class="{ hidden: !sections.groups[0] }"/>
+
+    <section id="brackets" :class="{ hidden: !sections.brackets[0] }"/>
+
+    <section id="planning" :class="{ hidden: !sections.planning[0] }"/>
+
+    <section id="rules" :class="{ hidden: !sections.rules[0] }">
+      // eslint-disable-next-line vue/no-v-html
+      <div class="my-4 text-justify xl:mx-[20rem]" v-html="md.render(tournament.rules)"/>
+    </section>
   </div>
 
-  <div v-else class="text-center text-2xl">
-    Le tournoi que vous chercher n'a pas encore été annoncé, revenez plus tard !
+  <div v-else class="mt-6 text-center text-4xl">
+    Le tournoi que vous cherchez n'a pas encore été annoncé, revenez plus tard !
   </div>
 </template>
 
 <style scoped>
 section {
+  flex-grow: 1;
   width: 100%;
+  height: 100%;
 }
 
 a {

@@ -35,7 +35,7 @@ const burger_menu = ref(false);
 </script>
 <template>
   <nav class="sticky top-0 z-50 h-24  bg-theme-bg">
-    <div id="desktop" class="hidden justify-around border-b-2 border-white md:flex">
+    <div id="desktop" class="hidden justify-around border-b-2 border-white lg:flex">
       <router-link class="my-2" to="/">
         <img alt="Logo InsaLan" class="h-[69px] w-[69px]" src="@/assets/images/logo_home.png"/>
       </router-link>
@@ -44,14 +44,14 @@ const burger_menu = ref(false);
           v-for="(item, i) in items"
           :key="i"
           :to="{ path: item.url }"
-          class="mx-2 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
+          class="mx-2 text-[clamp(1rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
         >
           {{ item.text }}
         </router-link>
       </div>
       <div v-if="!isConnected" class="my-auto">
         <router-link
-          class="block rounded bg-blue-800 p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+          class="block rounded bg-blue-800 p-2 text-[clamp(1rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
           to="/register"
         >
           Se connecter/S'inscrire
@@ -65,12 +65,12 @@ const burger_menu = ref(false);
         >
           Panel Admin
         </a>
-        <router-link class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800" to="/me">
+        <router-link class="mx-4 text-[clamp(1rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:text-blue-800" to="/me">
           Mon compte
         </router-link>
 
         <button
-          class="rounded bg-blue-800 p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+          class="rounded bg-blue-800 p-2 text-[clamp(1rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
           type="button"
           @click="logout_user()"
         >
@@ -78,7 +78,7 @@ const burger_menu = ref(false);
         </button>
       </div>
     </div>
-    <div class="border-b-2 border-white md:hidden">
+    <div class="border-b-2 border-white lg:hidden">
       <div id="top" class="flex justify-between">
         <router-link class="my-2 h-16 w-16" to="/">
           <img alt="Logo InsaLan" class="min-h-[48px] min-w-[48px]" src="@/assets/images/logo_home.png"/>
@@ -87,7 +87,7 @@ const burger_menu = ref(false);
           <div class="flex gap-4">
             <div v-if="!isConnected" class="my-auto">
               <router-link
-                class="block rounded bg-blue-800 p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:text-base"
+                class="block rounded bg-blue-800 p-2 text-[clamp(0.9rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:text-base"
                 to="/register"
               >
                 Se connecter/S'inscrire
@@ -95,13 +95,13 @@ const burger_menu = ref(false);
             </div>
             <div v-else class="my-auto">
               <router-link
-                class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
+                class="mx-4 text-[clamp(0.9rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
                 to="/me"
               >
                 Mon compte
               </router-link>
               <button
-                class="rounded bg-blue-800 p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+                class="rounded bg-blue-800 p-2 text-[clamp(0.9rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
                 type="button"
                 @click="logout_user()"
               >
