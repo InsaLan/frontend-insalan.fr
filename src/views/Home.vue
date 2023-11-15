@@ -10,7 +10,7 @@ import { useTournamentStore } from '@/stores/tournament.store';
 const tournamentStore = useTournamentStore();
 const { getOngoingEvents } = tournamentStore;
 const { ongoingEvents } = storeToRefs(tournamentStore);
-const event = computed(() => ongoingEvents.value.at(-1));
+const event = computed(() => ongoingEvents.value?.at(-1));
 const tournaments_id = computed(() => event.value?.tournaments);
 
 onMounted(async () => {
