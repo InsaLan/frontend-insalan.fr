@@ -5,5 +5,5 @@ import Content from '@/components/Content.vue';
 
 <template>
   <h1 class="title">L'association InsaLan</h1>
-  <Content name="association"/>
+  <Content name="Association"/>
 </template>
