@@ -1,3 +1,4 @@
+import type { Caster } from '@/models/caster';
 import type { EventDeref } from '@/models/event';
 import type { Game } from '@/models/game';
 import type { Team } from '@/models/team';
@@ -16,12 +17,13 @@ interface BaseTournament {
   manager_price_online: string;
   manager_price_onsite: string;
   cashprizes: number[];
-  games: Game | Game['id'];
+  game: Game | Game['id'];
   manager_online_product: number;
   player_online_product: number;
   maxTeam: number;
   validated_teams: number;
   description: string;
+  casters: Caster[];
 }
 
 export interface TournamentDeref extends BaseTournament {
