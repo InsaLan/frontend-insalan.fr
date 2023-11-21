@@ -8,7 +8,7 @@
         Réseaux
       </h1>
       <div class="flex w-min flex-row">
-        <a class="hover:blur-sm" href="https://www.instagram.com/insalan_officiel" target="_blank">
+        <a class="hover:blur-sm" href="https://www.instagram.com/insalan_officiel" target="_blank" rel="noopener noreferrer">
           <svg
             id="instagram"
             class="h-10 w-10 md:h-14 md:w-14"
@@ -111,7 +111,7 @@
             </g>
           </svg>
         </a>
-        <a class="hover:blur-sm" href="https://twitter.com/insalan" target="_blank">
+        <a class="hover:blur-sm" href="https://twitter.com/insalan" target="_blank" rel="noopener noreferrer">
           <svg
             id="X"
             class="h-10 w-10 md:h-14 md:w-14"
@@ -142,7 +142,7 @@
             </g>
           </svg>
         </a>
-        <a class="hover:blur-sm" href="https://www.facebook.com/insalan/" target="_blank">
+        <a class="hover:blur-sm" href="https://www.facebook.com/insalan/" target="_blank" rel="noopener noreferrer">
           <svg
             id="facebook"
             class="h-10 w-10 md:h-14 md:w-14"
@@ -192,14 +192,14 @@
     </div>
     <div class="col-span-3 flex flex-row">
       <div class="mx-2 flex flex-row justify-end">
-        <a class="mt-2 md:mt-5 " href="https://aeir.insa-rennes.fr" target="_blank">
+        <a class="mt-2 md:mt-5 " href="https://aeir.insa-rennes.fr" target="_blank" rel="noopener noreferrer">
           <img
             alt="Logo de l'AEIR"
             class="h-[32px] md:h-[64px]"
             src="@/assets/images/logo_aeir.png"
           />
         </a>
-        <a class="ml-2 mt-2 md:mt-5" href="https://insa-rennes.fr" target="_blank">
+        <a class="ml-2 mt-2 md:mt-5" href="https://insa-rennes.fr" target="_blank" rel="noopener noreferrer">
           <img
             alt="Logo de l'INSA"
             class="h-[32px] md:h-[64px]"
