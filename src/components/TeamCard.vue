@@ -6,7 +6,7 @@ import { useUserStore } from '@/stores/user.store';
 const { user } = storeToRefs(useUserStore());
 
 defineProps<{
-  team: Team | number;
+  team: Team;
 }>();
 </script>
 
@@ -16,9 +16,9 @@ defineProps<{
       {{ team.name }}
     </h1>
     <ul class="ml-4 list-disc text-xl">
-      <li v-for="player in team.players" :key="player.user">
+      <li v-for="player in team.players" :key="((player as Record<string, string>).user)">
         <p class="">
-          {{ player.pseudo }}
+          {{ (player as Record<string, string>).pseudo }}
         </p>
       </li>
     </ul>

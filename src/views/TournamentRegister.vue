@@ -119,7 +119,7 @@ const { query } = useRoute();
 onMounted(async () => {
   try {
     await getTournamentFull(props.id);
-  } catch (err: any) {
+  } catch (err: unknown) {
     router.go(-1);
   }
   if ('team' in query && 'pwd' in query) {
@@ -130,7 +130,12 @@ onMounted(async () => {
       register_form.password = query.pwd as string;
     }
   }
+  if (Date.parse(tournament.value?.registration_open) > Date.now()) {
+    router.go(-1);
+  }
 });
+
+const host = import.meta.env.VITE_WEBSITE_HOST as string;
 </script>
 
 <template>
@@ -239,10 +244,12 @@ onMounted(async () => {
         <button
           v-if="create"
           class="rounded border-solid bg-green-600 p-3 text-3xl md:w-5/12"
+          :class="{ 'opacity-60': tournament?.validated_teams >= tournament?.maxTeam }"
           type="button"
+          :disabled="tournament?.validated_teams >= tournament?.maxTeam"
           @click="register_team"
         >
-          Créer l'équipe
+          {{ tournament?.validated_teams >= tournament?.maxTeam ? 'Inscriptions complètes' : 'Créer l\'équipe' }}
         </button>
         <button
           v-else
@@ -271,19 +278,20 @@ onMounted(async () => {
     </template>
     <template #body>
       <div v-if="create" class="p-4 text-justify">
-        L'inscription de votre équipe {{ register_form.team }} à bien été enregistrer. Il ne vous reste plus qu'à
-        transmettre le lien suivant à vos coéquipiés/managers pour qu'ils puissent rejoindre votre équipe : <br>
+        L'inscription de votre équipe {{ register_form.team }} à bien été enregistrée. Il ne vous reste plus qu'à
+        transmettre le lien suivant à vos coéquipiers⋅ères/managers⋅euses pour
+        qu'ils puissent rejoindre votre équipe : <br>
         <a
-          :href="`https://insalan.fr/tournament/${tournament?.id}/register?team=${selected_team?.id}&pwd=${register_form.password}`"
+          :href="`${host}/tournament/${tournament?.id}/register?team=${selected_team?.id}&pwd=${register_form.password}`"
           class="text-[#62d1ff] underline hover:text-blue-600"
         >
-          {{ `https://insalan.fr/tournament/${tournament?.id}/register?team=${selected_team?.id}&pwd=${register_form.password}` }}
+          {{ `${host}/tournament/${tournament?.id}/register?team=${selected_team?.id}&pwd=${register_form.password}` }}
         </a> <br>
-        Vous pouvez dès à présent payé votre inscription ou bien revenir le faire plus tard.
+        Vous pouvez dès à présent payer votre inscription ou bien revenir le faire plus tard.
       </div>
       <div v-else class="p-4 text-justify">
-        Votre inscription dans l'équipe {{ selected_team?.name }} à bien été enregistré.
-        Vous pouvez dès à présent payé votre inscription ou bien revenir le faire plus tard.
+        Votre inscription dans l'équipe {{ selected_team?.name }} à bien été enregistrée. <br>
+        Vous pouvez dès à présent payer votre inscription ou bien revenir le faire plus tard.
       </div>
     </template>
     <template #buttons>
