@@ -1,5 +1,6 @@
 export interface Caster {
   id: number;
-  pseudo: string;
-  image: string;
+  name: string;
+  image?: string;
+  url?: string;
 }
