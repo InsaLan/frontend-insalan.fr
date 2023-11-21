@@ -1,3 +1,8 @@
+# Contributing
+
+Please read carefully[the CONTRIBUTING.md file](CONTRIBUTING.md) before any
+contribution.
+
 # Run the frontend in local
 
 The frontend has to be deployed from the docker-compose setup (so you need to install it!).
