@@ -58,7 +58,7 @@ const router = useRouter();
 onMounted(async () => {
   try {
     await getTournamentFull(props.id);
-  } catch (err: any) {
+  } catch (err: unknown) {
     router.go(-1);
   }
   if (props.section !== undefined && props.section.s in sections) {
@@ -156,93 +156,130 @@ onMounted(async () => {
       class="grid grid-rows-[min-content_1fr] bg-gray-500 bg-cover bg-center bg-blend-multiply"
       :class="{ hidden: !sections.info[0] }"
     >
-      <h2 class="font mx-auto my-8 w-3/4 text-center text-3xl font-bold">
+      <h2 class="font mx-auto my-4 w-3/4 text-center text-3xl font-bold">
         {{ tournament?.description }}
       </h2>
 
-      <div class="grid place-items-center gap-7 md:grid-cols-3">
-        <div class="relative top-14 flex w-full flex-col items-center">
-          <h3 class="mb-6 text-4xl">
-            Format
-          </h3>
-          <svg class="w-2/3 fill-[#fd5e96]" viewBox="0 0 12 8" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="0,0 8,0 8,4 12,4 12,8 4,8 4,4 0,4"/>
-            <rect fill="#d14d7b" x="0" y="3.5" width="4" height="0.5"/>
-            <rect fill="#d14d7b" x="4" y="7.5" width="8" height="0.5"/>
-            <text v-if="(tournament?.game as Game).players_per_team === 1" fill="white" font-size="1" text-anchor="middle" x="4" y="2.25">
-              {{ tournament?.maxTeam }} joueurs
-            </text>
-            <text v-else fill="white" font-size="1" text-anchor="middle" x="4" y="1.25">
-              <tspan>{{ tournament?.maxTeam }} équipes</tspan>
-              <tspan text-anchor="middle" x="4" y="2.75">
-                de {{ (tournament?.game as Game).players_per_team }} joueurs
-              </tspan>
-            </text>
-            <text fill="white" font-size="1" text-anchor="middle" x="8" y="5.25">
-              {{ Number(tournament?.player_price_online) }}€ / joueur
-            </text>
-            <text fill="white" font-size="1" text-anchor="middle" x="8" y="6.75">
-              {{ Number(tournament?.manager_price_online) }}€ / manager
-            </text>
-          </svg>
+      <div class="grid gap-7 md:grid-cols-3">
+        <div>
+          <div class="flex w-full flex-col items-center md:my-24">
+            <h3 class="mb-6 text-4xl">
+              Format
+            </h3>
+            <svg class="w-2/3 fill-white" viewBox="0 0 12 8" xmlns="http://www.w3.org/2000/svg">
+              <desc>
+                Z tetromino with tournament format information
+              </desc>
+              <polygon points="0,0 8,0 8,4 12,4 12,8 4,8 4,4 0,4" fill="#fd5e96"/>
+              <rect fill="#d14d7b" x="0" y="3.5" width="4" height="0.5"/>
+              <rect fill="#d14d7b" x="4" y="7.5" width="8" height="0.5"/>
+              <text v-if="(tournament?.game as Game).players_per_team === 1" font-size="1" text-anchor="middle" x="4" y="2.25">
+                {{ tournament?.maxTeam }} joueurs
+              </text>
+              <text v-else font-size="1" text-anchor="middle" x="4" y="1.25">
+                <tspan>{{ tournament?.maxTeam }} équipes</tspan>
+                <tspan text-anchor="middle" x="4" y="2.75">
+                  de {{ (tournament?.game as Game).players_per_team }} joueurs
+                </tspan>
+              </text>
+              <text font-size="1" text-anchor="middle" x="8" y="5.25">
+                {{ Number(tournament?.player_price_online) }}€ / joueur
+              </text>
+              <text font-size="1" text-anchor="middle" x="8" y="6.75">
+                {{ Number(tournament?.manager_price_online) }}€ / manager
+              </text>
+            </svg>
+          </div>
         </div>
 
-        <div class="relative -top-20 flex w-full flex-col items-center">
-          <h3 class="mb-6 text-4xl">
-            Cashprize
-          </h3>
-          <svg class="w-2/3 fill-[#45cae0]" viewBox="0 0 12 8" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="0,8 0,4 4,4 4,0 8,0 8,4 12,4 12,8"/>
-            <rect x="0" y="7.5" width="12" height="0.5" fill="#0aadbf"/>
-            <text font-size="2" text-anchor="middle" x="6" y="2">
-              🥇
-            </text>
-            <text fill="white" font-size="1" text-anchor="middle" x="6" y="3.25">
-              {{ Number(tournament?.cashprizes[0]) }} €
-            </text>
-            <text font-size="2" text-anchor="middle" x="2" y="6">
-              🥈
-            </text>
-            <text fill="white" font-size="1" text-anchor="middle" x="2" y="7.25">
-              {{ Number(tournament?.cashprizes[1]) }} €
-            </text>
-            <text font-size="2" text-anchor="middle" x="10" y="6">
-              🥉
-            </text>
-            <text fill="white" font-size="1" text-anchor="middle" x="10" y="7.25">
-              {{ Number(tournament?.cashprizes[2]) }} €
-            </text>
-          </svg>
+        <div>
+          <div class="flex w-full flex-col items-center">
+            <h3 class="mb-6 text-4xl">
+              Cashprize
+            </h3>
+            <svg class="w-2/3 fill-white" viewBox="0 0 12 8" xmlns="http://www.w3.org/2000/svg">
+              <desc>
+                T tetromino with tournament cashprize information
+              </desc>
+              <polygon points="0,8 0,4 4,4 4,0 8,0 8,4 12,4 12,8" fill="#45cae0"/>
+              <rect x="0" y="7.5" width="12" height="0.5" fill="#0aadbf"/>
+              <text font-size="2" text-anchor="middle" x="6" y="2">
+                🥇
+              </text>
+              <text font-size="1" text-anchor="middle" x="6" y="3.25">
+                {{ Number(tournament?.cashprizes[0]) }} €
+              </text>
+              <text font-size="2" text-anchor="middle" x="2" y="6">
+                🥈
+              </text>
+              <text font-size="1" text-anchor="middle" x="2" y="7.25">
+                {{ Number(tournament?.cashprizes[1]) }} €
+              </text>
+              <text font-size="2" text-anchor="middle" x="10" y="6">
+                🥉
+              </text>
+              <text font-size="1" text-anchor="middle" x="10" y="7.25">
+                {{ Number(tournament?.cashprizes[2]) }} €
+              </text>
+            </svg>
+          </div>
         </div>
-
-        <div class="relative top-14 flex w-full grow flex-col items-center">
-          <h3 class="mb-6 text-4xl">
-            Casters
-          </h3>
-          <svg class="w-1/2" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg">
-            <rect x="0" y="0" width="8" height="8" fill="#B169BF"/>
-            <rect x="0" y="7.5" width="8" height="0.5" fill="#844A8F"/>
-            // eslint-disable-next-line tailwindcss/migration-from-tailwind-2
-            <!-- <image :href="tournament?.logo" class="overflow-clip" width="4" height="3.5"/> -->
-            <text v-if="tournament?.casters.length === 0" fill="white" font-size="1">
-              <tspan x="4" y="3.5" text-anchor="middle">Aucun caster</tspan>
-              <tspan x="4" y="5" text-anchor="middle">pour ce tournoi</tspan>
-            </text>
-            <text v-else-if="tournament?.casters.length === 1" fill="white" font-size="1" text-anchor="middle" x="4" y="4.25">
-              {{ tournament.casters[0].pseudo }}
-            </text>
-            <text v-else-if="tournament?.casters.length === 2" fill="white" font-size="1">
-              <tspan x="0.5" y="2.25" text-anchor="start">{{ tournament.casters[0].pseudo }}</tspan>
-              <tspan text-anchor="middle" x="4" y="4.25">&</tspan>
-              <tspan text-anchor="end" x="7.5" y="6.25">{{ tournament.casters[1].pseudo }}</tspan>
-            </text>
-          </svg>
+        <div>
+          <div class="mb-12 flex w-full grow flex-col items-center md:my-24">
+            <h3 class="mb-6 text-4xl">
+              Casters
+            </h3>
+            <svg class="w-1/2 fill-white" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg">
+              <desc>
+                O tetromino with information on tournament's casters
+              </desc>
+              <rect x="0" y="0" width="8" height="8" fill="#B169BF"/>
+              <rect x="0" y="7.5" width="8" height="0.5" fill="#844A8F"/>
+              <g v-if="tournament?.casters.length === 0">
+                <text font-size="1">
+                  <tspan x="4" y="3.5" text-anchor="middle">Aucun caster</tspan>
+                  <tspan x="4" y="5" text-anchor="middle">pour ce tournoi</tspan>
+                </text>
+              </g>
+              <g v-else-if="tournament?.casters.length === 1">
+                <a :href="tournament?.casters[0].url">
+                  <g v-if="tournament?.casters[0].image">
+                    <text font-size="1" textLength="3.5" text-anchor="middle" x="2" y="2.25">
+                      {{ tournament?.casters[0].name }}
+                    </text>
+                    <!-- eslint-disable-next-line tailwindcss/migration-from-tailwind-2 -->
+                    <image :href="tournament?.casters[0].image" class="overflow-clip" width="3.5" height="3" x="4.5" y="4.5"/>
+                  </g>
+                  <text v-else font-size="1" textLength="7.5" text-anchor="middle" x="4" y="4.25">
+                    {{ tournament?.casters[0].name }}
+                  </text>
+                </a>
+              </g>
+              <g v-else-if="tournament?.casters.length === 2">
+                <a :href="tournament?.casters[0].url">
+                  <text font-size="1" textLength="3.5" text-anchor="middle" x="2" y="2.25">
+                    {{ tournament?.casters[0].name }}
+                  </text>
+                  <!-- eslint-disable-next-line tailwindcss/migration-from-tailwind-2 -->
+                  <image :href="tournament?.casters[0].image" class="overflow-clip" width="3.5" height="3" x="4.5"/>
+                </a>
+                <a :href="tournament?.casters[1].url">
+                  <text font-size="1" textLength="3.5" text-anchor="middle" x="6" y="6.25">
+                    {{ tournament?.casters[1].name }}
+                  </text>
+                  <!-- eslint-disable-next-line tailwindcss/migration-from-tailwind-2 -->
+                  <image :href="tournament?.casters[1].image" class="overflow-clip" width="3.5" height="3" y="4.5"/>
+                </a>
+                <text font-size="1" text-anchor="middle" x="4" y="4.25">&</text>
+              </g>
+            </svg>
+          </div>
         </div>
       </div>
     </section>
 
     <section id="teams" :class="{ hidden: !sections.teams[0] }">
-      <h1 v-if="tournament.teams.length === 0" class="mt-6 text-center text-4xl">
+      <h1 v-if="tournament?.teams.length === 0" class="mt-6 text-center text-4xl">
         Aucune équipe inscrite
       </h1>
       <div v-if="teams.validated_teams.length > 0">
@@ -270,8 +307,8 @@ onMounted(async () => {
     <section id="planning" :class="{ hidden: !sections.planning[0] }"/>
 
     <section id="rules" :class="{ hidden: !sections.rules[0] }">
-      // eslint-disable-next-line vue/no-v-html
-      <div class="my-4 text-justify xl:mx-[20rem]" v-html="md.render(tournament.rules)"/>
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <div class="my-4 text-justify xl:mx-[20rem]" v-html="md.render(tournament?.rules)"/>
     </section>
   </div>
 
@@ -291,20 +328,22 @@ a {
   @apply text-xl
 }
 
-.dropGrow {
-  animation: 300ms ease-in-out growDown;
-  animation-direction: alternate;
-}
+@media (max-width: 768px)  {
+  .dropGrow {
+    animation: 300ms ease-in-out growDown;
+    animation-direction: alternate;
+  }
 
-@keyframes growDown {
-  0% {
-    transform: translateY(2.5rem) scaleY(0);
-  }
-  80% {
-    transform: translateY(2.5rem) scaleY(1.1);
-  }
-  100% {
-    transform: translateY(2.5rem) scaleY(1);
+  @keyframes growDown {
+    0% {
+      transform: translateY(2.5rem) scaleY(0);
+    }
+    80% {
+      transform: translateY(2.5rem) scaleY(1.1);
+    }
+    100% {
+      transform: translateY(2.5rem) scaleY(1);
+    }
   }
 }
 </style>

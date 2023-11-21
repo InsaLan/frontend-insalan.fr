@@ -38,10 +38,11 @@ onMounted(async () => {
         S'inscrire
       </router-link>
       <button v-else type="button" class="rounded bg-green-600 p-2 text-lg opacity-60" disabled>
-        S'inscrire
+        {{ tournament?.validated_teams < tournament?.maxTeam ? "Inscriptions fermées" : "Inscriptions complètes" }}
       </button>
     </div>
   </div>
+  <!-- Placeholder when the tournament is not announced -->
   <div v-else class="grid place-items-center gap-2 bg-cyan-900 shadow-lg">
     <svg
       version="1.1"
@@ -51,6 +52,9 @@ onMounted(async () => {
       xml:space="preserve"
       class="aspect-video py-10"
     >
+      <desc>
+        Question mark
+      </desc>
       <g>
         <path
           class="fill-white"
