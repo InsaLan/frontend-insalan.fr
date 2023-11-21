@@ -4,5 +4,5 @@ import Content from '@/components/Content.vue';
 </script>
 
 <template>
-   <Content name="Restauration"/>
+  <Content name="Restauration"/>
 </template>

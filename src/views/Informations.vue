@@ -5,9 +5,8 @@ import Map from '@/components/Map.vue';
 </script>
 
 <template>
-    <Content name="joueur_checklist"/>
-    <Content name="Discord"/>
+  <Content name="joueur_checklist"/>
+  <Content name="Discord"/>
+  <Content name="Contact"/>
   <Map/>
-
-  <Content name="contact"/>
 </template>
