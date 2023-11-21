@@ -30,9 +30,9 @@ onMounted(async () => {
     </section>
     <Content name="main_page"/>
     <section>
-      <Content name="Horaire"/>
-      <Content name="parti_public"/>
-      
+      <div class="title my-2 text-white">
+        Tournois
+      </div>
       <div class="mb-12 grid gap-4 px-4 md:grid-cols-2 xl:w-full xl:grid-cols-4">
         <TournamentCard
           v-for="tournament in tournaments_id"
@@ -40,6 +40,8 @@ onMounted(async () => {
           :key="tournament"
         />
       </div>
+      <Content name="Horaire"/>
+      <Content name="parti_public"/>
     </section>
     <Partners/>
   </div>
