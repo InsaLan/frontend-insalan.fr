@@ -63,6 +63,15 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/Logout.vue'),
   },
   {
+    path: '/pay/return',
+    component: () => import('@/views/ReturnPayment.vue'),
+    props: (route) => ({ status: route.query }),
+    beforeEnter: () => {
+      const { isConnected } = useUserStore();
+      return !isConnected ? { path: '/register' } : true;
+    },
+  },
+  {
     path: '/ticket/scan',
     component: () => import('@/views/ScanQrCode.vue'),
   },
