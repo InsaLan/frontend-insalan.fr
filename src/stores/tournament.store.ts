@@ -161,7 +161,7 @@ export const useTournamentStore = defineStore('tournament', () => {
       password,
     } as Record<string, unknown>;
 
-    if (role === 'player') {
+    if (role === 'player' || role === 'substitute') {
       data.pseudo = pseudo;
     }
 
@@ -196,6 +196,10 @@ export const useTournamentStore = defineStore('tournament', () => {
     }
     if (role === 'manager') {
       data.managers = [user_id];
+    }
+    if (role === 'substitute') {
+      data.substitutes = [user_id];
+      data.substitutes_pseudos = [pseudo];
     }
 
     const res = await axios.post<Team>('/tournament/team/', data, {

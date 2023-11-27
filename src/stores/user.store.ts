@@ -127,7 +127,7 @@ export const useUserStore = defineStore('user', () => {
       const past: [string, PlayerRegistrationDeref][] = [];
       const unpaid: { [key: number]: boolean } = {};
       // Get all the inscription of the user
-      const registrations = await axios.get<{ 'player': PlayerRegistrationDeref[]; 'manager': PlayerRegistrationDeref[] }>('/tournament/me');
+      const registrations = await axios.get<{ 'player': PlayerRegistrationDeref[]; 'manager': PlayerRegistrationDeref[]; 'substitute': PlayerRegistrationDeref[] }>('/tournament/me');
       // Set the value of the ref object
       registrations.data.player.forEach((registration) => {
         if (registration.team.tournament.event.ongoing) {
@@ -145,6 +145,17 @@ export const useUserStore = defineStore('user', () => {
           ongoing.push(['manager', registration]);
         } else {
           past.push(['manager', registration]);
+        }
+        // If the registration is not paid, add the tournament to the unpaid object
+        if (registration.payment_status === PaymentStatus.NOT_PAID) {
+          unpaid[registration.id] = true;
+        }
+      });
+      registrations.data.substitute.forEach((registration) => {
+        if (registration.team.tournament.event.ongoing) {
+          ongoing.push(['substitute', registration]);
+        } else {
+          past.push(['substitute', registration]);
         }
         // If the registration is not paid, add the tournament to the unpaid object
         if (registration.payment_status === PaymentStatus.NOT_PAID) {

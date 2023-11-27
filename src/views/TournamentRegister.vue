@@ -220,16 +220,15 @@ const host = import.meta.env.VITE_WEBSITE_HOST as string;
               <option value="manager">
                 Manager
               </option>
+              <option value="substitute">
+                Remplaçant
+              </option>
             </select>
           </FormField>
         </form>
 
         <span class="my-3 text-center text-4xl">Rappel du Règlement</span>
         <ul class="my-5 text-2xl">
-          <li>Pas d'insulte</li>
-          <li>Apporter son propre matériel <b>filaire </b></li>
-          <li>Pas d'insulte</li>
-          <li>Apporter son propre matériel <b>filaire </b></li>
           <li>Pas d'insulte</li>
           <li>Apporter son propre matériel <b>filaire </b></li>
         </ul>
