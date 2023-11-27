@@ -22,8 +22,18 @@ defineProps<{
         </p>
       </li>
     </ul>
-    <p class="text-2xl">
+    <p v-if="team.managers.length" class="text-2xl">
       Managers : <em>{{ team.managers.join(', ') }}</em>
+    </p>
+    <p v-if="team.substitutes.length" class="text-2xl">
+      Remplaçant :
+      <ul class="ml-4 list-disc text-xl">
+        <li v-for="player in team.substitutes" :key="((player as Record<string, string>).user)">
+          <p class="">
+            {{ (player as Record<string, string>).pseudo }}
+          </p>
+        </li>
+      </ul>
     </p>
   </div>
 </template>
