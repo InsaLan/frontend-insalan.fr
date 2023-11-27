@@ -5,6 +5,7 @@ interface BaseTeam {
   name: string;
   players: Record<string, string>[] | number[];
   managers: string[] | number[];
+  substitutes: Record<string, string>[] | number[];
   validated: boolean;
 }
 
