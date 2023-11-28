@@ -4,6 +4,7 @@ import Error from '@/components/Error.vue';
 import Footer from '@/components/Footer.vue';
 import Navigation from '@/components/Navigation.vue';
 import Toast from '@/components/Toast.vue';
+import { useContentStore } from '@/stores/content.store';
 import { useErrorStore } from '@/stores/error.store';
 import { useToastStore } from '@/stores/toast.store';
 
@@ -13,9 +14,13 @@ const { flush_errors } = errorStore;
 const toastStore = useToastStore();
 const { dismiss } = toastStore;
 
-onMounted(() => {
+const contentStore = useContentStore();
+const { fetchStatic } = contentStore;
+
+onMounted(async () => {
   flush_errors();
   dismiss();
+  await fetchStatic();
 });
 
 </script>

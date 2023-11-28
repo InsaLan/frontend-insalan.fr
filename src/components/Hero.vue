@@ -1,13 +1,8 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
 import { useContentStore } from '@/stores/content.store';
 
 const contentStore = useContentStore();
-const { getConstant, fetchStatic } = contentStore;
-
-onMounted(async () => {
-  await fetchStatic();
-});
+const { getConstant } = contentStore;
 
 const trailer_embed = 'https://www.youtube.com/embed/Bxi-4XEANbE?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&rel=0&enablejsapi=1&playlist=Bxi-4XEANbE&end=36';
 </script>
