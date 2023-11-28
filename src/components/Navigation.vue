@@ -87,7 +87,7 @@ const burger_menu = ref(false);
           <div class="flex gap-4">
             <div v-if="!isConnected" class="my-auto">
               <router-link
-                class="block rounded bg-blue-800 p-2 text-xs font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:text-base"
+                class="block rounded bg-blue-800 p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:text-base"
                 to="/register"
               >
                 Se connecter/S'inscrire
@@ -141,6 +141,14 @@ const burger_menu = ref(false);
       </div>
       <div class="flex flex-col bg-theme-bg">
         <div v-if="burger_menu" class="flex flex-col text-white">
+          <a
+            v-if="role === 'dev' || role === 'staff'"
+            class="mx-2 py-5 text-center font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
+            :href="`${apiUrl}/admin/`"
+          >
+            Panel Admin
+          </a>
+
           <router-link
             v-for="(item, i) in mobile_items"
             :key="i"
@@ -149,6 +157,7 @@ const burger_menu = ref(false);
           >
             {{ item.text }}
           </router-link>
+
         </div>
       </div>
     </div>
