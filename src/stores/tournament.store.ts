@@ -149,7 +149,7 @@ export const useTournamentStore = defineStore('tournament', () => {
 
   async function registerPlayerOrManager(
     team: number,
-    pseudo: string,
+    name_in_game: string,
     password: string,
     role: string,
     tournament_id: number,
@@ -162,7 +162,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     } as Record<string, unknown>;
 
     if (role === 'player' || role === 'substitute') {
-      data.pseudo = pseudo;
+      data.name_in_game = name_in_game;
     }
 
     await axios.post(`tournament/${role}/`, data, {
@@ -179,7 +179,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     team: string,
     password: string,
     role?: string,
-    pseudo?: string,
+    name_in_game?: string,
     user_id?: number,
   ): Promise<Team> {
     await get_csrf();
@@ -192,14 +192,14 @@ export const useTournamentStore = defineStore('tournament', () => {
 
     if (role === 'player') {
       data.players = [user_id];
-      data.players_pseudos = [pseudo];
+      data.players_name_in_games = [name_in_game];
     }
     if (role === 'manager') {
       data.managers = [user_id];
     }
     if (role === 'substitute') {
       data.substitutes = [user_id];
-      data.substitutes_pseudos = [pseudo];
+      data.substitutes_name_in_games = [name_in_game];
     }
 
     const res = await axios.post<Team>('/tournament/team/', data, {

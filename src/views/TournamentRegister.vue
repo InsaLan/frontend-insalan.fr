@@ -35,7 +35,7 @@ const acceptRules = helpers.withParams(
 
 const register_form = reactive({
   team: '',
-  pseudo: '',
+  name_in_game: '',
   password: '',
   role: 'player',
   accept_rules: false,
@@ -51,7 +51,7 @@ const selected_team = computed(() => {
 
 const rules = computed(() => ({
   team: { required },
-  pseudo: register_form.role === 'player' ? { required } : {},
+  name_in_game: register_form.role === 'player' ? { required } : {},
   password: { required, minLengthValue: minLength(8) },
   role: { required },
   accept_rules: { acceptRules },
@@ -71,7 +71,7 @@ const register_team = async () => {
       register_form.team,
       register_form.password,
       register_form.role,
-      register_form.pseudo,
+      register_form.name_in_game,
       user.id,
     );
   } catch (err) {
@@ -88,7 +88,7 @@ const register_player = async () => {
   try {
     await registerPlayerOrManager(
       selected_team.value?.id as number,
-      register_form.pseudo,
+      register_form.name_in_game,
       register_form.password,
       register_form.role,
       tournament.value?.id as number,
@@ -187,11 +187,11 @@ const host = import.meta.env.VITE_WEBSITE_HOST as string;
               </option>
             </select>
           </FormField>
-          <FormField v-slot="context" :validations="v$.pseudo" class="flex flex-col text-xl" required>
-            <label for="pseudo">
+          <FormField v-slot="context" :validations="v$.name_in_game" class="flex flex-col text-xl" required>
+            <label for="name_in_game">
               Pseudo en jeu
             </label>
-            <input id="pseudo" v-model="register_form.pseudo" class="text-black disabled:opacity-75" :class="{ error: context.invalid }" :disabled="register_form.role === 'manager'" placeholder="Pseudo" type="text"/>
+            <input id="name_in_game" v-model="register_form.name_in_game" class="text-black disabled:opacity-75" :class="{ error: context.invalid }" :disabled="register_form.role === 'manager'" placeholder="Pseudo" type="text"/>
           </FormField>
           <FormField v-slot="context" :validations="v$.password" class="relative flex flex-col text-xl" required>
             <label for="pwd">
@@ -271,7 +271,7 @@ const host = import.meta.env.VITE_WEBSITE_HOST as string;
         Inscription de l'équipe {{ register_form.team }}
       </h3>
       <h3 v-else id="open_modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Inscription de {{ register_form.pseudo }} dans l'équipe
+        Inscription de {{ register_form.name_in_game }} dans l'équipe
         {{ selected_team?.name }}
       </h3>
     </template>
