@@ -35,6 +35,11 @@ html {
   src: url(./assets/fonts/play/Play-Bold.ttf);
 }
 
+@font-face {
+  font-family: OpenMoji;
+  src: URL(./assets/fonts/openmoji/OpenMoji-Color.SVG.ttf) format('truetype');
+}
+
 #app {
   display: flex;
   flex-direction: column;
