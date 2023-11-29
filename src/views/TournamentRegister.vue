@@ -130,7 +130,7 @@ onMounted(async () => {
       register_form.password = query.pwd as string;
     }
   }
-  if (Date.parse(tournament.value?.registration_open) > Date.now()) {
+  if (Date.parse(tournament.value?.registration_open ?? '') > Date.now()) {
     router.go(-1);
   }
 });
@@ -243,12 +243,12 @@ const host = import.meta.env.VITE_WEBSITE_HOST as string;
         <button
           v-if="create"
           class="rounded border-solid bg-green-600 p-3 text-3xl md:w-5/12"
-          :class="{ 'opacity-60': tournament?.validated_teams >= tournament?.maxTeam }"
+          :class="{ 'opacity-60': (tournament?.validated_teams ?? 0) >= (tournament?.maxTeam ?? 0) }"
           type="button"
-          :disabled="tournament?.validated_teams >= tournament?.maxTeam"
+          :disabled="(tournament?.validated_teams ?? 0) >= (tournament?.maxTeam ?? 0)"
           @click="register_team"
         >
-          {{ tournament?.validated_teams >= tournament?.maxTeam ? 'Inscriptions complètes' : 'Créer l\'équipe' }}
+          {{ (tournament?.validated_teams ?? 0) >= (tournament?.maxTeam ?? 0) ? 'Inscriptions complètes' : 'Créer l\'équipe' }}
         </button>
         <button
           v-else
