@@ -220,4 +220,4 @@ export const useUserStore = defineStore('user', () => {
     inscriptions,
     MailVerified,
   };
-});
+}, { persist: true });
