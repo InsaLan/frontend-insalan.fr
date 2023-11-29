@@ -6,7 +6,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import axios, { type AxiosError } from 'axios';
 import { createPinia } from 'pinia';
-import { createPersistedState } from 'pinia-plugin-persistedstate';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { createApp } from 'vue';
 import { router } from '@/router';
 import { type ErrorMessage, useErrorStore } from '@/stores/error.store';
@@ -23,9 +23,7 @@ axios.defaults.withCredentials = true;
 
 const pinia = createPinia();
 
-pinia.use(createPersistedState({
-  auto: true,
-}));
+pinia.use(piniaPluginPersistedstate);
 
 createApp(App)
   .component('fa-awesome-icon', FontAwesomeIcon)

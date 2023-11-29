@@ -233,4 +233,4 @@ export const useUserStore = defineStore('user', () => {
     MailVerified,
     csrf,
   };
-});
+}, { persist: true });
