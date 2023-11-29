@@ -2,7 +2,7 @@ import type { TeamDeref } from '@/models/team';
 
 export enum PaymentStatus {
   PAID = 'PAID',
-  NOT_PAID = 'NOT_PAID',
+  NOT_PAID = 'NOTPAID',
   LATER = 'LATER',
 }
 
