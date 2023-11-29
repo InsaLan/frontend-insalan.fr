@@ -219,7 +219,7 @@ const editField = (field: string) => {
             v-for="inscription in inscriptions.ongoing"
             :key="inscription[1].id"
             :class="{ /*[`bg-red-900`]: inscriptions.unpaid[inscription.team.id]*/ }"
-            :href="`/team/${inscription[1].team.id}/detail`"
+            :href="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
             class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
           >
             <div class="my-1 hidden md:block">
@@ -228,15 +228,18 @@ const editField = (field: string) => {
                   <a
                     :class="{ [`bg-red-600`]: inscriptions.unpaid[inscription[1].team.id], [`bg-green-600`]: !inscriptions.unpaid[inscription[1].team.id] }"
                     class="center rounded p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-                    href=""
+                    :href="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
                   >
-                    {{ inscriptions.unpaid[inscription[1].team.id] ? 'Terminer l\'inscription' : (parseInt(inscription[1].team.players[0]) === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
+                    {{ inscriptions.unpaid[inscription[1].team.id] ? 'Terminer l\'inscription' : (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
                   </a>
                 </div>
               </div>
             </div>
             <div class="hidden flex-col md:block">
-              <a class="mt-auto text-zinc-400" href="">règlement du tournois</a>
+              <a
+                class="mt-auto text-zinc-400"
+                :href="`/tournament/${inscription[1].team.tournament.id }?s=rules`"
+              >Règlement du tournoi</a>
             </div>
             <img
               :src="inscription[1].team.tournament.logo"
@@ -258,7 +261,7 @@ const editField = (field: string) => {
           <a
             v-for="inscription in inscriptions.past"
             :key="inscription[1].id"
-            :href="`/team/${inscription[1].team.id}/detail`"
+            :href="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
             class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
           >
             <div class="my-1 hidden md:block">
@@ -266,15 +269,20 @@ const editField = (field: string) => {
                 <div>
                   <a
                     class="center rounded bg-green-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-                    href=""
+                    :href="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
                   >
-                    {{ (parseInt(inscription[1].team.players[0]) === user.id || inscription[0] === 'manager') ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
+                    {{ (inscription[1].team.players[0] === user.id || inscription[0] === 'manager') ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
                   </a>
                 </div>
               </div>
             </div>
             <div class="hidden flex-col md:block">
-              <a class="mt-auto text-zinc-400" href="">règlement du tournois</a>
+              <a
+                class="mt-auto text-zinc-400"
+                :href="`/tournament/${inscription[1].team.tournament.id }?s=rules`"
+              >
+                Règlement du tournoi
+              </a>
             </div>
             <img
               :src="inscription[1].team.tournament.logo"
