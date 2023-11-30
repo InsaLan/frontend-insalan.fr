@@ -154,10 +154,10 @@ const burger_menu = ref(false);
             :key="i"
             :to="{ path: item.url }"
             class="mx-2 py-5 text-center font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
+            @click="burger_menu = !burger_menu"
           >
             {{ item.text }}
           </router-link>
-
         </div>
       </div>
     </div>
