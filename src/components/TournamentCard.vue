@@ -28,7 +28,7 @@ onMounted(async () => {
     />
     <p class="text-lg">
       {{ tournament?.validated_teams }}/{{ tournament?.maxTeam }} Équipes | Cashprize:
-      {{ tournament?.cashprizes?.reduce((acc, val) => acc += Number(val), 0) }} €
+      {{ tournament?.cashprizes?.length !== 0 ? tournament?.cashprizes?.reduce((acc, val) => acc += Number(val), 0) + " €" : "À venir" }}
     </p>
     <div class="mb-3 flex w-2/3 justify-between">
       <router-link :to="`tournament/${tournament?.id as number}`" class="rounded border-2 border-green-600 p-2 text-lg hover:border-green-500">

@@ -207,19 +207,19 @@ onMounted(async () => {
                 🥇
               </text>
               <text font-size="1" text-anchor="middle" x="6" y="3.25">
-                {{ Number(tournament?.cashprizes[0]) }} €
+                {{ tournament?.cashprizes.length === 0 ? "À venir" : Number(tournament?.cashprizes[0]) + " €" }}
               </text>
               <text font-size="2" text-anchor="middle" x="2" y="6">
                 🥈
               </text>
               <text font-size="1" text-anchor="middle" x="2" y="7.25">
-                {{ Number(tournament?.cashprizes[1]) }} €
+                {{ tournament?.cashprizes.length === 0 ? "À venir" : Number(tournament?.cashprizes[1]) + " €" }}
               </text>
               <text font-size="2" text-anchor="middle" x="10" y="6">
                 🥉
               </text>
               <text font-size="1" text-anchor="middle" x="10" y="7.25">
-                {{ Number(tournament?.cashprizes[2]) }} €
+                {{ tournament?.cashprizes.length === 0 ? "À venir" : Number(tournament?.cashprizes[2]) + " €" }}
               </text>
             </svg>
           </div>
