@@ -286,7 +286,7 @@ onMounted(async () => {
         <h1 class="title">
           Équipes validées
         </h1>
-        <div class="grid grid-cols-[repeat(auto-fill,minmax(330px,1fr))] gap-4 p-5">
+        <div class="grid gap-4 p-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           <TeamCard v-for="team in teams.validated_teams" :key="team.id" :team="team"/>
         </div>
       </div>
@@ -294,7 +294,7 @@ onMounted(async () => {
         <h1 class="title">
           Équipes en cours de validation
         </h1>
-        <div class="grid grid-cols-[repeat(auto-fill,minmax(330px,1fr))] gap-4 p-5">
+        <div class="grid gap-4 p-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           <TeamCard v-for="team in teams.non_validated_teams" :key="team.id" :team="team"/>
         </div>
       </div>
@@ -308,7 +308,7 @@ onMounted(async () => {
 
     <section id="rules" :class="{ hidden: !sections.rules[0] }">
       <!-- eslint-disable-next-line vue/no-v-html -->
-      <div class="my-4 text-justify xl:mx-[20rem]" v-html="md.render(tournament?.rules)"/>
+      <div class="mx-auto my-4 w-[min(1080px,90%)] text-justify" v-html="md.render(tournament?.rules)"/>
     </section>
   </div>
 
