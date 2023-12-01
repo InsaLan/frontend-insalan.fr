@@ -33,15 +33,13 @@ export const useUserStore = defineStore('user', () => {
   */
   async function get_csrf() {
     await axios.get('/user/get-csrf/');
-    const cookies: { name: string; value: string }[] = [];
-    document.cookie.split(';').forEach((cookie) => {
-      cookies.push({
-        name: cookie.split('=')[0],
-        value: cookie.split('=')[1],
-      });
+    let cookie = '';
+    document.cookie.split(';').forEach((cookie_value) => {
+      if (cookie_value.split('=')[0].trim() === 'csrftoken') {
+        cookie = cookie_value.split('=')[1].trim();
+      }
     });
-    const token = cookies.find((cookie) => cookie.name === 'csrftoken');
-    csrf.value = token ? token.value : '';
+    csrf.value = cookie;
   }
 
   /* API Call to verify an email address (an email with a URL made with the name
