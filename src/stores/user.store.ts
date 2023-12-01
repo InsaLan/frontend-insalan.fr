@@ -100,9 +100,21 @@ export const useUserStore = defineStore('user', () => {
 
   async function reset_password(username: string, token: string, password: string, password_confirm: string) {
     await get_csrf();
-    await axios.post('/user/password-reset/submit/', {
-      username, token, password, password_confirm,
-    });
+    await axios.post(
+      '/user/password-reset/submit/',
+      {
+        user: username,
+        token,
+        password,
+        password_confirm,
+      },
+      {
+        headers: {
+          'X-CSRFToken': csrf.value,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
     setContent('Votre mot de passe a été réinitialisé', 'success');
     await router.push('/register');
   }
