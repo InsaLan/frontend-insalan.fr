@@ -42,39 +42,41 @@ const register_user = async () => {
     <h1 class="text-center text-4xl text-white">
       Réinitialiser votre mot de passe
     </h1>
-    <form class="my-5">
+    <form id="password-reset" class="my-5 flex flex-col" @submit.prevent="register_user">
       <FormField v-slot="context" :validations="v$.password" class="flex flex-col" required>
         <label for="password">
           Nouveau mot de passe
-          <input
-            id="password"
-            v-model="data.password"
-            :class="{ error: context.invalid }"
-            class="border-2 bg-theme-bg"
-            placeholder="Mot de passe"
-            type="password"
-            @blur="v$.password.$touch"
-          />
         </label>
+        <input
+          id="password"
+          v-model="data.password"
+          :class="{ error: context.invalid }"
+          class="border-2 bg-theme-bg"
+          placeholder="Mot de passe"
+          type="password"
+          @blur="v$.password.$touch"
+        />
       </FormField>
       <FormField v-slot="context" :validations="v$.password_confirm" class="flex flex-col" required>
         <label for="repeat">
           Répéter le mot de passe
-          <input
-            id="repeat"
-            v-model="data.password_confirm"
-            :class="{ error: context.invalid }"
-            class="border-2 bg-theme-bg"
-            placeholder="Mot de passe"
-            required
-            type="password"
-            @blur="v$.password_confirm.$touch"
-          />
         </label>
+        <input
+          id="repeat"
+          v-model="data.password_confirm"
+          :class="{ error: context.invalid }"
+          class="border-2 bg-theme-bg"
+          placeholder="Mot de passe"
+          required
+          type="password"
+          @blur="v$.password_confirm.$touch"
+        />
       </FormField>
+      <div class="flex justify-center">
+        <button class="form-btn" type="submit">
+          Valider
+        </button>
+      </div>
     </form>
-    <button class="form-btn" type="button" @click="register_user">
-      Valider
-    </button>
   </div>
 </template>

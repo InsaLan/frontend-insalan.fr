@@ -43,7 +43,7 @@ const closeModal = () => {
 };
 
 const validateModal = async () => {
-  const isValid = await v$.value.$validate();
+  const isValid = await v$_modal.value.$validate();
   if (!isValid) return;
   await ask_reset_password(data.email);
   closeModal();
@@ -60,7 +60,7 @@ const openModal = () => {
     <h1 class="text-center text-4xl text-white">
       Se connecter
     </h1>
-    <form class="my-2">
+    <form id="login" class="my-2" @submit.prevent="login_user">
       <FormField v-slot="context" :validations="v$.username" class="flex flex-col">
         <label for="username">
           Nom d'utilisateur
@@ -89,10 +89,12 @@ const openModal = () => {
           @blur="v$.password.$touch"
         />
       </FormField>
+      <div class="flex flex-col items-center">
+        <button class="form-btn" type="submit">
+          Se connecter
+        </button>
+      </div>
     </form>
-    <button class="form-btn" type="button" @click="login_user">
-      Se connecter
-    </button>
     <button class="p-1 hover:cursor-pointer hover:text-blue-800" type="button" @click="openModal()">
       Mot de passe oublié ?
     </button>
@@ -108,7 +110,7 @@ const openModal = () => {
       </h3>
     </template>
     <template #body>
-      <form class="mt-2">
+      <form id="password-reset" class="mt-2" @submit.prevent="validateModal">
         <FormField v-slot="context" :validations="v$_modal.email" class="m-2 flex flex-col">
           <label for="email">
             Email
@@ -129,7 +131,7 @@ const openModal = () => {
     <template #buttons>
       <button
         class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-        type="button"
+        type="submit"
         @click="validateModal"
       >
         Valider

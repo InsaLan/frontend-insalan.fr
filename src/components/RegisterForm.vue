@@ -60,7 +60,7 @@ const register_user = async () => {
       S'enregistrer
     </h1>
 
-    <form class="my-5">
+    <form class="my-5" @submit.prevent="register_user">
       <FormField v-slot="context" :validations="v$.email" class="flex flex-col">
         <label for="email">
           Email
@@ -139,9 +139,11 @@ const register_user = async () => {
           >CGU</a> de l'insalan</label>
         </div>
       </FormField>
+      <div class="flex flex-col items-center">
+        <button class="form-btn" type="submit">
+          Créer un compte
+        </button>
+      </div>
     </form>
-    <button class="form-btn" type="button" @click="register_user">
-      Créer un compte
-    </button>
   </div>
 </template>

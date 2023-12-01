@@ -309,7 +309,7 @@ const editField = (field: string) => {
       </h3>
     </template>
     <template #body>
-      <form class="mt-2">
+      <form id="patch-user" class="mt-2" @submit.prevent="validateModal">
         <div v-if="focus === 'name'" id="name">
           <FormField
             v-slot="context"
@@ -410,12 +410,14 @@ const editField = (field: string) => {
             />
           </FormField>
         </div>
+        <!-- hidden submit button with tailwind-->
+        <button class="hidden" type="submit"/>
       </form>
     </template>
     <template #buttons>
       <button
         class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-        type="button"
+        type="submit"
         @click="validateModal"
       >
         Valider
