@@ -10,11 +10,15 @@ import {
 import placeholder from '@/assets/images/logo_home.png';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
+import type { Tournament } from '@/models/tournament';
+import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
 
 const userStore = useUserStore();
+const tournamentStore = useTournamentStore();
 const { user, role, inscriptions } = storeToRefs(userStore);
 const { fetch_user_inscription_full, patch_user } = userStore;
+const { payRegistration } = tournamentStore;
 
 onMounted(async () => {
   await fetch_user_inscription_full();
@@ -226,11 +230,12 @@ const editField = (field: string) => {
               <div class="m-1 flex h-8 flex-1 flex-col justify-center">
                 <div>
                   <a
-                    :class="{ [`bg-red-600`]: inscriptions.unpaid[inscription[1].team.id], [`bg-green-600`]: !inscriptions.unpaid[inscription[1].team.id] }"
+                    :class="{ [`bg-red-600`]: inscriptions.unpaid[inscription[1].id], [`bg-green-600`]: !inscriptions.unpaid[inscription[1].id] }"
                     class="center rounded p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
                     :href="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
+                    @click.prevent="inscriptions.unpaid[inscription[1].id] ? payRegistration(inscription[1].team.tournament as unknown as Tournament, inscription[0]) : ''"
                   >
-                    {{ inscriptions.unpaid[inscription[1].team.id] ? 'Terminer l\'inscription' : (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
+                    {{ inscriptions.unpaid[inscription[1].id] ? 'Terminer l\'inscription' : (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
                   </a>
                 </div>
               </div>

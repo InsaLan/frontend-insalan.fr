@@ -23,7 +23,9 @@ const { user } = useUserStore();
 
 const tournamentStore = useTournamentStore();
 
-const { registerTeam, registerPlayerOrManager, getTournamentFull } = tournamentStore;
+const {
+  registerTeam, registerPlayerOrManager, getTournamentFull, payRegistration,
+} = tournamentStore;
 const { tournamentsList } = storeToRefs(tournamentStore);
 const tournament = computed<Tournament | undefined>(() => tournamentsList.value[props.id]);
 // const tournament = ref<Tournament>();
@@ -101,7 +103,7 @@ const register_player = async () => {
 };
 
 const payment = async () => {
-  /* */
+  await payRegistration(tournament.value as Tournament, register_form.role);
 };
 
 const generate_password = () => {
