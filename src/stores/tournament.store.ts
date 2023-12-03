@@ -212,6 +212,41 @@ export const useTournamentStore = defineStore('tournament', () => {
     return res.data;
   }
 
+  async function payRegistration(
+    tournament: Tournament,
+    role: string,
+  ) {
+    await get_csrf();
+
+    let product_id;
+    if (role === 'player') {
+      product_id = tournament.player_online_product;
+    } else if (role === 'manager') {
+      product_id = tournament.manager_online_product;
+    } else if (role === 'substitute') {
+      product_id = tournament.substitute_online_product;
+    }
+    if (!product_id) return;
+
+    const data = {
+      products: [product_id],
+    } as Record<string, unknown>;
+
+    const response = await axios.post<{
+      redirect_url: string;
+    }>('payment/pay/', data, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf.value,
+      },
+    });
+    await fetchTournamentFull(tournament.id);
+
+    const { redirect_url } = response.data;
+
+    window.location.href = redirect_url;
+  }
+
   function $reset() {
     eventsList.value = {};
     tournamentsList.value = {};
@@ -242,6 +277,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     fetchTournamentsFull,
     registerTeam,
     registerPlayerOrManager,
+    payRegistration,
     $reset,
     groupBy,
   };

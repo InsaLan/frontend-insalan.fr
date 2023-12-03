@@ -20,6 +20,7 @@ interface BaseTournament {
   game: Game | Game['id'];
   manager_online_product: number;
   player_online_product: number;
+  substitute_online_product: number;
   maxTeam: number;
   validated_teams: number;
   description: string;
