@@ -37,7 +37,9 @@ defineProps<{
     </div>
   </div>
   <div v-else-if="status.type === ReturnType.REFUSED" class="grid place-items-center">
-    <h1 class="mb-6 text-3xl md:m-8 md:text-5xl">Une erreur est survenue</h1>
+    <h1 class="mb-6 text-3xl md:m-8 md:text-5xl">
+      Une erreur est survenue
+    </h1>
     <p>{{ status.error }}</p>
   </div>
   <div v-else class="grid place-items-center">
