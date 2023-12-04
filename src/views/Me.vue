@@ -59,6 +59,8 @@ const focus = ref('');
 
 const title = ref('Test title');
 
+const modal_payment = ref(false);
+
 const showModal = ref(false);
 const openModal = () => {
   showModal.value = true;
@@ -233,7 +235,7 @@ const editField = (field: string) => {
                     :class="{ [`bg-red-600`]: inscriptions.unpaid[inscription[1].id], [`bg-green-600`]: !inscriptions.unpaid[inscription[1].id] }"
                     class="center rounded p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
                     :href="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
-                    @click.prevent="inscriptions.unpaid[inscription[1].id] ? payRegistration(inscription[1].team.tournament as unknown as Tournament, inscription[0]) : ''"
+                    @click.prevent="modal_payment = true; inscriptions.unpaid[inscription[1].id] ? payRegistration(inscription[1].team.tournament as unknown as Tournament, inscription[0]) : ''"
                   >
                     {{ inscriptions.unpaid[inscription[1].id] ? 'Terminer l\'inscription' : (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
                   </a>
@@ -434,6 +436,28 @@ const editField = (field: string) => {
       >
         Annuler
       </button>
+    </template>
+  </Modal>
+
+  <!-- Simple modal with a loading text for the payment -->
+  <Modal v-if="modal_payment" :close-on-click="false">
+    <template #icon>
+      <div/>
+    </template>
+    <template #title>
+      <h3 id="open_modal-title" class="text-white-900 text-base font-semibold leading-6">
+        Paiement
+      </h3>
+    </template>
+    <template #body>
+      <div class="p-4 text-justify">
+        Le paiement est en cours de traitement.
+        <br>
+        Vous allez être redirigé⋅e vers la page de paiement.
+      </div>
+    </template>
+    <template #buttons>
+      <div/>
     </template>
   </Modal>
 </template>

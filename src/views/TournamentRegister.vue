@@ -62,6 +62,7 @@ const rules = computed(() => ({
 const v$ = useVuelidate(rules, register_form, { $autoDirty: true });
 
 const open_modal = ref(false);
+const modal_payment = ref(false);
 
 const register_team = async () => {
   const isValid = await v$.value.$validate();
@@ -103,6 +104,7 @@ const register_player = async () => {
 };
 
 const payment = async () => {
+  modal_payment.value = true;
   await payRegistration(tournament.value as Tournament, register_form.role);
 };
 
@@ -309,6 +311,28 @@ const host = import.meta.env.VITE_WEBSITE_HOST as string;
       >
         Continuer
       </router-link>
+    </template>
+  </Modal>
+
+  <!-- Simple modal with a loading text for the payment -->
+  <Modal v-if="modal_payment" :close-on-click="false">
+    <template #icon>
+      <div/>
+    </template>
+    <template #title>
+      <h3 id="open_modal-title" class="text-white-900 text-base font-semibold leading-6">
+        Paiement
+      </h3>
+    </template>
+    <template #body>
+      <div class="p-4 text-justify">
+        Le paiement est en cours de traitement.
+        <br>
+        Vous allez être redirigé⋅e vers la page de paiement.
+      </div>
+    </template>
+    <template #buttons>
+      <div/>
     </template>
   </Modal>
 </template>
