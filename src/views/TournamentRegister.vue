@@ -197,7 +197,7 @@ const host = import.meta.env.VITE_WEBSITE_HOST as string;
             <label for="pwd">
               Mot de passe
             </label>
-            <input id="pwd" v-model="register_form.password" class="text-black" :class="{ error: context.invalid }" type="password"/>
+            <input id="pwd" v-model="register_form.password" class="text-black" :class="{ error: context.invalid }" type="text"/>
             <button type="button" @click="generate_password">
               <fa-awesome-icon
                 v-if="create"
