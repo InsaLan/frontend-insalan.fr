@@ -73,12 +73,12 @@ onMounted(async () => {
 
 <template>
   <div v-if="tournament?.is_announced" class="flex min-h-[calc(100vh_-_6rem)] flex-col items-center">
-    <div class="sticky top-24 bg-[#2c292d]">
+    <div class="sticky top-24 min-w-full bg-[#2c292d]">
       <div class="text-center text-6xl font-bold text-white">
         {{ tournament?.name }}
       </div>
 
-      <nav class="mt-2 flex w-screen justify-center bg-gray-500 py-4">
+      <nav class="mt-2 flex justify-center bg-gray-500 py-4">
         <button
           :class="{ 'after:translate-x-[5px] after:rotate-90 ': open_drop, 'after:-rotate-90': !open_drop }"
           class="text-xl after:inline-block after:w-4 after:origin-center after:content-['\2039'] md:hidden"
