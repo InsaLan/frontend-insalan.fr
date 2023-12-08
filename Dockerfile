@@ -1,6 +1,4 @@
-FROM alpine:latest
-
-RUN apk --no-cache add wget nodejs npm
+FROM node:20-alpine
 
 # CMD [ "cat", "/etc/resolv.conf" ]
 
