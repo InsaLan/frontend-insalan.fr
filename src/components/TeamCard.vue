@@ -12,8 +12,9 @@ defineProps<{
 
 <template>
   <div v-if="typeof team !== 'number'" class="overflow-hidden text-ellipsis rounded bg-cyan-500 p-4">
-    <h1 class="text-shadow text-center text-3xl font-black" :class="{ 'after:inline-block after:h-6 after:w-6 after:content-[url(\'/src/assets/images/check_with_bg.svg\')]': team.validated }">
+    <h1 class="text-shadow text-center text-3xl font-black">
       {{ team.name }}
+      <img v-if="team.validated" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="inline-block h-6 w-6"/>
     </h1>
     <ul class="ml-4 list-disc text-xl">
       <li v-for="player in team.players" :key="((player as Record<string, string>).user)">
