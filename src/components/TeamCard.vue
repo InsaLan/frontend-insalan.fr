@@ -3,6 +3,8 @@ import { storeToRefs } from 'pinia';
 import type { Team } from '@/models/team';
 import { useUserStore } from '@/stores/user.store';
 
+import PaymenStatusIcon from './PaymenStatusIcon.vue';
+
 storeToRefs(useUserStore());
 
 defineProps<{
@@ -17,8 +19,9 @@ defineProps<{
     </h1>
     <ul class="ml-4 list-disc text-xl">
       <li v-for="player in team.players" :key="((player as Record<string, string>).user)">
-        <p class="">
+        <p>
           {{ (player as Record<string, string>).name_in_game }}
+          <PaymenStatusIcon :player="player as Record<string, string>"/>
         </p>
       </li>
     </ul>
@@ -29,8 +32,9 @@ defineProps<{
       Remplaçant :
       <ul class="ml-4 list-disc text-xl">
         <li v-for="player in team.substitutes" :key="((player as Record<string, string>).user)">
-          <p class="">
+          <p>
             {{ (player as Record<string, string>).name_in_game }}
+            <PaymenStatusIcon :player="player as Record<string, string>"/>
           </p>
         </li>
       </ul>
