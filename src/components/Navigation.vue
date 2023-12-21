@@ -2,7 +2,13 @@
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useContentStore } from '@/stores/content.store';
 import { useUserStore } from '@/stores/user.store';
+
+import Content from './Content.vue';
+
+const contentStore = useContentStore();
+const { getContent } = contentStore;
 
 const items = [
   { url: '/association', text: 'Association' },
@@ -162,4 +168,9 @@ const burger_menu = ref(false);
       </div>
     </div>
   </nav>
+  <div v-if="getContent('alert')" class="m-1 flex flex-col items-center rounded-lg border-2 border-red-700 bg-red-800">
+    <div class="m-1">
+      <Content name="alert"/>
+    </div>
+  </div>
 </template>
