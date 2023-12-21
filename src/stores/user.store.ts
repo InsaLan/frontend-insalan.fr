@@ -71,7 +71,13 @@ export const useUserStore = defineStore('user', () => {
       password_validation,
       decoy,
     };
-    await axios.post('/user/register/', data, { headers: { 'Content-Type': 'application/json' } });
+    await axios.post('/user/register/', data, {
+      headers: {
+        'X-CSRFToken': csrf.value,
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    });
 
     setContent(`Un email de confirmation vous a été envoyé a ${email} pour confirmer votre compte`, 'success');
   }
@@ -80,7 +86,13 @@ export const useUserStore = defineStore('user', () => {
     await get_csrf();
 
     try {
-      await axios.post('/user/login/', { username, password }, { withCredentials: true });
+      await axios.post('/user/login/', { username, password }, {
+        headers: {
+          'X-CSRFToken': csrf.value,
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      });
 
       const user_data = await axios.get<User>('/user/me/', { withCredentials: true });
       user.value = user_data.data;
@@ -94,7 +106,13 @@ export const useUserStore = defineStore('user', () => {
 
   async function ask_reset_password(email: string) {
     await get_csrf();
-    await axios.post('/user/password-reset/ask/', { email });
+    await axios.post('/user/password-reset/ask/', { email }, {
+      headers: {
+        'X-CSRFToken': csrf.value,
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    });
     setContent(`Un email de confirmation vous a été envoyé a ${email} pour réinitialiser votre compte`, 'success');
   }
 
@@ -120,7 +138,13 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function logout() {
-    await axios.post('/user/logout/');
+    await axios.post('/user/logout/', {}, {
+      headers: {
+        'X-CSRFToken': csrf.value,
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    });
     isConnected.value = false;
     user.value = {} as User;
   }
