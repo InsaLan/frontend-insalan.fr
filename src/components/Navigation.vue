@@ -62,6 +62,8 @@ const burger_menu = ref(false);
           v-if="role === 'dev' || role === 'staff'"
           class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
           :href="`${apiUrl}/admin/`"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           Panel Admin
         </a>
@@ -145,6 +147,8 @@ const burger_menu = ref(false);
             v-if="role === 'dev' || role === 'staff'"
             class="mx-2 py-5 text-center font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
             :href="`${apiUrl}/admin/`"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Panel Admin
           </a>
