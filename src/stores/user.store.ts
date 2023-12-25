@@ -12,6 +12,7 @@ export const useUserStore = defineStore('user', () => {
   const user = ref<User>({} as User);
   const isConnected = ref(false);
   const csrf = ref('');
+  const connectionTimestamp = ref(0);
   const router = useRouter();
   const ToastStore = useToastStore();
   const ErrorStore = useErrorStore();
@@ -98,6 +99,7 @@ export const useUserStore = defineStore('user', () => {
       user.value = user_data.data;
       isConnected.value = true;
       setContent(`Bienvenue ${username}`, 'success');
+      connectionTimestamp.value = Date.now();
       await router.push('/me');
     } catch (err) {
       /* empty */
@@ -244,6 +246,21 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  async function handle_session_cookie_expiration() {
+    const now = Date.now();
+    console.log(now - connectionTimestamp.value)
+    console.log(import.meta.env.VITE_SESSION_COOKIE_AGE * 1000)
+    if (
+      isConnected.value
+      && now - connectionTimestamp.value
+      > import.meta.env.VITE_SESSION_COOKIE_AGE * 1000
+    ) {
+      await logout();
+      await router.push('/register');
+      setContent('Votre session a expiré, veuillez vous reconnecter', 'error');
+    }
+  }
+
   const role = computed(() => {
     if (user.value.is_superuser) return 'dev';
     if (user.value.is_staff) return 'staff';
@@ -261,10 +278,12 @@ export const useUserStore = defineStore('user', () => {
     ask_reset_password,
     reset_password,
     get_csrf,
+    handle_session_cookie_expiration,
     role,
     isConnected,
     inscriptions,
     MailVerified,
     csrf,
+    connectionTimestamp,
   };
 }, { persist: true });
