@@ -248,8 +248,6 @@ export const useUserStore = defineStore('user', () => {
 
   async function handle_session_cookie_expiration() {
     const now = Date.now();
-    console.log(now - connectionTimestamp.value)
-    console.log(import.meta.env.VITE_SESSION_COOKIE_AGE * 1000)
     if (
       isConnected.value
       && now - connectionTimestamp.value
