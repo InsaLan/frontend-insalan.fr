@@ -221,32 +221,40 @@ const editField = (field: string) => {
           Edition Actuelle
         </h1>
         <div class="m-1 grid gap-3 md:grid-cols-3">
-          <a
+          <router-link
             v-for="inscription in inscriptions.ongoing"
             :key="inscription[1].id"
             :class="{ /*[`bg-red-900`]: inscriptions.unpaid[inscription.team.id]*/ }"
-            :href="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
+            :to="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
             class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
           >
             <div class="my-1 hidden md:block">
               <div class="m-1 flex h-8 flex-1 flex-col justify-center">
                 <div>
-                  <a
+                  <router-link
                     :class="{ [`bg-red-600`]: inscriptions.unpaid[inscription[1].id], [`bg-green-600`]: !inscriptions.unpaid[inscription[1].id] }"
                     class="center rounded p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-                    :href="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
-                    @click.prevent="modal_payment = true; inscriptions.unpaid[inscription[1].id] ? payRegistration(inscription[1].team.tournament as unknown as Tournament, inscription[0]) : ''"
+                    :to="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
+                    @click.prevent="
+                      inscriptions.unpaid[inscription[1].id]
+                        ? (
+                          modal_payment = true,
+                          payRegistration(inscription[1].team.tournament as unknown as Tournament, inscription[0])
+                        )
+                        : $router.push(`/tournament/${inscription[1].team.tournament.id }?s=teams`)"
                   >
                     {{ inscriptions.unpaid[inscription[1].id] ? 'Terminer l\'inscription' : (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
-                  </a>
+                  </router-link>
                 </div>
               </div>
             </div>
             <div class="hidden flex-col md:block">
-              <a
+              <router-link
                 class="mt-auto text-zinc-400"
-                :href="`/tournament/${inscription[1].team.tournament.id }?s=rules`"
-              >Règlement du tournoi</a>
+                :to="`/tournament/${inscription[1].team.tournament.id }?s=rules`"
+              >
+                Règlement du tournoi
+              </router-link>
             </div>
             <img
               :src="inscription[1].team.tournament.logo"
@@ -255,9 +263,11 @@ const editField = (field: string) => {
               style="width: 100%; object-fit: cover;"
             />
             <div class="m-1 flex flex-1 flex-col justify-center">
-              <p class="text-xl">{{ inscription[1].team.name }}</p>
+              <p class="text-xl">
+                {{ inscription[1].team.name }}
+              </p>
             </div>
-          </a>
+          </router-link>
         </div>
       </div>
       <div v-if="inscriptions.past?.length > 0" class="m-4">
@@ -265,31 +275,31 @@ const editField = (field: string) => {
           Autres Editions
         </h1>
         <div class="m-1 grid gap-3 md:grid-cols-3">
-          <a
+          <router-link
             v-for="inscription in inscriptions.past"
             :key="inscription[1].id"
-            :href="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
+            :to="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
             class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
           >
             <div class="my-1 hidden md:block">
               <div class="m-1 flex h-8 flex-1 flex-col justify-center">
                 <div>
-                  <a
+                  <router-link
                     class="center rounded bg-green-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-                    :href="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
+                    :to="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
                   >
                     {{ (inscription[1].team.players[0] === user.id || inscription[0] === 'manager') ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
-                  </a>
+                  </router-link>
                 </div>
               </div>
             </div>
             <div class="hidden flex-col md:block">
-              <a
+              <router-link
                 class="mt-auto text-zinc-400"
-                :href="`/tournament/${inscription[1].team.tournament.id }?s=rules`"
+                :to="`/tournament/${inscription[1].team.tournament.id }?s=rules`"
               >
                 Règlement du tournoi
-              </a>
+              </router-link>
             </div>
             <img
               :src="inscription[1].team.tournament.logo"
@@ -298,9 +308,11 @@ const editField = (field: string) => {
               style="width: 100%; object-fit: cover;"
             />
             <div class="m-1 flex flex-1 flex-col justify-center">
-              <p class="text-xl">{{ inscription[1].team.name }}</p>
+              <p class="text-xl">
+                {{ inscription[1].team.name }}
+              </p>
             </div>
-          </a>
+          </router-link>
         </div>
       </div>
     </div>
