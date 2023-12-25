@@ -7,6 +7,7 @@ import Toast from '@/components/Toast.vue';
 import { useContentStore } from '@/stores/content.store';
 import { useErrorStore } from '@/stores/error.store';
 import { useToastStore } from '@/stores/toast.store';
+import { useUserStore } from '@/stores/user.store';
 
 const errorStore = useErrorStore();
 const { flush_errors } = errorStore;
@@ -17,7 +18,11 @@ const { dismiss } = toastStore;
 const contentStore = useContentStore();
 const { fetchStatic } = contentStore;
 
+const userStore = useUserStore();
+const { handle_session_cookie_expiration } = userStore;
+
 onMounted(async () => {
+  await handle_session_cookie_expiration();
   flush_errors();
   dismiss();
   await fetchStatic();
