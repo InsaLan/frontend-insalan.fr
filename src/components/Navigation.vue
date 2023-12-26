@@ -15,6 +15,7 @@ const items = [
   { url: '/tournament', text: 'Tournois' },
   { url: '/info', text: 'Informations pratiques' },
   { url: '/eat', text: 'Restauration' },
+  { url: '/schedule', text: 'Planning' },
 ] as const;
 const mobile_items = [
   { url: '/', text: 'Accueil' },
@@ -22,6 +23,7 @@ const mobile_items = [
   { url: '/tournament', text: 'Tournois' },
   { url: '/info', text: 'Informations pratiques' },
   { url: '/eat', text: 'Restauration' },
+  { url: '/schedule', text: 'Planning' },
 ] as const;
 
 const apiUrl = import.meta.env.VITE_API_URL;
