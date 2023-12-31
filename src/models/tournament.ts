@@ -25,6 +25,7 @@ interface BaseTournament {
   validated_teams: number;
   description: string;
   casters: Caster[];
+  planning: string;
 }
 
 export interface TournamentDeref extends BaseTournament {
