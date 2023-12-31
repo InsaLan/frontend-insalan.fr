@@ -4,6 +4,7 @@ import {
   computed, onMounted, reactive, ref,
 } from 'vue';
 import { useRouter } from 'vue-router';
+import Content from '@/components/Content.vue';
 import TeamCard from '@/components/TeamCard.vue';
 import type { Game } from '@/models/game';
 import type { Team } from '@/models/team';
@@ -16,7 +17,7 @@ const props = defineProps<{
   section?: { s: string };
 }>();
 
-const { md } = useContentStore();
+const { md, getContent } = useContentStore();
 
 const tournamentStore = useTournamentStore();
 const { getTournamentFull } = tournamentStore;
@@ -304,7 +305,19 @@ onMounted(async () => {
 
     <section id="brackets" :class="{ hidden: !sections.brackets[0] }"/>
 
-    <section id="planning" :class="{ hidden: !sections.planning[0] }"/>
+    <section id="planning" :class="{ hidden: !sections.planning[0] }">
+      <div class="m-1 flex justify-center rounded bg-cyan-900 p-2">
+        Les plannings peuvent varier en fonction de l'avancement des tournois et sont donnés à titre indicatif.
+      </div>
+      <div v-if="!getContent(tournament?.planning)" class="flex justify-center">
+        Le planning n'est pas encore disponible, revenez plus tard !
+      </div>
+      <div class="flex justify-center">
+        <div class="m-2 overflow-auto overscroll-y-auto">
+          <content :name="tournament?.planning"/>
+        </div>
+      </div>
+    </section>
 
     <section id="rules" :class="{ hidden: !sections.rules[0] }">
       <!-- eslint-disable-next-line vue/no-v-html -->
