@@ -239,7 +239,7 @@ const host = import.meta.env.VITE_WEBSITE_HOST as string;
         <FormField v-slot="context" :validations="v$.accept_rules" class="flex flex-col self-center text-3xl">
           <div>
             <input id="check" v-model="register_form.accept_rules" :class="{ error: context.invalid }" type="checkbox"/>
-            <label for="check"> J'accepte les <router-link :to="`/tournament/${tournament?.id}?s=rules`" class="text-[#63d1ff]">règles du tournoi</router-link></label>
+            <label for="check"> J'accepte les <router-link :to="`/tournament/${tournament?.id}?s=rules`" target="_blank" class="text-[#63d1ff]">règles du tournoi</router-link></label>
           </div>
         </FormField>
       </div>
