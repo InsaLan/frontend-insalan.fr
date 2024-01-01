@@ -3,10 +3,26 @@ import { useVuelidate } from '@vuelidate/core';
 import {
   email, helpers, minLength, required, sameAs,
 } from '@vuelidate/validators';
-import { computed, reactive } from 'vue';
+import {
+  computed, reactive, ref,
+} from 'vue';
+import { useContentStore } from '@/stores/content.store';
 import { useUserStore } from '@/stores/user.store';
 
+import Content from './Content.vue';
 import FormField from './FormField.vue';
+import Modal from './Modal.vue';
+
+const contentStore = useContentStore();
+const { getContent } = contentStore;
+
+const modal_cgu = ref(false);
+const show_modal_cgu = (event: MouseEvent | KeyboardEvent) => {
+  if (getContent('cgu')) {
+    event.preventDefault();
+    modal_cgu.value = true;
+  }
+};
 
 const { signin } = useUserStore();
 const acceptGCU = helpers.withParams(
@@ -136,6 +152,8 @@ const register_user = async () => {
           <label class="text-white" for="accept">J'accepte les <a
             class="text-gray-400 underline decoration-dashed"
             href="#"
+            @click="show_modal_cgu"
+            @keydown.enter="show_modal_cgu"
           >CGU</a> de l'insalan</label>
         </div>
       </FormField>
@@ -146,4 +164,52 @@ const register_user = async () => {
       </div>
     </form>
   </div>
+
+  <!-- Simple modal with a loading text for the payment -->
+  <Modal v-if="modal_cgu" :close-on-click="true" :close-on-escape="true" @close="modal_cgu = false">
+    <template #icon>
+      <a
+        class="text-gray-400 hover:text-gray-500"
+        role="button"
+        tabindex="0"
+        aria-label="Close"
+        @click="modal_cgu = false"
+        @keydown.enter="modal_cgu = false"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 text-gray-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+      </a>
+    </template>
+    <template #title>
+      <h3 class="text-lg font-medium leading-6">
+        Conditions générales d'utilisation
+      </h3>
+    </template>
+    <template #body>
+      <div class="max-h-[50vh] overflow-y-auto">
+        <Content name="cgu"/>
+      </div>
+    </template>
+    <template #buttons>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+        type="button"
+        @click="modal_cgu = false"
+      >
+        Fermer
+      </button>
+    </template>
+  </Modal>
 </template>
