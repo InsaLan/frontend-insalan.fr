@@ -24,7 +24,7 @@ onMounted(async () => {
     <img
       :alt="`Logo du ${tournament?.name}`"
       :src="tournament?.logo"
-      class="aspect-video w-screen text-clip"
+      class="max-w-screen aspect-video text-clip"
     />
     <p class="text-lg">
       {{ tournament?.validated_teams }}/{{ tournament?.maxTeam }} Équipes | Cashprize:
