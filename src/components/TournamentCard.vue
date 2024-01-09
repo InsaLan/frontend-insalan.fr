@@ -34,11 +34,11 @@ onMounted(async () => {
       <router-link :to="`tournament/${tournament?.id as number}`" class="rounded border-2 border-green-600 p-2 text-lg hover:border-green-500">
         Plus d'infos
       </router-link>
-      <router-link v-if="Date.parse(tournament?.registration_open) < Date.now() && tournament?.validated_teams < tournament?.maxTeam" :to="`tournament/${tournament?.id as number}/register`" class="rounded bg-green-600 p-2 text-lg hover:bg-green-500">
+      <router-link v-if="Date.parse(tournament?.registration_open) < Date.now()" :to="`tournament/${tournament?.id as number}/register`" class="rounded bg-green-600 p-2 text-lg hover:bg-green-500">
         S'inscrire
       </router-link>
       <button v-else type="button" class="rounded bg-green-600 p-2 text-lg opacity-60" disabled>
-        {{ tournament?.validated_teams < tournament?.maxTeam ? "Inscriptions fermées" : "Inscriptions complètes" }}
+        Inscriptions fermées
       </button>
     </div>
   </div>
