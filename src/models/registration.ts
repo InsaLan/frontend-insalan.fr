@@ -6,17 +6,25 @@ export enum PaymentStatus {
   LATER = 'LATER',
 }
 
-interface BasePlayerRegistration {
+interface BaseRegistration {
   id: number;
   payment_status: PaymentStatus;
   user: number;
   ticket: number;
 }
 
-export interface PlayerRegistration extends BasePlayerRegistration {
+export interface Registration extends BaseRegistration {
   team: number;
 }
 
-export interface PlayerRegistrationDeref extends BasePlayerRegistration {
+export interface PlayerRegistration extends Registration {
+  name_in_game: string;
+}
+
+export interface RegistrationDeref extends BaseRegistration {
   team: TeamDeref;
+}
+
+export interface PlayerRegistrationDeref extends RegistrationDeref {
+  name_in_game: string;
 }
