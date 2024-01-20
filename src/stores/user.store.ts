@@ -2,7 +2,7 @@ import axios, { type AxiosError, isAxiosError } from 'axios';
 import { defineStore } from 'pinia';
 import { computed, type Ref, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { PaymentStatus, type PlayerRegistrationDeref } from '@/models/registration';
+import { PaymentStatus, type PlayerRegistrationDeref, type RegistrationDeref } from '@/models/registration';
 import type { User, UserPatch, UserPatchError } from '@/models/user';
 
 import { useErrorStore } from './error.store';
@@ -17,8 +17,8 @@ export const useUserStore = defineStore('user', () => {
   const ToastStore = useToastStore();
   const ErrorStore = useErrorStore();
   const inscriptions = ref<{
-    ongoing: Ref<[string, PlayerRegistrationDeref][]>;
-    past: Ref<[string, PlayerRegistrationDeref][]>;
+    ongoing: Ref<[string, PlayerRegistrationDeref | RegistrationDeref][]>;
+    past: Ref<[string, PlayerRegistrationDeref | RegistrationDeref][]>;
     unpaid: Ref<{ [key: string]: boolean }>;
   }>({
     ongoing: ref([]),
@@ -159,11 +159,11 @@ export const useUserStore = defineStore('user', () => {
   async function fetch_user_inscription_full() {
     try {
       // ref object to store the data
-      const ongoing: [string, PlayerRegistrationDeref][] = [];
-      const past: [string, PlayerRegistrationDeref][] = [];
+      const ongoing: [string, PlayerRegistrationDeref | RegistrationDeref][] = [];
+      const past: [string, PlayerRegistrationDeref | RegistrationDeref][] = [];
       const unpaid: { [key: number]: boolean } = {};
       // Get all the inscription of the user
-      const registrations = await axios.get<{ 'player': PlayerRegistrationDeref[]; 'manager': PlayerRegistrationDeref[]; 'substitute': PlayerRegistrationDeref[] }>('/tournament/me');
+      const registrations = await axios.get<{ 'player': PlayerRegistrationDeref[]; 'manager': RegistrationDeref[]; 'substitute': PlayerRegistrationDeref[] }>('/tournament/me');
       // Set the value of the ref object
       registrations.data.player.forEach((registration) => {
         if (registration.team.tournament.event.ongoing) {
