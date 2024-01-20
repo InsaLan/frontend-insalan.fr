@@ -10,6 +10,7 @@ import {
 import placeholder from '@/assets/images/logo_home.png';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
+import type { PlayerRegistrationDeref } from '@/models/registration';
 import type { Tournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
@@ -18,7 +19,7 @@ const userStore = useUserStore();
 const tournamentStore = useTournamentStore();
 const { user, role, inscriptions } = storeToRefs(userStore);
 const { fetch_user_inscription_full, patch_user } = userStore;
-const { payRegistration } = tournamentStore;
+const { patch_registration, payRegistration } = tournamentStore;
 
 onMounted(async () => {
   await fetch_user_inscription_full();
@@ -43,6 +44,16 @@ const rules_email = computed(() => ({
 }));
 const v$_email = useVuelidate(rules_email, data_email);
 
+const data_name_in_game = computed(() => ({
+  name_in_game: '',
+  RegId: 0,
+  regtype: '',
+}));
+const rules_name_in_game = computed(() => ({
+  name_in_game: { required },
+}));
+const v$_name_in_game = useVuelidate(rules_name_in_game, data_name_in_game);
+
 const data_password = reactive({
   new_password: '',
   password_validation: '',
@@ -60,6 +71,31 @@ const focus = ref('');
 const title = ref('Test title');
 
 const modal_payment = ref(false);
+
+const showModalNameInGame = ref(false);
+
+const closeModalNameInGame = () => {
+  showModalNameInGame.value = false;
+};
+
+const ValidateModalNameInGame = async () => {
+  let data = {};
+  const isValid = await v$_name_in_game.value.$validate();
+  if (!isValid) return;
+  data = {
+    name_in_game: data_name_in_game.value.name_in_game,
+  };
+  await patch_registration(data_name_in_game.value.regtype, data_name_in_game.value.RegId, data);
+  closeModalNameInGame();
+};
+
+const changeNameInGame = (teamId: number, lastNameInGame: string, regtype: string) => {
+  data_name_in_game.value.name_in_game = lastNameInGame;
+  data_name_in_game.value.RegId = teamId;
+  data_name_in_game.value.regtype = regtype;
+
+  showModalNameInGame.value = true;
+};
 
 const showModal = ref(false);
 const openModal = () => {
@@ -228,9 +264,9 @@ const editField = (field: string) => {
             :to="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
             class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
           >
-            <div class="my-1 hidden md:block">
+            <div class="my-1 block">
               <div class="m-1 flex h-8 flex-1 flex-col justify-center">
-                <div>
+                <div class="flex flex-row items-center justify-center space-x-2">
                   <router-link
                     :class="{ [`bg-red-600`]: inscriptions.unpaid[inscription[1].id], [`bg-green-600`]: !inscriptions.unpaid[inscription[1].id] }"
                     class="center rounded p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
@@ -245,6 +281,25 @@ const editField = (field: string) => {
                   >
                     {{ inscriptions.unpaid[inscription[1].id] ? 'Terminer l\'inscription' : (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
                   </router-link>
+                  <div
+                    v-if="inscription[0] === 'player' || inscription[0] === 'substitute'"
+                    class="rounded bg-blue-700"
+                    @click.prevent="changeNameInGame(
+                      inscription[1].id,
+                      (inscription[1] as PlayerRegistrationDeref).name_in_game,
+                      inscription[0],
+                    )"
+                    @keydown.prevent="changeNameInGame(
+                      inscription[1].id,
+                      (inscription[1] as PlayerRegistrationDeref).name_in_game,
+                      inscription[0],
+                    )"
+                  >
+                    <fa-awesome-icon
+                      class="m-2 hover:cursor-pointer hover:text-blue-600"
+                      icon="fa-solid fa-pencil"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -317,6 +372,55 @@ const editField = (field: string) => {
       </div>
     </div>
   </div>
+
+  <Modal v-if="showModalNameInGame" @close="closeModalNameInGame">
+    <template #icon>
+      <div/>
+    </template>
+    <template #title>
+      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
+        Changer votre nom en jeu
+      </h3>
+    </template>
+    <template #body>
+      <form id="patch-user" class="mt-2" @submit.prevent="validateModal">
+        <FormField
+          v-slot="context"
+          :validations="v$_name_in_game.name_in_game"
+          class="m-2 flex flex-col"
+          label="Nouveau Pseudo"
+        >
+          <input
+            v-model="data_name_in_game.name_in_game"
+            :class="{ error: context.invalid }"
+            aria-label="Nouveau Pseudo"
+            class="border-2 bg-theme-bg"
+            placeholder="Nouveau Pseudo"
+            required
+            type="text"
+          />
+        </FormField>
+        <!-- hidden submit button with tailwind-->
+        <button class="hidden" type="submit"/>
+      </form>
+    </template>
+    <template #buttons>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+        type="submit"
+        @click="ValidateModalNameInGame"
+      >
+        Valider
+      </button>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        type="button"
+        @click="closeModalNameInGame"
+      >
+        Annuler
+      </button>
+    </template>
+  </Modal>
 
   <Modal v-if="showModal" @close="closeModal">
     <template #icon>

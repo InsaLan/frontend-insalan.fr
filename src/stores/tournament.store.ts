@@ -247,6 +247,20 @@ export const useTournamentStore = defineStore('tournament', () => {
     window.location.href = redirect_url;
   }
 
+  async function patch_registration(registration_type: string, registration_id: number, data: Record<string, string>) {
+    await get_csrf();
+
+    await axios.patch(`/tournament/${registration_type}/${registration_id}/`, data, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf.value,
+      },
+    });
+
+    // reload the page
+    window.location.reload();
+  }
+
   function $reset() {
     eventsList.value = {};
     tournamentsList.value = {};
@@ -278,6 +292,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     registerTeam,
     registerPlayerOrManager,
     payRegistration,
+    patch_registration,
     $reset,
     groupBy,
   };
