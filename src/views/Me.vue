@@ -220,7 +220,7 @@ const editField = (field: string) => {
         <h1 class="text-xl">
           Edition Actuelle
         </h1>
-        <div class="m-1 grid gap-3 md:grid-cols-3">
+        <div class="m-1 grid grid-cols-1 justify-items-center gap-3 md:grid-cols-2 md:justify-items-start lg:grid-cols-3">
           <router-link
             v-for="inscription in inscriptions.ongoing"
             :key="inscription[1].id"
@@ -228,7 +228,7 @@ const editField = (field: string) => {
             :to="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
             class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
           >
-            <div class="my-1 hidden md:block">
+            <div class="my-1">
               <div class="m-1 flex h-8 flex-1 flex-col justify-center">
                 <div>
                   <router-link
