@@ -2,13 +2,14 @@ import axios from 'axios';
 import { defineStore, storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import type { Event } from '@/models/event';
+import type { PlayerRegistrationDeref } from '@/models/registration';
 import type { Team } from '@/models/team';
 import type { Tournament } from '@/models/tournament';
 
 import { useUserStore } from './user.store';
 
 const { get_csrf } = useUserStore();
-const { csrf } = storeToRefs(useUserStore());
+const { csrf, inscriptions } = storeToRefs(useUserStore());
 
 function groupBy<T>(items: T[], key: keyof T): Record<string, T[]> {
   return items.reduce((result, item) => ({
@@ -250,15 +251,19 @@ export const useTournamentStore = defineStore('tournament', () => {
   async function patch_registration(registration_type: string, registration_id: number, data: Record<string, string>) {
     await get_csrf();
 
-    await axios.patch(`/tournament/${registration_type}/${registration_id}/`, data, {
+    const res = await axios.patch<PlayerRegistrationDeref>(`/tournament/${registration_type}/${registration_id}/`, data, {
       withCredentials: true,
       headers: {
         'X-CSRFToken': csrf.value,
       },
     });
 
-    // reload the page
-    window.location.reload();
+    // Update the inscriptions
+    inscriptions.value.ongoing.forEach((registration) => {
+      if (registration[1].id === registration_id) {
+        (registration[1] as PlayerRegistrationDeref).name_in_game = res.data.name_in_game;
+      }
+    });
   }
 
   function $reset() {

@@ -84,7 +84,7 @@ const ValidateModalNameInGame = async () => {
   if (!isValid) return;
   data = {
     name_in_game: data_name_in_game.value.name_in_game,
-  };
+  } as Record<string, string>;
   await patch_registration(data_name_in_game.value.regtype, data_name_in_game.value.RegId, data);
   closeModalNameInGame();
 };
@@ -283,7 +283,7 @@ const editField = (field: string) => {
                   </router-link>
                   <div
                     v-if="inscription[0] === 'player' || inscription[0] === 'substitute'"
-                    class="rounded bg-blue-700"
+                    class="flex items-center rounded bg-blue-700 hover:text-blue-600"
                     @click.prevent="changeNameInGame(
                       inscription[1].id,
                       (inscription[1] as PlayerRegistrationDeref).name_in_game,
@@ -295,8 +295,11 @@ const editField = (field: string) => {
                       inscription[0],
                     )"
                   >
+                    <div class="m-2">
+                      {{ ((inscription[1] as PlayerRegistrationDeref).name_in_game.length > 10) ? ((inscription[1] as PlayerRegistrationDeref).name_in_game.slice(0, 8) + '...') : (inscription[1] as PlayerRegistrationDeref).name_in_game }}
+                    </div>
                     <fa-awesome-icon
-                      class="m-2 hover:cursor-pointer hover:text-blue-600"
+                      class="m-2 hover:cursor-pointer"
                       icon="fa-solid fa-pencil"
                     />
                   </div>
