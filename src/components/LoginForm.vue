@@ -6,6 +6,7 @@ import { useUserStore } from '@/stores/user.store';
 
 import FormField from './FormField.vue';
 import Modal from './Modal.vue';
+import PasswordInput from './PasswordInput.vue';
 
 const { ask_reset_password, login } = useUserStore();
 
@@ -79,14 +80,11 @@ const openModal = () => {
         <label for="password">
           Mot de passe
         </label>
-        <input
+        <PasswordInput
           id="password"
           v-model="login_form.password"
-          :class="{ error: context.invalid }"
-          class="border-2 bg-theme-bg"
-          placeholder="Mot de passe"
-          type="password"
-          @blur="v$.password.$touch"
+          :error="context.invalid"
+          :on-blur="v$.password.$touch"
         />
       </FormField>
       <div class="flex flex-col items-center">
