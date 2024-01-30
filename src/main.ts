@@ -1,13 +1,17 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faArrowsRotate, faCircle, faCircleCheck, faCirclePlus, faClock, faEye,
-  faEyeSlash, faFile, faPencil, faWarning,
+  faArrowsRotate, faChevronDown, faChevronUp,
+  faCircle, faCircleCheck, faCirclePlus, faClock,
+  faDownload, faEye, faEyeSlash,
+  faFile, faMagnifyingGlass,
+  faPencil, faTrashCan, faWarning,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import axios, { type AxiosError } from 'axios';
 import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { createApp } from 'vue';
+import Multiselect from 'vue-multiselect';
 import { router } from '@/router';
 import { type ErrorMessage, useErrorStore } from '@/stores/error.store';
 
@@ -27,6 +31,11 @@ library.add(
   faClock,
   faEye,
   faEyeSlash,
+  faChevronDown,
+  faChevronUp,
+  faDownload,
+  faMagnifyingGlass,
+  faTrashCan,
 );
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
@@ -37,6 +46,7 @@ const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 
 createApp(App)
+  .component('multiselect', Multiselect)
   .component('fa-awesome-icon', FontAwesomeIcon)
   .use(pinia)
   .use(router)

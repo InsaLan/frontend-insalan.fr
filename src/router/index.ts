@@ -80,6 +80,14 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/ScanQrCode.vue'),
   },
   {
+    path: '/admin/pizza',
+    component: () => import('@/views/AdminPizza.vue'),
+    beforeEnter: () => {
+      const { isConnected, role } = useUserStore();
+      return (!isConnected || role === 'joueur') ? { path: '/' } : true;
+    },
+  },
+  {
     path: '/:pathMatch(.*)*',
     component: () => import('@/views/NotFound.vue'),
   },
