@@ -12,6 +12,7 @@ import { useUserStore } from '@/stores/user.store';
 import Content from './Content.vue';
 import FormField from './FormField.vue';
 import Modal from './Modal.vue';
+import PasswordInput from './PasswordInput.vue';
 
 const contentStore = useContentStore();
 const { getContent } = contentStore;
@@ -115,29 +116,23 @@ const register_user = async () => {
         <label for="password_register">
           Mot de passe
         </label>
-        <input
+        <PasswordInput
           id="password_register"
           v-model="register_form.password"
-          :class="{ error: context.invalid }"
-          class="border-2 bg-theme-bg"
-          placeholder="Mot de passe"
-          type="password"
-          @blur="v$.password.$touch"
+          :error="context.invalid"
+          :on-blur="v$.password.$touch"
         />
       </FormField>
       <FormField v-slot="context" :validations="v$.password_confirm" class="flex flex-col">
         <label for="repeat">
           Répéter mot de passe
         </label>
-        <input
+        <PasswordInput
           id="repeat"
           v-model="register_form.password_confirm"
-          :class="{ error: context.invalid }"
-          class="border-2 bg-theme-bg"
-          placeholder="Mot de passe"
+          :error="context.invalid"
           required
-          type="password"
-          @blur="v$.password_confirm.$touch"
+          :on-blur="v$.password_confirm.$touch"
         />
       </FormField>
       <FormField v-slot="context" :validations="v$.accept_cgu" class="flex flex-col" required>

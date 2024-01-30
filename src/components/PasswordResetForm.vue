@@ -7,6 +7,7 @@ import { computed, reactive } from 'vue';
 import { useUserStore } from '@/stores/user.store';
 
 import FormField from './FormField.vue';
+import PasswordInput from './PasswordInput.vue';
 
 const { reset_password } = useUserStore();
 
@@ -47,29 +48,24 @@ const register_user = async () => {
         <label for="password">
           Nouveau mot de passe
         </label>
-        <input
+        <PasswordInput
           id="password"
           v-model="data.password"
-          :class="{ error: context.invalid }"
-          class="border-2 bg-theme-bg"
-          placeholder="Mot de passe"
-          type="password"
-          @blur="v$.password.$touch"
+          :error="context.invalid"
+          :on-blur="v$.password.$touch"
         />
       </FormField>
       <FormField v-slot="context" :validations="v$.password_confirm" class="flex flex-col" required>
         <label for="repeat">
           Répéter le mot de passe
         </label>
-        <input
+        <PasswordInput
           id="repeat"
           v-model="data.password_confirm"
-          :class="{ error: context.invalid }"
-          class="border-2 bg-theme-bg"
+          :error="context.invalid"
           placeholder="Mot de passe"
           required
-          type="password"
-          @blur="v$.password_confirm.$touch"
+          :on-blur="v$.password_confirm.$touch"
         />
       </FormField>
       <div class="flex justify-center">

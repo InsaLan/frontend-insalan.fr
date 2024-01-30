@@ -1,7 +1,7 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faArrowsRotate, faCircle, faCircleCheck, faCirclePlus, faClock,
-  faFile, faPencil, faWarning,
+  faArrowsRotate, faCircle, faCircleCheck, faCirclePlus, faClock, faEye,
+  faEyeSlash, faFile, faPencil, faWarning,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import axios, { type AxiosError } from 'axios';
@@ -16,7 +16,18 @@ import App from './App.vue';
 import './style.css';
 
 /* add icons to the library */
-library.add(faCirclePlus, faPencil, faWarning, faFile, faArrowsRotate, faCircleCheck, faCircle, faClock);
+library.add(
+  faCirclePlus,
+  faPencil,
+  faWarning,
+  faFile,
+  faArrowsRotate,
+  faCircleCheck,
+  faCircle,
+  faClock,
+  faEye,
+  faEyeSlash,
+);
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 axios.defaults.withCredentials = true;

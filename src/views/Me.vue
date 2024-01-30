@@ -10,6 +10,7 @@ import {
 import placeholder from '@/assets/images/logo_home.png';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
+import PasswordInput from '@/components/PasswordInput.vue';
 import type { PlayerRegistrationDeref } from '@/models/registration';
 import type { Tournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
@@ -490,15 +491,13 @@ const editField = (field: string) => {
             class="m-2 flex flex-col"
             label="Nouveau mot de passe"
           >
-            <input
+            <PasswordInput
               v-model="data_password.new_password"
-              :class="{ error: context.invalid }"
+              :error="context.invalid"
               aria-label="Nouveau mot de passe"
-              class="border-2 bg-theme-bg"
               placeholder="Nouveau mot de passe"
               required
-              type="password"
-              @blur="v$_password.new_password.$touch"
+              :on-blur="v$_password.new_password.$touch"
             />
           </FormField>
           <FormField
@@ -507,15 +506,13 @@ const editField = (field: string) => {
             class="m-2 flex flex-col"
             label="Confirmer le mot de passe"
           >
-            <input
+            <PasswordInput
               v-model="data_password.password_validation"
-              :class="{ error: context.invalid }"
+              :error="context.invalid"
               aria-label="Confirmer le mot de passe"
-              class="border-2 bg-theme-bg"
               placeholder="Confirmer le mot de passe"
               required
-              type="password"
-              @blur="v$_password.password_validation.$touch"
+              :on-blur="v$_password.password_validation.$touch"
             />
           </FormField>
           <FormField
@@ -524,15 +521,13 @@ const editField = (field: string) => {
             class="m-2 flex flex-col"
             label="Mot de passe actuel"
           >
-            <input
+            <PasswordInput
               v-model="data_password.current_password"
-              :class="{ error: context.invalid }"
+              :error="context.invalid"
               aria-label="mot de passe actuel"
-              class="border-2 bg-theme-bg"
               placeholder="Mot de passe actuel"
               required
-              type="password"
-              @blur="v$_password.current_password.$touch"
+              :on-blur="v$_password.current_password.$touch"
             />
           </FormField>
         </div>
