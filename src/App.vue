@@ -34,10 +34,10 @@ onMounted(async () => {
   <Navigation/>
   <Error/>
   <Toast/>
-  <div class="flex-1">
+  <div class="flex flex-1 flex-col">
     <routerView/>
   </div>
-  <Footer/>
+  <Footer v-if="!$route.path.startsWith('/admin/')"/>
 </template>
 
 <style>

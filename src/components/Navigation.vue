@@ -66,6 +66,13 @@ const burger_menu = ref(false);
         </router-link>
       </div>
       <div v-else class="my-auto">
+        <router-link
+          v-if="role === 'dev' || role === 'staff'"
+          class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
+          to="/admin/pizza"
+        >
+          Menu pizza
+        </router-link>
         <a
           v-if="role === 'dev' || role === 'staff'"
           class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
