@@ -420,7 +420,11 @@ onMounted(async () => {
     >
       <div class="flex-1">
         <div class="flex flex-row hover:cursor-pointer">
-          <div class="m-2 flex-1">
+          <div
+            class="m-2 flex-1"
+            @click="openModal"
+            @keydown.enter="openModal"
+          >
             Ajouter un créneau
             <fa-awesome-icon
               class="ml-2"
