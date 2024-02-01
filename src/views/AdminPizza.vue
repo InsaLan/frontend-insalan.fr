@@ -33,7 +33,7 @@ const {
 } = pizzaStore;
 
 const extend = ref(false);
-const selected = ref((Object.values(timeslotList.value) as { id: number }[])[0]?.id);
+const selected = ref(0);
 
 const pizza_search = ref('');
 const order_search = ref('');
@@ -182,6 +182,9 @@ const validateModal = async () => {
       pizzaIds,
     );
     showModal.value = false;
+    if (selected.value === 0) {
+      selected.value = (Object.values(timeslotList.value) as { id: number }[])[0]?.id;
+    }
   }
 };
 
@@ -189,12 +192,14 @@ onMounted(async () => {
   await fetchAllPizzas();
   await fetchNextTimeslot();
   await fetchAdminDetailTimeslot();
-  selected.value = (Object.values(timeslotList.value) as { id: number }[])[0]?.id;
+  if (Object.keys(timeslotList.value).length !== 0) {
+    selected.value = (Object.values(timeslotList.value) as { id: number }[])[0]?.id;
+  }
 });
 
 </script>
 <template>
-  <div v-if="selected" class="flex flex-1 flex-col">
+  <div v-if="timeslotList && Object.keys(timeslotList).length > 0" class="flex flex-1 flex-col">
     <div
       class="absolute z-10 flex w-screen rounded-xl text-center text-3xl hover:cursor-pointer"
       :class="{ 'bg-black': extend }"
@@ -256,7 +261,7 @@ onMounted(async () => {
         class="flex w-screen rounded-xl bg-black text-center text-3xl"
       >
         <div class="m-2 flex-1">
-          Créneau {{ frenchFormatFromDate(new Date(timeslotList[selected].delivery_time)) }}
+          Créneau {{ frenchFormatFromDate(new Date(timeslotList[selected]?.delivery_time)) }}
         </div>
         <div
           class="m-2"
@@ -341,9 +346,9 @@ onMounted(async () => {
         </form>
       </div>
       <div class="flex flex-1 flex-col">
-        <div class="title my-2 rounded-xl text-center text-white" :class="{ 'bg-red-600': (timeslotList[selected] as AdminTimeslotDeref)?.orders.length >= timeslotList[selected].pizza_max }">
+        <div class="title my-2 rounded-xl text-center text-white" :class="{ 'bg-red-600': (timeslotList[selected] as AdminTimeslotDeref)?.orders.length >= timeslotList[selected]?.pizza_max }">
           Commandes : {{ (timeslotList[selected] as AdminTimeslotDeref)?.orders.length }} /
-          {{ timeslotList[selected].pizza_max }}
+          {{ timeslotList[selected]?.pizza_max }}
           <fa-awesome-icon
             class="ml-2 hover:cursor-pointer"
             icon="fa-download"
@@ -395,14 +400,14 @@ onMounted(async () => {
           <div
             class="flex flex-col rounded-2xl bg-gray-500 text-center md:flex-row"
             :class="{
-              'bg-red-600': new Date(timeslotList[selected]?.end) > new Date(),
+              'bg-red-600': new Date(timeslotList[selected]?.end) < new Date(),
             }"
           >
             <div class="flex flex-1">
               <div
                 class="m-1 flex flex-1 justify-center text-center text-2xl text-black"
                 :class="{
-                  invisible: new Date(timeslotList[selected]?.end) < new Date(),
+                  invisible: new Date(timeslotList[selected]?.end) > new Date(),
                 }"
               >
                 L'heure de fin de commande est dépassée
@@ -668,12 +673,14 @@ onMounted(async () => {
         class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
         type="submit"
         @click="
-          deleteTimeslot(timeslotList[selectedDelete].id);
           showDeleteModal = false;
-          if (selectedDelete === selected) {
-            selected = Object.values(timeslotList)[0]?.id;
+          if (Object.keys(timeslotList).length === 1) {
+            selected = 0;
+          } else if (selectedDelete === selected) {
+            selected = Object.values(timeslotList).filter(timeslot => timeslot.id !== selectedDelete)[0]?.id;
           };
           extend = false;
+          deleteTimeslot(timeslotList[selectedDelete].id);
         "
       >
         Valider
