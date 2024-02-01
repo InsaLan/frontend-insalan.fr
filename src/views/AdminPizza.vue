@@ -130,28 +130,28 @@ const openModal = () => {
   showModal.value = true;
   // set all input value to same as selected timeslot
   data_create = reactive({
-    delivery_time: new Date(timeslotList.value[selected.value]?.delivery_time).toLocaleTimeString('fr-FR', {
+    delivery_time: new Date(timeslotList.value[selected.value]?.delivery_time || Date.now()).toLocaleTimeString('fr-FR', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
-    }) || '',
+    }),
     pizza_max: timeslotList.value[selected.value]?.pizza_max || 0,
-    start: new Date(timeslotList.value[selected.value]?.start).toLocaleTimeString('fr-FR', {
+    start: new Date(timeslotList.value[selected.value]?.start || Date.now()).toLocaleTimeString('fr-FR', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
-    }) || '',
-    end: new Date(timeslotList.value[selected.value]?.end).toLocaleTimeString('fr-FR', {
+    }),
+    end: new Date(timeslotList.value[selected.value]?.end || Date.now()).toLocaleTimeString('fr-FR', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
-    }) || '',
+    }),
     public: true,
     player_price: timeslotList.value[selected.value]?.player_price || 0,
     staff_price: timeslotList.value[selected.value]?.staff_price || 0,
