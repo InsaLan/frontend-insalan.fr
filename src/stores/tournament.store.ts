@@ -266,6 +266,18 @@ export const useTournamentStore = defineStore('tournament', () => {
     });
   }
 
+  async function get_ticket_pdf(token: string) {
+    const response = await axios.get(`/tickets/generate/${token}`, {
+      responseType: 'blob',
+    });
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `ticket_${token}.pdf`);
+    document.body.appendChild(link);
+    link.click();
+  }
+
   function $reset() {
     eventsList.value = {};
     tournamentsList.value = {};
@@ -300,5 +312,6 @@ export const useTournamentStore = defineStore('tournament', () => {
     patch_registration,
     $reset,
     groupBy,
+    get_ticket_pdf,
   };
 });
