@@ -20,7 +20,7 @@ const userStore = useUserStore();
 const tournamentStore = useTournamentStore();
 const { user, role, inscriptions } = storeToRefs(userStore);
 const { fetch_user_inscription_full, patch_user } = userStore;
-const { patch_registration, payRegistration } = tournamentStore;
+const { patch_registration, payRegistration, get_ticket_pdf } = tournamentStore;
 
 onMounted(async () => {
   await fetch_user_inscription_full();
@@ -258,11 +258,10 @@ const editField = (field: string) => {
           Edition Actuelle
         </h1>
         <div class="m-1 grid gap-3 md:grid-cols-3">
-          <router-link
+          <div
             v-for="inscription in inscriptions.ongoing"
             :key="inscription[1].id"
             :class="{ /*[`bg-red-900`]: inscriptions.unpaid[inscription.team.id]*/ }"
-            :to="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
             class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
           >
             <div class="my-1 block">
@@ -315,18 +314,34 @@ const editField = (field: string) => {
                 Règlement du tournoi
               </router-link>
             </div>
-            <img
-              :src="inscription[1].team.tournament.logo"
-              alt="image du tournoi"
-              class="h-32 w-32 max-w-full overflow-hidden"
-              style="width: 100%; object-fit: cover;"
-            />
-            <div class="m-1 flex flex-1 flex-col justify-center">
+            <div
+              :class="{ ['hover:cursor-pointer']: inscription[1].ticket }"
+              @click="inscription[1].ticket && get_ticket_pdf(inscription[1].ticket)"
+              @keydown="inscription[1].ticket && get_ticket_pdf(inscription[1].ticket)"
+            >
+              <img
+                :src="inscription[1].team.tournament.logo"
+                alt="image du tournoi"
+                class="h-32 w-32 max-w-full overflow-hidden"
+                style="width: 100%; object-fit: cover;"
+              />
+              <div
+                v-if="inscription[1].ticket"
+                class="m-1 flex flex-1 flex-col justify-center"
+              >
+                <p class="text-xs">
+                  Télecharger son billet
+                </p>
+              </div>
+            </div>
+            <div
+              class="m-1 flex flex-1 flex-col justify-center"
+            >
               <p class="text-xl">
                 {{ inscription[1].team.name }}
               </p>
             </div>
-          </router-link>
+          </div>
         </div>
       </div>
       <div v-if="inscriptions.past?.length > 0" class="m-4">

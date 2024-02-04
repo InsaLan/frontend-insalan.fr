@@ -10,7 +10,7 @@ interface BaseRegistration {
   id: number;
   payment_status: PaymentStatus;
   user: number;
-  ticket: number;
+  ticket: string;
 }
 
 export interface Registration extends BaseRegistration {
