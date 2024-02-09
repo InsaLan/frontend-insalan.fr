@@ -3,7 +3,7 @@ import { defineStore, storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import type { Order } from '@/models/order';
 import type { Pizza } from '@/models/pizza';
-import type { AdminTimeslotDeref, Timeslot } from '@/models/timeslot';
+import type { AdminTimeslotDeref, Export, Timeslot } from '@/models/timeslot';
 
 import { useUserStore } from './user.store';
 
@@ -124,7 +124,7 @@ export const usePizzaStore = defineStore('pizza', () => {
     }
   }
 
-  function frenchFormatFromDate(date: Date) {
+  function frenchFormatFromDate(date: Date): string {
     const mois: string[] = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
     const year = date.getFullYear();
     const dayNumber = date.getDate();
@@ -134,6 +134,51 @@ export const usePizzaStore = defineStore('pizza', () => {
     const minutes = date.getMinutes().toString().padStart(2, '0');
 
     return `${weekday} ${dayNumber} ${month} ${year} - ${hours}h${minutes}`;
+  }
+
+  async function exportOrders(timeslotId: number) {
+    await get_csrf();
+
+    const res = await axios.post<Export[]>(`/pizza/timeslot/${timeslotId}/export/`, {}, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf.value,
+      },
+    });
+    if (res.status !== 200) {
+      return;
+    }
+    const total: { [key: string]: number } = {};
+    let data = '';
+    data += `${frenchFormatFromDate(new Date(timeslotList.value[timeslotId].delivery_time))}\n`;
+    let totalOrders = 0;
+    let totalPizzas = 0;
+
+    res.data.forEach((order) => {
+      data += `export ${totalOrders + 1}\n`;
+      Object.entries(order.orders).forEach(([pizza, quantity]: [string, number]) => {
+        totalPizzas += quantity;
+        if (total[pizza]) {
+          total[pizza] += quantity;
+        } else {
+          total[pizza] = quantity;
+        }
+        data += `  - ${pizza} : ${quantity}\n`;
+      });
+      totalOrders += 1;
+    });
+    data += 'total\n';
+    Object.entries(total).forEach(([pizza, quantity]) => {
+      data += `  - ${pizza} : ${quantity}\n`;
+    });
+    data += `Nombre de pizza : ${totalPizzas}\n`;
+
+    const url = window.URL.createObjectURL(new Blob([data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `export_${frenchFormatFromDate(new Date(timeslotList.value[timeslotId].delivery_time))}.txt`);
+    document.body.appendChild(link);
+    link.click();
   }
 
   return {
@@ -148,5 +193,6 @@ export const usePizzaStore = defineStore('pizza', () => {
     patchOrder,
     addTimeslot,
     deleteTimeslot,
+    exportOrders,
   };
 });
