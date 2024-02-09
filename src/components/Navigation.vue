@@ -30,7 +30,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 const userStore = useUserStore();
 const { logout } = userStore;
-const { isConnected, role } = storeToRefs(userStore);
+const { isConnected, role, user } = storeToRefs(userStore);
 
 const router = useRouter();
 
@@ -67,7 +67,7 @@ const burger_menu = ref(false);
       </div>
       <div v-else class="my-auto">
         <router-link
-          v-if="role === 'dev' || role === 'staff'"
+          v-if="user?.groups.includes('Equipe Bouffe')"
           class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
           to="/admin/pizza"
         >
