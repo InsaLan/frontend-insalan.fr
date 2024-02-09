@@ -30,6 +30,7 @@ const {
   patchOrder,
   addTimeslot,
   deleteTimeslot,
+  exportOrders,
 } = pizzaStore;
 
 const extend = ref(false);
@@ -352,6 +353,8 @@ onMounted(async () => {
           <fa-awesome-icon
             class="ml-2 hover:cursor-pointer"
             icon="fa-download"
+            @click="exportOrders(selected)"
+            @keydown.enter="exportOrders(selected)"
           />
         </div>
         <div class="flex flex-1 flex-col gap-5">

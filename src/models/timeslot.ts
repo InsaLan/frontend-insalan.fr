@@ -21,3 +21,9 @@ export interface AdminTimeslot extends Timeslot {
 export interface AdminTimeslotDeref extends Timeslot {
   orders: Order[];
 }
+
+export interface Export {
+  id: number;
+  orders: object;
+  time_slot: number;
+}
