@@ -83,8 +83,8 @@ const routes: RouteRecordRaw[] = [
     path: '/admin/pizza',
     component: () => import('@/views/AdminPizza.vue'),
     beforeEnter: () => {
-      const { isConnected, role } = useUserStore();
-      return (!isConnected || role === 'joueur') ? { path: '/' } : true;
+      const { isConnected, user } = useUserStore();
+      return (!isConnected || !user.groups.includes('Equipe Bouffe')) ? { path: '/' } : true;
     },
   },
   {
