@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
 import Content from '@/components/Content.vue';
-import TournamentCard from '@/components/PizzaCard.vue';
+import PizzaCard from '@/components/PizzaCard.vue';
 import { usePizzaStore } from '@/stores/pizza.store';
 
 const pizzaStore = usePizzaStore();
@@ -22,7 +22,7 @@ onMounted(async () => {
       Pizza
     </div>
     <div class="mb-12 grid w-full gap-4 px-4 md:grid-cols-2 xl:grid-cols-4">
-      <TournamentCard
+      <PizzaCard
         v-for="pizza in pizzaList"
         :id="pizza.id"
         :key="pizza.id"
