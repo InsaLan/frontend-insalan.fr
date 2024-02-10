@@ -78,6 +78,8 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/ticket/scan',
     component: () => import('@/views/ScanQrCode.vue'),
+    // Restrict route from loading on desktop
+    beforeEnter: () => window.innerWidth <= 768,
   },
   {
     path: '/admin/pizza',
@@ -96,7 +98,7 @@ const routes: RouteRecordRaw[] = [
 export const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior(_to, _from, savedPosition) {
     if (savedPosition) {
       return savedPosition;
     }
