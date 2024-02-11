@@ -2,7 +2,9 @@ import type { Caster } from '@/models/caster';
 import type { EventDeref } from '@/models/event';
 import type { Game } from '@/models/game';
 import type { Team } from '@/models/team';
-
+import type { Group } from '@/models/group';
+import type { SwissRound } from '@/models/swiss';
+import type { Bracket } from '@/models/bracket';
 interface BaseTournament {
   id: number;
   teams: Team[] | Team['id'][];
@@ -30,8 +32,14 @@ interface BaseTournament {
 
 export interface TournamentDeref extends BaseTournament {
   event: EventDeref;
+  groups: Group[];
+  brackets: Bracket[];
+  swissRounds: SwissRound[];
 }
 
 export interface Tournament extends BaseTournament {
   event: number;
+  groups: number[];
+  brackets: number[];
+  swissRounds: number[];
 }
