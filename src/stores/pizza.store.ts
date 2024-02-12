@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { defineStore, storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import type { Order } from '@/models/order';
 import type { Pizza } from '@/models/pizza';
 import type { AdminTimeslotDeref, Export, Timeslot } from '@/models/timeslot';
@@ -13,8 +13,6 @@ const { csrf } = storeToRefs(useUserStore());
 export const usePizzaStore = defineStore('pizza', () => {
   const pizzaList = ref<Record<number, Pizza>>({});
   const timeslotList = ref<Record<number, Timeslot | AdminTimeslotDeref>>({});
-
-  const pizzas = computed(() => Object.values(pizzaList.value));
 
   async function fetchAllPizzas() {
     const res = await axios.get<Pizza[]>('/pizza/pizza/full');
@@ -184,7 +182,6 @@ export const usePizzaStore = defineStore('pizza', () => {
   return {
     pizzaList,
     timeslotList,
-    pizzas,
     fetchAllPizzas,
     fetchNextTimeslot,
     frenchFormatFromDate,
