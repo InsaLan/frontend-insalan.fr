@@ -9,8 +9,10 @@ import TeamCard from '@/components/TeamCard.vue';
 import type { Game } from '@/models/game';
 import type { Team } from '@/models/team';
 import type { Tournament } from '@/models/tournament';
+import type { Bracket } from '@/models/bracket';
+import type { Match } from '@/models/match';
 import { useContentStore } from '@/stores/content.store';
-import { useTournamentStore } from '@/stores/tournament.store';
+import { useTournamentStore, groupBy } from '@/stores/tournament.store';
 
 const props = defineProps<{
   id: number;
@@ -31,7 +33,7 @@ const teams = computed<Record<string, Team[]>>(() => (tournament.value?.teams as
   }
   return ret;
 }, { validated_teams: [] as Team[], non_validated_teams: [] as Team[] }));
-
+//const bracket_games = computed<Record<number, Team[]>>()
 const open_drop = ref(false);
 const drop_label = ref('Informations');
 const trans = ref('translateX(0vw)');
@@ -44,6 +46,10 @@ const sections = reactive<Record<string, [boolean, number]>>({
   rules: [false, 5],
 });
 
+const get_validated_team_by_id = (id: number) => {
+  return teams.value?.validated_teams.find(team => team.id === id);
+};
+
 const select_tag = (e: Event) => {
   const target = e.target as HTMLInputElement;
   open_drop.value = false;
@@ -55,8 +61,21 @@ const select_tag = (e: Event) => {
   sections[target.id][0] = true;
 };
 
+const get_col_class = (bracket: Bracket) => {
+  return `grid-cols-${Math.ceil(Math.log2(bracket.team_count)) + 1}`;
+};
+
+const is_winning_team = (obj: {[key: number]: number}, team_id: number) => {
+  return parseInt(Object.keys(obj).reduce((a, b) => obj[a] > obj[b] ? a : b)) == team_id;
+}
+const get_matchs_per_round = (matchs: Match[]) => {
+  const reversed_rounds = groupBy(matchs, "round_number");
+  return Object.values(reversed_rounds).reverse();
+
+};
 const router = useRouter();
 onMounted(async () => {
+
   try {
     await getTournamentFull(props.id);
   } catch (err: unknown) {
@@ -301,10 +320,49 @@ onMounted(async () => {
       </div>
     </section>
 
-    <section id="groups" :class="{ hidden: !sections.groups[0] }"/>
+    <section id="groups" :class="{ hidden: !sections.groups[0] }">
+      <div class="mt-6 flex justify-center">
+        <div class="mx-3" v-for="group in tournament.groups" :key="group.id">
+          <table :key="group.id" border="1" class="text-3xl text-bold border-collapse border border-slate-500">
+            <thead>
+              <tr>
+                <th colspan="2" class="text-black bg-slate-400">{{ group.name }}</th>
+              </tr>
+              <tr>
+                <th align="center" class="border-separate border border-slate-500 troncate">Equipe</th>
+                <th align="center" class="border-separate border border-slate-500">Score</th>
+              </tr>
+            </thead>
+            <tbody>
+               <tr v-for="team_id in group.teams" :key="team_id">
+                <td align="center" class="border-separate border border-slate-500">{{
+                  get_validated_team_by_id(team_id).name }}</td>
+                <td align="center" class="border-separate border border-slate-500">{{group.scores[team_id]}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
 
-    <section id="brackets" :class="{ hidden: !sections.brackets[0] }"/>
-
+    <section id="brackets" :class="{ hidden: !sections.brackets[0] }">
+      <div  v-for="bracket in tournament.brackets"  >
+        <h1 class="title"> {{ bracket.name}} </h1>
+        <div class="grid items-center" :class="get_col_class(bracket)" :key="bracket.id"> 
+        <div v-for="games in get_matchs_per_round(bracket.matchs)" :key="games.id">
+          <div class="m-2 divide-y" v-for="game in games" :key="game.id">
+              <div class="bg-slate-700 p-2 flex justify-between text-xl" v-for="team_id in game.teams" :key="team_id" :class="{'bg-slate-900': game.status =='ONGOING'}">
+                   <div class="text-grey-500">{{ get_validated_team_by_id(team_id).name}}</div> <div v-if = "game.status == 'COMPLETED'" :class="is_winning_team(game.score, team_id) ? 'text-emerald-300' : 'text-white'" class="font-black text-3xl">{{ game.score[team_id] }}</div>
+              </div>
+          </div>
+        </div>
+        <div v-if="bracket.winner !== null" class="w-40 bg-yellow-600 p-2">
+           <h1 class="text-bold text-center text-2xl">Vainqueur</h1>
+          <p class="text-center text-xl">{{ get_validated_team_by_id(bracket.winner).name }}</p>
+          </div>
+      </div>
+    </div>
+    </section>
     <section id="planning" :class="{ hidden: !sections.planning[0] }">
       <div class="m-1 flex justify-center rounded bg-cyan-900 p-2">
         Les plannings peuvent varier en fonction de l'avancement des tournois et sont donnés à titre indicatif.
