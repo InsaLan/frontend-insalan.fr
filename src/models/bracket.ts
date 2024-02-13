@@ -14,7 +14,7 @@ export interface Bracket {
   tournament: number;
   bracket_type: BracketType;
   team_count: number;
-
+  winner: number;
 }
 
 export interface KnockoutMatch {

@@ -17,6 +17,7 @@ export enum BestofType {
 export interface Match {
   teams: Team[];
   round_number: number;
+  score: Record<number, number>;
   index_in_round: number;
   status: MatchStatus;
   bo_type: BestofType;

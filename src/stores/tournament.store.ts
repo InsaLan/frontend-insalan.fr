@@ -11,7 +11,7 @@ import { useUserStore } from './user.store';
 const { get_csrf } = useUserStore();
 const { csrf, inscriptions } = storeToRefs(useUserStore());
 
-function groupBy<T>(items: T[], key: keyof T): Record<string, T[]> {
+export function groupBy<T>(items: T[], key: keyof T): Record<string, T[]> {
   return items.reduce((result, item) => ({
     ...result,
     [item[key] as keyof T]: [

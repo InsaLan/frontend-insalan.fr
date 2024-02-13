@@ -4,6 +4,11 @@ export default {
     './index.html',
     './src/**/*.{vue,ts,js,jsx,tsx}',
   ],
+  safelist: [
+    {
+      pattern: /grid-cols-\d+/,
+    }
+  ],
   theme: {
     extend: {
       colors: {
