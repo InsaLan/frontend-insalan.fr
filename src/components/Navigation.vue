@@ -167,6 +167,13 @@ const burger_menu = ref(false);
           >
             Panel Admin
           </a>
+          <router-link
+            v-if="role === 'dev' || role === 'staff'"
+            class="mx-2 py-5 text-center font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
+            :to="{ path: '/ticket/scan' }"
+          >
+            Scan billets
+          </router-link>
 
           <router-link
             v-for="(item, i) in mobile_items"
