@@ -78,8 +78,15 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/ticket/scan',
     component: () => import('@/views/ScanQrCode.vue'),
-    // Restrict route from loading on desktop
-    beforeEnter: () => window.innerWidth <= 768,
+    beforeEnter: () => {
+      const { isConnected, user } = useUserStore();
+      return (
+        !isConnected
+        || (!user.is_superuser && !user.is_staff)
+        // Restrict route from loading on desktop
+        || window.innerWidth > 768
+      ) ? { path: '/' } : true;
+    },
   },
   {
     path: '/admin/pizza',
