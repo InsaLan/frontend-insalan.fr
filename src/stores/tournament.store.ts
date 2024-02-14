@@ -123,7 +123,6 @@ export const useTournamentStore = defineStore('tournament', () => {
       await fetchTournament(id);
     }
   }
-
   async function getTournaments(ids: number[]) {
     const missing: number[] = [];
     ids.forEach((id) => {
@@ -347,7 +346,6 @@ export const useTournamentStore = defineStore('tournament', () => {
     payRegistration,
     patch_registration,
     $reset,
-    groupBy,
     get_ticket_pdf,
     get_unpaid_registration,
     validate_registration,
