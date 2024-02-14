@@ -1,5 +1,6 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
+  faArrowLeft,
   faArrowsRotate, faBolt, faChevronDown, faChevronUp,
   faCircle, faCircleCheck, faCirclePlus, faClock,
   faDownload, faEye, faEyeSlash,
@@ -37,6 +38,7 @@ library.add(
   faMagnifyingGlass,
   faTrashCan,
   faBolt,
+  faArrowLeft,
 );
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;

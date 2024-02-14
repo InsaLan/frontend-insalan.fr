@@ -6,14 +6,15 @@ import {
 import { useRouter } from 'vue-router';
 import Content from '@/components/Content.vue';
 import TeamCard from '@/components/TeamCard.vue';
+import GroupTable from '@/components/GroupTable.vue';
 import type { Game } from '@/models/game';
 import type { Team } from '@/models/team';
 import type { Tournament } from '@/models/tournament';
 import type { Bracket } from '@/models/bracket';
 import type { Match } from '@/models/match';
+import type { Group } from '@/models/group';
 import { useContentStore } from '@/stores/content.store';
 import { useTournamentStore, groupBy } from '@/stores/tournament.store';
-
 const props = defineProps<{
   id: number;
   section?: { s: string };
@@ -33,10 +34,10 @@ const teams = computed<Record<string, Team[]>>(() => (tournament.value?.teams as
   }
   return ret;
 }, { validated_teams: [] as Team[], non_validated_teams: [] as Team[] }));
-//const bracket_games = computed<Record<number, Team[]>>()
 const open_drop = ref(false);
 const drop_label = ref('Informations');
 const trans = ref('translateX(0vw)');
+const show_detail_group = ref(null);
 const sections = reactive<Record<string, [boolean, number]>>({
   info: [false, 0],
   teams: [false, 1],
@@ -72,6 +73,15 @@ const get_matchs_per_round = (matchs: Match[]) => {
   const reversed_rounds = groupBy(matchs, "round_number");
   return Object.values(reversed_rounds).reverse();
 
+};
+/** 
+const get_matchs_per_round_reverse = (matchs: Match[]) => {
+  return groupBy(matchs, "round_number");
+
+};
+*/
+const get_group_by_id = (groups: Group[], id: number) => {
+  return groups.find(group => group.id === id);
 };
 const router = useRouter();
 onMounted(async () => {
@@ -320,33 +330,51 @@ onMounted(async () => {
       </div>
     </section>
 
-    <section id="groups" :class="{ hidden: !sections.groups[0] }">
-      <div class="mt-6 flex justify-center">
-        <div class="mx-3" v-for="group in tournament.groups" :key="group.id">
-          <table :key="group.id" border="1" class="text-3xl text-bold border-collapse border border-slate-500">
-            <thead>
-              <tr>
-                <th colspan="2" class="text-black bg-slate-400">{{ group.name }}</th>
-              </tr>
-              <tr>
-                <th align="center" class="border-separate border border-slate-500 troncate">Equipe</th>
-                <th align="center" class="border-separate border border-slate-500">Score</th>
-              </tr>
-            </thead>
-            <tbody>
-               <tr v-for="team_id in group.teams" :key="team_id">
-                <td align="center" class="border-separate border border-slate-500">{{
-                  get_validated_team_by_id(team_id).name }}</td>
-                <td align="center" class="border-separate border border-slate-500">{{group.scores[team_id]}}</td>
-              </tr>
-            </tbody>
-          </table>
+    <section id="groups" :class="{ hidden: !sections.groups[0] || show_detail_group }">
+      <h1 v-if="tournament?.groups.length === 0" class="mt-6 text-center text-4xl">
+        Les poules ne sont pas disponibles.
+      </h1>
+      <div v-if="tournament?.groups.length > 0" class="mt-6 flex justify-center">
+        <div @click="show_detail_group = group.id" class="mx-3" v-for="group in tournament.groups" :key="group.id">
+          <GroupTable  :teams="teams" :group="group" />
         </div>
       </div>
     </section>
 
+
+    <section v-if="get_group_by_id(tournament?.groups, show_detail_group) !== undefined" id="group" :class="{hidden: show_detail_group === null || !sections.groups[0]}" class="flex flex-col p-4">
+      <nav class="flex gap-3 my-5 justify-center">   
+        <button class="w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto text-center" @click="show_detail_group = null"><fa-awesome-icon icon="fa-solid fa-arrow-left" /> Retour </button>
+        <h1 class="text-center text-3xl font-black">{{ get_group_by_id(tournament?.groups, show_detail_group).name }}</h1>
+      </nav>
+      <div class="flex justify-center gap-3">
+        <GroupTable class="w-1/2 max-w-96 max-h-96" :teams="teams" :group="get_group_by_id(tournament?.groups, show_detail_group)" />
+          <div class="w-1/2">
+            <div v-for="match in get_matchs_per_round(get_group_by_id(tournament?.groups, show_detail_group).matchs)">
+              <h1 class="text-3xl text-center font-black">Round {{ match[0].round_number }}</h1>
+                <div class="gap-4">
+                  <div class="flex justify-center" v-for="game in match">
+                    <div class="text-xl font-bold flex border-2 divide-x mb-4">
+                      <div class="p-3">{{ get_validated_team_by_id(game.teams[0]).name }}</div>
+                      <div class="p-3">{{ game.score[game.teams[0]] }}</div>
+                    </div>
+                    <div v-if="game.teams.length == 2" class=" text-xl font-bold flex border-2 divide-x mb-4">
+                      <div class="p-3">{{ game.score[game.teams[1]] }}</div>
+                      <div class="p-3">{{ get_validated_team_by_id(game.teams[1]).name }}</div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+      </div>
+    </section>
+
     <section id="brackets" :class="{ hidden: !sections.brackets[0] }">
-      <div  v-for="bracket in tournament.brackets"  >
+      <!-- TODO: refactor in component -->
+      <h1 v-if="tournament?.brackets.length === 0" class="mt-6 text-center text-4xl">
+        Les arbres ne sont pas disponibles.
+      </h1>
+      <div v-else v-for="bracket in tournament.brackets"  >
         <h1 class="title"> {{ bracket.name}} </h1>
         <div class="grid items-center" :class="get_col_class(bracket)" :key="bracket.id"> 
         <div v-for="games in get_matchs_per_round(bracket.matchs)" :key="games.id">
