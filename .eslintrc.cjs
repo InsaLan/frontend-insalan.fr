@@ -30,7 +30,6 @@ module.exports = defineConfig({
         // Eslint rules
         'no-console': 'error',
         'no-param-reassign': 'off',
-        'prefer-destructuring': 'off',
 
         // Plugins rules
         'import/prefer-default-export': 'off',
