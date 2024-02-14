@@ -5,16 +5,17 @@ import {
 } from 'vue';
 import { useRouter } from 'vue-router';
 import Content from '@/components/Content.vue';
-import TeamCard from '@/components/TeamCard.vue';
 import GroupTable from '@/components/GroupTable.vue';
+import TeamCard from '@/components/TeamCard.vue';
+import type { Bracket } from '@/models/bracket';
 import type { Game } from '@/models/game';
+import type { Group } from '@/models/group';
+import type { Match } from '@/models/match';
 import type { Team } from '@/models/team';
 import type { Tournament } from '@/models/tournament';
-import type { Bracket } from '@/models/bracket';
-import type { Match } from '@/models/match';
-import type { Group } from '@/models/group';
 import { useContentStore } from '@/stores/content.store';
-import { useTournamentStore, groupBy } from '@/stores/tournament.store';
+import { groupBy, useTournamentStore } from '@/stores/tournament.store';
+
 const props = defineProps<{
   id: number;
   section?: { s: string };
@@ -47,9 +48,7 @@ const sections = reactive<Record<string, [boolean, number]>>({
   rules: [false, 5],
 });
 
-const get_validated_team_by_id = (id: number) => {
-  return teams.value?.validated_teams.find(team => team.id === id);
-};
+const get_validated_team_by_id = (id: number) => teams.value?.validated_teams.find((team) => team.id === id);
 
 const select_tag = (e: Event) => {
   const target = e.target as HTMLInputElement;
@@ -62,30 +61,22 @@ const select_tag = (e: Event) => {
   sections[target.id][0] = true;
 };
 
-const get_col_class = (bracket: Bracket) => {
-  return `grid-cols-${Math.ceil(Math.log2(bracket.team_count)) + 1}`;
-};
+const get_col_class = (bracket: Bracket) => `grid-cols-${Math.ceil(Math.log2(bracket.team_count)) + 1}`;
 
-const is_winning_team = (obj: {[key: number]: number}, team_id: number) => {
-  return parseInt(Object.keys(obj).reduce((a, b) => obj[a] > obj[b] ? a : b)) == team_id;
-}
+const is_winning_team = (obj: { [key: number]: number }, team_id: number) => parseInt(Object.keys(obj).reduce((a, b) => (obj[a] > obj[b] ? a : b))) == team_id;
 const get_matchs_per_round = (matchs: Match[]) => {
-  const reversed_rounds = groupBy(matchs, "round_number");
+  const reversed_rounds = groupBy(matchs, 'round_number');
   return Object.values(reversed_rounds).reverse();
-
 };
-/** 
+/**
 const get_matchs_per_round_reverse = (matchs: Match[]) => {
   return groupBy(matchs, "round_number");
 
 };
 */
-const get_group_by_id = (groups: Group[], id: number) => {
-  return groups.find(group => group.id === id);
-};
+const get_group_by_id = (groups: Group[], id: number) => groups.find((group) => group.id === id);
 const router = useRouter();
 onMounted(async () => {
-
   try {
     await getTournamentFull(props.id);
   } catch (err: unknown) {
@@ -335,37 +326,50 @@ onMounted(async () => {
         Les poules ne sont pas disponibles.
       </h1>
       <div v-if="tournament?.groups.length > 0" class="mt-6 flex justify-center">
-        <div @click="show_detail_group = group.id" class="mx-3" v-for="group in tournament.groups" :key="group.id">
-          <GroupTable  :teams="teams" :group="group" />
+        <div v-for="group in tournament.groups" :key="group.id" class="mx-3" @click="show_detail_group = group.id">
+          <GroupTable :teams="teams" :group="group"/>
         </div>
       </div>
     </section>
 
-
-    <section v-if="get_group_by_id(tournament?.groups, show_detail_group) !== undefined" id="group" :class="{hidden: show_detail_group === null || !sections.groups[0]}" class="flex flex-col p-4">
-      <nav class="flex gap-3 my-5 justify-center">   
-        <button class="w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto text-center" @click="show_detail_group = null"><fa-awesome-icon icon="fa-solid fa-arrow-left" /> Retour </button>
-        <h1 class="text-center text-3xl font-black">{{ get_group_by_id(tournament?.groups, show_detail_group).name }}</h1>
+    <section v-if="get_group_by_id(tournament?.groups, show_detail_group) !== undefined" id="group" :class="{ hidden: show_detail_group === null || !sections.groups[0] }" class="flex flex-col p-4">
+      <nav class="my-5 flex justify-center gap-3">
+        <button class="w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto" @click="show_detail_group = null">
+          <fa-awesome-icon icon="fa-solid fa-arrow-left"/> Retour
+        </button>
+        <h1 class="text-center text-3xl font-black">
+          {{ get_group_by_id(tournament?.groups, show_detail_group).name }}
+        </h1>
       </nav>
       <div class="flex justify-center gap-3">
-        <GroupTable class="w-1/2 max-w-96 max-h-96" :teams="teams" :group="get_group_by_id(tournament?.groups, show_detail_group)" />
-          <div class="w-1/2">
-            <div v-for="match in get_matchs_per_round(get_group_by_id(tournament?.groups, show_detail_group).matchs)">
-              <h1 class="text-3xl text-center font-black">Round {{ match[0].round_number }}</h1>
-                <div class="gap-4">
-                  <div class="flex justify-center" v-for="game in match">
-                    <div class="text-xl font-bold flex border-2 divide-x mb-4">
-                      <div class="p-3">{{ get_validated_team_by_id(game.teams[0]).name }}</div>
-                      <div class="p-3">{{ game.score[game.teams[0]] }}</div>
-                    </div>
-                    <div v-if="game.teams.length == 2" class=" text-xl font-bold flex border-2 divide-x mb-4">
-                      <div class="p-3">{{ game.score[game.teams[1]] }}</div>
-                      <div class="p-3">{{ get_validated_team_by_id(game.teams[1]).name }}</div>
-                    </div>
+        <GroupTable class="max-w-96 max-h-96 w-1/2" :teams="teams" :group="get_group_by_id(tournament?.groups, show_detail_group)"/>
+        <div class="w-1/2">
+          <div v-for="match in get_matchs_per_round(get_group_by_id(tournament?.groups, show_detail_group).matchs)">
+            <h1 class="text-center text-3xl font-black">
+              Round {{ match[0].round_number }}
+            </h1>
+            <div class="gap-4">
+              <div v-for="game in match" class="flex justify-center">
+                <div class="mb-4 flex divide-x border-2 text-xl font-bold">
+                  <div class="p-3">
+                    {{ get_validated_team_by_id(game.teams[0])?.name }}
+                  </div>
+                  <div class="p-3">
+                    {{ game.score[game.teams[0]] }}
                   </div>
                 </div>
+                <div v-if="game.teams.length == 2" class=" mb-4 flex divide-x border-2 text-xl font-bold">
+                  <div class="p-3">
+                    {{ game.score[game.teams[1]] }}
+                  </div>
+                  <div class="p-3">
+                    {{ get_validated_team_by_id(game.teams[1])?.name }}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
       </div>
     </section>
 
@@ -374,22 +378,32 @@ onMounted(async () => {
       <h1 v-if="tournament?.brackets.length === 0" class="mt-6 text-center text-4xl">
         Les arbres ne sont pas disponibles.
       </h1>
-      <div v-else v-for="bracket in tournament.brackets"  >
-        <h1 class="title"> {{ bracket.name}} </h1>
-        <div class="grid items-center" :class="get_col_class(bracket)" :key="bracket.id"> 
-        <div v-for="games in get_matchs_per_round(bracket.matchs)" :key="games.id">
-          <div class="m-2 divide-y" v-for="game in games" :key="game.id">
-              <div class="bg-slate-700 p-2 flex justify-between text-xl" v-for="team_id in game.teams" :key="team_id" :class="{'bg-slate-900': game.status =='ONGOING'}">
-                   <div class="text-grey-500">{{ get_validated_team_by_id(team_id).name}}</div> <div v-if = "game.status == 'COMPLETED'" :class="is_winning_team(game.score, team_id) ? 'text-emerald-300' : 'text-white'" class="font-black text-3xl">{{ game.score[team_id] }}</div>
+      <div v-for="bracket in tournament.brackets" v-else>
+        <h1 class="title">
+          {{ bracket.name }}
+        </h1>
+        <div :key="bracket.id" class="grid items-center" :class="get_col_class(bracket)">
+          <div v-for="games in get_matchs_per_round(bracket.matchs)" :key="games.id">
+            <div v-for="game in games" :key="game.id" class="m-2 divide-y">
+              <div v-for="team_id in game.teams" :key="team_id" class="flex justify-between bg-slate-700 p-2 text-xl" :class="{ 'bg-slate-900': game.status == 'ONGOING' }">
+                <div class="text-grey-500">
+                  {{ get_validated_team_by_id(team_id)?.name }}
+                </div> <div v-if="game.status == 'COMPLETED'" :class="is_winning_team(game.score, team_id) ? 'text-emerald-300' : 'text-white'" class="text-3xl font-black">
+                  {{ game.score[team_id] }}
+                </div>
               </div>
+            </div>
+          </div>
+          <div v-if="bracket.winner !== null" class="w-40 bg-yellow-600 p-2">
+            <h1 class="text-bold text-center text-2xl">
+              Vainqueur
+            </h1>
+            <p class="text-center text-xl">
+              {{ get_validated_team_by_id(bracket.winner)?.name }}
+            </p>
           </div>
         </div>
-        <div v-if="bracket.winner !== null" class="w-40 bg-yellow-600 p-2">
-           <h1 class="text-bold text-center text-2xl">Vainqueur</h1>
-          <p class="text-center text-xl">{{ get_validated_team_by_id(bracket.winner).name }}</p>
-          </div>
       </div>
-    </div>
     </section>
     <section id="planning" :class="{ hidden: !sections.planning[0] }">
       <div class="m-1 flex justify-center rounded bg-cyan-900 p-2">
