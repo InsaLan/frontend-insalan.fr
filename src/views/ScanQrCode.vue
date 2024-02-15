@@ -1,17 +1,25 @@
 <script setup lang="ts">
 import axios from 'axios';
 import type { DetectedBarcode } from 'barcode-detector/pure';
-import { computed, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { computed, onMounted, ref } from 'vue';
 import { QrcodeStream } from 'vue-qrcode-reader';
 import { type QRData, TicketStatus } from '@/models/tickets';
 import { useErrorStore } from '@/stores/error.store';
+import { useTournamentStore } from '@/stores/tournament.store';
 
 const { add_error } = useErrorStore();
+
+const tournamentStore = useTournamentStore();
+const { get_unpaid_registration, validate_registration } = tournamentStore;
+const { unpaidRegistration } = storeToRefs(tournamentStore);
 
 const qrcodeData = ref<QRData | undefined>(undefined);
 const paused = ref(false);
 const torchActive = ref(false);
 const torchNotSupported = ref<boolean | undefined>(undefined);
+
+const search = ref('');
 
 function paintOutline([detectedCode]: DetectedBarcode[], ctx: CanvasRenderingContext2D) {
   const [firstPoint, ...otherPoints] = detectedCode.cornerPoints;
@@ -77,6 +85,10 @@ const ticketStatus = computed(() => {
   }
 });
 
+onMounted(async () => {
+  await get_unpaid_registration();
+});
+
 type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
 </script>
 
@@ -106,7 +118,10 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
 
     <div v-if="qrcodeData">
       <p>Joueur : {{ qrcodeData.user }}</p>
+      <p>Identité : {{ qrcodeData.identity }}</p>
       <p>Statut : {{ ticketStatus }}</p>
+      <p>Tournois : {{ qrcodeData.tournament }}</p>
+      <p>Equipe : {{ qrcodeData.team }}</p>
       <div class="mb-6 flex gap-7">
         <button
           v-if="qrcodeData.status === TicketStatus.VALID"
@@ -123,6 +138,45 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
         >
           Annuler
         </button>
+      </div>
+    </div>
+    <div v-else class="mb-4 flex max-h-[100px] w-[100%] flex-col gap-1">
+      <div class="flex gap-2 rounded-2xl bg-gray-500 p-1 text-center text-black">
+        <div class="flex flex-col">
+          <fa-awesome-icon
+            class="ml-2 flex-1"
+            icon="fa-magnifying-glass"
+          />
+        </div>
+        <div class="flex-1">
+          <label for="search" class="sr-only">Rechercher une inscription</label>
+          <input id="search" v-model="search" type="text" class="w-full rounded-xl border-2 border-black bg-gray-300 p-0 text-center" placeholder="Rechercher une inscription non payé"/>
+        </div>
+      </div>
+      <div v-if="search && unpaidRegistration.filter((registration) => registration.user.includes(search)).length > 0">
+        <div class="rounded-2xl bg-green-600 text-center">
+          {{ unpaidRegistration.filter((registration) => registration.user.includes(search))[0]?.user }} :
+          {{ unpaidRegistration.filter((registration) => registration.user.includes(search))[0]?.team }}
+        </div>
+        <div class="flex justify-center">
+          <button
+            type="button"
+            class="form-btn"
+            @click="
+              validate_registration(
+                unpaidRegistration.filter((registration) => registration.user.includes(search))[0]?.type,
+                unpaidRegistration.filter((registration) => registration.user.includes(search))[0]?.id,
+              );
+              search = ''
+            "
+          >
+            Valider le paiement de
+            {{ unpaidRegistration.filter((registration) => registration.user.includes(search))[0]?.user }}
+          </button>
+        </div>
+      </div>
+      <div v-else-if="search" class="rounded-2xl bg-red-500 text-center">
+        Aucune inscription trouvée
       </div>
     </div>
   </section>
