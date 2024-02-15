@@ -1,10 +1,11 @@
+import type { Bracket } from '@/models/bracket';
 import type { Caster } from '@/models/caster';
 import type { EventDeref } from '@/models/event';
 import type { Game } from '@/models/game';
-import type { Team } from '@/models/team';
 import type { Group } from '@/models/group';
 import type { SwissRound } from '@/models/swiss';
-import type { Bracket } from '@/models/bracket';
+import type { Team } from '@/models/team';
+
 interface BaseTournament {
   id: number;
   teams: Team[] | Team['id'][];
@@ -19,7 +20,6 @@ interface BaseTournament {
   manager_price_online: string;
   manager_price_onsite: string;
   cashprizes: number[];
-  game: Game | Game['id'];
   manager_online_product: number;
   player_online_product: number;
   substitute_online_product: number;
@@ -32,6 +32,7 @@ interface BaseTournament {
 
 export interface TournamentDeref extends BaseTournament {
   event: EventDeref;
+  game: Game;
   groups: Group[];
   brackets: Bracket[];
   swissRounds: SwissRound[];
@@ -39,7 +40,8 @@ export interface TournamentDeref extends BaseTournament {
 
 export interface Tournament extends BaseTournament {
   event: number;
-  groups: number[];
-  brackets: number[];
-  swissRounds: number[];
+  game: Game;
+  groups: Group[];
+  brackets: Bracket[];
+  swissRounds: SwissRound[];
 }

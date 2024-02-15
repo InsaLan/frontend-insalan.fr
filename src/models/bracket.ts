@@ -1,3 +1,4 @@
+import type { Match } from '@/models/match';
 
 export enum BracketType {
   SINGLE = 'SINGLE',
@@ -13,11 +14,13 @@ export interface Bracket {
   name: string;
   tournament: number;
   bracket_type: BracketType;
-  team_count: number;
+  depth: number;
   winner: number;
+  teams: number[];
+  matchs: KnockoutMatch[];
 }
 
-export interface KnockoutMatch {
+export interface KnockoutMatch extends Match {
   bracket: Bracket;
   bracket_set: BracketSet;
 }
