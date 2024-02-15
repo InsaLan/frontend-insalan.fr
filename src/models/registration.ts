@@ -9,7 +9,7 @@ export enum PaymentStatus {
 interface BaseRegistration {
   id: number;
   payment_status: PaymentStatus;
-  user: number;
+  user: string;
   ticket: string;
 }
 

@@ -24,6 +24,12 @@ function groupBy<T>(items: T[], key: keyof T): Record<string, T[]> {
 export const useTournamentStore = defineStore('tournament', () => {
   const eventsList = ref<Record<number, Event>>({});
   const tournamentsList = ref<Record<number, Tournament>>({});
+  const unpaidRegistration = ref<{
+    'id': number;
+    'type': string;
+    'user': string;
+    'team': string;
+  }[]>([]);
 
   const ongoingEvents = computed(() => Object.values(eventsList.value).reduce((res, item) => {
     if (item.ongoing) {
@@ -278,6 +284,35 @@ export const useTournamentStore = defineStore('tournament', () => {
     link.click();
   }
 
+  async function get_unpaid_registration() {
+    const response = await axios.get<{
+      id: number;
+      type: string;
+      user: string;
+      team: string;
+    }[]>('/tickets/unpaid');
+    unpaidRegistration.value = response.data;
+  }
+
+  async function validate_registration(type: string, id: number) {
+    await get_csrf();
+
+    await axios.post('/tickets/pay', {
+      id,
+      type,
+    }, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf.value,
+      },
+    });
+
+    // Remove the registration from the unpaid list
+    unpaidRegistration.value = unpaidRegistration.value.filter((registration) => (
+      registration.id !== id || registration.type !== type
+    ));
+  }
+
   function $reset() {
     eventsList.value = {};
     tournamentsList.value = {};
@@ -287,6 +322,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     eventsList,
     ongoingEvents,
     tournamentsList,
+    unpaidRegistration,
     getEvent,
     getEvents,
     getEventsByYears,
@@ -313,5 +349,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     $reset,
     groupBy,
     get_ticket_pdf,
+    get_unpaid_registration,
+    validate_registration,
   };
 });
