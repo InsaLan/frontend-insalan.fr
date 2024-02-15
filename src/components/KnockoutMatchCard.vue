@@ -8,8 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  {{ status }}
-  <div v-for="idx in teamPerMatch" :key="idx" class="flex justify-between bg-slate-700 p-2 text-xl" :class="{ 'bg-slate-900': status == 'ONGOING' }">
+  <div v-for="idx in teamPerMatch" :key="idx" class="flex justify-between bg-slate-700 p-2 text-xl w-[clamp(20rem,20%,30rem)]" :class="{ 'bg-slate-900': status == 'ONGOING' }">
     <div class="text-grey-500">
       {{ teams[idx - 1]?.name || "TBD" }}
     </div> <div v-if="status == 'COMPLETED'" :class="teams[idx - 1]?.is_winner ? 'text-emerald-300' : 'text-white'" class="text-3xl font-black">

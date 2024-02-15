@@ -1,12 +1,12 @@
+import type { Match } from '@/models/match';
 import type { Team } from '@/models/team';
-import type { Match } from '@/models/Match';
 
 export interface SwissRound {
   id: number;
   tournament: number;
   min_score: number;
   teams: Team[];
-  matches: Match[];
+  matchs: SwissMatch[];
 }
 
 export interface SwissSeeding {
@@ -15,6 +15,6 @@ export interface SwissSeeding {
   seeding: number;
 }
 
-export interface SwissMatch {
+export interface SwissMatch extends Match {
   swiss: SwissRound;
 }
