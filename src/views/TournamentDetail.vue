@@ -7,6 +7,7 @@ import { useRouter } from 'vue-router';
 import Content from '@/components/Content.vue';
 import GroupTable from '@/components/GroupTable.vue';
 import KnockoutMatchCard from '@/components/KnockoutMatchCard.vue';
+import SwissRoundTable from '@/components/SwissRoundTable.vue';
 import TeamCard from '@/components/TeamCard.vue';
 import {
   type Bracket, BracketSet, BracketType, type KnockoutMatch,
@@ -14,6 +15,7 @@ import {
 import type { Game } from '@/models/game';
 import type { Group } from '@/models/group';
 import { BestofType, type Match } from '@/models/match';
+import type { SwissMatch } from '@/models/swiss';
 import type { Team } from '@/models/team';
 import type { Tournament } from '@/models/tournament';
 import { useContentStore } from '@/stores/content.store';
@@ -109,6 +111,29 @@ const knockout_match_results = (match: KnockoutMatch) => {
   });
 
   return match_results;
+};
+
+const swiss_match_results = (matchs : SwissMatch[]) => {
+  const round_matchs = groupBy(matchs, 'round_number');
+  const res = {} as Record<string, Record<string, string | Record<string, string | number | boolean | undefined>[]>[]>;
+  Object.entries(round_matchs).forEach(([round, matchs]) => {
+    res[round] = [] as Record<string, string | Record<string, string | number | boolean | undefined>[]>[];
+    matchs.forEach((match) => {
+      const tmp = {} as Record<string, string | Record<string, string | number | boolean | undefined>[]>;
+      tmp.teams = [] as Record<string, string | number | boolean | undefined>[];
+      tmp.status = match.status;
+      match.teams.forEach((team) => {
+        const data = {} as Record<string, string | number | boolean | undefined>;
+        data.name = get_validated_team_by_id(team)?.name;
+        data.score = match.score[team];
+        data.is_winner = is_winning_team(match, team);
+        tmp.teams.push(data);
+      });
+      res[round].push(tmp);
+    });
+  });
+
+  return res;
 };
 
 const get_group_by_id = (groups: Group[], id: number) => groups.find((group) => group.id === id);
@@ -359,12 +384,21 @@ onMounted(async () => {
     </section>
 
     <section id="groups" :class="{ hidden: !sections.groups[0] || show_detail_group }">
-      <h1 v-if="tournament?.groups.length === 0" class="mt-6 text-center text-4xl">
-        Les poules ne sont pas disponibles.
+      <h1 v-if="tournament?.groups.length === 0 && tournament?.swissRounds.length === 0" class="mt-6 text-center text-4xl">
+        Les poules ou les rondes suisse ne sont pas disponibles.
       </h1>
-      <div v-if="tournament.groups.length > 0" class="mt-6 flex justify-center">
-        <div v-for="group in tournament.groups" :key="group.id" class="mx-3" @click="show_detail_group = group.id">
+      <div v-if="tournament?.groups.length > 0" class="mt-6 flex justify-center">
+        <div v-for="group in tournament?.groups" :key="group.id" class="mx-3" @click="show_detail_group = group.id">
           <GroupTable :teams="teams" :group="group"/>
+        </div>
+      </div>
+      <div v-else-if="tournament?.swissRounds.length > 0" class="mt-6 flex justify-center">
+        <div v-for="swiss in tournament?.swissRounds" :key="swiss.id" class="mx-3 w-full">
+          <SwissRoundTable
+            :rounds="swiss_match_results(swiss.matchs)"
+            :team-per-match="tournament?.game.team_per_match"
+            :round-count="2 * swiss.min_score - 1"
+          />
         </div>
       </div>
     </section>

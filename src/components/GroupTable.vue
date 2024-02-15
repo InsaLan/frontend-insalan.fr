@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import type { Group } from '@/models/group';
 import type { Team } from '@/models/team';
-const props =  defineProps<{
+
+const props = defineProps<{
   group: Group;
   teams: Record<string, Team[]>;
 }>();
-const get_validated_team_by_id = (id: number) => {
-  return props.teams.validated_teams.find(team => team.id === id);
-};
+const get_validated_team_by_id = (id: number) => props.teams.validated_teams.find((team) => team.id === id);
 
 </script>
 <template>
