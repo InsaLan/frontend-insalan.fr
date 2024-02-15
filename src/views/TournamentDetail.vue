@@ -7,10 +7,12 @@ import { useRouter } from 'vue-router';
 import Content from '@/components/Content.vue';
 import GroupTable from '@/components/GroupTable.vue';
 import TeamCard from '@/components/TeamCard.vue';
-import type { Bracket } from '@/models/bracket';
+import {
+  type Bracket, BracketSet, BracketType, type KnockoutMatch,
+} from '@/models/bracket';
 import type { Game } from '@/models/game';
 import type { Group } from '@/models/group';
-import type { Match } from '@/models/match';
+import { BestofType, type Match } from '@/models/match';
 import type { Team } from '@/models/team';
 import type { Tournament } from '@/models/tournament';
 import { useContentStore } from '@/stores/content.store';
@@ -38,7 +40,7 @@ const teams = computed<Record<string, Team[]>>(() => (tournament.value?.teams as
 const open_drop = ref(false);
 const drop_label = ref('Informations');
 const trans = ref('translateX(0vw)');
-const show_detail_group = ref(null);
+const show_detail_group = ref<number>(NaN);
 const sections = reactive<Record<string, [boolean, number]>>({
   info: [false, 0],
   teams: [false, 1],
@@ -61,16 +63,39 @@ const select_tag = (e: Event) => {
   sections[target.id][0] = true;
 };
 
-const get_col_class = (bracket: Bracket) => `grid-cols-${Math.ceil(Math.log2(bracket.team_count)) + 1}`;
+const get_bracket_cols_count = (bracket: Bracket) => {
+  if (bracket.bracket_type === BracketType.SINGLE) {
+    return bracket.depth + 1;
+  }
+  return 2 * (bracket.depth - 1) + 3;
+};
+const get_col_class = (bracket: Bracket) => {
+  const nb_cols = get_bracket_cols_count(bracket);
+  return `grid-cols-${nb_cols}`;
+};
 
-const is_winning_team = (obj: { [key: number]: number }, team_id: number) => parseInt(Object.keys(obj).reduce((a, b) => (obj[a] > obj[b] ? a : b))) == team_id;
+const is_winning_team = (match: Match, team_id: number) => {
+  if (match.bo_type === BestofType.RANKING) {
+    return match.score[team_id] >= Object.keys(match.score).length;
+  }
+
+  return match.score[team_id] >= Math.ceil(match.bo_type / 2);
+};
+
 const get_matchs_per_round = (matchs: Match[]) => {
   const reversed_rounds = groupBy(matchs, 'round_number');
   return Object.values(reversed_rounds).reverse();
 };
-/**
-const get_matchs_per_round_reverse = (matchs: Match[]) => {
-  return groupBy(matchs, "round_number");
+const get_winner_matchs_per_round = (matchs: KnockoutMatch[], round: number) => {
+  const winner_matchs = matchs.filter((match) => match.bracket_set === BracketSet.WINNER);
+  const round_matchs = groupBy(winner_matchs, 'round_number');
+  return round_matchs[round];
+};
+const get_looser_matchs = (matchs: KnockoutMatch[]) => {
+  const looser_matchs = matchs.filter((match) => match.bracket_set === BracketSet.LOOSER);
+  const round_matchs = groupBy(looser_matchs, 'round_number');
+  return Object.values(round_matchs).reverse();
+};
 
 };
 */
@@ -338,13 +363,13 @@ onMounted(async () => {
           <fa-awesome-icon icon="fa-solid fa-arrow-left"/> Retour
         </button>
         <h1 class="text-center text-3xl font-black">
-          {{ get_group_by_id(tournament?.groups, show_detail_group).name }}
+          {{ get_group_by_id(tournament?.groups, show_detail_group)?.name }}
         </h1>
       </nav>
       <div class="flex justify-center gap-3">
         <GroupTable class="max-w-96 max-h-96 w-1/2" :teams="teams" :group="get_group_by_id(tournament?.groups, show_detail_group)"/>
         <div class="w-1/2">
-          <div v-for="match in get_matchs_per_round(get_group_by_id(tournament?.groups, show_detail_group).matchs)">
+          <div v-for="match in get_matchs_per_round(get_group_by_id(tournament?.groups, show_detail_group)?.matchs)" :key="match.id">
             <h1 class="text-center text-3xl font-black">
               Round {{ match[0].round_number }}
             </h1>
@@ -378,33 +403,90 @@ onMounted(async () => {
       <h1 v-if="tournament?.brackets.length === 0" class="mt-6 text-center text-4xl">
         Les arbres ne sont pas disponibles.
       </h1>
-      <div v-for="bracket in tournament.brackets" v-else>
+      <div v-for="bracket in tournament.brackets" v-else :key="bracket.id">
         <h1 class="title">
           {{ bracket.name }}
         </h1>
-        <div :key="bracket.id" class="grid items-center" :class="get_col_class(bracket)">
-          <div v-for="games in get_matchs_per_round(bracket.matchs)" :key="games.id">
+        <div v-if="bracket.bracket_type === BracketType.SINGLE" :key="bracket.id" class="grid items-center" :class="get_col_class(bracket)">
+          <div v-for="(games, round_idx) in get_matchs_per_round(bracket.matchs)" :key="round_idx" class="flex h-full flex-col justify-around">
             <div v-for="game in games" :key="game.id" class="m-2 divide-y">
-              <div v-for="team_id in game.teams" :key="team_id" class="flex justify-between bg-slate-700 p-2 text-xl" :class="{ 'bg-slate-900': game.status == 'ONGOING' }">
+              <div v-for="idx in tournament.game.team_per_match" :key="idx" class="flex justify-between bg-slate-700 p-2 text-xl" :class="{ 'bg-slate-900': game.status == 'ONGOING' }">
                 <div class="text-grey-500">
-                  {{ get_validated_team_by_id(team_id)?.name }}
-                </div> <div v-if="game.status == 'COMPLETED'" :class="is_winning_team(game.score, team_id) ? 'text-emerald-300' : 'text-white'" class="text-3xl font-black">
-                  {{ game.score[team_id] }}
+                  {{ get_validated_team_by_id(game.teams[idx - 1])?.name || "TBD" }}
+                </div>
+                <div v-if="game.status == 'COMPLETED'" :class="is_winning_team(game, game.teams[idx]) ? 'text-emerald-300' : 'text-white'" class="text-3xl font-black">
+                  {{ game.score[game.teams[idx - 1]] }}
+                </div>
+                <div v-else class="text-3xl font-black">
+                  0
                 </div>
               </div>
             </div>
           </div>
-          <div v-if="bracket.winner !== null" class="w-40 bg-yellow-600 p-2">
-            <h1 class="text-bold text-center text-2xl">
-              Vainqueur
-            </h1>
-            <p class="text-center text-xl">
-              {{ get_validated_team_by_id(bracket.winner)?.name }}
-            </p>
+        </div>
+        <div v-if="bracket.bracket_type === BracketType.DOUBLE" :key="bracket.id">
+          <div class="grid items-center" :class="get_col_class(bracket)">
+            <div class="flex h-full flex-col justify-around">
+              <div v-for="game in get_winner_matchs_per_round(bracket.matchs, bracket.depth)" :key="game.id" class="m-2 divide-y">
+                <div v-for="idx in tournament.game.team_per_match" :key="idx" class="flex justify-between bg-slate-700 p-2 text-xl" :class="{ 'bg-slate-900': game.status == 'ONGOING' }">
+                  <div class="text-grey-500">
+                    {{ get_validated_team_by_id(game.teams[idx - 1])?.name || "TBD" }}
+                  </div>
+                  <div v-if="game.status == 'COMPLETED'" :class="is_winning_team(game, game.teams[idx - 1]) ? 'text-emerald-300' : 'text-white'" class="text-3xl font-black">
+                    {{ game.score[game.teams[idx - 1]] }}
+                  </div>
+                  <div v-else class="text-3xl font-black">
+                    0
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-for="col_idx in get_bracket_cols_count(bracket) - 2" :key="col_idx" class="h-full">
+              <div v-if="col_idx % 2" class="flex h-full flex-col justify-around">
+                <div v-for="game in get_winner_matchs_per_round(bracket.matchs, bracket.depth - (col_idx - 1) / 2 - 1)" :key="game.id" class="m-2 divide-y">
+                  <div v-for="idx in tournament.game.team_per_match" :key="idx" class="flex justify-between bg-slate-700 p-2 text-xl" :class="{ 'bg-slate-900': game.status == 'ONGOING' }">
+                    <div class="text-grey-500">
+                      {{ get_validated_team_by_id(game.teams[idx - 1])?.name || "TBD" }}
+                    </div>
+                    <div v-if="game.status == 'COMPLETED'" :class="is_winning_team(game, game.teams[idx]) ? 'text-emerald-300' : 'text-white'" class="text-3xl font-black">
+                      {{ game.score[game.teams[idx - 1]] }}
+                    </div>
+                    <div v-else class="text-3xl font-black">
+                      0
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="bracket.winner !== null" class="w-40 bg-yellow-600 p-2">
+              <h1 class="text-bold text-center text-2xl">
+                Vainqueur
+              </h1>
+              <p class="text-center text-xl">
+                {{ get_validated_team_by_id(bracket.winner)?.name }}
+              </p>
+            </div>
+          </div>
+          <div class="grid items-center" :class="get_col_class(bracket)">
+            <div/>
+            <div v-for="(games, round_idx) in get_looser_matchs(bracket.matchs)" :key="round_idx" class="flex flex-col justify-around">
+              <div v-for="game in games" :key="game.id" class="m-2 divide-y">
+                <div v-for="idx in tournament.game.team_per_match" :key="idx" class="flex justify-between bg-slate-700 p-2 text-xl" :class="{ 'bg-slate-900': game.status == 'ONGOING' }">
+                  <div class="text-grey-500">
+                    {{ get_validated_team_by_id(game.teams[idx - 1])?.name || "TBD" }}
+                  </div>
+                  <div v-if="game.status == 'COMPLETED'" :class="is_winning_team(game, game.teams[idx]) ? 'text-emerald-300' : 'text-white'" class="text-3xl font-black">
+                    {{ game.score[game.teams[idx - 1]] || "0" }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div/>
           </div>
         </div>
       </div>
     </section>
+
     <section id="planning" :class="{ hidden: !sections.planning[0] }">
       <div class="m-1 flex justify-center rounded bg-cyan-900 p-2">
         Les plannings peuvent varier en fonction de l'avancement des tournois et sont donnés à titre indicatif.
