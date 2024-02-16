@@ -29,7 +29,7 @@ const props = defineProps<{
 const { md, getContent } = useContentStore();
 
 const tournamentStore = useTournamentStore();
-const { getTournamentFull, getTournamentTeams, get_matchs_per_round, is_winning_team,  get_validated_team_by_id, get_col_class, get_bracket_cols_count, get_group_by_id, get_winner_matchs_per_round } = tournamentStore;
+const { getTournamentFull, getTournamentTeams, get_matchs_per_round, is_winning_team, get_validated_team_by_id, get_col_style, get_bracket_cols_count, get_group_by_id, get_winner_matchs_per_round } = tournamentStore;
 const { tournament, tourney_teams } = storeToRefs(tournamentStore);
 const open_drop = ref(false);
 const drop_label = ref('Informations');
@@ -43,7 +43,6 @@ const sections = reactive<Record<string, [boolean, number]>>({
   planning: [false, 4],
   rules: [false, 5],
 });
-
 
 const select_tag = (e: Event) => {
   const target = e.target as HTMLInputElement;
@@ -356,8 +355,8 @@ onMounted(async () => {
           <GroupTable :teams="tourney_teams" :group="group"/>
         </div>
       </div>
-      <div v-else-if="tournament?.swissRounds.length > 0" class="mt-6 flex justify-center">
-        <div v-for="swiss in tournament?.swissRounds" :key="swiss.id" class="mx-3 w-full">
+      <div v-else-if="tournament?.swissRounds.length > 0" class="mt-6 flex justify-center h-full">
+        <div v-for="swiss in tournament?.swissRounds" :key="swiss.id" class="mx-3 w-full overflow-x-auto">
           <SwissRoundTable
             :rounds="swiss_match_results(swiss.matchs)"
             :team-per-match="tournament?.game.team_per_match"
@@ -417,20 +416,22 @@ onMounted(async () => {
         <h1 class="title">
           {{ bracket.name }}
         </h1>
-        <div v-if="bracket.bracket_type === BracketType.SINGLE" :key="bracket.id" class="grid items-center" :class="get_col_class(bracket)">
-          <div v-for="(games, round_idx) in get_matchs_per_round(bracket.matchs)" :key="round_idx" class="flex h-full flex-col justify-around">
-            <div v-for="game in games" :key="game.id" class="m-2 divide-y">
-              <KnockoutMatchCard
-                :team-per-match="tournament.game.team_per_match"
-                :teams="knockout_match_results(game as KnockoutMatch)"
-                :status="game.status"
-              />
+        <div v-if="bracket.bracket_type === BracketType.SINGLE" :key="bracket.id" class="overflow-x-auto">
+          <div class="grid items-center gap-10" :style="get_col_style(bracket)">
+            <div v-for="(games, round_idx) in get_matchs_per_round(bracket.matchs)" :key="round_idx" class="flex flex-col justify-around">
+              <div v-for="game in games" :key="game.id" class="m-2 divide-y">
+                <KnockoutMatchCard
+                  :team-per-match="tournament.game.team_per_match"
+                  :teams="knockout_match_results(game as KnockoutMatch)"
+                  :status="game.status"
+                />
+              </div>
             </div>
           </div>
         </div>
-        <div v-if="bracket.bracket_type === BracketType.DOUBLE" :key="bracket.id">
-          <div class="grid items-center" :class="get_col_class(bracket)">
-            <div class="flex h-full flex-col justify-around">
+        <div v-if="bracket.bracket_type === BracketType.DOUBLE" :key="bracket.id" class="overflow-x-auto">
+          <div class="grid items-center gap-10" :style="get_col_style(bracket)">
+            <div class="flex flex-col justify-around">
               <div v-for="game in get_winner_matchs_per_round(bracket.matchs, bracket.depth)" :key="game.id" class="m-2 divide-y">
                 <KnockoutMatchCard
                   :team-per-match="tournament.game.team_per_match"
@@ -439,8 +440,8 @@ onMounted(async () => {
                 />
               </div>
             </div>
-            <div v-for="col_idx in get_bracket_cols_count(bracket) - 2" :key="col_idx" class="h-full">
-              <div v-if="col_idx % 2" class="flex h-full flex-col justify-around">
+            <div v-for="col_idx in get_bracket_cols_count(bracket) - 2" :key="col_idx" class="flex flex-col justify-around">
+              <div v-if="col_idx % 2">
                 <div v-for="game in get_winner_matchs_per_round(bracket.matchs, bracket.depth - (col_idx - 1) / 2 - 1)" :key="game.id" class="m-2 divide-y">
                   <KnockoutMatchCard
                     :team-per-match="tournament.game.team_per_match"
@@ -459,7 +460,7 @@ onMounted(async () => {
               </p>
             </div>
           </div>
-          <div class="grid items-center" :class="get_col_class(bracket)">
+          <div class="grid items-center gap-10" :style="get_col_style(bracket)">
             <div/>
             <div v-for="(games, round_idx) in get_looser_matchs(bracket.matchs)" :key="round_idx" class="flex flex-col justify-around">
               <div v-for="game in games" :key="game.id" class="m-2 divide-y">

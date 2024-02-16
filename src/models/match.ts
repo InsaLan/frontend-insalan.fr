@@ -14,9 +14,9 @@ export enum BestofType {
   RANKING = 0,
 }
 export enum MatchTypeEnum {
-  GROUP = "group",
-  BRACKET = "bracket",
-  SWISS = "swiss",
+  GROUP = 'group',
+  BRACKET = 'bracket',
+  SWISS = 'swiss',
 }
 
 export interface BaseMatch {
@@ -29,21 +29,21 @@ export interface BaseMatch {
 }
 
 export interface MatchType {
-  id: number,
-  type: MatchTypeEnum
+  id: number;
+  type: MatchTypeEnum;
 }
 
 export interface Match extends BaseMatch {
-  teams: Team[];
+  teams: number[];
   times: number[];
 }
 export interface ScorePatch {
-  score: {[id: number]: number};
+  score: { [id: number]: number };
   times: number[];
 }
 export interface OngoingMatch extends BaseMatch {
-  teams: {id: number, name: string}[];
-  match_type:  MatchType
+  teams: { id: number; name: string }[];
+  match_type: MatchType;
 }
 export interface Score {
   team: Team;

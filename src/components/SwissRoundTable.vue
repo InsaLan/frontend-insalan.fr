@@ -9,9 +9,14 @@ defineProps<{
 </script>
 
 <template>
-  <div class="grid items-center gap-3" :class="`grid-cols-${roundCount}`">
-    <div v-for="round_idx in roundCount" :key="round_idx" class>
-      <div v-for="(match, idx) in rounds[round_idx]" :key="idx">
+  <div class="grid items-center gap-5 h-full" :style="{ 'grid-template-columns': `repeat(${roundCount},26rem)` }">
+    <div v-for="round_idx in roundCount" :key="round_idx" class="flex flex-col">
+      <h1 class="text-4xl">
+        Tour {{ round_idx }}
+      </h1>
+    </div>
+    <div v-for="round_idx in roundCount" :key="round_idx" class="flex flex-col">
+      <div v-for="(match, idx) in rounds[round_idx]" :key="idx" class="my-3 divide-y">
         <KnockoutMatchCard
           :team-per-match="teamPerMatch"
           :teams="(match.teams as Record<string, string | number | boolean | undefined>[])"
