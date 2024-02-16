@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import {
-  computed, onMounted, reactive, ref,
+  onMounted, reactive, ref,
 } from 'vue';
 import { useRouter } from 'vue-router';
 import Content from '@/components/Content.vue';
@@ -10,14 +10,11 @@ import KnockoutMatchCard from '@/components/KnockoutMatchCard.vue';
 import SwissRoundTable from '@/components/SwissRoundTable.vue';
 import TeamCard from '@/components/TeamCard.vue';
 import {
-  type Bracket, BracketSet, BracketType, type KnockoutMatch,
+  BracketSet, BracketType, type KnockoutMatch,
 } from '@/models/bracket';
 import type { Game } from '@/models/game';
 import type { Group } from '@/models/group';
-import { BestofType, type Match } from '@/models/match';
 import type { SwissMatch } from '@/models/swiss';
-import type { Team } from '@/models/team';
-import type { Tournament } from '@/models/tournament';
 import { useContentStore } from '@/stores/content.store';
 import { groupBy, useTournamentStore } from '@/stores/tournament.store';
 
@@ -30,7 +27,8 @@ const { md, getContent } = useContentStore();
 
 const tournamentStore = useTournamentStore();
 const {
-  getTournamentFull, getTournamentTeams, get_matchs_per_round, is_winning_team, get_validated_team_by_id, get_col_style, get_bracket_cols_count, get_group_by_id, get_winner_matchs_per_round,
+  getTournamentFull, getTournamentTeams, get_matchs_per_round, is_winning_team,
+  get_validated_team_by_id, get_col_style, get_bracket_cols_count, get_group_by_id, get_winner_matchs_per_round,
 } = tournamentStore;
 const { tournament, tourney_teams } = storeToRefs(tournamentStore);
 const open_drop = ref(false);
@@ -79,14 +77,14 @@ const knockout_match_results = (match: KnockoutMatch) => {
 const swiss_match_results = (matchs : SwissMatch[]) => {
   const round_matchs = groupBy(matchs, 'round_number');
   const res = {} as Record<string, Record<string, string | Record<string, string | number | boolean | undefined>[]>[]>;
-  Object.entries(round_matchs).forEach(([round, matchs]) => {
+  Object.entries(round_matchs).forEach(([round, roundMatchs]) => {
     res[round] = [] as Record<string, string | Record<string, string | number | boolean | undefined>[]>[];
-    matchs.forEach((match) => {
-      const tmp = {} as Record<string, string | Record<string, string | number | boolean | undefined>[]>;
-      tmp.teams = [] as Record<string, string | number | boolean | undefined>[];
+    roundMatchs.forEach((match) => {
+      const tmp = {} as { teams: Record<string, string | number | boolean | undefined>[]; status: string };
+      tmp.teams = [];
       tmp.status = match.status;
       match.teams.forEach((team) => {
-        const data = {} as Record<string, string | number | boolean | undefined>;
+        const data = {} as { name: string | undefined; score: number; is_winner: boolean };
         data.name = get_validated_team_by_id(team)?.name;
         data.score = match.score[team];
         data.is_winner = is_winning_team(match, team);
@@ -347,16 +345,22 @@ onMounted(async () => {
       </div>
     </section>
 
-    <section id="groups" :class="{ hidden: !sections.groups[0] || show_detail_group }" class="flex content-center justify-center">
-      <h1 v-if="tournament?.groups.length === 0 && tournament?.swissRounds.length === 0" class="mt-6 text-center text-4xl">
+    <section id="groups" :class="{ hidden: !sections.groups[0] || show_detail_group }" class="flex content-center">
+      <h1 v-if="tournament?.groups?.length === 0 && tournament?.swissRounds.length === 0" class="mt-6 text-center text-4xl">
         Les poules ou les rondes suisse ne sont pas disponibles.
       </h1>
-      <div v-if="tournament?.groups.length > 0" class="my-auto flex justify-center gap-20 flex-wrap">
-        <div v-for="group in tournament?.groups" :key="group.id" class=" border-collapse border-slate-500 hover:ring hover:ring-slate-500 hover:ring-8" @click="show_detail_group = group.id">
+      <div v-if="tournament?.groups?.length > 0" class="my-10 flex flex-1 flex-wrap justify-center gap-20">
+        <div
+          v-for="group in tournament?.groups"
+          :key="group.id"
+          class=" border-collapse border-slate-500 hover:ring-8 hover:ring-slate-500"
+          @click="show_detail_group = group.id"
+          @keydown.enter="show_detail_group = group.id"
+        >
           <GroupTable :teams="tourney_teams" :group="group"/>
         </div>
       </div>
-      <div v-else-if="tournament?.swissRounds.length > 0" class="mt-6 flex h-full justify-center">
+      <div v-else-if="tournament?.swissRounds?.length > 0" class="mt-6 flex h-full justify-center">
         <div v-for="swiss in tournament?.swissRounds" :key="swiss.id" class="mx-3 overflow-x-auto">
           <SwissRoundTable
             :rounds="swiss_match_results(swiss.matchs)"
@@ -367,7 +371,7 @@ onMounted(async () => {
       </div>
     </section>
 
-    <section v-if="get_group_by_id(tournament?.groups, show_detail_group) !== undefined" id="group" :class="{ hidden: show_detail_group === null || !sections.groups[0] }" class="flex flex-col p-4">
+    <section v-if="get_group_by_id(tournament?.groups || [], show_detail_group) !== undefined" id="group" :class="{ hidden: show_detail_group === null || !sections.groups[0] }" class="flex flex-col p-4">
       <nav class="my-5 flex justify-center gap-3">
         <button type="button" class="w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto" @click="show_detail_group = 0">
           <fa-awesome-icon icon="fa-solid fa-arrow-left"/> Retour
@@ -377,9 +381,16 @@ onMounted(async () => {
         </h1>
       </nav>
       <div class="flex justify-center gap-3">
-        <GroupTable class="max-w-96 max-h-96 w-1/2" :teams="tourney_teams" :group="get_group_by_id(tournament.groups, show_detail_group)"/>
+        <GroupTable
+          class="max-w-96 max-h-96 w-1/2"
+          :teams="tourney_teams"
+          :group="get_group_by_id(tournament.groups, show_detail_group) as Group"
+        />
         <div class="w-1/2">
-          <div v-for="matchs in get_matchs_per_round(get_group_by_id(tournament.groups, show_detail_group)?.matchs)" v-if="get_group_by_id(tournament.groups, show_detail_group) !== undefined" :key="matchs.id">
+          <div
+            v-for="matchs in get_matchs_per_round(get_group_by_id(tournament.groups, show_detail_group)?.matchs ?? [])"
+            :key="matchs[0].id"
+          >
             <h1 class="text-center text-3xl font-black">
               Round {{ matchs[0].round_number }}
             </h1>
@@ -410,7 +421,7 @@ onMounted(async () => {
 
     <section id="brackets" :class="{ hidden: !sections.brackets[0] }">
       <!-- TODO: refactor in component -->
-      <h1 v-if="tournament?.brackets.length === 0" class="mt-6 text-center text-4xl">
+      <h1 v-if="tournament?.brackets?.length === 0" class="mt-6 text-center text-4xl">
         Les arbres ne sont pas disponibles.
       </h1>
       <div v-for="bracket in tournament.brackets" v-else :key="bracket.id">
