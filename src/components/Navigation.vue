@@ -170,7 +170,7 @@ const burger_menu = ref(false);
           <router-link
             v-if="role === 'dev' || role === 'staff'"
             class="mx-2 py-5 text-center font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
-            :to="{ path: '/ticket/scan' }"
+            :to="{ path: '/admin/scan' }"
           >
             Scan billets
           </router-link>
@@ -188,7 +188,7 @@ const burger_menu = ref(false);
       </div>
     </div>
   </nav>
-  <div v-if="getContent('alert')" class="m-1 flex flex-col items-center rounded-lg border-2 border-red-700 bg-red-800">
+  <div v-if="getContent('alert') && !$route.path.startsWith('/admin/')" class="m-1 flex flex-col items-center rounded-lg border-2 border-red-700 bg-red-800">
     <div class="m-1">
       <Content name="alert"/>
     </div>

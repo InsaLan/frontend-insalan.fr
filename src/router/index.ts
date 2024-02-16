@@ -76,7 +76,7 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: '/ticket/scan',
+    path: '/admin/scan',
     component: () => import('@/views/ScanQrCode.vue'),
     beforeEnter: () => {
       const { isConnected, user } = useUserStore();
