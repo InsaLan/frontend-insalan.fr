@@ -29,17 +29,8 @@ const props = defineProps<{
 const { md, getContent } = useContentStore();
 
 const tournamentStore = useTournamentStore();
-const { getTournamentFull } = tournamentStore;
-const { tournamentsList } = storeToRefs(tournamentStore);
-const tournament = computed<Tournament | undefined>(() => tournamentsList.value[props.id]);
-const teams = computed<Record<string, Team[]>>(() => (tournament.value?.teams as Team[]).reduce((ret, team) => {
-  if (team.validated) {
-    ret.validated_teams.push(team);
-  } else {
-    ret.non_validated_teams.push(team);
-  }
-  return ret;
-}, { validated_teams: [] as Team[], non_validated_teams: [] as Team[] }));
+const { getTournamentFull, getTournamentTeams, get_matchs_per_round, is_winning_team,  get_validated_team_by_id, get_col_class, get_bracket_cols_count, get_group_by_id, get_winner_matchs_per_round } = tournamentStore;
+const { tournament, tourney_teams } = storeToRefs(tournamentStore);
 const open_drop = ref(false);
 const drop_label = ref('Informations');
 const trans = ref('translateX(0vw)');
@@ -53,7 +44,6 @@ const sections = reactive<Record<string, [boolean, number]>>({
   rules: [false, 5],
 });
 
-const get_validated_team_by_id = (id: number) => teams.value?.validated_teams.find((team) => team.id === id);
 
 const select_tag = (e: Event) => {
   const target = e.target as HTMLInputElement;
@@ -66,34 +56,6 @@ const select_tag = (e: Event) => {
   sections[target.id][0] = true;
 };
 
-const get_bracket_cols_count = (bracket: Bracket) => {
-  if (bracket.bracket_type === BracketType.SINGLE) {
-    return bracket.depth + 1;
-  }
-  return 2 * (bracket.depth - 1) + 3;
-};
-const get_col_class = (bracket: Bracket) => {
-  const nb_cols = get_bracket_cols_count(bracket);
-  return `grid-cols-${nb_cols}`;
-};
-
-const is_winning_team = (match: Match, team_id: number) => {
-  if (match.bo_type === BestofType.RANKING) {
-    return match.score[team_id] >= Object.keys(match.score).length;
-  }
-
-  return match.score[team_id] >= Math.ceil(match.bo_type / 2);
-};
-
-const get_matchs_per_round = (matchs: Match[]) => {
-  const reversed_rounds = groupBy(matchs, 'round_number');
-  return Object.values(reversed_rounds).reverse();
-};
-const get_winner_matchs_per_round = (matchs: KnockoutMatch[], round: number) => {
-  const winner_matchs = matchs.filter((match) => match.bracket_set === BracketSet.WINNER);
-  const round_matchs = groupBy(winner_matchs, 'round_number');
-  return round_matchs[round];
-};
 const get_looser_matchs = (matchs: KnockoutMatch[]) => {
   const looser_matchs = matchs.filter((match) => match.bracket_set === BracketSet.LOOSER);
   const round_matchs = groupBy(looser_matchs, 'round_number');
@@ -136,11 +98,12 @@ const swiss_match_results = (matchs : SwissMatch[]) => {
   return res;
 };
 
-const get_group_by_id = (groups: Group[], id: number) => groups.find((group) => group.id === id);
+
+await getTournamentFull(props.id);
+getTournamentTeams();
 const router = useRouter();
 onMounted(async () => {
   try {
-    await getTournamentFull(props.id);
   } catch (err: unknown) {
     router.go(-1);
   }
@@ -365,20 +328,20 @@ onMounted(async () => {
       <h1 v-if="tournament?.teams.length === 0" class="mt-6 text-center text-4xl">
         Aucune équipe inscrite
       </h1>
-      <div v-if="teams.validated_teams.length > 0">
+      <div v-if="tourney_teams?.validated_teams.length > 0">
         <h1 class="title">
           Équipes validées
         </h1>
         <div class="grid gap-4 p-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          <TeamCard v-for="team in teams.validated_teams" :key="team.id" :team="team"/>
+          <TeamCard v-for="team in tourney_teams.validated_teams" :key="team.id" :team="team"/>
         </div>
       </div>
-      <div v-if="teams.non_validated_teams.length > 0">
+      <div v-if="tourney_teams?.non_validated_teams.length > 0">
         <h1 class="title">
           Équipes en cours de validation
         </h1>
         <div class="grid gap-4 p-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          <TeamCard v-for="team in teams.non_validated_teams" :key="team.id" :team="team"/>
+          <TeamCard v-for="team in tourney_teams.non_validated_teams" :key="team.id" :team="team"/>
         </div>
       </div>
     </section>
@@ -389,7 +352,7 @@ onMounted(async () => {
       </h1>
       <div v-if="tournament?.groups.length > 0" class="mt-6 flex justify-center">
         <div v-for="group in tournament?.groups" :key="group.id" class="mx-3" @click="show_detail_group = group.id">
-          <GroupTable :teams="teams" :group="group"/>
+          <GroupTable :teams="tourney_teams" :group="group"/>
         </div>
       </div>
       <div v-else-if="tournament?.swissRounds.length > 0" class="mt-6 flex justify-center">
@@ -413,9 +376,9 @@ onMounted(async () => {
         </h1>
       </nav>
       <div class="flex justify-center gap-3">
-        <GroupTable class="max-w-96 max-h-96 w-1/2" :teams="teams" :group="get_group_by_id(tournament?.groups, show_detail_group)"/>
+        <GroupTable class="max-w-96 max-h-96 w-1/2" :teams="tourney_teams" :group="get_group_by_id(tournament.groups, show_detail_group)"/>
         <div class="w-1/2">
-          <div v-for="matchs in get_matchs_per_round(get_group_by_id(tournament?.groups, show_detail_group)?.matchs)" :key="match.id">
+          <div v-if="get_group_by_id(tournament.groups, show_detail_group) !== undefined" v-for="matchs in get_matchs_per_round(get_group_by_id(tournament.groups, show_detail_group)?.matchs)" :key="matchs.id">
             <h1 class="text-center text-3xl font-black">
               Round {{ matchs[0].round_number }}
             </h1>

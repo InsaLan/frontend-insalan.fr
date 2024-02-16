@@ -4,7 +4,7 @@ import { computed, type Ref, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { PaymentStatus, type PlayerRegistrationDeref, type RegistrationDeref } from '@/models/registration';
 import type { User, UserPatch, UserPatchError } from '@/models/user';
-
+import type { Match, OngoingMatch, ScorePatch } from '@/models/match';
 import { useErrorStore } from './error.store';
 import { useToastStore } from './toast.store';
 
@@ -16,6 +16,7 @@ export const useUserStore = defineStore('user', () => {
   const router = useRouter();
   const ToastStore = useToastStore();
   const ErrorStore = useErrorStore();
+  const ongoing_match = ref<OngoingMatch>({} as OngoingMatch);
   const inscriptions = ref<{
     ongoing: Ref<[string, PlayerRegistrationDeref | RegistrationDeref][]>;
     past: Ref<[string, PlayerRegistrationDeref | RegistrationDeref][]>;
@@ -163,7 +164,7 @@ export const useUserStore = defineStore('user', () => {
       const past: [string, PlayerRegistrationDeref | RegistrationDeref][] = [];
       const unpaid: { [key: number]: boolean } = {};
       // Get all the inscription of the user
-      const registrations = await axios.get<{ 'player': PlayerRegistrationDeref[]; 'manager': RegistrationDeref[]; 'substitute': PlayerRegistrationDeref[] }>('/tournament/me');
+      const registrations = await axios.get<{ 'player': PlayerRegistrationDeref[]; 'manager': RegistrationDeref[]; 'substitute': PlayerRegistrationDeref[]; 'ongoing_match': OngoingMatch}>('/tournament/me');
       // Set the value of the ref object
       registrations.data.player.forEach((registration) => {
         if (registration.team.tournament.event.ongoing) {
@@ -199,6 +200,7 @@ export const useUserStore = defineStore('user', () => {
         }
       });
 
+      ongoing_match.value = registrations.data.ongoing_match;
       inscriptions.value = {
         ongoing,
         past,
@@ -258,6 +260,32 @@ export const useUserStore = defineStore('user', () => {
       setContent('Votre session a expiré, veuillez vous reconnecter', 'error');
     }
   }
+  async function send_score(match: OngoingMatch, data: ScorePatch) {
+
+    await get_csrf();
+    const type = ongoing_match.value.match_type.type;
+    const id = ongoing_match.value.match_type.id;
+    try {
+      const res = await axios.patch(`/tournament/${type}/${id}/match/${match.id}`, data,  {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+          'Content-Type': 'application/json',
+        },
+      });
+      if (res.status === 200) {
+          setContent('Le score a bien été mis à jour', 'success');
+      }
+    } catch (err: unknown) {
+      const error = err as Error | AxiosError;
+      if (isAxiosError(error)) {
+        // TODO: catch error
+        }
+      }
+    ongoing_match.value = null;
+
+      
+  }
 
   const role = computed(() => {
     if (user.value.is_superuser) return 'dev';
@@ -276,10 +304,12 @@ export const useUserStore = defineStore('user', () => {
     ask_reset_password,
     reset_password,
     get_csrf,
+    send_score,
     handle_session_cookie_expiration,
     role,
     isConnected,
     inscriptions,
+    ongoing_match,
     MailVerified,
     csrf,
     connectionTimestamp,
