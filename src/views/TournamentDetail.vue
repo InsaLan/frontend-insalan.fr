@@ -395,21 +395,35 @@ onMounted(async () => {
               Round {{ matchs[0].round_number }}
             </h1>
             <div class="gap-4">
-              <div v-for="game in matchs" :key="game.id" class="flex justify-center">
-                <div class="mb-4 flex divide-x border-2 text-xl font-bold">
-                  <div class="p-3">
-                    {{ get_validated_team_by_id(game.teams[0])?.name }}
+              <div v-for="game in matchs" :key="game.id">
+                <div v-if="game.teams.length == 2" class="flex justify-center">
+                  <div class="mb-4 ml-10 flex flex-1 justify-between divide-x border-2 text-xl font-bold">
+                    <div class="p-3">
+                      {{ get_validated_team_by_id(game.teams[0])?.name || "TBD" }}
+                    </div>
+                    <div class="p-3">
+                      {{ game.score[game.teams[0]] }}
+                    </div>
                   </div>
-                  <div class="p-3">
-                    {{ game.score[game.teams[0]] }}
+                  <div class="mb-4 mr-10 flex flex-1 divide-x border-2 text-xl font-bold">
+                    <div class="p-3">
+                      {{ game.score[game.teams[1]] }}
+                    </div>
+                    <div class="p-3">
+                      {{ get_validated_team_by_id(game.teams[1])?.name || "TBD" }}
+                    </div>
                   </div>
                 </div>
-                <div v-if="game.teams.length == 2" class=" mb-4 flex divide-x border-2 text-xl font-bold">
-                  <div class="p-3">
-                    {{ game.score[game.teams[1]] }}
-                  </div>
-                  <div class="p-3">
-                    {{ get_validated_team_by_id(game.teams[1])?.name }}
+                <div v-else class="flex justify-center">
+                  <div v-for="team_id in game.teams" :key="team_id">
+                    <div class="mx-5 mb-4 flex flex-1 justify-between divide-x border-2 text-xl font-bold">
+                      <div class="p-3">
+                        {{ get_validated_team_by_id(team_id)?.name || "TBD" }}
+                      </div>
+                      <div class="p-3">
+                        {{ game.score[team_id] }}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
