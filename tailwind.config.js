@@ -7,7 +7,7 @@ export default {
   safelist: [
     {
       pattern: /grid-cols-\d+/,
-    }
+    },
   ],
   theme: {
     extend: {

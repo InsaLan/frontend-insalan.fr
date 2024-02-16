@@ -347,15 +347,19 @@ export const useTournamentStore = defineStore('tournament', () => {
       return bracket.depth + 1;
     }
     return 2 * (bracket.depth - 1) + 3;
-  };
+  }
   function get_winner_matchs_per_round(matchs: KnockoutMatch[], round: number) {
     const winner_matchs = matchs.filter((match) => match.bracket_set === BracketSet.WINNER);
     const round_matchs = groupBy(winner_matchs, 'round_number');
     return round_matchs[round];
-  };
+  }
   function get_col_class(bracket: Bracket) {
-      const nb_cols = get_bracket_cols_count(bracket);
-      return `grid-cols-${nb_cols}`;
+    const nb_cols = get_bracket_cols_count(bracket);
+    return `grid-cols-[repeat(${nb_cols},26rem)]`;
+  }
+  function get_col_style(bracket: Bracket) {
+    const nb_cols = get_bracket_cols_count(bracket);
+    return { 'grid-template-columns': `repeat(${nb_cols},26rem)` };
   }
 
   const get_matchs_per_round = (matchs: Match[]) => {
@@ -379,6 +383,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     get_winner_matchs_per_round,
     get_group_by_id,
     get_col_class,
+    get_col_style,
     get_bracket_cols_count,
     get_matchs_per_round,
     getEvent,
