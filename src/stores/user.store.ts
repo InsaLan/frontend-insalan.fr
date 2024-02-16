@@ -199,8 +199,7 @@ export const useUserStore = defineStore('user', () => {
           unpaid[registration.id] = true;
         }
       });
-
-      ongoing_match.value = registrations.data.ongoing_match;
+      ongoing_match.value = registrations.data.ongoing_match || {} as OngoingMatch;
       inscriptions.value = {
         ongoing,
         past,
@@ -282,7 +281,7 @@ export const useUserStore = defineStore('user', () => {
         // TODO: catch error
         }
       }
-    ongoing_match.value = null;
+    ongoing_match.value = {} as OngoingMatch;
 
       
   }

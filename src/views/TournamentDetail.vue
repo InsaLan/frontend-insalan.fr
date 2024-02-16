@@ -99,14 +99,15 @@ const swiss_match_results = (matchs : SwissMatch[]) => {
 };
 
 
-await getTournamentFull(props.id);
-getTournamentTeams();
 const router = useRouter();
-onMounted(async () => {
-  try {
-  } catch (err: unknown) {
+try {
+  await getTournamentFull(props.id);
+  getTournamentTeams();
+} catch (err: unknown) {
     router.go(-1);
-  }
+}
+
+onMounted(async () => {
   if (props.section !== undefined && props.section.s in sections) {
     sections[props.section.s][0] = true;
     drop_label.value = props.section.s;
