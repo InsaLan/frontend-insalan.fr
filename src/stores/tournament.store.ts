@@ -1,15 +1,17 @@
 import axios from 'axios';
 import { defineStore, storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
+import {
+  type Bracket, BracketSet, BracketType, type KnockoutMatch,
+} from '@/models/bracket';
 import type { Event } from '@/models/event';
+import type { Group } from '@/models/group';
+import { BestofType, type Match } from '@/models/match';
 import type { PlayerRegistrationDeref } from '@/models/registration';
 import type { Team } from '@/models/team';
 import type { Tournament } from '@/models/tournament';
 
-import { BestofType, type Match } from '@/models/match';
 import { useUserStore } from './user.store';
-import { BracketType, type Bracket, type KnockoutMatch, BracketSet } from '@/models/bracket';
-import type { Group } from '@/models/group';
 
 const { get_csrf } = useUserStore();
 const { csrf, inscriptions } = storeToRefs(useUserStore());
@@ -127,7 +129,6 @@ export const useTournamentStore = defineStore('tournament', () => {
     if (!(id in tournamentsList.value)) {
       await fetchTournament(id);
     }
-
   }
   async function getTournaments(ids: number[]) {
     const missing: number[] = [];
@@ -226,18 +227,18 @@ export const useTournamentStore = defineStore('tournament', () => {
   }
 
   async function payRegistration(
-    tournament: Tournament,
+    tournament_obj: Tournament,
     role: string,
   ) {
     await get_csrf();
 
     let product_id;
     if (role === 'player') {
-      product_id = tournament.player_online_product;
+      product_id = tournament_obj.player_online_product;
     } else if (role === 'manager') {
-      product_id = tournament.manager_online_product;
+      product_id = tournament_obj.manager_online_product;
     } else if (role === 'substitute') {
-      product_id = tournament.substitute_online_product;
+      product_id = tournament_obj.substitute_online_product;
     }
     if (!product_id) return;
 
@@ -253,7 +254,7 @@ export const useTournamentStore = defineStore('tournament', () => {
         'X-CSRFToken': csrf.value,
       },
     });
-    await fetchTournamentFull(tournament.id);
+    await fetchTournamentFull(tournament_obj.id);
 
     const { redirect_url } = response.data;
 
@@ -289,8 +290,8 @@ export const useTournamentStore = defineStore('tournament', () => {
     document.body.appendChild(link);
     link.click();
   }
-  function getTournamentTeams () {
-  tourney_teams.value = (tournament.value?.teams as Team[]).reduce((ret, team) => {
+  function getTournamentTeams() {
+    tourney_teams.value = (tournament.value?.teams as Team[]).reduce((ret, team) => {
       if (team.validated) {
         ret.validated_teams.push(team);
       } else {
@@ -329,13 +330,13 @@ export const useTournamentStore = defineStore('tournament', () => {
     ));
   }
 
-  function get_validated_team_by_id(id: number){
+  function get_validated_team_by_id(id: number) {
     return tourney_teams.value.validated_teams.find((team) => team.id === id);
   }
-  function get_group_by_id(groups: Group[], id: number){
+  function get_group_by_id(groups: Group[], id: number) {
     return groups.find((group) => group.id === id);
   }
-  function is_winning_team(match: Match, team_id: number){
+  function is_winning_team(match: Match, team_id: number) {
     if (match.bo_type === BestofType.RANKING) {
       return match.score[team_id] >= Object.keys(match.score).length;
     }

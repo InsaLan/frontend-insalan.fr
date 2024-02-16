@@ -2,9 +2,10 @@ import axios, { type AxiosError, isAxiosError } from 'axios';
 import { defineStore } from 'pinia';
 import { computed, type Ref, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import type { OngoingMatch, ScorePatch } from '@/models/match';
 import { PaymentStatus, type PlayerRegistrationDeref, type RegistrationDeref } from '@/models/registration';
 import type { User, UserPatch, UserPatchError } from '@/models/user';
-import type { Match, OngoingMatch, ScorePatch } from '@/models/match';
+
 import { useErrorStore } from './error.store';
 import { useToastStore } from './toast.store';
 
@@ -164,7 +165,7 @@ export const useUserStore = defineStore('user', () => {
       const past: [string, PlayerRegistrationDeref | RegistrationDeref][] = [];
       const unpaid: { [key: number]: boolean } = {};
       // Get all the inscription of the user
-      const registrations = await axios.get<{ 'player': PlayerRegistrationDeref[]; 'manager': RegistrationDeref[]; 'substitute': PlayerRegistrationDeref[]; 'ongoing_match': OngoingMatch}>('/tournament/me');
+      const registrations = await axios.get<{ 'player': PlayerRegistrationDeref[]; 'manager': RegistrationDeref[]; 'substitute': PlayerRegistrationDeref[]; 'ongoing_match': OngoingMatch }>('/tournament/me');
       // Set the value of the ref object
       registrations.data.player.forEach((registration) => {
         if (registration.team.tournament.event.ongoing) {
@@ -260,12 +261,11 @@ export const useUserStore = defineStore('user', () => {
     }
   }
   async function send_score(match: OngoingMatch, data: ScorePatch) {
-
     await get_csrf();
-    const type = ongoing_match.value.match_type.type;
-    const id = ongoing_match.value.match_type.id;
+    const { type } = ongoing_match.value.match_type;
+    const { id } = ongoing_match.value.match_type;
     try {
-      const res = await axios.patch(`/tournament/${type}/${id}/match/${match.id}`, data,  {
+      const res = await axios.patch(`/tournament/${type}/${id}/match/${match.id}`, data, {
         withCredentials: true,
         headers: {
           'X-CSRFToken': csrf.value,
@@ -273,17 +273,15 @@ export const useUserStore = defineStore('user', () => {
         },
       });
       if (res.status === 200) {
-          setContent('Le score a bien été mis à jour', 'success');
+        setContent('Le score a bien été mis à jour', 'success');
       }
     } catch (err: unknown) {
       const error = err as Error | AxiosError;
       if (isAxiosError(error)) {
         // TODO: catch error
-        }
       }
+    }
     ongoing_match.value = {} as OngoingMatch;
-
-      
   }
 
   const role = computed(() => {
