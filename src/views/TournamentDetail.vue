@@ -347,12 +347,12 @@ onMounted(async () => {
       </div>
     </section>
 
-    <section id="groups" :class="{ hidden: !sections.groups[0] || show_detail_group }">
+    <section id="groups" :class="{ hidden: !sections.groups[0] || show_detail_group }" class="flex content-center justify-center">
       <h1 v-if="tournament?.groups.length === 0 && tournament?.swissRounds.length === 0" class="mt-6 text-center text-4xl">
         Les poules ou les rondes suisse ne sont pas disponibles.
       </h1>
-      <div v-if="tournament?.groups.length > 0" class="mt-6 flex justify-center">
-        <div v-for="group in tournament?.groups" :key="group.id" class="mx-3" @click="show_detail_group = group.id">
+      <div v-if="tournament?.groups.length > 0" class="my-auto flex justify-center gap-20 flex-wrap">
+        <div v-for="group in tournament?.groups" :key="group.id" class=" border-collapse border-slate-500 hover:ring hover:ring-slate-500 hover:ring-8" @click="show_detail_group = group.id">
           <GroupTable :teams="tourney_teams" :group="group"/>
         </div>
       </div>
