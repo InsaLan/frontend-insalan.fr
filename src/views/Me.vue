@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
 import {
-  email, minLength, required, sameAs,
+  email, minLength, required, sameAs, minValue
 } from '@vuelidate/validators';
 import { storeToRefs } from 'pinia';
 import {
@@ -15,11 +15,11 @@ import type { PlayerRegistrationDeref } from '@/models/registration';
 import type { Tournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
-
+import type { ScorePatch } from '@/models/match';
 const userStore = useUserStore();
 const tournamentStore = useTournamentStore();
-const { user, role, inscriptions } = storeToRefs(userStore);
-const { fetch_user_inscription_full, patch_user } = userStore;
+const { user, role, inscriptions, ongoing_match } = storeToRefs(userStore);
+const { fetch_user_inscription_full, patch_user, send_score } = userStore;
 const { patch_registration, payRegistration, get_ticket_pdf } = tournamentStore;
 
 onMounted(async () => {
@@ -53,6 +53,9 @@ const data_name_in_game = computed(() => ({
 const rules_name_in_game = computed(() => ({
   name_in_game: { required },
 }));
+const rules_score = computed(() => ({
+  times: { required, minValue: minValue(0),}
+}))
 const v$_name_in_game = useVuelidate(rules_name_in_game, data_name_in_game);
 
 const data_password = reactive({
@@ -72,13 +75,64 @@ const focus = ref('');
 const title = ref('Test title');
 
 const modal_payment = ref(false);
+const modal_enter_score = ref(false);
+const modal_enter_times = ref(false);
+const invalid_score = ref("");
 
+//Object.keys(ongoing_match?.value.teams).forEach(id => data_score.score[parseInt(id)] =  0);
+const NextModalEnterScore = () => {
+  if (ongoing_match.value.bo_type != 0) {
+    const score_total = Object.values(data_score.score).reduce((a, b) => a + b, 0);
+    const winning_score = Math.ceil(ongoing_match.value.bo_type/2)
+    if (score_total > ongoing_match.value.bo_type || Object.keys(data_score.score).length === 0 || score_total !== winning_score){
+      invalid_score.value = "Le score que vous avez rentrés n'est pas valide!";
+    } else {
+      invalid_score.value = "";
+    modal_enter_times.value = true;
+    modal_enter_score.value = false;
+    }
+  } else {//we are in ranking 
+    const ranks = Object.values(data_score.score).reduce((a, b) => a + b, 0);
+    const n = Object.keys(ongoing_match.value.teams).length;
+    if(ranks !== (n*(n+1))/2){
+      invalid_score.value = "Le score que vous avez rentrés n'est pas valide!";
+    } else {
+      invalid_score.value = "";
+      modal_enter_times.value = true;
+      modal_enter_score.value = false;
+    }
+  }
+}
+
+const PrevModalEnterScore = () => {
+  modal_enter_times.value = false;
+  modal_enter_score.value = true;
+}
 const showModalNameInGame = ref(false);
 
+const data_score: {score: {[id: number]: number}, times: number[]} = reactive({
+  score: {},
+  times: [],
+});
+
+const game_number = computed(() => {
+    if (ongoing_match.value.bo_type === 0 ){
+      return 1;
+    } else {
+      return 3; //teams_score.reduce((a, b) => a + b, 0);
+    }
+})
+
+const v$_score_game = useVuelidate(rules_score, data_score);
 const closeModalNameInGame = () => {
   showModalNameInGame.value = false;
 };
 
+const closeModalEnterScore = () => {
+
+  invalid_score.value = "";
+  modal_enter_score.value = false;
+}
 const ValidateModalNameInGame = async () => {
   let data = {};
   const isValid = await v$_name_in_game.value.$validate();
@@ -106,7 +160,17 @@ const openModal = () => {
 const closeModal = () => {
   showModal.value = false;
 };
-
+const sendScore = async () => {
+  const scores = ({} as ScorePatch);
+  scores['times'] = data_score.times.filter((time) => time !== null );
+  console.log(data_score);
+  scores['score'] = data_score.score;
+  await send_score(ongoing_match.value, scores);
+  data_score.score = {};
+  data_score.times = [];
+  modal_enter_times.value = false;
+  modal_enter_score.value = false;
+}
 const validateModal = async () => {
   let data = {};
   let isValid;
@@ -152,6 +216,10 @@ const editField = (field: string) => {
   }
   openModal();
 };
+const openScoreModal = () => {
+  Object.keys(ongoing_match?.value.teams).forEach(id => data_score.score[parseInt(id)] =  0);
+  modal_enter_score.value = true;
+}
 </script>
 
 <template>
@@ -236,6 +304,17 @@ const editField = (field: string) => {
            text-white bg-red-600 hover:ring hover:ring-pink-500" style="display: flex; align-items: center;">
            Supprimer son compte</button>
         </div-->
+      </div>
+      <div v-if="ongoing_match !== null" id="ongoing_match">
+        <h1 class="m-3 text-center text-4xl font-bold">Partie en cours</h1>
+        <div class="mx-4 p-4 flex flex justify-around bg-cyan-900 rounded-md">
+          <div class="flex-col">
+            <div v-for="team in ongoing_match.teams">
+              {{team}}
+            </div>
+          </div>
+        <button @click="openScoreModal()">terminer la partie</button>
+        </div>
       </div>
     </div>
     <div class="hidden h-auto w-[2px] bg-white sm:block"/>
@@ -587,6 +666,111 @@ const editField = (field: string) => {
     </template>
     <template #buttons>
       <div/>
+    </template>
+  </Modal>
+
+ <Modal v-if="modal_enter_score" :close-on-click="false">
+    <template #icon>
+      <div/>
+    </template>
+    <template #title>
+      <h3 id="open_modal-title" class="text-white-900 text-base font-semibold leading-6">
+        Enregistrer le score
+      </h3>
+    </template>
+    <template #body>
+      <form id="patch-user" class="mt-2" @submit.prevent="validateModal">
+        <FormField
+          v-slot="context"
+          :validations="v$_name_in_game.name_in_game"
+          class="flex justify-between"
+          v-for="(name, id) in ongoing_match.teams"
+          label="{{id}}"
+        >
+          <label>{{name}}</label>
+          <input
+            v-model="data_score.score[id]"
+            :class="{ error: context.invalid }"
+            aria-label="score"
+            class="border-2 bg-theme-bg w-24" 
+            placeholder="score"
+            required
+            type="number"
+            min="0"
+          />
+        </FormField>
+        <!-- hidden submit button with tailwind-->
+        <button class="hidden" type="submit"/>
+      </form>
+      <p v-if="invalid_score.length > 0" class="bg-red-400">{{ invalid_score }}</p>
+    </template>
+    <template #buttons>
+      <button
+          class="inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 mx-4 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+          type="button"
+          @click.prevent="NextModalEnterScore"
+        >
+        Suivant
+      </button>
+       <button
+        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        type="button"
+        @click="closeModalEnterScore"
+      >
+        Annuler
+      </button>
+      
+    </template>
+  </Modal>
+
+ <Modal v-if="modal_enter_times" :close-on-click="false">
+    <template #icon>
+      <div/>
+    </template>
+    <template #title>
+      <h3 id="open_modal-title" class="text-white-900 text-base font-semibold leading-6">
+        Enregistrer les durées de match
+      </h3>
+    </template>
+    <template #body>
+      <form id="patch-user" class="mt-2" @submit.prevent="validateModal">
+        <FormField
+          v-slot="context"
+          class="flex justify-between"
+          :validations="v$_score_game"
+          label="times"
+          v-for="n in game_number">
+          <label>Partie {{ n }} </label>
+          <input
+            v-model="data_score.times[n]"
+            :class="{ error: context.invalid }"
+            aria-label="duration"
+            class="border-2 bg-theme-bg w-24" 
+            placeholder="5 min"
+            required
+            type="number"
+            min="1"
+          />
+        </FormField>
+        <!-- hidden submit button with tailwind-->
+        <button class="hidden" type="submit"/>
+      </form>
+    </template>
+    <template #buttons>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+        type="submit"
+        @click="sendScore"
+        >
+        Envoyer
+      </button>
+       <button
+        class="inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        type="button"
+        @click="PrevModalEnterScore"
+        >
+        Retour
+      </button>
     </template>
   </Modal>
 </template>

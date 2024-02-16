@@ -6,7 +6,10 @@ import type { PlayerRegistrationDeref } from '@/models/registration';
 import type { Team } from '@/models/team';
 import type { Tournament } from '@/models/tournament';
 
+import { BestofType, type Match } from '@/models/match';
 import { useUserStore } from './user.store';
+import { BracketType, type Bracket, type KnockoutMatch, BracketSet } from '@/models/bracket';
+import type { Group } from '@/models/group';
 
 const { get_csrf } = useUserStore();
 const { csrf, inscriptions } = storeToRefs(useUserStore());
@@ -31,6 +34,8 @@ export const useTournamentStore = defineStore('tournament', () => {
     'team': string;
   }[]>([]);
 
+  const tourney_teams = ref<Record<string, Team[]>>({});
+  const tournament = ref<Tournament>();
   const ongoingEvents = computed(() => Object.values(eventsList.value).reduce((res, item) => {
     if (item.ongoing) {
       res.push(item);
@@ -122,6 +127,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     if (!(id in tournamentsList.value)) {
       await fetchTournament(id);
     }
+
   }
   async function getTournaments(ids: number[]) {
     const missing: number[] = [];
@@ -139,6 +145,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     if (!(id in tournamentsList.value) || typeof tournamentsList.value[id].event === 'number') {
       await fetchTournamentFull(id);
     }
+    tournament.value = tournamentsList.value[id];
   }
 
   async function getTournamentsFull(ids: number[]) {
@@ -282,6 +289,16 @@ export const useTournamentStore = defineStore('tournament', () => {
     document.body.appendChild(link);
     link.click();
   }
+  function getTournamentTeams () {
+  tourney_teams.value = (tournament.value?.teams as Team[]).reduce((ret, team) => {
+      if (team.validated) {
+        ret.validated_teams.push(team);
+      } else {
+        ret.non_validated_teams.push(team);
+      }
+      return ret;
+    }, { validated_teams: [] as Team[], non_validated_teams: [] as Team[] });
+  }
 
   async function get_unpaid_registration() {
     const response = await axios.get<{
@@ -312,6 +329,39 @@ export const useTournamentStore = defineStore('tournament', () => {
     ));
   }
 
+  function get_validated_team_by_id(id: number){
+    return tourney_teams.value.validated_teams.find((team) => team.id === id);
+  }
+  function get_group_by_id(groups: Group[], id: number){
+    return groups.find((group) => group.id === id);
+  }
+  function is_winning_team(match: Match, team_id: number){
+    if (match.bo_type === BestofType.RANKING) {
+      return match.score[team_id] >= Object.keys(match.score).length;
+    }
+    return match.score[team_id] >= Math.ceil(match.bo_type / 2);
+  }
+
+  function get_bracket_cols_count(bracket: Bracket) {
+    if (bracket.bracket_type === BracketType.SINGLE) {
+      return bracket.depth + 1;
+    }
+    return 2 * (bracket.depth - 1) + 3;
+  };
+  function get_winner_matchs_per_round(matchs: KnockoutMatch[], round: number) {
+    const winner_matchs = matchs.filter((match) => match.bracket_set === BracketSet.WINNER);
+    const round_matchs = groupBy(winner_matchs, 'round_number');
+    return round_matchs[round];
+  };
+  function get_col_class(bracket: Bracket) {
+      const nb_cols = get_bracket_cols_count(bracket);
+      return `grid-cols-${nb_cols}`;
+  }
+
+  const get_matchs_per_round = (matchs: Match[]) => {
+    const reversed_rounds = groupBy(matchs, 'round_number');
+    return Object.values(reversed_rounds).reverse();
+  };
   function $reset() {
     eventsList.value = {};
     tournamentsList.value = {};
@@ -322,8 +372,18 @@ export const useTournamentStore = defineStore('tournament', () => {
     ongoingEvents,
     tournamentsList,
     unpaidRegistration,
+    tourney_teams,
+    tournament,
+    is_winning_team,
+    get_validated_team_by_id,
+    get_winner_matchs_per_round,
+    get_group_by_id,
+    get_col_class,
+    get_bracket_cols_count,
+    get_matchs_per_round,
     getEvent,
     getEvents,
+    getTournamentTeams,
     getEventsByYears,
     getOngoingEvents,
     getTournament,
