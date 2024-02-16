@@ -325,7 +325,7 @@ onMounted(async () => {
       <h1 v-if="tournament?.groups.length === 0" class="mt-6 text-center text-4xl">
         Les poules ne sont pas disponibles.
       </h1>
-      <div v-if="tournament?.groups.length > 0" class="mt-6 flex justify-center">
+      <div v-if="tournament.groups.length > 0" class="mt-6 flex justify-center">
         <div v-for="group in tournament.groups" :key="group.id" class="mx-3" @click="show_detail_group = group.id">
           <GroupTable :teams="teams" :group="group"/>
         </div>
