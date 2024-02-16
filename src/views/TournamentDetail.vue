@@ -29,7 +29,9 @@ const props = defineProps<{
 const { md, getContent } = useContentStore();
 
 const tournamentStore = useTournamentStore();
-const { getTournamentFull, getTournamentTeams, get_matchs_per_round, is_winning_team, get_validated_team_by_id, get_col_style, get_bracket_cols_count, get_group_by_id, get_winner_matchs_per_round } = tournamentStore;
+const {
+  getTournamentFull, getTournamentTeams, get_matchs_per_round, is_winning_team, get_validated_team_by_id, get_col_style, get_bracket_cols_count, get_group_by_id, get_winner_matchs_per_round,
+} = tournamentStore;
 const { tournament, tourney_teams } = storeToRefs(tournamentStore);
 const open_drop = ref(false);
 const drop_label = ref('Informations');
@@ -97,13 +99,12 @@ const swiss_match_results = (matchs : SwissMatch[]) => {
   return res;
 };
 
-
 const router = useRouter();
 try {
   await getTournamentFull(props.id);
   getTournamentTeams();
 } catch (err: unknown) {
-    router.go(-1);
+  router.go(-1);
 }
 
 onMounted(async () => {
@@ -355,8 +356,8 @@ onMounted(async () => {
           <GroupTable :teams="tourney_teams" :group="group"/>
         </div>
       </div>
-      <div v-else-if="tournament?.swissRounds.length > 0" class="mt-6 flex justify-center h-full">
-        <div v-for="swiss in tournament?.swissRounds" :key="swiss.id" class="mx-3 w-full overflow-x-auto">
+      <div v-else-if="tournament?.swissRounds.length > 0" class="mt-6 flex h-full justify-center">
+        <div v-for="swiss in tournament?.swissRounds" :key="swiss.id" class="mx-3 overflow-x-auto">
           <SwissRoundTable
             :rounds="swiss_match_results(swiss.matchs)"
             :team-per-match="tournament?.game.team_per_match"
@@ -378,7 +379,7 @@ onMounted(async () => {
       <div class="flex justify-center gap-3">
         <GroupTable class="max-w-96 max-h-96 w-1/2" :teams="tourney_teams" :group="get_group_by_id(tournament.groups, show_detail_group)"/>
         <div class="w-1/2">
-          <div v-if="get_group_by_id(tournament.groups, show_detail_group) !== undefined" v-for="matchs in get_matchs_per_round(get_group_by_id(tournament.groups, show_detail_group)?.matchs)" :key="matchs.id">
+          <div v-for="matchs in get_matchs_per_round(get_group_by_id(tournament.groups, show_detail_group)?.matchs)" v-if="get_group_by_id(tournament.groups, show_detail_group) !== undefined" :key="matchs.id">
             <h1 class="text-center text-3xl font-black">
               Round {{ matchs[0].round_number }}
             </h1>

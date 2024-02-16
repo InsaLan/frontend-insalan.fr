@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="grid items-center gap-5 h-full" :style="{ 'grid-template-columns': `repeat(${roundCount},26rem)` }">
+  <div class="grid h-full items-center gap-x-20 gap-y-5" :style="{ 'grid-template-columns': `repeat(${roundCount},26rem)` }">
     <div v-for="round_idx in roundCount" :key="round_idx" class="flex flex-col">
       <h1 class="text-4xl">
         Tour {{ round_idx }}
