@@ -386,7 +386,7 @@ onMounted(async () => {
           :teams="tourney_teams"
           :group="get_group_by_id(tournament.groups, show_detail_group) as Group"
         />
-        <div class="w-1/2">
+        <div class="flex w-1/2 flex-col-reverse">
           <div
             v-for="matchs in get_matchs_per_round(get_group_by_id(tournament.groups, show_detail_group)?.matchs ?? [])"
             :key="matchs[0].id"
