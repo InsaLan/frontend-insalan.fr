@@ -417,12 +417,20 @@ onMounted(async () => {
                 <div v-else class="flex justify-center">
                   <div v-for="team_id in game.teams" :key="team_id">
                     <div class="mx-5 mb-4 flex flex-1 justify-between divide-x border-2 text-xl font-bold">
-                      <div class="p-3">
-                        {{ get_validated_team_by_id(team_id)?.name || "TBD" }}
-                      </div>
-                      <div class="p-3">
-                        {{ game.score[team_id] }}
-                      </div>
+                      <table> 
+                        <tr>
+                          <th>Equipe</th>
+                          <th>Score</th>
+                        </tr>
+                        <tr>
+                          <th>
+                            {{ get_validated_team_by_id(team_id)?.name || "TBD" }}
+                          </th>
+                          <th>
+                            {{ game.score[team_id] }}
+                          </th>
+                        </tr>
+                    </table>
                     </div>
                   </div>
                 </div>
