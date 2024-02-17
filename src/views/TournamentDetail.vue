@@ -346,7 +346,7 @@ onMounted(async () => {
     </section>
 
     <section id="groups" :class="{ hidden: !sections.groups[0] || show_detail_group }" class="flex content-center">
-      <h1 v-if="tournament?.groups?.length === 0 && tournament?.swissRounds.length === 0" class="mt-6 text-center text-4xl">
+      <h1 v-if="tournament?.groups?.length === 0 && tournament?.swissRounds.length === 0" class="mt-6 flex flex-1 justify-center text-center text-4xl">
         Les poules ou les rondes suisse ne sont pas disponibles.
       </h1>
       <div v-if="tournament?.groups?.length > 0" class="my-10 flex flex-1 flex-wrap justify-center gap-20">
@@ -415,22 +415,26 @@ onMounted(async () => {
                   </div>
                 </div>
                 <div v-else class="flex justify-center">
-                  <div v-for="team_id in game.teams" :key="team_id">
+                  <div>
                     <div class="mx-5 mb-4 flex flex-1 justify-between divide-x border-2 text-xl font-bold">
-                      <table> 
+                      <table>
                         <tr>
-                          <th>Equipe</th>
-                          <th>Score</th>
+                          <th align="center" class="troncate border-separate border border-slate-500 bg-slate-200 p-4 text-black">
+                            Equipe
+                          </th>
+                          <th align="center" class="border-separate border border-slate-500 bg-slate-200 p-4 text-black">
+                            Score
+                          </th>
                         </tr>
-                        <tr>
-                          <th>
+                        <tr v-for="team_id in game.teams" :key="team_id">
+                          <td align="center" class="border-separate border border-slate-500 p-4">
                             {{ get_validated_team_by_id(team_id)?.name || "TBD" }}
-                          </th>
-                          <th>
+                          </td>
+                          <td align="center" class="border-separate border border-slate-500 p-4">
                             {{ game.score[team_id] }}
-                          </th>
+                          </td>
                         </tr>
-                    </table>
+                      </table>
                     </div>
                   </div>
                 </div>
