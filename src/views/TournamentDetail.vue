@@ -456,7 +456,7 @@ onMounted(async () => {
         </h1>
         <div v-if="bracket.bracket_type === BracketType.SINGLE" :key="bracket.id" class="overflow-x-auto">
           <div class="grid items-center gap-10" :style="get_col_style(bracket)">
-            <div v-for="(games, round_idx) in get_matchs_per_round(bracket.matchs)" :key="round_idx" class="flex flex-col justify-around">
+            <div v-for="(games, round_idx) in get_matchs_per_round(bracket.matchs)" :key="round_idx" class="flex h-full flex-col justify-around">
               <div v-for="game in games" :key="game.id" class="m-2 divide-y">
                 <KnockoutMatchCard
                   :team-per-match="tournament.game.team_per_match"
@@ -468,8 +468,8 @@ onMounted(async () => {
           </div>
         </div>
         <div v-if="bracket.bracket_type === BracketType.DOUBLE" :key="bracket.id" class="overflow-x-auto">
-          <div class="grid items-center gap-10" :style="get_col_style(bracket)">
-            <div class="flex flex-col justify-around">
+          <div class="grid h-full items-center gap-10" :style="get_col_style(bracket)">
+            <div class="flex h-full flex-col justify-around">
               <div v-for="game in get_winner_matchs_per_round(bracket.matchs, bracket.depth)" :key="game.id" class="m-2 divide-y">
                 <KnockoutMatchCard
                   :team-per-match="tournament.game.team_per_match"
@@ -478,8 +478,8 @@ onMounted(async () => {
                 />
               </div>
             </div>
-            <div v-for="col_idx in get_bracket_cols_count(bracket) - 2" :key="col_idx" class="flex flex-col justify-around">
-              <div v-if="col_idx % 2">
+            <div v-for="col_idx in get_bracket_cols_count(bracket) - 2" :key="col_idx" class="flex h-full flex-col">
+              <div v-if="col_idx % 2" class="flex h-full flex-col justify-around">
                 <div v-for="game in get_winner_matchs_per_round(bracket.matchs, bracket.depth - (col_idx - 1) / 2 - 1)" :key="game.id" class="m-2 divide-y">
                   <KnockoutMatchCard
                     :team-per-match="tournament.game.team_per_match"
@@ -500,7 +500,7 @@ onMounted(async () => {
           </div>
           <div class="grid items-center gap-10" :style="get_col_style(bracket)">
             <div/>
-            <div v-for="(games, round_idx) in get_looser_matchs(bracket.matchs)" :key="round_idx" class="flex flex-col justify-around">
+            <div v-for="(games, round_idx) in get_looser_matchs(bracket.matchs)" :key="round_idx" class="flex h-full flex-col justify-around">
               <div v-for="game in games" :key="game.id" class="m-2 divide-y">
                 <KnockoutMatchCard
                   :team-per-match="tournament.game.team_per_match"

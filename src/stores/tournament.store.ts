@@ -356,11 +356,11 @@ export const useTournamentStore = defineStore('tournament', () => {
   }
   function get_col_class(bracket: Bracket) {
     const nb_cols = get_bracket_cols_count(bracket);
-    return `grid-cols-[repeat(${nb_cols},26rem)]`;
+    return `grid-cols-[repeat(${nb_cols},17rem)]`;
   }
   function get_col_style(bracket: Bracket) {
     const nb_cols = get_bracket_cols_count(bracket);
-    return { 'grid-template-columns': `repeat(${nb_cols},26rem)` };
+    return { 'grid-template-columns': `repeat(${nb_cols},17rem)` };
   }
 
   const get_matchs_per_round = (matchs: Match[]) => {
