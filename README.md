@@ -19,4 +19,4 @@ install it!). Please refer to [this
 README](https://github.com/InsaLan/infra-insalan.fr/blob/main/README.md)
 
 Once the docker-compose is running, you can access the frontend at
-`http://beta.localhost` if you are using the default beta configuration.
+`http://beta.insalan.localhost` if you are using the default beta configuration.
