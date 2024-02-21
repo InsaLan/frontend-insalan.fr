@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import {
-  onMounted, reactive, ref,
-} from 'vue';
+import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Content from '@/components/Content.vue';
 import GroupTable from '@/components/GroupTable.vue';
@@ -105,15 +103,13 @@ try {
   router.go(-1);
 }
 
-onMounted(async () => {
-  if (props.section !== undefined && props.section.s in sections) {
-    sections[props.section.s][0] = true;
-    drop_label.value = props.section.s;
-    trans.value = `translateX(calc(-100vw * ${sections[props.section.s][1]}`;
-  } else {
-    sections.info[0] = true;
-  }
-});
+if (props.section !== undefined && props.section.s in sections) {
+  sections[props.section.s][0] = true;
+  drop_label.value = props.section.s;
+  trans.value = `translateX(calc(-100vw * ${sections[props.section.s][1]}`;
+} else {
+  sections.info[0] = true;
+}
 </script>
 
 <template>

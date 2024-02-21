@@ -2,7 +2,7 @@
 import axios from 'axios';
 import type { DetectedBarcode } from 'barcode-detector/pure';
 import { storeToRefs } from 'pinia';
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { QrcodeStream } from 'vue-qrcode-reader';
 import { type QRData, TicketStatus } from '@/models/tickets';
 import { useErrorStore } from '@/stores/error.store';
@@ -85,9 +85,7 @@ const ticketStatus = computed(() => {
   }
 });
 
-onMounted(async () => {
-  await get_unpaid_registration();
-});
+await get_unpaid_registration();
 
 type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
 </script>

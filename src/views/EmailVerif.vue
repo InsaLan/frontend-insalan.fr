@@ -13,15 +13,13 @@ const props = defineProps<{
   idtoken: string;
 }>();
 
-onMounted(async () => {
-  // Url must be /insalan.fr/verification/name/token
-  // to be sure to work even if he validates on a device not connected (like a phone)
-  await verifMail(props);
+// Url must be /insalan.fr/verification/name/token
+// to be sure to work even if he validates on a device not connected (like a phone)
+await verifMail(props);
 
-  // If the name and token are the right ones, boolean value MailVerified is set on true.
-  // Else in any other case (problem if token, lack of token etc.)
-  // Html just need to check this value to show the right data to the user
-});
+// If the name and token are the right ones, boolean value MailVerified is set on true.
+// Else in any other case (problem if token, lack of token etc.)
+// Html just need to check this value to show the right data to the user
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { computed, onMounted } from 'vue';
+import { computed } from 'vue';
 import TournamentCard from '@/components/TournamentCard.vue';
 import { useTournamentStore } from '@/stores/tournament.store';
 
@@ -10,10 +10,7 @@ const { ongoingEvents } = storeToRefs(tournamentStore);
 const event = computed(() => ongoingEvents.value.at(-1));
 const tournaments_id = computed(() => event.value?.tournaments);
 
-onMounted(async () => {
-  await getOngoingEvents();
-});
-
+await getOngoingEvents();
 </script>
 
 <template>
