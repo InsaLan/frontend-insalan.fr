@@ -5,7 +5,7 @@ import {
 } from '@vuelidate/validators';
 import { storeToRefs } from 'pinia';
 import {
-  computed, onMounted, reactive, ref,
+  computed, reactive, ref,
 } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import FormField from '@/components/FormField.vue';
@@ -120,24 +120,22 @@ const create = ref(true);
 
 const router = useRouter();
 const { query } = useRoute();
-onMounted(async () => {
-  try {
-    await getTournamentFull(props.id);
-  } catch (err: unknown) {
-    router.go(-1);
+try {
+  await getTournamentFull(props.id);
+} catch (err: unknown) {
+  router.go(-1);
+}
+if ('team' in query && 'pwd' in query) {
+  const res = (tournament.value?.teams as Team[]).filter((val) => val.id === Number(query.team));
+  if (res.length === 1) {
+    create.value = false;
+    register_form.team = res[0].name;
+    register_form.password = query.pwd as string;
   }
-  if ('team' in query && 'pwd' in query) {
-    const res = (tournament.value?.teams as Team[]).filter((val) => val.id === Number(query.team));
-    if (res.length === 1) {
-      create.value = false;
-      register_form.team = res[0].name;
-      register_form.password = query.pwd as string;
-    }
-  }
-  if (Date.parse(tournament.value?.registration_open ?? '') > Date.now()) {
-    router.go(-1);
-  }
-});
+}
+if (Date.parse(tournament.value?.registration_open ?? '') > Date.now()) {
+  router.go(-1);
+}
 
 const host = import.meta.env.VITE_WEBSITE_HOST as string;
 </script>

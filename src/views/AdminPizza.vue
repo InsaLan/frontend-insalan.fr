@@ -2,10 +2,7 @@
 import { useVuelidate } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 import { storeToRefs } from 'pinia';
-import {
-  computed,
-  onMounted, reactive, ref,
-} from 'vue';
+import { computed, reactive, ref } from 'vue';
 import Multiselect from 'vue-multiselect';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
@@ -189,15 +186,12 @@ const validateModal = async () => {
   }
 };
 
-onMounted(async () => {
-  await fetchAllPizzas();
-  await fetchNextTimeslot();
-  await fetchAdminDetailTimeslot();
-  if (Object.keys(timeslotList.value).length !== 0) {
-    selected.value = (Object.values(timeslotList.value) as { id: number }[])[0]?.id;
-  }
-});
-
+await fetchAllPizzas();
+await fetchNextTimeslot();
+await fetchAdminDetailTimeslot();
+if (Object.keys(timeslotList.value).length !== 0) {
+  selected.value = (Object.values(timeslotList.value) as { id: number }[])[0]?.id;
+}
 </script>
 <template>
   <div v-if="timeslotList && Object.keys(timeslotList).length > 0" class="flex flex-1 flex-col">

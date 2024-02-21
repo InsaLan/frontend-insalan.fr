@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { onMounted } from 'vue';
 import Content from '@/components/Content.vue';
 import PizzaCard from '@/components/PizzaCard.vue';
 import { usePizzaStore } from '@/stores/pizza.store';
@@ -10,9 +9,7 @@ const { pizzaList } = storeToRefs(pizzaStore);
 
 const { fetchAllPizzas } = pizzaStore;
 
-onMounted(async () => {
-  await fetchAllPizzas();
-});
+await fetchAllPizzas();
 </script>
 
 <template>
