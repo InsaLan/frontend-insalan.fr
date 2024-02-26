@@ -44,6 +44,12 @@ export const useTournamentStore = defineStore('tournament', () => {
     }
     return res;
   }, [] as Event[]));
+  const oldEvents = computed(() => Object.values(eventsList.value).reduce((res, item) => {
+    if (!item.ongoing) {
+      res.push(item);
+    }
+    return res;
+  }, [] as Event[]));
 
   async function fetchAllEvents() {
     const res = await axios.get<Event[]>('/tournament/event');
@@ -373,6 +379,7 @@ export const useTournamentStore = defineStore('tournament', () => {
   }
 
   return {
+    oldEvents,
     eventsList,
     ongoingEvents,
     tournamentsList,

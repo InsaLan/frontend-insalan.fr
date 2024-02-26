@@ -11,7 +11,7 @@ const props = defineProps<{
 }>();
 
 const { getTournament } = tournamentStore;
-const { tournamentsList } = storeToRefs(tournamentStore);
+const { tournamentsList, eventsList } = storeToRefs(tournamentStore);
 const tournament = computed<Tournament | undefined>(() => tournamentsList.value[props.id]);
 
 onMounted(async () => {
@@ -30,16 +30,25 @@ onMounted(async () => {
       {{ tournament?.validated_teams }}/{{ tournament?.maxTeam }} Équipes | Cashprize:
       {{ tournament?.cashprizes?.length !== 0 ? tournament?.cashprizes?.reduce((acc, val) => acc += Number(val), 0) + " €" : "À venir" }}
     </p>
-    <div class="mb-3 flex w-[max(210px,75%)] justify-between">
+    <div class="mb-3 flex w-[80%] justify-center gap-3 text-center">
       <router-link :to="`tournament/${tournament?.id as number}`" class="rounded border-2 border-green-600 p-2 text-lg hover:border-green-500">
         Plus d'infos
       </router-link>
-      <router-link v-if="Date.parse(tournament?.registration_open) < Date.now()" :to="`tournament/${tournament?.id as number}/register`" class="rounded bg-green-600 p-2 text-lg hover:bg-green-500">
-        S'inscrire
-      </router-link>
-      <button v-else type="button" class="rounded bg-green-600 p-2 text-lg opacity-60" disabled>
-        Inscriptions fermées
-      </button>
+      <div
+        v-if="eventsList[tournament?.event as number]?.ongoing"
+        class="rounded bg-green-600 p-2 text-lg"
+      >
+        <router-link
+          v-if="Date.parse(tournament?.registration_close) > Date.now()"
+          :to="`tournament/${tournament?.id as number}/register`"
+          class="hover:bg-green-500"
+        >
+          S'inscrire
+        </router-link>
+        <button v-else type="button" class="opacity-60" disabled>
+          Inscriptions fermées
+        </button>
+      </div>
     </div>
   </div>
   <!-- Placeholder when the tournament is not announced -->
