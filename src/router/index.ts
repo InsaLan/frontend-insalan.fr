@@ -97,6 +97,10 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/archives',
+    component: () => import('@/views/Archives.vue'),
+  },
+  {
     path: '/:pathMatch(.*)*',
     component: () => import('@/views/NotFound.vue'),
   },
