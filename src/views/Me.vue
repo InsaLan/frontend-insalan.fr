@@ -356,14 +356,20 @@ const openScoreModal = () => {
             :class="{ /*[`bg-red-900`]: inscriptions.unpaid[inscription.team.id]*/ }"
             class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
           >
-            <div class="my-1 block">
-              <div class="m-1 flex h-8 flex-1 flex-col justify-center">
-                <div class="flex flex-row items-center justify-center space-x-2">
-                  <router-link
+            <div class="block">
+              <div class="flex flex-1 flex-col justify-center">
+                <div class="m-2 flex flex-row items-stretch justify-center gap-2">
+                  <div
                     :class="{ [`bg-red-600`]: inscriptions.unpaid[inscription[1].id], [`bg-green-600`]: !inscriptions.unpaid[inscription[1].id] }"
-                    class="center rounded p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-                    :to="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
+                    class="center rounded p-2 font-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
                     @click.prevent="
+                      inscriptions.unpaid[inscription[1].id]
+                        ? (
+                          modal_payment = true,
+                          payRegistration(inscription[1].team.tournament as unknown as Tournament, inscription[0])
+                        )
+                        : $router.push(`/tournament/${inscription[1].team.tournament.id }?s=teams`)"
+                    @keydown.prevent="
                       inscriptions.unpaid[inscription[1].id]
                         ? (
                           modal_payment = true,
@@ -372,10 +378,10 @@ const openScoreModal = () => {
                         : $router.push(`/tournament/${inscription[1].team.tournament.id }?s=teams`)"
                   >
                     {{ inscriptions.unpaid[inscription[1].id] ? 'Terminer l\'inscription' : (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
-                  </router-link>
+                  </div>
                   <div
                     v-if="inscription[0] === 'player' || inscription[0] === 'substitute'"
-                    class="flex items-center rounded bg-blue-700 hover:text-blue-600"
+                    class="flex items-center rounded bg-blue-700 transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
                     @click.prevent="changeNameInGame(
                       inscription[1].id,
                       (inscription[1] as PlayerRegistrationDeref).name_in_game,
