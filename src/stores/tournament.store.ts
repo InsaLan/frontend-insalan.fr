@@ -206,14 +206,14 @@ export const useTournamentStore = defineStore('tournament', () => {
 
     if (role === 'player') {
       data.players = [user_id];
-      data.players_name_in_games = [name_in_game];
+      data.players_names_in_game = [name_in_game];
     }
     if (role === 'manager') {
       data.managers = [user_id];
     }
     if (role === 'substitute') {
       data.substitutes = [user_id];
-      data.substitutes_name_in_games = [name_in_game];
+      data.substitutes_names_in_game = [name_in_game];
     }
 
     const res = await axios.post<Team>('/tournament/team/', data, {
