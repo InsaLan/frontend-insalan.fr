@@ -23,7 +23,7 @@ await fetchAllEvents();
       :key="event.id"
     >
       <h2 class="text-center text-2xl">
-        {{ event.name }}
+        {{ event.name }} | {{ String(event.month).padStart(2, '0') + "/" + event.year }}
       </h2>
       <div class="mb-4 grid w-full gap-4 px-4 md:grid-cols-2 xl:grid-cols-4">
         <TournamentCard
