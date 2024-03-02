@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import type { PlayerRegistration } from '@/models/registration';
 import { PaymentStatus } from '@/models/registration';
 
 defineProps<{
-  player: Record<string, string>;
+  player: PlayerRegistration;
 }>();
 </script>
 

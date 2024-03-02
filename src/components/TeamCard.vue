@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import type { Team } from '@/models/team';
+import type { PlayerRegistration } from '@/models/registration';
 import { useUserStore } from '@/stores/user.store';
 
 import PaymenStatusIcon from './PaymenStatusIcon.vue';
@@ -19,10 +20,10 @@ defineProps<{
       <img v-if="team.validated" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="inline-block h-6 w-6"/>
     </h1>
     <ul class="ml-4 list-disc text-xl">
-      <li v-for="player in team.players" :key="((player as Record<string, string>).user)">
+      <li v-for="player in team.players" :key="((player as PlayerRegistration).user)">
         <p>
-          {{ (player as Record<string, string>).name_in_game }}
-          <PaymenStatusIcon :player="player as Record<string, string>"/>
+          {{ (player as PlayerRegistration).name_in_game }}
+          <PaymenStatusIcon :player="player as PlayerRegistration"/>
         </p>
       </li>
     </ul>
@@ -32,10 +33,10 @@ defineProps<{
     <p v-if="team.substitutes.length" class="text-2xl">
       Remplaçant :
       <ul class="ml-4 list-disc text-xl">
-        <li v-for="player in team.substitutes" :key="((player as Record<string, string>).user)">
+        <li v-for="player in team.substitutes" :key="((player as PlayerRegistration).user)">
           <p>
-            {{ (player as Record<string, string>).name_in_game }}
-            <PaymenStatusIcon :player="player as Record<string, string>"/>
+            {{ (player as PlayerRegistration).name_in_game }}
+            <PaymenStatusIcon :player="player as PlayerRegistration"/>
           </p>
         </li>
       </ul>

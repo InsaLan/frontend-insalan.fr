@@ -368,14 +368,14 @@ const openScoreModal = () => {
                           modal_payment = true,
                           payRegistration(inscription[1].team.tournament as unknown as Tournament, inscription[0])
                         )
-                        : $router.push(`/tournament/${inscription[1].team.tournament.id }?s=teams`)"
+                        : $router.push(`/tournament/${inscription[1].team.tournament.id }/team/${inscription[1].team.id }`)"
                     @keydown.prevent="
                       inscriptions.unpaid[inscription[1].id]
                         ? (
                           modal_payment = true,
                           payRegistration(inscription[1].team.tournament as unknown as Tournament, inscription[0])
                         )
-                        : $router.push(`/tournament/${inscription[1].team.tournament.id }?s=teams`)"
+                        : $router.push(`/tournament/${inscription[1].team.tournament.id }/team/${inscription[1].team.id }`)"
                   >
                     {{ inscriptions.unpaid[inscription[1].id] ? 'Terminer l\'inscription' : (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
                   </div>
@@ -450,7 +450,7 @@ const openScoreModal = () => {
           <router-link
             v-for="inscription in inscriptions.past"
             :key="inscription[1].id"
-            :to="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
+            :to="`/tournament/${inscription[1].team.tournament.id }/team/${inscription[1].team.id }`"
             class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
           >
             <div class="my-1 hidden md:block">
@@ -458,7 +458,7 @@ const openScoreModal = () => {
                 <div>
                   <router-link
                     class="center rounded bg-green-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-                    :to="`/tournament/${inscription[1].team.tournament.id }?s=teams`"
+                    :to="`/tournament/${inscription[1].team.tournament.id }/team/${inscription[1].team.id }`"
                   >
                     {{ (inscription[1].team.players[0] === user.id || inscription[0] === 'manager') ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
                   </router-link>

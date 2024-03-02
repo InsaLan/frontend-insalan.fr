@@ -58,6 +58,11 @@ const routes: RouteRecordRaw[] = [
     props: (route) => ({ id: Number(route.params.id), section: route.query }),
   },
   {
+    path: '/tournament/:id(\\d+)/team/:teamId(\\d+)',
+    component: () => import('@/views/TeamDetail.vue'),
+    props: (route) => ({ id: Number(route.params.id), teamId: Number(route.params.teamId) }),
+  },
+  {
     path: '/reset-password/:idname/:idtoken',
     component: () => import('@/views/ResetPassword.vue'),
     props: true,
