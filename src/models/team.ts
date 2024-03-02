@@ -1,12 +1,14 @@
+import type { PlayerRegistration } from '@/models/registration';
 import type { TournamentDeref } from '@/models/tournament';
 
 interface BaseTeam {
   id: number;
   name: string;
-  players: Record<string, string>[] | number[];
+  players: PlayerRegistration[] | number[];
   managers: string[] | number[];
-  substitutes: Record<string, string>[] | number[];
+  substitutes: PlayerRegistration[] | number[];
   validated: boolean;
+  captain: string;
 }
 
 export interface TeamDeref extends BaseTeam {
