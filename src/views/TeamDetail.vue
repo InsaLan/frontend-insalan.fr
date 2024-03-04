@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
-import { PaymentStatus, type PlayerRegistration, type Registration } from '@/models/registration';
+import { PaymentStatus, type PlayerRegistration, type PlayerRegistrationDeref } from '@/models/registration';
 import type { Team } from '@/models/team';
 import type { TournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
@@ -19,7 +19,10 @@ const {
   getTournamentFull, getTournamentTeams,
 } = tournamentStore;
 const { tournament } = storeToRefs(tournamentStore);
-const { user } = storeToRefs(userStore);
+const { fetch_user_inscription_full, patch_user, send_score } = userStore;
+const { user, inscriptions } = storeToRefs(userStore);
+
+const team_registration = inscriptions.value?.ongoing.find((inscription) => inscription[1].team.id === props.teamId);
 
 const router = useRouter();
 
@@ -35,21 +38,8 @@ try {
   }
 
   // Check if the player exists in the team
-  if (
-    // For each team
-    !(tournament.value?.teams as Team[]).some(
-      // If a player corresponds to the user
-      (team: Team) => (team.players as Registration[]).some(
-        (player) => team.id === props.teamId && player.user === user.value?.username,
-      )
-      // Or if a manager corresponds to the user
-      || (team.managers as string[]).includes(user.value?.username)
-      // Or if a substitute corresponds to the user
-      || (team.substitutes as Registration[]).some(
-        (substitute) => team.id === props.teamId && substitute.user === user.value?.username,
-      ),
-    )
-  ) {
+  if (!team_registration) {
+    console.log('player is not in the team');
     // router.go(-1);
   }
   selected_team = (tournament.value?.teams as Team[]).find((team: Team) => team.id === props.teamId) as Team;
@@ -85,7 +75,16 @@ try {
           <img v-if="selected_team.validated" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="m-2 inline-block h-6 w-6"/>
         </div>
         <button
-          v-if="(tournament as TournamentDeref)?.event.ongoing"
+          v-if="
+            (tournament as TournamentDeref)?.event.ongoing
+              && (
+                team_registration?.[0] === 'manager'
+                || (
+                  team_registration?.[0] === 'player'
+                  && selected_team?.captain === (team_registration?.[1] as PlayerRegistrationDeref)?.name_in_game
+                )
+              )
+          "
           type="button"
           class="center rounded bg-green-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
         >
@@ -188,22 +187,42 @@ try {
       <div
         class="flex w-full flex-col justify-between gap-2 border-t-2 border-black p-2 md:flex-row"
       >
-        <button
-          v-if="(tournament as TournamentDeref)?.event.ongoing"
-          type="button"
-          class="center rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-        >
-          Changer le mot de passe
-        </button>
-        <button
-          v-if="(tournament as TournamentDeref)?.event.ongoing"
-          type="button"
-          class="center rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-        >
-          Ajouter un manager
-        </button>
         <div
-          v-else
+          class="flex w-full flex-col items-start"
+        >
+          <button
+            v-if="
+              (tournament as TournamentDeref)?.event.ongoing
+                && (
+                  team_registration?.[0] === 'manager'
+                  || (
+                    team_registration?.[0] === 'player'
+                    && selected_team?.captain === (team_registration?.[1] as PlayerRegistrationDeref)?.name_in_game
+                  )
+                )
+            "
+            type="button"
+            class="center h-full w-full rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
+          >
+            Changer le mot de passe
+          </button>
+        </div>
+        <div
+          class="flex w-full flex-col items-end"
+        >
+          <button
+            v-if="
+              (tournament as TournamentDeref)?.event.ongoing
+                && (team_registration?.[1]?.payment_status ?? null) !== PaymentStatus.PAID
+            "
+            type="button"
+            class="center h-full w-full rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
+          >
+            Quitter l'équipe
+          </button>
+        </div>
+        <div
+          v-if="!(tournament as TournamentDeref)?.event.ongoing"
           class="w-full"
         >
           Le tournoi est terminé et l'équipe ne peut plus être modifiée.
