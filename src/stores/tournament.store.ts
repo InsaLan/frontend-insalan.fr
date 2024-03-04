@@ -9,7 +9,7 @@ import type { Group } from '@/models/group';
 import { BestofType, type Match } from '@/models/match';
 import type { PlayerRegistrationDeref } from '@/models/registration';
 import type { Team } from '@/models/team';
-import type { Tournament } from '@/models/tournament';
+import type { Tournament, TournamentDeref } from '@/models/tournament';
 
 import { useUserStore } from './user.store';
 
@@ -37,7 +37,7 @@ export const useTournamentStore = defineStore('tournament', () => {
   }[]>([]);
 
   const tourney_teams = ref<Record<string, Team[]>>({});
-  const tournament = ref<Tournament>();
+  const tournament = ref<Tournament | TournamentDeref>();
   const ongoingEvents = computed(() => Object.values(eventsList.value).reduce((res, item) => {
     if (item.ongoing) {
       res.push(item);
