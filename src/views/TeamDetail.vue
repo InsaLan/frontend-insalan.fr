@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 import { PaymentStatus, type PlayerRegistration, type Registration } from '@/models/registration';
 import type { Team } from '@/models/team';
+import type { TournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
 
@@ -84,6 +85,7 @@ try {
           <img v-if="selected_team.validated" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="m-2 inline-block h-6 w-6"/>
         </div>
         <button
+          v-if="(tournament as TournamentDeref)?.event.ongoing"
           type="button"
           class="center rounded bg-green-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
         >
@@ -111,9 +113,9 @@ try {
             >
               <div class="flex items-center">
                 <fa-awesome-icon
-                  v-if="selected_team.captain === player.user"
+                  v-if="selected_team.captain === player.name_in_game"
                   class="m-1 h-4 w-4"
-                  icon="fa-solid fa-chess-king"
+                  icon="fa-solid fa-crown"
                 />
                 <div>
                   {{ player.name_in_game }}
@@ -187,17 +189,25 @@ try {
         class="flex w-full flex-col justify-between gap-2 border-t-2 border-black p-2 md:flex-row"
       >
         <button
+          v-if="(tournament as TournamentDeref)?.event.ongoing"
           type="button"
           class="center rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
         >
           Changer le mot de passe
         </button>
         <button
+          v-if="(tournament as TournamentDeref)?.event.ongoing"
           type="button"
           class="center rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
         >
           Ajouter un manager
         </button>
+        <div
+          v-else
+          class="w-full"
+        >
+          Le tournoi est terminé et l'équipe ne peut plus être modifiée.
+        </div>
       </div>
     </div>
   </div>
