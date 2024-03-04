@@ -1,6 +1,11 @@
 <script setup lang="ts">
+import { useVuelidate } from '@vuelidate/core';
+import { required } from '@vuelidate/validators';
 import { storeToRefs } from 'pinia';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import FormField from '@/components/FormField.vue';
+import Modal from '@/components/Modal.vue';
 import { PaymentStatus, type PlayerRegistration, type PlayerRegistrationDeref } from '@/models/registration';
 import type { Team } from '@/models/team';
 import type { TournamentDeref } from '@/models/tournament';
@@ -16,17 +21,51 @@ const tournamentStore = useTournamentStore();
 const userStore = useUserStore();
 
 const {
-  getTournamentFull, getTournamentTeams,
+  getTournamentFull, getTournamentTeams, patch_registration,
 } = tournamentStore;
 const { tournament } = storeToRefs(tournamentStore);
-const { fetch_user_inscription_full, patch_user, send_score } = userStore;
-const { user, inscriptions } = storeToRefs(userStore);
+// const { fetch_user_inscription_full, patch_user, send_score } = userStore;
+const { inscriptions } = storeToRefs(userStore);
 
 const team_registration = inscriptions.value?.ongoing.find((inscription) => inscription[1].team.id === props.teamId);
 
 const router = useRouter();
 
 let selected_team: Team;
+
+const showModalNameInGame = ref(false);
+
+const data_name_in_game = computed(() => ({
+  name_in_game: '',
+  RegId: 0,
+  regtype: '',
+}));
+const rules_name_in_game = computed(() => ({
+  name_in_game: { required },
+}));
+const v$_name_in_game = useVuelidate(rules_name_in_game, data_name_in_game);
+const changeNameInGame = (teamId: number, lastNameInGame: string, regtype: string) => {
+  data_name_in_game.value.name_in_game = lastNameInGame;
+  data_name_in_game.value.RegId = teamId;
+  data_name_in_game.value.regtype = regtype;
+
+  showModalNameInGame.value = true;
+};
+
+const closeModalNameInGame = () => {
+  showModalNameInGame.value = false;
+};
+
+const ValidateModalNameInGame = async () => {
+  let data = {};
+  const isValid = await v$_name_in_game.value.$validate();
+  if (!isValid) return;
+  data = {
+    name_in_game: data_name_in_game.value.name_in_game,
+  } as Record<string, string>;
+  await patch_registration(data_name_in_game.value.regtype, data_name_in_game.value.RegId, data);
+  closeModalNameInGame();
+};
 
 try {
   await getTournamentFull(props.id);
@@ -185,6 +224,7 @@ try {
         </div>
       </div>
       <div
+        v-if="(tournament as TournamentDeref)?.event.ongoing"
         class="flex w-full flex-col justify-between gap-2 border-t-2 border-black p-2 md:flex-row"
       >
         <div
@@ -192,14 +232,13 @@ try {
         >
           <button
             v-if="
-              (tournament as TournamentDeref)?.event.ongoing
-                && (
-                  team_registration?.[0] === 'manager'
-                  || (
-                    team_registration?.[0] === 'player'
-                    && selected_team?.captain === (team_registration?.[1] as PlayerRegistrationDeref)?.name_in_game
-                  )
+              (
+                team_registration?.[0] === 'manager'
+                || (
+                  team_registration?.[0] === 'player'
+                  && selected_team?.captain === (team_registration?.[1] as PlayerRegistrationDeref)?.name_in_game
                 )
+              )
             "
             type="button"
             class="center h-full w-full rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
@@ -208,12 +247,37 @@ try {
           </button>
         </div>
         <div
+          class="flex w-full max-w-[33%] flex-col items-center"
+        >
+          <div
+            v-if="team_registration?.[0] === 'player' || team_registration?.[0] === 'substitute'"
+            class="flex max-w-full items-center rounded bg-blue-700 transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
+            @click.prevent="changeNameInGame(
+              team_registration?.[1].id,
+              (team_registration?.[1] as PlayerRegistrationDeref).name_in_game,
+              team_registration?.[0],
+            )"
+            @keydown.prevent="changeNameInGame(
+              team_registration?.[1].id,
+              (team_registration?.[1] as PlayerRegistrationDeref).name_in_game,
+              team_registration?.[0],
+            )"
+          >
+            <div class="m-2 overflow-hidden truncate">
+              {{ (team_registration?.[1] as PlayerRegistrationDeref).name_in_game }}
+            </div>
+            <fa-awesome-icon
+              class="m-2 hover:cursor-pointer"
+              icon="fa-solid fa-pencil"
+            />
+          </div>
+        </div>
+        <div
           class="flex w-full flex-col items-end"
         >
           <button
             v-if="
-              (tournament as TournamentDeref)?.event.ongoing
-                && (team_registration?.[1]?.payment_status ?? null) !== PaymentStatus.PAID
+              (team_registration?.[1]?.payment_status ?? null) !== PaymentStatus.PAID
             "
             type="button"
             class="center h-full w-full rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
@@ -221,13 +285,62 @@ try {
             Quitter l'équipe
           </button>
         </div>
-        <div
-          v-if="!(tournament as TournamentDeref)?.event.ongoing"
-          class="w-full"
-        >
-          Le tournoi est terminé et l'équipe ne peut plus être modifiée.
-        </div>
+      </div>
+      <div
+        v-else
+        class="m-2 w-full"
+      >
+        Le tournoi est terminé et l'équipe ne peut plus être modifiée.
       </div>
     </div>
   </div>
+
+  <Modal v-if="showModalNameInGame" @close="closeModalNameInGame">
+    <template #icon>
+      <div/>
+    </template>
+    <template #title>
+      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
+        Changer votre nom en jeu
+      </h3>
+    </template>
+    <template #body>
+      <form id="patch-user" class="mt-2" @submit.prevent="ValidateModalNameInGame">
+        <FormField
+          v-slot="context"
+          :validations="v$_name_in_game.name_in_game"
+          class="m-2 flex flex-col"
+          label="Nouveau Pseudo"
+        >
+          <input
+            v-model="data_name_in_game.name_in_game"
+            :class="{ error: context.invalid }"
+            aria-label="Nouveau Pseudo"
+            class="border-2 bg-theme-bg"
+            placeholder="Nouveau Pseudo"
+            required
+            type="text"
+          />
+        </FormField>
+        <!-- hidden submit button with tailwind-->
+        <button class="hidden" type="submit"/>
+      </form>
+    </template>
+    <template #buttons>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+        type="submit"
+        @click="ValidateModalNameInGame"
+      >
+        Valider
+      </button>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        type="button"
+        @click="closeModalNameInGame"
+      >
+        Annuler
+      </button>
+    </template>
+  </Modal>
 </template>
