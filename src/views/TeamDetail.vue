@@ -31,15 +31,17 @@ const team_registration = inscriptions.value?.ongoing.find((inscription) => insc
 
 const router = useRouter();
 
-let selected_team: Team;
+let selected_team = computed(() => {
+  return (tournament.value?.teams as Team[]).find((team: Team) => team.id === props.teamId) as Team;
+})
 
 const showModalNameInGame = ref(false);
 
-const data_name_in_game = computed(() => ({
+const data_name_in_game = ref({
   name_in_game: '',
   RegId: 0,
   regtype: '',
-}));
+});
 const rules_name_in_game = computed(() => ({
   name_in_game: { required },
 }));
@@ -57,6 +59,8 @@ const closeModalNameInGame = () => {
 };
 
 const ValidateModalNameInGame = async () => {
+  const current_name = (team_registration?.[1] as unknown as PlayerRegistration)?.name_in_game;
+
   let data = {};
   const isValid = await v$_name_in_game.value.$validate();
   if (!isValid) return;
@@ -64,6 +68,20 @@ const ValidateModalNameInGame = async () => {
     name_in_game: data_name_in_game.value.name_in_game,
   } as Record<string, string>;
   await patch_registration(data_name_in_game.value.regtype, data_name_in_game.value.RegId, data);
+
+  // edit current team name in game
+  selected_team.value.captain = data_name_in_game.value.name_in_game;
+  (selected_team.value.players as PlayerRegistration[]).forEach((player) => {
+    if (player.name_in_game === current_name) {
+      player.name_in_game = data_name_in_game.value.name_in_game;
+    }
+  });
+  (selected_team.value.substitutes as PlayerRegistration[]).forEach((sub) => {
+    if (sub.name_in_game === current_name) {
+      sub.name_in_game = data_name_in_game.value.name_in_game;
+    }
+  });
+
   closeModalNameInGame();
 };
 
@@ -81,7 +99,6 @@ try {
     console.log('player is not in the team');
     // router.go(-1);
   }
-  selected_team = (tournament.value?.teams as Team[]).find((team: Team) => team.id === props.teamId) as Team;
 } catch (err: unknown) {
   router.go(-1);
 }
@@ -277,7 +294,7 @@ try {
         >
           <button
             v-if="
-              (team_registration?.[1]?.payment_status ?? null) !== PaymentStatus.PAID
+              team_registration?.[1]?.payment_status !== PaymentStatus.PAID
             "
             type="button"
             class="center h-full w-full rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
