@@ -13,7 +13,6 @@ import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
 import { BestofType, type ScorePatch } from '@/models/match';
-import type { PlayerRegistrationDeref } from '@/models/registration';
 import type { Tournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
@@ -24,7 +23,7 @@ const {
   user, role, inscriptions, ongoing_match,
 } = storeToRefs(userStore);
 const { fetch_user_inscription_full, patch_user, send_score } = userStore;
-const { patch_registration, payRegistration, get_ticket_pdf } = tournamentStore;
+const { payRegistration, get_ticket_pdf } = tournamentStore;
 
 await fetch_user_inscription_full();
 
@@ -47,18 +46,9 @@ const rules_email = computed(() => ({
 }));
 const v$_email = useVuelidate(rules_email, data_email);
 
-const data_name_in_game = computed(() => ({
-  name_in_game: '',
-  RegId: 0,
-  regtype: '',
-}));
-const rules_name_in_game = computed(() => ({
-  name_in_game: { required },
-}));
 const rules_score = computed(() => ({
   times: { required },
 }));
-const v$_name_in_game = useVuelidate(rules_name_in_game, data_name_in_game);
 
 const data_password = reactive({
   new_password: '',
@@ -115,8 +105,6 @@ const PrevModalEnterScore = () => {
   modal_enter_score.value = true;
   invalid_score.value = '';
 };
-const showModalNameInGame = ref(false);
-
 const game_number = computed(() => {
   if (ongoing_match.value.bo_type === BestofType.RANKING) {
     return 1;
@@ -126,31 +114,9 @@ const game_number = computed(() => {
 
 const v$_time_game = useVuelidate(rules_score, data_score, { $autoDirty: true });
 
-const closeModalNameInGame = () => {
-  showModalNameInGame.value = false;
-};
-
 const closeModalEnterScore = () => {
   invalid_score.value = '';
   modal_enter_score.value = false;
-};
-const ValidateModalNameInGame = async () => {
-  let data = {};
-  const isValid = await v$_name_in_game.value.$validate();
-  if (!isValid) return;
-  data = {
-    name_in_game: data_name_in_game.value.name_in_game,
-  } as Record<string, string>;
-  await patch_registration(data_name_in_game.value.regtype, data_name_in_game.value.RegId, data);
-  closeModalNameInGame();
-};
-
-const changeNameInGame = (teamId: number, lastNameInGame: string, regtype: string) => {
-  data_name_in_game.value.name_in_game = lastNameInGame;
-  data_name_in_game.value.RegId = teamId;
-  data_name_in_game.value.regtype = regtype;
-
-  showModalNameInGame.value = true;
 };
 
 const showModal = ref(false);
@@ -379,28 +345,6 @@ const openScoreModal = () => {
                   >
                     {{ inscriptions.unpaid[inscription[1].id] ? 'Terminer l\'inscription' : (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
                   </div>
-                  <div
-                    v-if="inscription[0] === 'player' || inscription[0] === 'substitute'"
-                    class="flex items-center rounded bg-blue-700 transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
-                    @click.prevent="changeNameInGame(
-                      inscription[1].id,
-                      (inscription[1] as PlayerRegistrationDeref).name_in_game,
-                      inscription[0],
-                    )"
-                    @keydown.prevent="changeNameInGame(
-                      inscription[1].id,
-                      (inscription[1] as PlayerRegistrationDeref).name_in_game,
-                      inscription[0],
-                    )"
-                  >
-                    <div class="m-2">
-                      {{ ((inscription[1] as PlayerRegistrationDeref).name_in_game.length > 10) ? ((inscription[1] as PlayerRegistrationDeref).name_in_game.slice(0, 8) + '...') : (inscription[1] as PlayerRegistrationDeref).name_in_game }}
-                    </div>
-                    <fa-awesome-icon
-                      class="m-2 hover:cursor-pointer"
-                      icon="fa-solid fa-pencil"
-                    />
-                  </div>
                 </div>
               </div>
             </div>
@@ -489,55 +433,6 @@ const openScoreModal = () => {
       </div>
     </div>
   </div>
-
-  <Modal v-if="showModalNameInGame" @close="closeModalNameInGame">
-    <template #icon>
-      <div/>
-    </template>
-    <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Changer votre nom en jeu
-      </h3>
-    </template>
-    <template #body>
-      <form id="patch-user" class="mt-2" @submit.prevent="validateModal">
-        <FormField
-          v-slot="context"
-          :validations="v$_name_in_game.name_in_game"
-          class="m-2 flex flex-col"
-          label="Nouveau Pseudo"
-        >
-          <input
-            v-model="data_name_in_game.name_in_game"
-            :class="{ error: context.invalid }"
-            aria-label="Nouveau Pseudo"
-            class="border-2 bg-theme-bg"
-            placeholder="Nouveau Pseudo"
-            required
-            type="text"
-          />
-        </FormField>
-        <!-- hidden submit button with tailwind-->
-        <button class="hidden" type="submit"/>
-      </form>
-    </template>
-    <template #buttons>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="ValidateModalNameInGame"
-      >
-        Valider
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
-        type="button"
-        @click="closeModalNameInGame"
-      >
-        Annuler
-      </button>
-    </template>
-  </Modal>
 
   <Modal v-if="showModal" @close="closeModal">
     <template #icon>
@@ -703,7 +598,7 @@ const openScoreModal = () => {
           v-for="(name, id) in ongoing_match.teams"
           :key="id"
           v-slot="context"
-          :validations="v$_name_in_game.name_in_game"
+          :validations="v$_time_game.score"
           class="flex justify-between"
           label="{{id}}"
         >
