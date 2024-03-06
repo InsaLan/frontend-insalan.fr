@@ -285,6 +285,22 @@ export const useTournamentStore = defineStore('tournament', () => {
     });
   }
 
+  async function patch_team(team_id: number, data: Record<string, string>) {
+    await get_csrf();
+
+    const response = await axios.patch<Team>(`/tournament/team/${team_id}/`, data, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf.value,
+      },
+    });
+
+    // Search for the team in the tournament and update with the response
+    const tournament_teams = tournament.value?.teams as Team[];
+    const index = tournament_teams.findIndex((team) => team.id === team_id);
+    tournament_teams[index].name = response.data.name;
+  }
+
   async function get_ticket_pdf(token: string) {
     const response = await axios.get(`/tickets/generate/${token}`, {
       responseType: 'blob',
@@ -418,6 +434,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     registerPlayerOrManager,
     payRegistration,
     patch_registration,
+    patch_team,
     $reset,
     get_ticket_pdf,
     get_unpaid_registration,

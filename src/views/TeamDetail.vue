@@ -21,7 +21,7 @@ const tournamentStore = useTournamentStore();
 const userStore = useUserStore();
 
 const {
-  getTournamentFull, getTournamentTeams, patch_registration,
+  getTournamentFull, getTournamentTeams, patch_registration, patch_team,
 } = tournamentStore;
 const { tournament } = storeToRefs(tournamentStore);
 // const { fetch_user_inscription_full, patch_user, send_score } = userStore;
@@ -31,59 +31,9 @@ const team_registration = inscriptions.value?.ongoing.find((inscription) => insc
 
 const router = useRouter();
 
-let selected_team = computed(() => {
-  return (tournament.value?.teams as Team[]).find((team: Team) => team.id === props.teamId) as Team;
-})
-
-const showModalNameInGame = ref(false);
-
-const data_name_in_game = ref({
-  name_in_game: '',
-  RegId: 0,
-  regtype: '',
-});
-const rules_name_in_game = computed(() => ({
-  name_in_game: { required },
-}));
-const v$_name_in_game = useVuelidate(rules_name_in_game, data_name_in_game);
-const changeNameInGame = (teamId: number, lastNameInGame: string, regtype: string) => {
-  data_name_in_game.value.name_in_game = lastNameInGame;
-  data_name_in_game.value.RegId = teamId;
-  data_name_in_game.value.regtype = regtype;
-
-  showModalNameInGame.value = true;
-};
-
-const closeModalNameInGame = () => {
-  showModalNameInGame.value = false;
-};
-
-const ValidateModalNameInGame = async () => {
-  const current_name = (team_registration?.[1] as unknown as PlayerRegistration)?.name_in_game;
-
-  let data = {};
-  const isValid = await v$_name_in_game.value.$validate();
-  if (!isValid) return;
-  data = {
-    name_in_game: data_name_in_game.value.name_in_game,
-  } as Record<string, string>;
-  await patch_registration(data_name_in_game.value.regtype, data_name_in_game.value.RegId, data);
-
-  // edit current team name in game
-  selected_team.value.captain = data_name_in_game.value.name_in_game;
-  (selected_team.value.players as PlayerRegistration[]).forEach((player) => {
-    if (player.name_in_game === current_name) {
-      player.name_in_game = data_name_in_game.value.name_in_game;
-    }
-  });
-  (selected_team.value.substitutes as PlayerRegistration[]).forEach((sub) => {
-    if (sub.name_in_game === current_name) {
-      sub.name_in_game = data_name_in_game.value.name_in_game;
-    }
-  });
-
-  closeModalNameInGame();
-};
+const selected_team = computed(() => (tournament.value?.teams as Team[]).find(
+  (team: Team) => team.id === props.teamId,
+) as Team);
 
 try {
   await getTournamentFull(props.id);
@@ -102,6 +52,112 @@ try {
 } catch (err: unknown) {
   router.go(-1);
 }
+
+// rename registration name in game
+const showModalNameInGame = ref(false);
+
+const data_name_in_game = ref({
+  name_in_game: (team_registration?.[1] as unknown as PlayerRegistration)?.name_in_game ?? '',
+});
+const rules_name_in_game = computed(() => ({
+  name_in_game: { required },
+}));
+const v$_name_in_game = useVuelidate(rules_name_in_game, data_name_in_game);
+
+const closeModalNameInGame = () => {
+  showModalNameInGame.value = false;
+};
+
+const ValidateModalNameInGame = async () => {
+  const current_name = (team_registration?.[1] as unknown as PlayerRegistration)?.name_in_game;
+
+  let data = {};
+  const isValid = await v$_name_in_game.value.$validate();
+  if (!isValid) return;
+  data = {
+    name_in_game: data_name_in_game.value.name_in_game,
+  } as Record<string, string>;
+  await patch_registration(
+    team_registration?.[0] ?? '',
+    team_registration?.[1].id ?? -1,
+    data,
+  );
+
+  // edit current team name in game
+  selected_team.value.captain = data_name_in_game.value.name_in_game;
+  (selected_team.value.players as PlayerRegistration[]).forEach((player) => {
+    if (player.name_in_game === current_name) {
+      player.name_in_game = data_name_in_game.value.name_in_game;
+    }
+  });
+  (selected_team.value.substitutes as PlayerRegistration[]).forEach((sub) => {
+    if (sub.name_in_game === current_name) {
+      sub.name_in_game = data_name_in_game.value.name_in_game;
+    }
+  });
+
+  closeModalNameInGame();
+};
+
+// rename team
+const showModalTeamName = ref(false);
+
+const data_team_name = ref({
+  name: selected_team.value.name,
+});
+const rules_team_name = computed(() => ({
+  name: { required },
+}));
+const v$_team_name = useVuelidate(rules_team_name, data_team_name);
+
+const closeModalTeamName = () => {
+  showModalTeamName.value = false;
+};
+
+const ValidateModalTeamName = async () => {
+  const isValid = await v$_team_name.value.$validate();
+  if (!isValid) return;
+  const data = {
+    name: data_team_name.value.name,
+  } as Record<string, string>;
+
+  await patch_team(
+    selected_team.value.id,
+    data,
+  );
+
+  closeModalTeamName();
+};
+
+// change team password
+const showModalTeamPassword = ref(false);
+
+const data_team_password = ref({
+  password: '',
+});
+const rules_team_password = computed(() => ({
+  password: { required },
+}));
+const v$_team_password = useVuelidate(rules_team_password, data_team_password);
+
+const closeModalTeamPassword = () => {
+  showModalTeamPassword.value = false;
+};
+
+const ValidateModalTeamPassword = async () => {
+  const isValid = await v$_team_password.value.$validate();
+  if (!isValid) return;
+  const data = {
+    password: data_team_password.value.password,
+  } as Record<string, string>;
+
+  await patch_team(
+    selected_team.value.id,
+    data,
+  );
+
+  closeModalTeamPassword();
+};
 </script>
 
 <template>
@@ -143,6 +199,8 @@ try {
           "
           type="button"
           class="center rounded bg-green-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+          @click="showModalTeamName = true"
+          @keydown="showModalTeamName = true"
         >
           Changer le nom
         </button>
@@ -259,6 +317,8 @@ try {
             "
             type="button"
             class="center h-full w-full rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
+            @click="showModalTeamPassword = true"
+            @keydown="showModalTeamPassword = true"
           >
             Changer le mot de passe
           </button>
@@ -269,16 +329,8 @@ try {
           <div
             v-if="team_registration?.[0] === 'player' || team_registration?.[0] === 'substitute'"
             class="flex max-w-full items-center rounded bg-blue-700 transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
-            @click.prevent="changeNameInGame(
-              team_registration?.[1].id,
-              (team_registration?.[1] as PlayerRegistrationDeref).name_in_game,
-              team_registration?.[0],
-            )"
-            @keydown.prevent="changeNameInGame(
-              team_registration?.[1].id,
-              (team_registration?.[1] as PlayerRegistrationDeref).name_in_game,
-              team_registration?.[0],
-            )"
+            @click.prevent="showModalNameInGame = true"
+            @keydown.prevent="showModalNameInGame = true"
           >
             <div class="m-2 overflow-hidden truncate">
               {{ (team_registration?.[1] as PlayerRegistrationDeref).name_in_game }}
@@ -355,6 +407,104 @@ try {
         class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
         type="button"
         @click="closeModalNameInGame"
+      >
+        Annuler
+      </button>
+    </template>
+  </Modal>
+
+  <Modal v-if="showModalTeamName" @close="closeModalTeamName">
+    <template #icon>
+      <div/>
+    </template>
+    <template #title>
+      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
+        Changer le nom de l'équipe
+      </h3>
+    </template>
+    <template #body>
+      <form id="patch-user" class="mt-2" @submit.prevent="ValidateModalTeamName">
+        <FormField
+          v-slot="context"
+          :validations="v$_team_name.name"
+          class="m-2 flex flex-col"
+          label="Nouveau nom"
+        >
+          <input
+            v-model="data_team_name.name"
+            :class="{ error: context.invalid }"
+            aria-label="Nouveau nom"
+            class="border-2 bg-theme-bg"
+            placeholder="Nouveau nom"
+            required
+            type="text"
+          />
+        </FormField>
+        <!-- hidden submit button with tailwind-->
+        <button class="hidden" type="submit"/>
+      </form>
+    </template>
+    <template #buttons>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+        type="submit"
+        @click="ValidateModalTeamName"
+      >
+        Valider
+      </button>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        type="button"
+        @click="closeModalTeamName"
+      >
+        Annuler
+      </button>
+    </template>
+  </Modal>
+
+  <Modal v-if="showModalTeamPassword" @close="closeModalTeamPassword">
+    <template #icon>
+      <div/>
+    </template>
+    <template #title>
+      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
+        Changer le mot de passe de l'équipe
+      </h3>
+    </template>
+    <template #body>
+      <form id="patch-user" class="mt-2" @submit.prevent="ValidateModalTeamPassword">
+        <FormField
+          v-slot="context"
+          :validations="v$_team_password.password"
+          class="m-2 flex flex-col"
+          label="Nouveau mot de passe"
+        >
+          <input
+            v-model="data_team_password.password"
+            :class="{ error: context.invalid }"
+            aria-label="Nouveau mot de passe"
+            class="border-2 bg-theme-bg"
+            placeholder="Nouveau mot de passe"
+            required
+            type="text"
+          />
+        </FormField>
+        <!-- hidden submit button with tailwind-->
+        <button class="hidden" type="submit"/>
+      </form>
+    </template>
+    <template #buttons>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+        type="submit"
+        @click="ValidateModalTeamPassword"
+      >
+        Valider
+      </button>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        type="button"
+        @click="closeModalTeamPassword"
       >
         Annuler
       </button>
