@@ -21,8 +21,9 @@ const tournamentStore = useTournamentStore();
 const userStore = useUserStore();
 
 const {
-  getTournamentFull, getTournamentTeams, patch_registration, patch_team,
+  getTournamentFull, getTournamentTeams, patch_registration, patch_team, leave_team,
 } = tournamentStore;
+const { fetch_user_inscription_full } = userStore;
 const { tournament } = storeToRefs(tournamentStore);
 // const { fetch_user_inscription_full, patch_user, send_score } = userStore;
 const { inscriptions } = storeToRefs(userStore);
@@ -38,6 +39,8 @@ const selected_team = computed(() => (tournament.value?.teams as Team[]).find(
 try {
   await getTournamentFull(props.id);
   getTournamentTeams();
+
+  await fetch_user_inscription_full();
 
   // Check if the team exists in the tournament
   if (!(tournament.value?.teams as Team[]).some((team: Team) => team.id === props.teamId)) {
@@ -158,6 +161,9 @@ const ValidateModalTeamPassword = async () => {
 
   closeModalTeamPassword();
 };
+
+// leave team
+const showModalLeaveTeam = ref(false);
 </script>
 
 <template>
@@ -200,7 +206,7 @@ const ValidateModalTeamPassword = async () => {
           type="button"
           class="center rounded bg-green-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
           @click="showModalTeamName = true"
-          @keydown="showModalTeamName = true"
+          @keydown.enter="showModalTeamName = true"
         >
           Changer le nom
         </button>
@@ -318,7 +324,7 @@ const ValidateModalTeamPassword = async () => {
             type="button"
             class="center h-full w-full rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
             @click="showModalTeamPassword = true"
-            @keydown="showModalTeamPassword = true"
+            @keydown.enter="showModalTeamPassword = true"
           >
             Changer le mot de passe
           </button>
@@ -350,6 +356,7 @@ const ValidateModalTeamPassword = async () => {
             "
             type="button"
             class="center h-full w-full rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
+            @click="showModalLeaveTeam = true"
           >
             Quitter l'équipe
           </button>
@@ -507,6 +514,39 @@ const ValidateModalTeamPassword = async () => {
         @click="closeModalTeamPassword"
       >
         Annuler
+      </button>
+    </template>
+  </Modal>
+
+  <Modal v-if="showModalLeaveTeam" @close="showModalLeaveTeam = false">
+    <template #icon>
+      <div/>
+    </template>
+    <template #title>
+      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
+        Quiter l'équipe
+      </h3>
+    </template>
+    <template #body>
+      <div>
+        Êtes-vous sûr de vouloir quitter l'équipe ?
+        Vous ne pourrez pas revenir dans l'équipe à moins d'être réinvité.
+      </div>
+    </template>
+    <template #buttons>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+        type="submit"
+        @click="leave_team(team_registration?.[0] || '', team_registration?.[1]?.id ?? 0); router.push('/me')"
+      >
+        Oui
+      </button>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        type="button"
+        @click="showModalLeaveTeam = false"
+      >
+        Non
       </button>
     </template>
   </Modal>
