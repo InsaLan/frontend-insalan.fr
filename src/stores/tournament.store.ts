@@ -7,14 +7,14 @@ import {
 import type { Event } from '@/models/event';
 import type { Group } from '@/models/group';
 import { BestofType, type Match } from '@/models/match';
-import type { PlayerRegistrationDeref } from '@/models/registration';
+import type { PlayerRegistration, PlayerRegistrationDeref } from '@/models/registration';
 import type { Team } from '@/models/team';
 import type { Tournament, TournamentDeref } from '@/models/tournament';
 
 import { useUserStore } from './user.store';
 
 const { get_csrf } = useUserStore();
-const { csrf, inscriptions } = storeToRefs(useUserStore());
+const { csrf, inscriptions, user } = storeToRefs(useUserStore());
 
 export function groupBy<T>(items: T[], key: keyof T): Record<string, T[]> {
   return items.reduce((result, item) => ({
@@ -301,6 +301,51 @@ export const useTournamentStore = defineStore('tournament', () => {
     tournament_teams[index].name = response.data.name;
   }
 
+  async function leave_team(registration_type: string, registration_id: number) {
+    await get_csrf();
+
+    await axios.delete(`/tournament/${registration_type}/${registration_id}/`, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf.value,
+      },
+    });
+
+    // Remove the registration from the tournament
+    const team_id = inscriptions.value.ongoing.find(
+      (registration) => registration[1].id === registration_id,
+    )?.[1].team.id;
+    const tournament_teams = tournament.value?.teams as Team[];
+    const index = tournament_teams.findIndex((team) => team.id === team_id);
+
+    if (registration_type === 'player') {
+      tournament_teams[index].players = (
+        tournament_teams[index].players as PlayerRegistration[]
+      ).filter((player) => player.id !== registration_id);
+    } else if (registration_type === 'substitute') {
+      tournament_teams[index].substitutes = (
+        tournament_teams[index].substitutes as PlayerRegistration[]
+      ).filter((substitute) => substitute.id !== registration_id);
+    } else if (registration_type === 'manager') {
+      // remove the user from the managers
+      tournament_teams[index].managers = (tournament_teams[index].managers as string[]).filter(
+        (manager) => manager !== user.value.username,
+      );
+    }
+
+    // If team is empty, remove it from the tournament
+    if (tournament_teams[index].players.length === 0
+      && tournament_teams[index].substitutes.length === 0
+      && tournament_teams[index].managers.length === 0) {
+      tournament_teams.splice(index, 1);
+    }
+
+    // Remove the registration from the ongoing inscriptions
+    inscriptions.value.ongoing = inscriptions.value.ongoing.filter(
+      (registration) => registration[1].id !== registration_id,
+    );
+  }
+
   async function get_ticket_pdf(token: string) {
     const response = await axios.get(`/tickets/generate/${token}`, {
       responseType: 'blob',
@@ -435,6 +480,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     payRegistration,
     patch_registration,
     patch_team,
+    leave_team,
     $reset,
     get_ticket_pdf,
     get_unpaid_registration,
