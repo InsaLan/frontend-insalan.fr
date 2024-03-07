@@ -268,7 +268,7 @@ const kick_member = async (type: string, id: number) => {
             <li
               v-for="player in selected_team?.players as PlayerRegistration[]"
               :key="player.id"
-              class="mx-2 text-justify"
+              class="mx-2 overflow-hidden text-justify"
             >
               <div class="flex items-center">
                 <fa-awesome-icon
@@ -276,7 +276,7 @@ const kick_member = async (type: string, id: number) => {
                   class="m-1 h-4 w-4"
                   icon="fa-solid fa-crown"
                 />
-                <div>
+                <div class="truncate">
                   {{ player.name_in_game }}
                 </div>
                 <img v-if="player.payment_status === PaymentStatus.PAID" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="m-2 inline-block h-4 w-4"/>
@@ -318,10 +318,10 @@ const kick_member = async (type: string, id: number) => {
             <li
               v-for="manager in selected_team?.managers as String[]"
               :key="manager as string"
-              class="mx-2 text-justify"
+              class="mx-2 overflow-hidden text-justify"
             >
               <div class="flex items-center">
-                <div>
+                <div class="truncate">
                   {{ manager }}
                 </div>
               </div>
@@ -342,10 +342,10 @@ const kick_member = async (type: string, id: number) => {
             <li
               v-for="substitute in selected_team?.substitutes as PlayerRegistration[]"
               :key="substitute.id"
-              class="mx-2 text-justify"
+              class="mx-2 overflow-hidden text-justify"
             >
               <div class="flex items-center">
-                <div>
+                <div class="truncate">
                   {{ substitute.name_in_game }}
                 </div>
                 <img v-if="substitute.payment_status === PaymentStatus.PAID" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="m-2 inline-block h-4 w-4"/>
@@ -397,11 +397,11 @@ const kick_member = async (type: string, id: number) => {
           </button>
         </div>
         <div
-          class="flex w-full max-w-[33%] flex-col items-center"
+          class="flex w-full flex-col items-center md:max-w-[33%]"
         >
           <div
             v-if="team_registration?.[0] === 'player' || team_registration?.[0] === 'substitute'"
-            class="flex max-w-full items-center rounded bg-blue-700 transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
+            class="flex w-full max-w-full items-center justify-center rounded bg-blue-700 transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500 md:w-auto"
             @click.prevent="showModalNameInGame = true"
             @keydown.prevent="showModalNameInGame = true"
           >
