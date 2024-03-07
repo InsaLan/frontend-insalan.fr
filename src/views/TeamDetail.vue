@@ -49,8 +49,7 @@ try {
 
   // Check if the player exists in the team
   if (!team_registration) {
-    console.log('player is not in the team');
-    // router.go(-1);
+    router.go(-1);
   }
 } catch (err: unknown) {
   router.go(-1);
