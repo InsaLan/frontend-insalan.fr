@@ -285,7 +285,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     });
   }
 
-  async function patch_team(team_id: number, data: Record<string, string>) {
+  async function patch_team(team_id: number, data: Record<string, unknown>) {
     await get_csrf();
 
     const response = await axios.patch<Team>(`/tournament/team/${team_id}/`, data, {
@@ -299,6 +299,8 @@ export const useTournamentStore = defineStore('tournament', () => {
     const tournament_teams = tournament.value?.teams as Team[];
     const index = tournament_teams.findIndex((team) => team.id === team_id);
     tournament_teams[index].name = response.data.name;
+    tournament_teams[index].players = response.data.players;
+    tournament_teams[index].substitutes = response.data.substitutes;
   }
 
   async function leave_team(registration_type: string, registration_id: number) {

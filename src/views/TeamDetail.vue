@@ -164,6 +164,47 @@ const ValidateModalTeamPassword = async () => {
 
 // leave team
 const showModalLeaveTeam = ref(false);
+
+// Kick player
+const showModalKickPlayer = ref(false);
+
+const kickregtype = ref('');
+const kickregid = ref(0);
+
+const kick_member = async (type: string, id: number) => {
+  const data = {} as Record<string, unknown>;
+  if (type === 'player') {
+    // Get the list of player ids
+    const player_id_list = (selected_team.value.players as PlayerRegistration[]).map((player) => player.id);
+
+    // Remove the player from the list
+    const index = player_id_list.indexOf(id);
+    if (index > -1) {
+      player_id_list.splice(index, 1);
+    }
+
+    // Update the team
+    data.players = player_id_list;
+  } else {
+    // Get the list of substitute ids
+    const substitute_id_list = (selected_team.value.substitutes as PlayerRegistration[]).map((sub) => sub.id);
+
+    // Remove the substitute from the list
+    const index = substitute_id_list.indexOf(id);
+    if (index > -1) {
+      substitute_id_list.splice(index, 1);
+    }
+
+    // Update the team
+    data.substitutes = substitute_id_list;
+  }
+
+  await patch_team(
+    selected_team.value.id,
+    data,
+  );
+  showModalKickPlayer.value = false;
+};
 </script>
 
 <template>
@@ -241,9 +282,24 @@ const showModalLeaveTeam = ref(false);
                 </div>
                 <img v-if="player.payment_status === PaymentStatus.PAID" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="m-2 inline-block h-4 w-4"/>
                 <fa-awesome-icon
-                  v-else
+                  v-if="
+                    player.payment_status !== PaymentStatus.PAID
+                      && (
+                        team_registration?.[0] === 'manager'
+                        || (
+                          team_registration?.[0] === 'player'
+                          && selected_team?.captain === (
+                            team_registration?.[1] as PlayerRegistrationDeref
+                          )?.name_in_game
+                          && player.name_in_game !== (
+                            team_registration?.[1] as PlayerRegistrationDeref
+                          )?.name_in_game
+                        )
+                      )
+                  "
                   class="m-1 h-4 w-4 text-red-600 hover:cursor-pointer hover:text-blue-600"
                   icon="fa-solid fa-hammer"
+                  @click="kickregtype = 'player'; kickregid = player.id; showModalKickPlayer = true"
                 />
               </div>
             </li>
@@ -295,9 +351,21 @@ const showModalLeaveTeam = ref(false);
                 </div>
                 <img v-if="substitute.payment_status === PaymentStatus.PAID" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="m-2 inline-block h-4 w-4"/>
                 <fa-awesome-icon
-                  v-else
+                  v-if="
+                    substitute.payment_status !== PaymentStatus.PAID
+                      && (
+                        team_registration?.[0] === 'manager'
+                        || (
+                          team_registration?.[0] === 'player'
+                          && selected_team?.captain === (
+                            team_registration?.[1] as PlayerRegistrationDeref
+                          )?.name_in_game
+                        )
+                      )
+                  "
                   class="m-1 h-4 w-4 text-red-600 hover:cursor-pointer hover:text-blue-600"
                   icon="fa-solid fa-hammer"
+                  @click="kickregtype = 'substitute'; kickregid = substitute.id; showModalKickPlayer = true"
                 />
               </div>
             </li>
@@ -530,21 +598,58 @@ const showModalLeaveTeam = ref(false);
     <template #body>
       <div>
         Êtes-vous sûr de vouloir quitter l'équipe ?
+        <br/>
         Vous ne pourrez pas revenir dans l'équipe à moins d'être réinvité.
       </div>
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+        class="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
         type="submit"
         @click="leave_team(team_registration?.[0] || '', team_registration?.[1]?.id ?? 0); router.push('/me')"
       >
         Oui
       </button>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:mt-0 sm:w-auto"
         type="button"
         @click="showModalLeaveTeam = false"
+      >
+        Non
+      </button>
+    </template>
+  </Modal>
+
+  <Modal v-if="showModalKickPlayer" @close="showModalKickPlayer = false">
+    <template #icon>
+      <div/>
+    </template>
+    <template #title>
+      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
+        Kick un joueur
+      </h3>
+    </template>
+    <template #body>
+      <div>
+        Êtes-vous sûr de vouloir kick "{{
+          kickregtype === "player"
+            ? (selected_team?.players as PlayerRegistration[]).find((player) => player.id === kickregid)?.name_in_game
+            : (selected_team?.substitutes as PlayerRegistration[]).find((sub) => sub.id === kickregid)?.name_in_game
+        }}" de l'équipe ?
+      </div>
+    </template>
+    <template #buttons>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
+        type="submit"
+        @click="kick_member(kickregtype, kickregid)"
+      >
+        Oui
+      </button>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:mt-0 sm:w-auto"
+        type="button"
+        @click="showModalKickPlayer = false"
       >
         Non
       </button>
