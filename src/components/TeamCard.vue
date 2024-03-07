@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import type { Team } from '@/models/team';
 import type { PlayerRegistration } from '@/models/registration';
+import type { Team } from '@/models/team';
 import { useUserStore } from '@/stores/user.store';
 
 import PaymenStatusIcon from './PaymenStatusIcon.vue';
