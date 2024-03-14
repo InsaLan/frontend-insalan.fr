@@ -1,5 +1,3 @@
-## Issue Template
-
 ### Type of Issue
 
 - [ ] Bug
