@@ -349,11 +349,14 @@ if (props.section !== undefined && props.section.s in sections) {
         <div
           v-for="group in tournament?.groups"
           :key="group.id"
-          class=" border-collapse border-slate-500 hover:ring-8 hover:ring-slate-500"
+          class=" m-2 border-collapse border-slate-500 hover:ring-8 hover:ring-slate-500 md:m-0 md:w-2/5"
           @click="show_detail_group = group.id"
           @keydown.enter="show_detail_group = group.id"
         >
-          <GroupTable :teams="tourney_teams" :group="group"/>
+          <GroupTable
+            :teams="tourney_teams"
+            :group="group"
+          />
         </div>
       </div>
       <div v-else-if="tournament?.swissRounds?.length > 0" class="mt-6 flex h-full justify-center">
@@ -376,13 +379,14 @@ if (props.section !== undefined && props.section.s in sections) {
           {{ get_group_by_id(tournament?.groups, show_detail_group)?.name }}
         </h1>
       </nav>
-      <div class="flex justify-center gap-3">
-        <GroupTable
-          class="max-w-96 max-h-96 w-1/2"
-          :teams="tourney_teams"
-          :group="get_group_by_id(tournament.groups, show_detail_group) as Group"
-        />
-        <div class="flex w-1/2 flex-col-reverse">
+      <div class="flex flex-col justify-center gap-10 md:flex-row md:gap-3">
+        <div class="max-h-96 md:w-1/2 md:ml-10">
+          <GroupTable
+            :teams="tourney_teams"
+            :group="get_group_by_id(tournament.groups, show_detail_group) as Group"
+          />
+        </div>
+        <div class="flex flex-col-reverse md:w-1/2">
           <div
             v-for="matchs in get_matchs_per_round(get_group_by_id(tournament.groups, show_detail_group)?.matchs ?? [])"
             :key="matchs[0].id"
@@ -393,19 +397,19 @@ if (props.section !== undefined && props.section.s in sections) {
             <div class="gap-4">
               <div v-for="game in matchs" :key="game.id">
                 <div v-if="game.teams.length == 2" class="flex justify-center">
-                  <div class="mb-4 ml-10 flex flex-1 justify-between divide-x border-2 text-xl font-bold">
-                    <div class="p-3">
+                  <div class="mb-4 md:ml-10 flex flex-1 justify-between overflow-hidden divide-x border-2 text-xl font-bold">
+                    <div class="truncate p-3 w-full">
                       {{ get_validated_team_by_id(game.teams[0])?.name || "TBD" }}
                     </div>
                     <div class="p-3">
                       {{ game.score[game.teams[0]] }}
                     </div>
                   </div>
-                  <div class="mb-4 mr-10 flex flex-1 divide-x border-2 text-xl font-bold">
+                  <div class="mb-4 md:mr-10 flex flex-1 divide-x overflow-hidden border-2 text-xl font-bold">
                     <div class="p-3">
                       {{ game.score[game.teams[1]] }}
                     </div>
-                    <div class="p-3">
+                    <div class="truncate p-3 w-full text-right">
                       {{ get_validated_team_by_id(game.teams[1])?.name || "TBD" }}
                     </div>
                   </div>
