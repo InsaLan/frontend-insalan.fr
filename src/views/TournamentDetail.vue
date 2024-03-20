@@ -380,7 +380,7 @@ if (props.section !== undefined && props.section.s in sections) {
         </h1>
       </nav>
       <div class="flex flex-col justify-center gap-10 md:flex-row md:gap-3">
-        <div class="max-h-96 md:w-1/2 md:ml-10">
+        <div class="max-h-96 md:ml-10 md:w-1/2">
           <GroupTable
             :teams="tourney_teams"
             :group="get_group_by_id(tournament.groups, show_detail_group) as Group"
@@ -397,19 +397,19 @@ if (props.section !== undefined && props.section.s in sections) {
             <div class="gap-4">
               <div v-for="game in matchs" :key="game.id">
                 <div v-if="game.teams.length == 2" class="flex justify-center">
-                  <div class="mb-4 md:ml-10 flex flex-1 justify-between overflow-hidden divide-x border-2 text-xl font-bold">
-                    <div class="truncate p-3 w-full">
+                  <div class="mb-4 flex flex-1 justify-between divide-x overflow-hidden border-2 text-xl font-bold md:ml-10">
+                    <div class="w-full truncate p-3">
                       {{ get_validated_team_by_id(game.teams[0])?.name || "TBD" }}
                     </div>
                     <div class="p-3">
                       {{ game.score[game.teams[0]] }}
                     </div>
                   </div>
-                  <div class="mb-4 md:mr-10 flex flex-1 divide-x overflow-hidden border-2 text-xl font-bold">
+                  <div class="mb-4 flex flex-1 divide-x overflow-hidden border-2 text-xl font-bold md:mr-10">
                     <div class="p-3">
                       {{ game.score[game.teams[1]] }}
                     </div>
-                    <div class="truncate p-3 w-full text-right">
+                    <div class="w-full truncate p-3 text-right">
                       {{ get_validated_team_by_id(game.teams[1])?.name || "TBD" }}
                     </div>
                   </div>
