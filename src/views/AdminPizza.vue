@@ -277,7 +277,7 @@ if (Object.keys(timeslotList.value).length !== 0) {
     <div class="m-2 flex flex-1 flex-col gap-5 md:flex-row" :class="{ blur: extend }">
       <div class="flex flex-1 flex-col">
         <div class="title my-2 text-center text-white">
-          Listes des Pizza disponibles
+          Liste des Pizzas disponibles
         </div>
         <form id="add_pizza" class="flex flex-1 flex-col gap-5">
           <div class="flex gap-2 rounded-2xl bg-gray-500 p-1 text-center text-black">
@@ -294,7 +294,7 @@ if (Object.keys(timeslotList.value).length !== 0) {
           </div>
           <div class="grow overflow-y-auto bg-gray-300 text-center text-black md:h-px">
             <div v-for="pizza_id in timeslotList[selected]?.pizza" :key="pizza_id" class="flex flex-row justify-between">
-              <div v-if="pizzaList[pizza_id]?.name.toLowerCase().includes(pizza_search.toLowerCase())" class="flex flex-1 border-b-2 border-black">
+              <div :class="{ hidden: !pizzaList[pizza_id]?.name.toLowerCase().includes(pizza_search.toLowerCase()) }" class="flex flex-1 border-b-2 border-black">
                 <label :for="'pizzaQuantity-' + pizza_id" class="flex flex-1 flex-col justify-center">
                   {{ pizzaList[pizza_id]?.name }}: {{ pizzaList[pizza_id]?.ingredients.join(', ') }}
                 </label>
