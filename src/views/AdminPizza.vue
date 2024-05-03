@@ -192,6 +192,11 @@ await fetchAdminDetailTimeslot();
 if (Object.keys(timeslotList.value).length !== 0) {
   selected.value = (Object.values(timeslotList.value) as { id: number }[])[0]?.id;
 }
+
+const pizzaCount = computed(() => {
+  const timeslot = (timeslotList.value[selected.value] as AdminTimeslotDeref);
+  return timeslot.orders.reduce((accumulator, currentValue): number => accumulator + currentValue.pizza.length, 0);
+});
 </script>
 <template>
   <div v-if="timeslotList && Object.keys(timeslotList).length > 0" class="flex flex-1 flex-col">
@@ -341,8 +346,8 @@ if (Object.keys(timeslotList.value).length !== 0) {
         </form>
       </div>
       <div class="flex flex-1 flex-col">
-        <div class="title my-2 rounded-xl text-center text-white" :class="{ 'bg-red-600': (timeslotList[selected] as AdminTimeslotDeref)?.orders.length >= timeslotList[selected]?.pizza_max }">
-          Commandes : {{ (timeslotList[selected] as AdminTimeslotDeref)?.orders.length }} /
+        <div class="title my-2 rounded-xl text-center text-white" :class="{ 'bg-red-600': pizzaCount >= timeslotList[selected]?.pizza_max }">
+          Commandes : {{ pizzaCount }} /
           {{ timeslotList[selected]?.pizza_max }}
           <fa-awesome-icon
             class="ml-2 hover:cursor-pointer"
