@@ -81,7 +81,7 @@ export const usePizzaStore = defineStore('pizza', () => {
     }
   }
 
-  async function addOrder(timeslotId: number, pizza: number[], pseudo: string, type:string, payment_method: string) {
+  async function addOrder(timeslotId: number, pizza: number[], pseudo: string, type: string, payment_method: string) {
     await get_csrf();
 
     const data = {
