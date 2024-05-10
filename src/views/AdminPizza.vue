@@ -6,16 +6,13 @@ import { computed, reactive, ref } from 'vue';
 import Multiselect from 'vue-multiselect';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
-import { PAYMENT_METHODS } from '@/models/order';
+import { type Payment, PAYMENT_METHODS } from '@/models/order';
 import type { AdminTimeslotDeref } from '@/models/timeslot';
 import { useErrorStore } from '@/stores/error.store';
 import { usePizzaStore } from '@/stores/pizza.store';
 
-// error store
-const errorStore = useErrorStore();
-const { add_error } = errorStore;
+const { add_error } = useErrorStore();
 
-// pizza store
 const pizzaStore = usePizzaStore();
 const { pizzaList, timeslotList } = storeToRefs(pizzaStore);
 const {
@@ -30,56 +27,115 @@ const {
   exportOrders,
 } = pizzaStore;
 
+enum OrderType {
+  PUBLIC = 'public',
+  PLAYER = 'player',
+  STAFF = 'staff',
+}
+
+const orderTypeToString = {
+  [OrderType.PUBLIC]: 'Publique',
+  [OrderType.PLAYER]: 'Joueur',
+  [OrderType.STAFF]: 'Staff',
+};
+
 const extend = ref(false);
-const selected = ref(0);
+const selectedTimeslotId = ref(0);
 
-const pizza_search = ref('');
-const order_search = ref('');
+const pizzaSearch = ref('');
+const orderSearch = ref('');
 
-const selectedPaymentMethod = ref('default');
-const selectedType = ref('public');
+const selectedPaymentMethod = ref<Payment | 'default'>('default');
+const selectedOrderType = ref(OrderType.PUBLIC);
 
-const ValidatePizza = async () => {
+const pseudo = ref('');
+
+const showConfirmationModal = ref(false);
+
+const pizzaQuantities = computed(() => {
+  if (!showConfirmationModal.value) return {};
+
+  const quantities: { [key: number]: number } = {};
+  timeslotList.value[selectedTimeslotId.value].pizza.forEach((pizzaId) => {
+    const pizzaQuantityInput = document.getElementById(`pizzaQuantity-${pizzaId}`);
+    const quantity = parseInt((pizzaQuantityInput as HTMLInputElement)?.value || '', 10);
+    if (quantity) {
+      quantities[pizzaId] = quantity;
+    }
+  });
+  return quantities;
+});
+
+const totalPrice = computed(() => {
+  let unitPrice: number;
+  if (selectedOrderType.value === OrderType.PUBLIC) {
+    unitPrice = timeslotList.value[selectedTimeslotId.value].external_price;
+  } else if (selectedOrderType.value === OrderType.PLAYER) {
+    unitPrice = timeslotList.value[selectedTimeslotId.value].player_price;
+  } else if (selectedOrderType.value === OrderType.STAFF) {
+    unitPrice = timeslotList.value[selectedTimeslotId.value].staff_price;
+  } else {
+    throw new Error('unreachable');
+  }
+  const pizzaCount = Object.values(pizzaQuantities.value)
+    .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  return unitPrice * pizzaCount;
+});
+
+const validatePizza = () => {
   // check if payment method is selected
-  const paymentMethod = selectedPaymentMethod.value;
-  if (paymentMethod === 'default') {
+  if (selectedPaymentMethod.value === 'default') {
     add_error('Veuillez choisir un moyen de paiement');
     return;
   }
 
-  // check selected timeslot and inputs
-  const selectedTimeslot = timeslotList.value[selected.value];
-  const pseudo = (document.getElementById('InputPseudo') as HTMLInputElement)?.value || '';
-  if (!pseudo) {
+  if (!pseudo.value) {
     add_error('Veuillez renseigner un pseudo');
     return;
   }
-  const pizza: number[] = [];
-  const type = selectedType.value;
 
-  // get all pizza selected
-  if (selectedTimeslot) {
-    const pizzaIds = selectedTimeslot.pizza;
-    pizzaIds.forEach((pizzaId) => {
-      const pizzaQuantityInput = document.getElementById(`pizzaQuantity-${pizzaId}`);
-      if (pizzaQuantityInput) {
-        const quantity = parseInt((pizzaQuantityInput as HTMLInputElement)?.value || '', 10);
-        for (let i = 0; i < quantity; i += 1) {
-          pizza.push(pizzaId);
-        }
-      }
-    });
+  const selectedTimeslot = timeslotList.value[selectedTimeslotId.value];
+
+  // check if there is at least one pizza in the order
+  const hasPizza = selectedTimeslot.pizza.some((pizzaId) => {
+    const pizzaQuantityInput = document.getElementById(`pizzaQuantity-${pizzaId}`);
+    const quantity = parseInt((pizzaQuantityInput as HTMLInputElement)?.value || '', 10);
+    return quantity > 0;
+  });
+
+  if (!hasPizza) {
+    add_error('Veuillez ajouter au moins une pizza');
+    return;
   }
 
-  // add the order
-  await addOrder(selected.value, pizza, pseudo, type, paymentMethod);
+  showConfirmationModal.value = true;
+};
+
+const sendOrder = async () => {
+  showConfirmationModal.value = false;
+
+  const pizza: number[] = [];
+  const selectedTimeslot = timeslotList.value[selectedTimeslotId.value];
+
+  const pizzaIds = selectedTimeslot.pizza;
+  pizzaIds.forEach((pizzaId) => {
+    const pizzaQuantityInput = document.getElementById(`pizzaQuantity-${pizzaId}`);
+    if (pizzaQuantityInput) {
+      const quantity = parseInt((pizzaQuantityInput as HTMLInputElement)?.value || '', 10);
+      for (let i = 0; i < quantity; i += 1) {
+        pizza.push(pizzaId);
+      }
+    }
+  });
+
+  await addOrder(selectedTimeslotId.value, pizza, pseudo.value, selectedOrderType.value, selectedPaymentMethod.value);
 
   // reset all input value
   const pizzaQuantityInputs = document.querySelectorAll('input[type="number"]');
   pizzaQuantityInputs.forEach((pizzaQuantityInput) => {
     (pizzaQuantityInput as HTMLInputElement).value = '0';
   });
-  (document.getElementById('InputPseudo') as HTMLInputElement).value = '';
+  pseudo.value = '';
 };
 
 // Create timeslot form validation
@@ -128,22 +184,22 @@ const openModal = () => {
   showModal.value = true;
   // set all input value to same as selected timeslot
   data_create = reactive({
-    delivery_time: new Date(timeslotList.value[selected.value]?.delivery_time || Date.now()).toLocaleTimeString('fr-FR', {
+    delivery_time: new Date(timeslotList.value[selectedTimeslotId.value]?.delivery_time || Date.now()).toLocaleTimeString('fr-FR', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
     }),
-    pizza_max: timeslotList.value[selected.value]?.pizza_max || 0,
-    start: new Date(timeslotList.value[selected.value]?.start || Date.now()).toLocaleTimeString('fr-FR', {
+    pizza_max: timeslotList.value[selectedTimeslotId.value]?.pizza_max || 0,
+    start: new Date(timeslotList.value[selectedTimeslotId.value]?.start || Date.now()).toLocaleTimeString('fr-FR', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
     }),
-    end: new Date(timeslotList.value[selected.value]?.end || Date.now()).toLocaleTimeString('fr-FR', {
+    end: new Date(timeslotList.value[selectedTimeslotId.value]?.end || Date.now()).toLocaleTimeString('fr-FR', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
@@ -151,10 +207,10 @@ const openModal = () => {
       minute: '2-digit',
     }),
     public: true,
-    player_price: timeslotList.value[selected.value]?.player_price || 0,
-    staff_price: timeslotList.value[selected.value]?.staff_price || 0,
-    external_price: timeslotList.value[selected.value]?.external_price || 0,
-    pizza_selection: timeslotList.value[selected.value]?.pizza.map((pizzaId: number) => ({
+    player_price: timeslotList.value[selectedTimeslotId.value]?.player_price || 0,
+    staff_price: timeslotList.value[selectedTimeslotId.value]?.staff_price || 0,
+    external_price: timeslotList.value[selectedTimeslotId.value]?.external_price || 0,
+    pizza_selection: timeslotList.value[selectedTimeslotId.value]?.pizza.map((pizzaId: number) => ({
       id: pizzaId,
       name: pizzaList.value[pizzaId]?.name,
     })) || [],
@@ -180,8 +236,8 @@ const validateModal = async () => {
       pizzaIds,
     );
     showModal.value = false;
-    if (selected.value === 0) {
-      selected.value = (Object.values(timeslotList.value) as { id: number }[])[0]?.id;
+    if (selectedTimeslotId.value === 0) {
+      selectedTimeslotId.value = (Object.values(timeslotList.value) as { id: number }[])[0]?.id;
     }
   }
 };
@@ -190,11 +246,11 @@ await fetchAllPizzas();
 await fetchNextTimeslot();
 await fetchAdminDetailTimeslot();
 if (Object.keys(timeslotList.value).length !== 0) {
-  selected.value = (Object.values(timeslotList.value) as { id: number }[])[0]?.id;
+  selectedTimeslotId.value = (Object.values(timeslotList.value) as { id: number }[])[0]?.id;
 }
 
 const pizzaCount = computed(() => {
-  const timeslot = (timeslotList.value[selected.value] as AdminTimeslotDeref);
+  const timeslot = (timeslotList.value[selectedTimeslotId.value] as AdminTimeslotDeref);
   return timeslot.orders.reduce((accumulator, currentValue): number => accumulator + currentValue.pizza.length, 0);
 });
 </script>
@@ -212,8 +268,8 @@ const pizzaCount = computed(() => {
           :key="timeslot.id"
           class="flex flex-row hover:cursor-pointer"
           :class="{ hidden: !extend }"
-          @click="selected = timeslot.id"
-          @keydown.enter="selected = timeslot.id"
+          @click="selectedTimeslotId = timeslot.id"
+          @keydown.enter="selectedTimeslotId = timeslot.id"
         >
           <div class="m-2 flex-1">
             Créneau {{ frenchFormatFromDate(new Date(timeslot.delivery_time)) }}
@@ -261,7 +317,7 @@ const pizzaCount = computed(() => {
         class="flex w-screen rounded-xl bg-black text-center text-3xl"
       >
         <div class="m-2 flex-1">
-          Créneau {{ frenchFormatFromDate(new Date(timeslotList[selected]?.delivery_time)) }}
+          Créneau {{ frenchFormatFromDate(new Date(timeslotList[selectedTimeslotId]?.delivery_time)) }}
         </div>
         <div
           class="m-2"
@@ -294,16 +350,16 @@ const pizzaCount = computed(() => {
             </div>
             <div class="flex-1">
               <label for="searchPizza" class="sr-only">Rechercher une pizza</label>
-              <input id="searchPizza" v-model="pizza_search" type="text" class="w-full rounded-xl border-2 border-black bg-gray-300 p-0 text-center" placeholder="Rechercher une pizza"/>
+              <input id="searchPizza" v-model="pizzaSearch" type="text" class="w-full rounded-xl border-2 border-black bg-gray-300 p-0 text-center" placeholder="Rechercher une pizza"/>
             </div>
           </div>
           <div class="grow overflow-y-auto bg-gray-300 text-center text-black md:h-px">
-            <div v-for="pizza_id in timeslotList[selected]?.pizza" :key="pizza_id" class="flex flex-row justify-between">
-              <div :class="{ hidden: !pizzaList[pizza_id]?.name.toLowerCase().includes(pizza_search.toLowerCase()) }" class="flex flex-1 border-b-2 border-black">
-                <label :for="'pizzaQuantity-' + pizza_id" class="flex flex-1 flex-col justify-center">
-                  {{ pizzaList[pizza_id]?.name }}: {{ pizzaList[pizza_id]?.ingredients.join(', ') }}
+            <div v-for="pizzaId in timeslotList[selectedTimeslotId]?.pizza" :key="pizzaId" class="flex flex-row justify-between">
+              <div :class="{ hidden: !pizzaList[pizzaId]?.name.toLowerCase().includes(pizzaSearch.toLowerCase()) }" class="flex flex-1 border-b-2 border-black">
+                <label :for="'pizzaQuantity-' + pizzaId" class="flex flex-1 flex-col justify-center">
+                  {{ pizzaList[pizzaId]?.name }}: {{ pizzaList[pizzaId]?.ingredients.join(', ') }}
                 </label>
-                <input :id="'pizzaQuantity-' + pizza_id" type="number" class="w-20 border-0 bg-gray-300 text-center" :value="0" min="0"/>
+                <input :id="'pizzaQuantity-' + pizzaId" type="number" class="w-20 border-0 bg-gray-300 text-center" :value="0" min="0"/>
               </div>
             </div>
           </div>
@@ -320,25 +376,19 @@ const pizzaCount = computed(() => {
               </select>
             </div>
             <div class="flex-1">
-              <label for="paymentMethod" class="sr-only">Type de commande</label>
-              <select id="paymentMethod" v-model="selectedType" class="m-2 rounded-xl bg-gray-300 p-0 pl-2 pr-8 text-left text-black">
-                <option value="public" selected>
-                  publique
-                </option>
-                <option value="player">
-                  Joueur
-                </option>
-                <option value="staff">
-                  Staff
+              <label for="order-type" class="sr-only">Type de commande</label>
+              <select id="order-type" v-model="selectedOrderType" class="m-2 rounded-xl bg-gray-300 p-0 pl-2 pr-8 text-left text-black">
+                <option v-for="type in OrderType" :key="type" :value="type">
+                  {{ orderTypeToString[type] }}
                 </option>
               </select>
             </div>
             <div class="flex flex-1">
               <label for="InputPseudo" class="sr-only">Input Text</label>
-              <input id="InputPseudo" type="text" class="m-2 flex-1 rounded-xl border-2 border-black bg-gray-300 p-0 text-center text-black" placeholder="Pseudo"/>
+              <input id="InputPseudo" v-model="pseudo" type="text" class="m-2 flex-1 rounded-xl border-2 border-black bg-gray-300 p-0 text-center text-black" placeholder="Pseudo"/>
             </div>
             <div class="flex justify-center">
-              <button type="submit" class="m-2 w-20 flex-1 rounded-xl bg-green-600 p-0 text-center text-white" @click.prevent="ValidatePizza">
+              <button type="submit" class="m-2 w-20 flex-1 rounded-xl bg-green-600 p-0 text-center text-white" @click.prevent="validatePizza">
                 Ajouter
               </button>
             </div>
@@ -346,14 +396,14 @@ const pizzaCount = computed(() => {
         </form>
       </div>
       <div class="flex flex-1 flex-col">
-        <div class="title my-2 rounded-xl text-center text-white" :class="{ 'bg-red-600': pizzaCount >= timeslotList[selected]?.pizza_max }">
+        <div class="title my-2 rounded-xl text-center text-white" :class="{ 'bg-red-600': pizzaCount >= timeslotList[selectedTimeslotId]?.pizza_max }">
           Commandes : {{ pizzaCount }} /
-          {{ timeslotList[selected]?.pizza_max }}
+          {{ timeslotList[selectedTimeslotId]?.pizza_max }}
           <fa-awesome-icon
             class="ml-2 hover:cursor-pointer"
             icon="fa-download"
-            @click="exportOrders(selected)"
-            @keydown.enter="exportOrders(selected)"
+            @click="exportOrders(selectedTimeslotId)"
+            @keydown.enter="exportOrders(selectedTimeslotId)"
           />
         </div>
         <div class="flex flex-1 flex-col gap-5">
@@ -366,7 +416,7 @@ const pizzaCount = computed(() => {
             </div>
             <div class="flex-1">
               <label for="searchPizza" class="sr-only">Rechercher une commande</label>
-              <input id="searchPizza" v-model="order_search" type="text" class="w-full rounded-xl border-2 border-black bg-gray-300 p-0 text-center" placeholder="Rechercher une commande"/>
+              <input id="searchPizza" v-model="orderSearch" type="text" class="w-full rounded-xl border-2 border-black bg-gray-300 p-0 text-center" placeholder="Rechercher une commande"/>
             </div>
           </div>
           <div class="flex flex-1 flex-col">
@@ -382,8 +432,8 @@ const pizzaCount = computed(() => {
               </div>
             </div>
             <div class="flex grow flex-col overflow-y-auto bg-gray-300 text-black md:h-px">
-              <div v-for="order in (timeslotList[selected] as AdminTimeslotDeref)?.orders" :key="order.id">
-                <div v-if="order.user.toLowerCase().includes(order_search.toLowerCase())" class="align-center mx-2 my-1 flex flex-row justify-center rounded-xl bg-gray-200 text-center">
+              <div v-for="order in (timeslotList[selectedTimeslotId] as AdminTimeslotDeref)?.orders" :key="order.id">
+                <div v-if="order.user.toLowerCase().includes(orderSearch.toLowerCase())" class="align-center mx-2 my-1 flex flex-row justify-center rounded-xl bg-gray-200 text-center">
                   <div class="flex flex-1 items-center justify-center">
                     {{ order.user }}
                   </div>
@@ -392,7 +442,7 @@ const pizzaCount = computed(() => {
                   </div>
                   <div class="flex flex-1 flex-col items-center">
                     <label for="isTakenCheckbox-{{ order.id }}" class="flex flex-1 flex-col justify-center">
-                      <input id="isTakenCheckbox-{{ order.id }}" type="checkbox" class="h-5 w-5 bg-gray-300" :value="order.delivered" :checked="order.delivered" @change="patchOrder(selected, order.id, !order.delivered)"/>
+                      <input id="isTakenCheckbox-{{ order.id }}" type="checkbox" class="h-5 w-5 bg-gray-300" :value="order.delivered" :checked="order.delivered" @change="patchOrder(selectedTimeslotId, order.id, !order.delivered)"/>
                     </label>
                   </div>
                 </div>
@@ -402,14 +452,14 @@ const pizzaCount = computed(() => {
           <div
             class="flex flex-col rounded-2xl bg-gray-500 text-center md:flex-row"
             :class="{
-              'bg-red-600': new Date(timeslotList[selected]?.end) < new Date(),
+              'bg-red-600': new Date(timeslotList[selectedTimeslotId]?.end) < new Date(),
             }"
           >
             <div class="flex flex-1">
               <div
                 class="m-1 flex flex-1 justify-center text-center text-2xl text-black"
                 :class="{
-                  invisible: new Date(timeslotList[selected]?.end) > new Date(),
+                  invisible: new Date(timeslotList[selectedTimeslotId]?.end) > new Date(),
                 }"
               >
                 L'heure de fin de commande est dépassée
@@ -677,9 +727,9 @@ const pizzaCount = computed(() => {
         @click="
           showDeleteModal = false;
           if (Object.keys(timeslotList).length === 1) {
-            selected = 0;
-          } else if (selectedDelete === selected) {
-            selected = Object.values(timeslotList).filter(timeslot => timeslot.id !== selectedDelete)[0]?.id;
+            selectedTimeslotId = 0;
+          } else if (selectedDelete === selectedTimeslotId) {
+            selectedTimeslotId = Object.values(timeslotList).filter(timeslot => timeslot.id !== selectedDelete)[0]?.id;
           };
           extend = false;
           deleteTimeslot(timeslotList[selectedDelete].id);
@@ -691,6 +741,47 @@ const pizzaCount = computed(() => {
         class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
         type="button"
         @click="showDeleteModal = false"
+      >
+        Annuler
+      </button>
+    </template>
+  </Modal>
+
+  <Modal v-if="showConfirmationModal" @close="showConfirmationModal = false">
+    <template #icon>
+      <div/>
+    </template>
+    <template #title>
+      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
+        Résumé de la commande
+      </h3>
+    </template>
+    <template #body>
+      <div class="m-2 text-left">
+        <p>Pseudo : {{ pseudo }} </p>
+        <p>Type de command : {{ orderTypeToString[selectedOrderType] }}</p>
+        <p>Pizza{{ Object.values(pizzaQuantities).reduce((acc, val) => acc + val) > 1 ? 's' : '' }} :</p>
+        <ul>
+          <li v-for="(quantity, pizzaId) in pizzaQuantities" :key="pizzaId">
+            - {{ quantity }} x {{ pizzaList[pizzaId].name }}
+          </li>
+        </ul>
+        <p>Méthode de paiement : {{ PAYMENT_METHODS[selectedPaymentMethod as Payment] }}</p>
+        <p>Total : {{ totalPrice }} €</p>
+      </div>
+    </template>
+    <template #buttons>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+        type="submit"
+        @click="sendOrder"
+      >
+        Valider
+      </button>
+      <button
+        type="button"
+        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        @click="showConfirmationModal = false"
       >
         Annuler
       </button>
