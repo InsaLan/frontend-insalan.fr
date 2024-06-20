@@ -16,7 +16,7 @@ const { add_error } = useErrorStore();
 const pizzaStore = usePizzaStore();
 const { pizzaList, timeslotList } = storeToRefs(pizzaStore);
 const {
-  fetchNextTimeslot,
+  fetchNextTimeslots,
   frenchFormatFromDate,
   fetchAdminDetailTimeslot,
   fetchAllPizzas,
@@ -245,10 +245,24 @@ const validateModal = async () => {
 };
 
 await fetchAllPizzas();
-await fetchNextTimeslot();
+await fetchNextTimeslots();
 await fetchAdminDetailTimeslot();
 if (Object.keys(timeslotList.value).length !== 0) {
-  selectedTimeslotId.value = (Object.values(timeslotList.value) as { id: number }[])[0]?.id;
+  const timeslots = Object.values(timeslotList.value) as { id: number; delivery_time: Date }[];
+  const now = new Date(Date.now());
+  let timeslot = timeslots[0];
+  for (let i = 1; i < timeslots.length; i += 1) {
+    const date = new Date(timeslots[i].delivery_time);
+    const timeslotDate = new Date(timeslot.delivery_time);
+    if (now < date) {
+      if (timeslotDate < now || date < timeslotDate) {
+        timeslot = timeslots[i];
+      }
+    } else if (timeslotDate < now && timeslotDate < date) {
+      timeslot = timeslots[i];
+    }
+  }
+  selectedTimeslotId.value = timeslot.id;
 }
 
 const pizzaCount = computed(() => {

@@ -26,7 +26,7 @@ export const usePizzaStore = defineStore('pizza', () => {
     }));
   }
 
-  async function fetchNextTimeslot() {
+  async function fetchNextTimeslots() {
     const res = await axios.get<Timeslot[]>('/pizza/timeslot/next');
     res.data.forEach((p: Timeslot) => { timeslotList.value[p.id] = p; });
   }
@@ -183,7 +183,7 @@ export const usePizzaStore = defineStore('pizza', () => {
     pizzaList,
     timeslotList,
     fetchAllPizzas,
-    fetchNextTimeslot,
+    fetchNextTimeslots,
     frenchFormatFromDate,
     fetchAdminDetailTimeslot,
     addOrder,
