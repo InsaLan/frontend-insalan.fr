@@ -253,6 +253,13 @@ const pizzaCount = computed(() => {
   const timeslot = (timeslotList.value[selectedTimeslotId.value] as AdminTimeslotDeref);
   return timeslot.orders.reduce((accumulator, currentValue): number => accumulator + currentValue.pizza.length, 0);
 });
+
+const handleWheel = (event: WheelEvent) => {
+  if (event.target === null) return;
+
+  const target = event.target as HTMLInputElement;
+  target.blur();
+};
 </script>
 <template>
   <div v-if="timeslotList && Object.keys(timeslotList).length > 0" class="flex flex-1 flex-col">
@@ -359,7 +366,7 @@ const pizzaCount = computed(() => {
                 <label :for="'pizzaQuantity-' + pizzaId" class="flex flex-1 flex-col justify-center">
                   {{ pizzaList[pizzaId]?.name }}: {{ pizzaList[pizzaId]?.ingredients.join(', ') }}
                 </label>
-                <input :id="'pizzaQuantity-' + pizzaId" type="number" class="w-20 border-0 bg-gray-300 text-center" :value="0" min="0"/>
+                <input :id="'pizzaQuantity-' + pizzaId" type="number" class="w-20 border-0 bg-gray-300 text-center" :value="0" min="0" @wheel="handleWheel"/>
               </div>
             </div>
           </div>
