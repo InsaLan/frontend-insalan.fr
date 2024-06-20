@@ -224,10 +224,12 @@ const selectedDelete = ref(0);
 const validateModal = async () => {
   if (!v$_create.value.$errors.length) {
     const pizzaIds = data_create.pizza_selection.map((pizzaItem) => pizzaItem.id);
+    const dateFormat: string = '$3-$2-$1T$4:$6:00';
+    const dateRegexp: RegExp = /(\d{2})\/(\d{2})\/(\d{4}) (\d{2})(:|h)(\d{2})/;
     await addTimeslot(
-      data_create.delivery_time.replace(/(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5:00'),
-      data_create.start.replace(/(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5:00'),
-      data_create.end.replace(/(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5:00'),
+      data_create.delivery_time.replace(dateRegexp, dateFormat),
+      data_create.start.replace(dateRegexp, dateFormat),
+      data_create.end.replace(dateRegexp, dateFormat),
       data_create.pizza_max,
       data_create.public,
       data_create.player_price,
