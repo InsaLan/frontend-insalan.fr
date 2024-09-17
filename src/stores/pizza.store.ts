@@ -179,6 +179,109 @@ export const usePizzaStore = defineStore('pizza', () => {
     link.click();
   }
 
+  async function addPizza(
+    name: string,
+    ingredients: string[],
+    allergens: string[],
+    image: File | null,
+  ) {
+    await get_csrf();
+
+    const data = {
+      name,
+      ingredients,
+      allergens,
+    };
+    const res1 = await axios.post('/pizza/pizza/', data, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf.value,
+      },
+    });
+    if (res1.status !== 201) return false;
+
+    const res_data = res1.data as Pizza;
+    pizzaList.value[res_data.id] = res_data;
+
+    if (!image) return true;
+
+    const formData = new FormData();
+    if (image) formData.append('image', image, image.name);
+
+    const res2 = await axios.patch(`/pizza/pizza/${res_data.id}/`, formData, {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'X-CSRFToken': csrf.value,
+      },
+    });
+    if (res2.status !== 200) return false;
+
+    pizzaList.value[res_data.id].image = (res2.data as Pizza).image;
+
+    return true;
+  }
+
+  async function patchPizza(
+    pizzaId: number,
+    name: string,
+    ingredients: string[],
+    allergens: string[],
+    image: File | null,
+  ) {
+    await get_csrf();
+
+    const data = {
+      name,
+      ingredients,
+      allergens,
+    };
+    const res1 = await axios.patch(`/pizza/pizza/${pizzaId}/`, data, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf.value,
+      },
+    });
+    if (res1.status !== 200) return false;
+
+    const res_data = res1.data as Pizza;
+    pizzaList.value[res_data.id].name = res_data.name;
+    pizzaList.value[res_data.id].ingredients = res_data.ingredients;
+    pizzaList.value[res_data.id].allergens = res_data.allergens;
+
+    if (!image) return true;
+
+    const formData = new FormData();
+    if (image) formData.append('image', image, image.name);
+
+    const res2 = await axios.patch(`/pizza/pizza/${pizzaId}/`, formData, {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'X-CSRFToken': csrf.value,
+      },
+    });
+    if (res2.status !== 200) return false;
+
+    pizzaList.value[res_data.id].image = (res2.data as Pizza).image;
+
+    return true;
+  }
+
+  async function deletePizza(pizzaId: number) {
+    await get_csrf();
+
+    const res = await axios.delete(`/pizza/pizza/${pizzaId}/`, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf.value,
+      },
+    });
+    if (res.status === 204) {
+      delete pizzaList.value[pizzaId];
+    }
+  }
+
   return {
     pizzaList,
     timeslotList,
@@ -191,5 +294,8 @@ export const usePizzaStore = defineStore('pizza', () => {
     addTimeslot,
     deleteTimeslot,
     exportOrders,
+    addPizza,
+    patchPizza,
+    deletePizza,
   };
 });

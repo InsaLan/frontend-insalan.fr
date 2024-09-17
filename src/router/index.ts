@@ -95,7 +95,15 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/admin/pizza',
-    component: () => import('@/views/AdminPizza.vue'),
+    component: () => import('@/views/AdminPizza/AdminPizza.vue'),
+    beforeEnter: () => {
+      const { isConnected, user } = useUserStore();
+      return (!isConnected || !user.groups.includes('Equipe Bouffe')) ? { path: '/' } : true;
+    },
+  },
+  {
+    path: '/admin/pizza/list',
+    component: () => import('@/views/AdminPizza/AdminPizzaList.vue'),
     beforeEnter: () => {
       const { isConnected, user } = useUserStore();
       return (!isConnected || !user.groups.includes('Equipe Bouffe')) ? { path: '/' } : true;
