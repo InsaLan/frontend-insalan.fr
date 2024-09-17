@@ -69,6 +69,13 @@ const burger_menu = ref(false);
         <router-link
           v-if="user?.groups.includes('Equipe Bouffe')"
           class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
+          to="/admin/pizza/list"
+        >
+          Liste des Pizzas
+        </router-link>
+        <router-link
+          v-if="user?.groups.includes('Equipe Bouffe')"
+          class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
           to="/admin/pizza"
         >
           Menu pizza
@@ -158,6 +165,13 @@ const burger_menu = ref(false);
       </div>
       <div class="flex flex-col bg-theme-bg">
         <div v-if="burger_menu" class="flex flex-col text-white">
+          <router-link
+            v-if="user?.groups.includes('Equipe Bouffe')"
+            class="mx-2 py-5 text-center font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
+            to="/admin/pizza"
+          >
+            Menu pizza
+          </router-link>
           <a
             v-if="role === 'dev' || role === 'staff'"
             class="mx-2 py-5 text-center font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
