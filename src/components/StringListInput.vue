@@ -9,17 +9,20 @@ const props = defineProps<{
   modelValue: string[];
 }>();
 
-const a = ref('');
+const newElement = ref('');
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string[]): void;
 }>();
 
 const addElement = () => {
-  if (!a.value) return;
+  if (!newElement.value) return;
 
-  emit('update:modelValue', [...props.modelValue, a.value]);
-  a.value = '';
+  emit('update:modelValue', [
+    ...props.modelValue,
+    ...newElement.value.split(',').map((el) => el.trim()).filter((el) => el),
+  ]);
+  newElement.value = '';
 };
 
 const removeEl = (index: number) => {
@@ -27,7 +30,7 @@ const removeEl = (index: number) => {
 };
 
 const editEl = (index: number) => {
-  a.value = props.modelValue[index];
+  newElement.value = props.modelValue[index];
   removeEl(index);
 };
 </script>
@@ -38,11 +41,13 @@ const editEl = (index: number) => {
       <div v-for="(el, i) in modelValue" :key="i" class="flex overflow-hidden rounded bg-cyan-900">
         <button
           type="button"
-          class="flex items-center px-1 hover:bg-cyan-800"
+          class="flex items-center overflow-hidden px-1 hover:bg-cyan-800"
           title="Modifier"
           @click="editEl(i)"
         >
-          {{ el }}
+          <p class="truncate">
+            {{ el }}
+          </p>
         </button>
         <button
           type="button"
@@ -57,7 +62,7 @@ const editEl = (index: number) => {
     <div class="flex items-center">
       <input
         :id="id"
-        v-model="a"
+        v-model="newElement"
         type="text"
         :aria-label="label"
         class="grow border-0 bg-theme-bg focus:ring-0"
@@ -68,7 +73,7 @@ const editEl = (index: number) => {
         type="button"
         title="Ajouter"
         class="mx-3 w-6 rounded"
-        :class="{ 'text-gray-500': !a }"
+        :class="{ 'text-gray-500': !newElement }"
         @click="addElement"
       >
         <fa-awesome-icon icon="fa-check"/>
