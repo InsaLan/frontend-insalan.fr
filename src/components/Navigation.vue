@@ -161,7 +161,7 @@ const burger_menu = ref(false);
           </button>
         </div>
       </div>
-      <div v-if="burger_menu" class="flex flex-col text-white bg-theme-bg">
+      <div v-if="burger_menu" class="flex flex-col text-white bg-theme-bg overflow-scroll max-h-[calc(100vh_-_6rem)]">
         <a
           v-if="role === 'dev' || role === 'staff'"
           class="mx-2 py-5 text-center font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
