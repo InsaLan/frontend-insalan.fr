@@ -8,6 +8,7 @@ import type { Event } from '@/models/event';
 import type { Group } from '@/models/group';
 import { BestofType, type Match } from '@/models/match';
 import type { PlayerRegistration, PlayerRegistrationDeref } from '@/models/registration';
+import type { SwissMatch } from '@/models/swiss';
 import type { Team } from '@/models/team';
 import type { Tournament, TournamentDeref } from '@/models/tournament';
 
@@ -436,6 +437,58 @@ export const useTournamentStore = defineStore('tournament', () => {
     const reversed_rounds = groupBy(matchs, 'round_number');
     return Object.values(reversed_rounds).reverse();
   };
+
+  const get_looser_matchs = (matchs: KnockoutMatch[]) => {
+    const looser_matchs = matchs.filter((match) => match.bracket_set === BracketSet.LOOSER);
+    const round_matchs = groupBy(looser_matchs, 'round_number');
+    return Object.values(round_matchs).reverse();
+  };
+
+  const knockout_match_results = (match: KnockoutMatch) => {
+    const match_results = [] as Record<string, string | number | boolean | undefined>[];
+    match.teams.forEach((team) => {
+      const data = {} as Record<string, string | number | boolean | undefined>;
+      data.name = get_validated_team_by_id(team)?.name;
+      data.score = match.score[team];
+      data.is_winner = is_winning_team(match, team);
+      match_results.push(data);
+    });
+
+    return match_results;
+  };
+
+  const swiss_match_results = (matchs : SwissMatch[]) => {
+    const round_matchs = groupBy(matchs, 'round_number');
+    const res = {} as Record<
+    string,
+    Record<
+    string,
+    string | Record<
+    string,
+    string | number | boolean | undefined
+    >[]
+    >[]
+    >;
+    Object.entries(round_matchs).forEach(([round, roundMatchs]) => {
+      res[round] = [] as Record<string, string | Record<string, string | number | boolean | undefined>[]>[];
+      roundMatchs.forEach((match) => {
+        const tmp = {} as { teams: Record<string, string | number | boolean | undefined>[]; status: string };
+        tmp.teams = [];
+        tmp.status = match.status;
+        match.teams.forEach((team) => {
+          const data = {} as { name: string | undefined; score: number; is_winner: boolean };
+          data.name = get_validated_team_by_id(team)?.name;
+          data.score = match.score[team];
+          data.is_winner = is_winning_team(match, team);
+          tmp.teams.push(data);
+        });
+        res[round].push(tmp);
+      });
+    });
+
+    return res;
+  };
+
   function $reset() {
     eventsList.value = {};
     tournamentsList.value = {};
@@ -457,6 +510,9 @@ export const useTournamentStore = defineStore('tournament', () => {
     get_col_style,
     get_bracket_cols_count,
     get_matchs_per_round,
+    get_looser_matchs,
+    knockout_match_results,
+    swiss_match_results,
     getEvent,
     getEvents,
     getTournamentTeams,
