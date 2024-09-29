@@ -53,9 +53,9 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/Register.vue'),
   },
   {
-    path: '/tournament/:id(\\d+)',
+    path: '/tournament/:id(\\d+)/:section(\\w+)*',
     component: () => import('@/views/TournamentDetail.vue'),
-    props: (route) => ({ id: Number(route.params.id), section: route.query }),
+    props: (route) => ({ id: Number(route.params.id), selectedSection: route.params.section }),
   },
   {
     path: '/tournament/:id(\\d+)/team/:teamId(\\d+)',
