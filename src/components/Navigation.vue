@@ -43,7 +43,7 @@ const burger_menu = ref(false);
 </script>
 <template>
   <nav class="sticky top-0 z-50 h-24  bg-theme-bg">
-    <div id="desktop" class="hidden justify-around border-b-2 h-full border-white xl:flex items-center">
+    <div id="desktop" class="hidden h-full items-center justify-around border-b-2 border-white xl:flex">
       <router-link to="/">
         <img alt="Logo InsaLan" class="h-[4.5rem] w-[4.5rem]" src="@/assets/images/logo_home.png"/>
       </router-link>
@@ -53,7 +53,7 @@ const burger_menu = ref(false);
           :key="i"
           :to="{ path: item.url }"
           class="mx-2 text-[clamp(1rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
-          >
+        >
           {{ item.text }}
         </router-link>
       </div>
@@ -102,12 +102,12 @@ const burger_menu = ref(false);
         </button>
       </div>
     </div>
-    <div class="border-b-2 border-white xl:hidden min-h-full">
-      <div id="top" class="flex justify-between items-center h-[calc(6rem_-_2px)]">
+    <div class="min-h-full border-b-2 border-white xl:hidden">
+      <div id="top" class="flex h-[calc(6rem_-_2px)] items-center justify-between">
         <router-link to="/">
           <img alt="Logo InsaLan" class="h-[4.5rem] w-[4.5rem]" src="@/assets/images/logo_home.png"/>
         </router-link>
-        <div class="center flex gap-4 p-5 items-center">
+        <div class="center flex items-center gap-4 p-5">
           <div v-if="!isConnected">
             <router-link
               class="block rounded bg-blue-800 p-2 text-[clamp(0.9rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:text-base"
@@ -116,7 +116,7 @@ const burger_menu = ref(false);
               Se connecter/S'inscrire
             </router-link>
           </div>
-          <div v-else class="flex gap-2 items-center">
+          <div v-else class="flex items-center gap-2">
             <router-link
               class="p-2 text-[clamp(0.9rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
               to="/me"
@@ -161,7 +161,7 @@ const burger_menu = ref(false);
           </button>
         </div>
       </div>
-      <div v-if="burger_menu" class="flex flex-col text-white bg-theme-bg overflow-scroll max-h-[calc(100vh_-_6rem)]">
+      <div v-if="burger_menu" class="flex max-h-[calc(100vh_-_6rem)] flex-col overflow-scroll bg-theme-bg text-white">
         <a
           v-if="role === 'dev' || role === 'staff'"
           class="mx-2 py-5 text-center font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
