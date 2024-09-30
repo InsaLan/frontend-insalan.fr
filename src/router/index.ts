@@ -53,9 +53,39 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/Register.vue'),
   },
   {
-    path: '/tournament/:id(\\d+)/:section(\\w+)*',
+    path: '/tournament/:id(\\d+)',
     component: () => import('@/views/TournamentDetail.vue'),
-    props: (route) => ({ id: Number(route.params.id), selectedSection: route.params.section }),
+    props: (route) => ({ id: Number(route.params.id) }),
+    children: [
+      {
+        path: 'info',
+        component: () => import('@/components/TournamentInfo.vue'),
+      },
+      {
+        path: 'teams',
+        component: () => import('@/components/TournamentTeams.vue'),
+      },
+      {
+        path: 'groups',
+        component: () => import('@/components/TournamentGroups.vue'),
+      },
+      {
+        path: 'swiss',
+        component: () => import('@/components/TournamentSwiss.vue'),
+      },
+      {
+        path: 'brackets',
+        component: () => import('@/components/TournamentBrackets.vue'),
+      },
+      {
+        path: 'planning',
+        component: () => import('@/components/TournamentPlanning.vue'),
+      },
+      {
+        path: 'rules',
+        component: () => import('@/components/TournamentRules.vue'),
+      },
+    ],
   },
   {
     path: '/tournament/:id(\\d+)/team/:teamId(\\d+)',

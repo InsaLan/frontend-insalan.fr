@@ -31,7 +31,7 @@ onMounted(async () => {
       {{ tournament?.cashprizes?.length !== 0 ? tournament?.cashprizes?.reduce((acc, val) => acc += Number(val), 0) + " €" : "À venir" }}
     </p>
     <div class="mb-3 flex w-[80%] justify-center gap-3 text-center">
-      <router-link :to="`tournament/${tournament?.id as number}`" class="rounded border-2 border-green-600 p-2 text-lg hover:border-green-500">
+      <router-link :to="`tournament/${tournament?.id as number}/info`" class="rounded border-2 border-green-600 p-2 text-lg hover:border-green-500">
         Plus d'infos
       </router-link>
       <div
