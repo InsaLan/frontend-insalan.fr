@@ -351,7 +351,7 @@ const openScoreModal = () => {
             <div class="hidden flex-col md:block">
               <router-link
                 class="mt-auto text-zinc-400"
-                :to="`/tournament/${inscription[1].team.tournament.id }?s=rules`"
+                :to="`/tournament/${inscription[1].team.tournament.id }/rules`"
               >
                 Règlement du tournoi
               </router-link>
@@ -412,7 +412,7 @@ const openScoreModal = () => {
             <div class="hidden flex-col md:block">
               <router-link
                 class="mt-auto text-zinc-400"
-                :to="`/tournament/${inscription[1].team.tournament.id }?s=rules`"
+                :to="`/tournament/${inscription[1].team.tournament.id }/rules`"
               >
                 Règlement du tournoi
               </router-link>
