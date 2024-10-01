@@ -82,7 +82,6 @@ try {
         </div>
       </nav>
     </div>
-    {{ sections }}
 
     <RouterView v-slot="{ Component }">
       <component

@@ -35,7 +35,7 @@ onMounted(async () => {
         Plus d'infos
       </router-link>
       <div
-        v-if="eventsList[tournament?.event as number]?.ongoing"
+        v-if="eventsList[tournament?.event.id || tournament?.event]?.ongoing"
         class="rounded bg-green-600 p-2 text-lg"
       >
         <router-link
