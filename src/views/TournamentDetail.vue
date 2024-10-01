@@ -13,8 +13,8 @@ const tournamentStore = useTournamentStore();
 const { getTournamentFull } = tournamentStore;
 const { tournament } = storeToRefs(tournamentStore);
 
-// const open_drop = ref(false);
-// const drop_label = ref('Informations');
+const open_dropdown = ref(false);
+const dropdown_icon = computed(() => (open_dropdown.value ? 'angle-up' : 'angle-down'));
 
 interface TournamentDetailSection {
   title: string;
@@ -50,15 +50,30 @@ try {
         {{ tournament?.name }}
       </div>
 
-      <nav class="mt-2 flex justify-center bg-gray-500 py-4 ">
-        <div class="flex w-2/3 justify-between xl:w-3/5">
+      <nav class="mt-2 flex justify-center gap-16 bg-gray-500 py-4">
+        <button
+          type="button"
+          class="text-xl underline decoration-[#63d1ff] decoration-4 underline-offset-8 md:hidden"
+          @click="open_dropdown = !open_dropdown"
+        >
+          {{ sections[selected_section].title }}
+          <fa-awesome-icon
+            class="absolute mx-2 my-[0.6rem]"
+            :icon="['fas', dropdown_icon]"
+            size="2xs"
+          />
+        </button>
+        <div
+          :class="{ 'flex border-y-2 border-white': open_dropdown, hidden: !open_dropdown }"
+          class="absolute z-10 max-h-[60vh] w-screen translate-y-10 flex-col items-center gap-2 overflow-scroll bg-gray-500 py-3 md:static md:z-0 md:flex md:w-auto md:translate-y-0 md:flex-row md:gap-10 md:overflow-visible md:py-0"
+        >
           <template v-for="(section, key) in sections" :key="key">
             <router-link
               v-if="section.is_available"
               :to="key"
               :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': key === selected_section }"
               class="text-xl"
-              @click="selected_section = key"
+              @click="selected_section = key; open_dropdown = false"
             >
               {{ section.title }}
             </router-link>
