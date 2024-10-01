@@ -9,7 +9,7 @@ const props = defineProps<{
 }>();
 
 const tournamentStore = useTournamentStore();
-const { getTournamentFull } = tournamentStore;
+const { getTournamentFull, getTournamentTeams } = tournamentStore;
 const { tournament } = storeToRefs(tournamentStore);
 
 const open_dropdown = ref(false);
@@ -38,6 +38,7 @@ const selected_section = ref<string>(route.path.split('/').at(-1));
 
 try {
   await getTournamentFull(props.id);
+  getTournamentTeams();
 } catch (err: unknown) {
   router.go(-1);
 }
