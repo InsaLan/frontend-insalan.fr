@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const props = defineProps<{
   id: number;
-  selectedSection?: string;
 }>();
 
 const tournamentStore = useTournamentStore();
@@ -22,8 +21,6 @@ interface TournamentDetailSection {
   is_selected: boolean;
 }
 
-const selected_section = ref<string>('info');
-
 const sections = computed<Record<string, TournamentDetailSection[]>>(() => ({
   info: { title: 'Informations', is_available: true },
   teams: { title: 'Équipes', is_available: true },
@@ -35,6 +32,9 @@ const sections = computed<Record<string, TournamentDetailSection[]>>(() => ({
 }));
 
 const router = useRouter();
+const route = useRoute();
+
+const selected_section = ref<string>(route.path.split('/').at(-1));
 
 try {
   await getTournamentFull(props.id);
