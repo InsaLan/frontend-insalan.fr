@@ -45,8 +45,8 @@ try {
 </script>
 
 <template>
-  <div v-if="tournament?.is_announced" class="min-h-[calc(100vh_-_6rem)]">
-    <div class="sticky top-24 min-w-full bg-[#2c292d]">
+  <div v-if="tournament?.is_announced" class="flex min-h-[calc(100vh_-_6rem)] flex-col">
+    <div class="sticky top-24 bg-[#2c292d]">
       <div class="text-center text-6xl font-bold text-white">
         {{ tournament?.name }}
       </div>
