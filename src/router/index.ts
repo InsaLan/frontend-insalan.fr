@@ -58,6 +58,10 @@ const routes: RouteRecordRaw[] = [
     props: (route) => ({ id: Number(route.params.id) }),
     children: [
       {
+        path: '',
+        redirect: (to) => `${to.fullPath}/info`,
+      },
+      {
         path: 'info',
         component: () => import('@/components/TournamentInfo.vue'),
       },
