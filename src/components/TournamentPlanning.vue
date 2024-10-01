@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Content from '@/components/Content.vue';
 import type { TournamentDeref } from '@/models/tournament';
 import { useContentStore } from '@/stores/content.store';
 
