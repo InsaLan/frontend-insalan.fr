@@ -138,6 +138,8 @@ if (Date.parse(tournament.value?.registration_open ?? '') > Date.now()) {
 }
 
 const host = import.meta.env.VITE_WEBSITE_HOST as string;
+
+const view_password = ref<boolean>(false);
 </script>
 
 <template>
@@ -199,7 +201,15 @@ const host = import.meta.env.VITE_WEBSITE_HOST as string;
             <label for="pwd">
               Mot de passe
             </label>
-            <input id="pwd" v-model="register_form.password" class="text-black" :class="{ error: context.invalid }" type="text"/>
+            <input id="pwd" v-model="register_form.password" class="text-black" :class="{ error: context.invalid }" :type="view_password ? 'text' : 'password'"/>
+            <fa-awesome-icon
+              :icon="['fas', view_password ? 'eye-slash' : 'eye']"
+              class="absolute right-8 top-10 z-10"
+              size="s"
+              title="Voir le mot de passe"
+              style="color: black;"
+              @click="view_password = !view_password"
+            />
             <button type="button" @click="generate_password">
               <fa-awesome-icon
                 v-if="create"
@@ -237,7 +247,7 @@ const host = import.meta.env.VITE_WEBSITE_HOST as string;
         <FormField v-slot="context" :validations="v$.accept_rules" class="flex flex-col self-center text-3xl">
           <div>
             <input id="check" v-model="register_form.accept_rules" :class="{ error: context.invalid }" type="checkbox"/>
-            <label for="check"> J'accepte les <router-link :to="`/tournament/${tournament?.id}?s=rules`" target="_blank" class="text-[#63d1ff]">règles du tournoi</router-link></label>
+            <label for="check"> J'accepte les <router-link :to="`/tournament/${tournament?.id}/rules`" target="_blank" class="text-[#63d1ff]">règles du tournoi</router-link></label>
           </div>
         </FormField>
       </div>
@@ -304,7 +314,7 @@ const host = import.meta.env.VITE_WEBSITE_HOST as string;
         Continuer & payer
       </button>
       <router-link
-        :to="`/tournament/${tournament?.id}?s=teams`"
+        :to="`/tournament/${tournament?.id}/teams`"
         class="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
       >
         Continuer
