@@ -21,7 +21,7 @@ interface TournamentDetailSection {
   is_selected: boolean;
 }
 
-const sections = computed<Record<string, TournamentDetailSection[]>>(() => ({
+const sections = computed<Record<string, TournamentDetailSection>>(() => ({
   info: { title: 'Informations', is_available: true },
   teams: { title: 'Équipes', is_available: true },
   groups: { title: 'Poules', is_available: tournament.value?.groups.length > 0 || false },
@@ -34,7 +34,10 @@ const sections = computed<Record<string, TournamentDetailSection[]>>(() => ({
 const router = useRouter();
 const route = useRoute();
 
-const selected_section = ref<string>(route.path.split('/').at(-1));
+const selected_section = computed<string>(() => {
+  const sec = route.path.split('/').at(-1);
+  return sec === undefined ? '' : sec;
+});
 
 try {
   await getTournamentFull(props.id);
