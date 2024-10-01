@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Game } from '@/models/game';
 import type { TournamentDeref } from '@/models/tournament';
 
 const props = defineProps<{

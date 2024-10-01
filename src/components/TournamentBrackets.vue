@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import KnockoutMatchCard from '@/components/KnockoutMatchCard.vue';
+import { BracketType, type KnockoutMatch } from '@/models/bracket';
 import type { TournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
@@ -14,12 +16,13 @@ const {
   get_winner_matchs_per_round,
   get_looser_matchs,
   get_validated_team_by_id,
+  get_bracket_cols_count,
 } = tournamentStore;
 </script>
 
 <template>
   <section id="brackets">
-    <h1 v-if="props.tournament?.brackets?.length === 0" class="mt-6 text-center text-4xl">
+    <h1 v-if="props.tournament.brackets.length === 0" class="mt-6 text-center text-4xl">
       Les arbres ne sont pas disponibles.
     </h1>
     <div v-for="bracket in props.tournament.brackets" v-else :key="bracket.id">
