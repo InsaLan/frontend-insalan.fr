@@ -1,6 +1,6 @@
 on: pull_request
 jobs:
-  build:
+  Lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,12 +16,21 @@ jobs:
         # Continue to the next step even if this fails
         continue-on-error: true
 
-      - name: Typecheck
-        run: npx vue-tsc --noEmit
-        # Continue to the next step even if this fails
-        continue-on-error: true
-
       - name: Annotate Code Linting Results
         uses: ataylorme/eslint-annotate-action@v2
         with:
           markdown-report-on-step-summary: true
+
+  Typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Install modules
+        run: npm ci
+
+      - name: Run Typecheck
+        run: npx vue-tsc --noEmit
