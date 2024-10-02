@@ -86,7 +86,7 @@ const { tourney_teams } = storeToRefs(tournamentStore);
           </h1>
           <div class="gap-4">
             <div v-for="game in matchs" :key="game.id">
-              <div v-if="game.teams.length == 2" class="flex justify-center">
+              <div v-if="game.teams.length === 2" class="flex justify-center">
                 <div class="mb-4 flex flex-1 justify-between divide-x overflow-hidden border-2 text-xl font-bold md:ml-10">
                   <div class="w-full truncate p-3">
                     {{ get_validated_team_by_id(game.teams[0])?.name || "TBD" }}

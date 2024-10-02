@@ -21,7 +21,7 @@ export const useUserStore = defineStore('user', () => {
   const inscriptions = ref<{
     ongoing: Ref<[string, PlayerRegistrationDeref | RegistrationDeref][]>;
     past: Ref<[string, PlayerRegistrationDeref | RegistrationDeref][]>;
-    unpaid: Ref<{ [key: string]: boolean }>;
+    unpaid: Ref<Record<string, boolean>>;
   }>({
     ongoing: ref([]),
     past: ref([]),
