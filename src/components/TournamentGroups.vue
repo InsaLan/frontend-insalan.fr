@@ -108,22 +108,26 @@ const { tourney_teams } = storeToRefs(tournamentStore);
                 <div>
                   <div class="mx-5 mb-4 flex flex-1 justify-between divide-x border-2 text-xl font-bold">
                     <table>
-                      <tr>
-                        <th align="center" class="troncate border-separate border border-slate-500 bg-slate-200 p-4 text-black">
-                          Equipe
-                        </th>
-                        <th align="center" class="border-separate border border-slate-500 bg-slate-200 p-4 text-black">
-                          Score
-                        </th>
-                      </tr>
-                      <tr v-for="team_id in game.teams" :key="team_id">
-                        <td align="center" class="border-separate border border-slate-500 p-4">
-                          {{ get_validated_team_by_id(team_id)?.name || "TBD" }}
-                        </td>
-                        <td align="center" class="border-separate border border-slate-500 p-4">
-                          {{ game.score[team_id] }}
-                        </td>
-                      </tr>
+                      <thead>
+                        <tr>
+                          <th class="troncate border-separate border border-slate-500 bg-slate-200 p-4 text-center text-black">
+                            Equipe
+                          </th>
+                          <th class="border-separate border border-slate-500 bg-slate-200 p-4 text-center text-black">
+                            Score
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="team_id in game.teams" :key="team_id">
+                          <td class="border-separate border border-slate-500 p-4 text-center">
+                            {{ get_validated_team_by_id(team_id)?.name || "TBD" }}
+                          </td>
+                          <td class="border-separate border border-slate-500 p-4 text-center">
+                            {{ game.score[team_id] }}
+                          </td>
+                        </tr>
+                      </tbody>
                     </table>
                   </div>
                 </div>
