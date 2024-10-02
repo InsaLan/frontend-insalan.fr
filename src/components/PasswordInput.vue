@@ -31,7 +31,7 @@ const onClick = (): void => {
 
 <template>
   <div
-    :class="{ error: error }"
+    :class="{ error }"
     class="flex border-2 border-gray-500 focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
   >
     <input

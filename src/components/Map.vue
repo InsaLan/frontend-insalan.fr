@@ -3,7 +3,7 @@
     Ou nous trouver
   </h1>
   <section class="flex justify-center">
-    <div class="h-[512px] w-[512px] border-4">
+    <div class="size-[512px] border-4">
       <l-map ref="map" v-model:zoom="zoom" :center="insalan_pos" :use-global-leaflet="false" class="z-0">
         <l-tile-layer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

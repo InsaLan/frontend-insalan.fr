@@ -14,7 +14,6 @@ const props = defineProps<{
   close: () => void;
 }>();
 
-// eslint-disable-next-line
 const dataPizza = reactive({
   name: props.pizza?.name || '',
   ingredients: props.pizza?.ingredients || [],
@@ -47,7 +46,7 @@ const handleImageChange = (event: Event) => {
 </script>
 
 <template>
-  <Modal v-if="true" @close="console.log('close')">
+  <Modal @close="console.log('close')">
     <template #icon>
       <div/>
     </template>

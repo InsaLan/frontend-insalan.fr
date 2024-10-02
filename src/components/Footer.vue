@@ -11,7 +11,7 @@
         <a class="hover:blur-sm" href="https://www.instagram.com/insalan_officiel" target="_blank" rel="noopener noreferrer">
           <svg
             id="instagram"
-            class="h-10 w-10 md:h-14 md:w-14"
+            class="size-10 md:size-14"
             viewBox="0 0 200 200"
             xml:space="preserve"
             xmlns="http://www.w3.org/2000/svg"
@@ -114,7 +114,7 @@
         <a class="hover:blur-sm" href="https://twitter.com/insalan" target="_blank" rel="noopener noreferrer">
           <svg
             id="X"
-            class="h-10 w-10 md:h-14 md:w-14"
+            class="size-10 md:size-14"
             viewBox="0 0 200 200"
             xml:space="preserve"
             xmlns="http://www.w3.org/2000/svg"
@@ -145,7 +145,7 @@
         <a class="hover:blur-sm" href="https://www.facebook.com/insalan/" target="_blank" rel="noopener noreferrer">
           <svg
             id="facebook"
-            class="h-10 w-10 md:h-14 md:w-14"
+            class="size-10 md:size-14"
             viewBox="0 0 200 200"
             xml:space="preserve"
             xmlns="http://www.w3.org/2000/svg"
