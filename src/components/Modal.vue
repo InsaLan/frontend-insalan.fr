@@ -9,10 +9,10 @@
               <div class="mt-3 w-full text-center sm:mt-0 sm:text-left">
                 <div class="flex flex-row">
                   <slot name="icon">
-                    <div class="mx-auto flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-300 sm:mx-0 sm:h-10 sm:w-10">
+                    <div class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-red-300 sm:mx-0 sm:size-10">
                       <svg
                         aria-hidden="true"
-                        class="h-6 w-6 text-red-600"
+                        class="size-6 text-red-600"
                         fill="none"
                         stroke="currentColor"
                         stroke-width="1.5"

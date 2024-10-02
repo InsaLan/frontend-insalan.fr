@@ -379,10 +379,10 @@ const handleWheel = (event: WheelEvent) => {
           <div class="grow overflow-y-auto bg-gray-300 text-center text-black md:h-px">
             <div v-for="pizzaId in timeslotList[selectedTimeslotId]?.pizza" :key="pizzaId" class="flex flex-row justify-between">
               <div :class="{ hidden: !pizzaList[pizzaId]?.name.toLowerCase().includes(pizzaSearch.toLowerCase()) }" class="flex flex-1 border-b-2 border-black">
-                <label :for="'pizzaQuantity-' + pizzaId" class="flex flex-1 flex-col justify-center">
+                <label :for="`pizzaQuantity-${pizzaId}`" class="flex flex-1 flex-col justify-center">
                   {{ pizzaList[pizzaId]?.name }}: {{ pizzaList[pizzaId]?.ingredients.join(', ') }}
                 </label>
-                <input :id="'pizzaQuantity-' + pizzaId" type="number" class="w-20 border-0 bg-gray-300 text-center" :value="0" min="0" @wheel="handleWheel"/>
+                <input :id="`pizzaQuantity-${pizzaId}`" type="number" class="w-20 border-0 bg-gray-300 text-center" :value="0" min="0" @wheel="handleWheel"/>
               </div>
             </div>
           </div>
@@ -465,7 +465,7 @@ const handleWheel = (event: WheelEvent) => {
                   </div>
                   <div class="flex flex-1 flex-col items-center">
                     <label for="isTakenCheckbox-{{ order.id }}" class="flex flex-1 flex-col justify-center">
-                      <input id="isTakenCheckbox-{{ order.id }}" type="checkbox" class="h-5 w-5 bg-gray-300" :value="order.delivered" :checked="order.delivered" @change="patchOrder(selectedTimeslotId, order.id, !order.delivered)"/>
+                      <input id="isTakenCheckbox-{{ order.id }}" type="checkbox" class="size-5 bg-gray-300" :value="order.delivered" :checked="order.delivered" @change="patchOrder(selectedTimeslotId, order.id, !order.delivered)"/>
                     </label>
                   </div>
                 </div>

@@ -230,7 +230,7 @@ const kick_member = async (type: string, id: number) => {
             [{{ tournament?.game.short_name }}]
             {{ selected_team?.name }}
           </div>
-          <img v-if="selected_team.validated" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="m-2 inline-block h-6 w-6"/>
+          <img v-if="selected_team.validated" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="m-2 inline-block size-6"/>
         </div>
         <button
           v-if="
@@ -273,13 +273,13 @@ const kick_member = async (type: string, id: number) => {
               <div class="flex items-center">
                 <fa-awesome-icon
                   v-if="selected_team.captain === player.name_in_game"
-                  class="m-1 h-4 w-4"
+                  class="m-1 size-4"
                   icon="fa-solid fa-crown"
                 />
                 <div class="truncate">
                   {{ player.name_in_game }}
                 </div>
-                <img v-if="player.payment_status === PaymentStatus.PAID" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="m-2 inline-block h-4 w-4"/>
+                <img v-if="player.payment_status === PaymentStatus.PAID" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="m-2 inline-block size-4"/>
                 <fa-awesome-icon
                   v-if="
                     player.payment_status !== PaymentStatus.PAID
@@ -296,7 +296,7 @@ const kick_member = async (type: string, id: number) => {
                         )
                       )
                   "
-                  class="m-1 h-4 w-4 text-red-600 hover:cursor-pointer hover:text-blue-600"
+                  class="m-1 size-4 text-red-600 hover:cursor-pointer hover:text-blue-600"
                   icon="fa-solid fa-hammer"
                   @click="kickregtype = 'player'; kickregid = player.id; showModalKickPlayer = true"
                 />
@@ -348,7 +348,7 @@ const kick_member = async (type: string, id: number) => {
                 <div class="truncate">
                   {{ substitute.name_in_game }}
                 </div>
-                <img v-if="substitute.payment_status === PaymentStatus.PAID" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="m-2 inline-block h-4 w-4"/>
+                <img v-if="substitute.payment_status === PaymentStatus.PAID" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="m-2 inline-block size-4"/>
                 <fa-awesome-icon
                   v-if="
                     substitute.payment_status !== PaymentStatus.PAID
@@ -362,7 +362,7 @@ const kick_member = async (type: string, id: number) => {
                         )
                       )
                   "
-                  class="m-1 h-4 w-4 text-red-600 hover:cursor-pointer hover:text-blue-600"
+                  class="m-1 size-4 text-red-600 hover:cursor-pointer hover:text-blue-600"
                   icon="fa-solid fa-hammer"
                   @click="kickregtype = 'substitute'; kickregid = substitute.id; showModalKickPlayer = true"
                 />
@@ -389,7 +389,7 @@ const kick_member = async (type: string, id: number) => {
               )
             "
             type="button"
-            class="center h-full w-full rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
+            class="center size-full rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
             @click="showModalTeamPassword = true"
             @keydown.enter="showModalTeamPassword = true"
           >
@@ -422,7 +422,7 @@ const kick_member = async (type: string, id: number) => {
               team_registration?.[1]?.payment_status !== PaymentStatus.PAID
             "
             type="button"
-            class="center h-full w-full rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
+            class="center size-full rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
             @click="showModalLeaveTeam = true"
           >
             Quitter l'équipe

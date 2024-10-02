@@ -138,7 +138,7 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
         </button>
       </div>
     </div>
-    <div v-else class="mb-4 flex max-h-[100px] w-[100%] flex-col gap-1">
+    <div v-else class="mb-4 flex max-h-[100px] w-full flex-col gap-1">
       <div class="flex gap-2 rounded-2xl bg-gray-500 p-1 text-center text-black">
         <div class="flex flex-col">
           <fa-awesome-icon

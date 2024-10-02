@@ -21,20 +21,20 @@ const { errors, has_errors } = storeToRefs(ErrorStore);
       </ul>
     </div>
     <button
-      class="-m-1.5 ml-auto inline-flex h-8 w-8 items-center justify-center rounded-lg p-1.5 hover:bg-red-600 hover:text-white hover:ring-2 hover:ring-red-600 "
+      class="-m-1.5 ml-auto inline-flex size-8 items-center justify-center rounded-lg p-1.5 hover:bg-red-600 hover:text-white hover:ring-2 hover:ring-red-600 "
       type="button"
       @click="flush_errors"
     >
       <span class="sr-only">Close</span>
       <svg
-        class="h-5 w-5 stroke-2"
+        class="size-5 stroke-2"
         fill="none"
         stroke="currentColor"
         stroke-width="1.5"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path class="h-5 w-5" d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="size-5" d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </button>
   </div>

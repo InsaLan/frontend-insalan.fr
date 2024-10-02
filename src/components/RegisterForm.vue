@@ -110,7 +110,11 @@ const register_user = async () => {
       </FormField>
       <div class="hidden">
         <label for="username_register">username</label>
-        <input v-model="register_form.decoy" type="text"/>
+        <input
+          id="username_register"
+          v-model="register_form.decoy"
+          type="text"
+        />
       </div>
       <FormField v-slot="context" :validations="v$.password" class="flex flex-col" required>
         <label for="password_register">
@@ -173,7 +177,7 @@ const register_user = async () => {
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6 text-gray-400"
+          class="size-6 text-gray-400"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

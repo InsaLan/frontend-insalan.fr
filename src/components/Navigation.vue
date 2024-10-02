@@ -45,7 +45,7 @@ const burger_menu = ref(false);
   <nav class="sticky top-0 z-50 h-24  bg-theme-bg">
     <div id="desktop" class="hidden h-full items-center justify-around border-b-2 border-white xl:flex">
       <router-link to="/">
-        <img alt="Logo InsaLan" class="h-[4.5rem] w-[4.5rem]" src="@/assets/images/logo_home.png"/>
+        <img alt="Logo InsaLan" class="size-[4.5rem]" src="@/assets/images/logo_home.png"/>
       </router-link>
       <div>
         <router-link
@@ -105,7 +105,7 @@ const burger_menu = ref(false);
     <div class="min-h-full border-b-2 border-white xl:hidden">
       <div id="top" class="flex h-[calc(6rem_-_2px)] items-center justify-between">
         <router-link to="/">
-          <img alt="Logo InsaLan" class="h-[4.5rem] w-[4.5rem]" src="@/assets/images/logo_home.png"/>
+          <img alt="Logo InsaLan" class="size-[4.5rem]" src="@/assets/images/logo_home.png"/>
         </router-link>
         <div class="center flex items-center gap-4 p-5">
           <div v-if="!isConnected">
@@ -132,13 +132,13 @@ const burger_menu = ref(false);
             </button>
           </div>
           <button
-            class="h-8 w-8 rounded text-center text-gray-400 ring-2 ring-gray-400 hover:text-white"
+            class="size-8 rounded text-center text-gray-400 ring-2 ring-gray-400 hover:text-white"
             type="button"
             @click="burger_menu = !burger_menu"
           >
             <svg
               v-if="!burger_menu"
-              class="m-auto h-6 w-6 stroke-2"
+              class="m-auto size-6 stroke-2"
               fill="none"
               stroke="currentColor"
               stroke-width="{1.5}"
@@ -149,7 +149,7 @@ const burger_menu = ref(false);
             </svg>
             <svg
               v-else
-              class="m-auto h-6 w-6 stroke-2"
+              class="m-auto size-6 stroke-2"
               fill="none"
               stroke="currentColor"
               stroke-width="1.5"
