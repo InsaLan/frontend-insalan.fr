@@ -50,21 +50,16 @@ onMounted(async () => {
       <router-link :to="`tournament/${tournament?.id as number}/info`" class="rounded border-2 border-green-600 p-2 text-lg hover:border-green-500">
         Plus d'infos
       </router-link>
-      <div
-        v-if="event_ongoing"
-        class="rounded bg-green-600 p-2 text-lg"
+      <router-link
+        v-if="event_ongoing && Date.parse(tournament?.registration_close) > Date.now()"
+        :to="`tournament/${tournament?.id as number}/register`"
+        class="rounded bg-green-600 p-2 text-lg hover:bg-green-500"
       >
-        <router-link
-          v-if="Date.parse(tournament?.registration_close) > Date.now()"
-          :to="`tournament/${tournament?.id as number}/register`"
-          class="hover:bg-green-500"
-        >
-          S'inscrire
-        </router-link>
-        <button v-else type="button" class="opacity-60" disabled>
-          Inscriptions fermées
-        </button>
-      </div>
+        S'inscrire
+      </router-link>
+      <button v-else type="button" class="rounded bg-green-600 p-2 text-lg opacity-60" disabled>
+        Inscriptions fermées
+      </button>
     </div>
   </div>
   <!-- Placeholder when the tournament is not announced -->
