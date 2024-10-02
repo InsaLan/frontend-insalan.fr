@@ -77,6 +77,7 @@ try {
               :to="key"
               :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': key === selected_section }"
               class="text-xl"
+              @click="open_dropdown = false"
             >
               {{ section.title }}
             </router-link>
