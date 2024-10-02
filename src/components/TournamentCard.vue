@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed, onMounted } from 'vue';
-import type { Tournament } from '@/models/tournament';
+import type { Tournament, TournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const tournamentStore = useTournamentStore();
@@ -12,7 +12,23 @@ const props = defineProps<{
 
 const { getTournament } = tournamentStore;
 const { tournamentsList, eventsList } = storeToRefs(tournamentStore);
-const tournament = computed<Tournament | undefined>(() => tournamentsList.value[props.id]);
+const tournament = computed<Tournament | TournamentDeref | undefined>(() => tournamentsList.value[props.id]);
+const event_ongoing = computed(() => {
+  if (tournament.value === undefined) {
+    return false;
+  }
+
+  let event_id;
+  if (typeof tournament.value.event === 'number') {
+    event_id = tournament.value.event;
+  } else {
+    event_id = tournament.value.event.id;
+  }
+
+  const event = eventsList.value[event_id];
+
+  return event === undefined ? false : event.ongoing;
+});
 
 onMounted(async () => {
   await getTournament(props.id);
@@ -35,7 +51,7 @@ onMounted(async () => {
         Plus d'infos
       </router-link>
       <div
-        v-if="eventsList[tournament?.event.id || tournament?.event]?.ongoing"
+        v-if="event_ongoing"
         class="rounded bg-green-600 p-2 text-lg"
       >
         <router-link
