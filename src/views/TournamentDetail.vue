@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import type { TournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const props = defineProps<{
@@ -18,15 +19,14 @@ const dropdown_icon = computed(() => (open_dropdown.value ? 'angle-up' : 'angle-
 interface TournamentDetailSection {
   title: string;
   is_available: boolean;
-  is_selected: boolean;
 }
 
 const sections = computed<Record<string, TournamentDetailSection>>(() => ({
   info: { title: 'Informations', is_available: true },
   teams: { title: 'Équipes', is_available: true },
-  groups: { title: 'Poules', is_available: tournament.value?.groups.length > 0 || false },
-  swiss: { title: 'Système Suisse', is_available: tournament.value?.swissRounds.length > 0 || false },
-  brackets: { title: 'Arbres', is_available: tournament.value?.brackets.length > 0 || false },
+  groups: { title: 'Poules', is_available: (tournament.value as TournamentDeref)?.groups.length > 0 || false },
+  swiss: { title: 'Système Suisse', is_available: (tournament.value as TournamentDeref)?.swissRounds.length > 0 || false },
+  brackets: { title: 'Arbres', is_available: (tournament.value as TournamentDeref)?.brackets.length > 0 || false },
   planning: { title: 'Planning', is_available: true },
   rules: { title: 'Règlement', is_available: true },
 }));
@@ -77,7 +77,6 @@ try {
               :to="key"
               :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': key === selected_section }"
               class="text-xl"
-              @click="selected_section = key; open_dropdown = false"
             >
               {{ section.title }}
             </router-link>
