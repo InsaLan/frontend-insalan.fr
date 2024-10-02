@@ -13,6 +13,7 @@ import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
 import { BestofType, type ScorePatch } from '@/models/match';
+import type { PlayerRegistrationDeref, RegistrationDeref } from '@/models/registration';
 import type { Tournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
@@ -253,7 +254,7 @@ const openScoreModal = () => {
               <div class="text-md m-1 flex w-16 justify-around rounded bg-blue-700 p-1">
                 <svg
                   v-if="role === 'dev'"
-                  class="h-6 w-6"
+                  class="size-6"
                   fill="none"
                   stroke="currentColor"
                   stroke-width="1.5"
@@ -311,13 +312,13 @@ const openScoreModal = () => {
             <fa-awesome-icon size="xs" icon="fa-solid fa-warning" /> </h2>
         </div>
       </div-->
-      <div v-if="inscriptions.ongoing?.length > 0" class="m-4">
+      <div v-if="(inscriptions.ongoing as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="m-4">
         <h1 class="text-xl">
           Edition Actuelle
         </h1>
         <div class="m-1 grid gap-3 md:grid-cols-3">
           <div
-            v-for="inscription in inscriptions.ongoing"
+            v-for="inscription in (inscriptions.ongoing as [string, PlayerRegistrationDeref | RegistrationDeref][])"
             :key="inscription[1].id"
             :class="{ /*[`bg-red-900`]: inscriptions.unpaid[inscription.team.id]*/ }"
             class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
@@ -326,24 +327,24 @@ const openScoreModal = () => {
               <div class="flex flex-1 flex-col justify-center">
                 <div class="m-2 flex flex-row items-stretch justify-center gap-2">
                   <div
-                    :class="{ [`bg-red-600`]: inscriptions.unpaid[inscription[1].id], [`bg-green-600`]: !inscriptions.unpaid[inscription[1].id] }"
+                    :class="{ [`bg-red-600`]: (inscriptions.unpaid as Record<string, boolean>)[inscription[1].id], [`bg-green-600`]: !(inscriptions.unpaid as Record<string, boolean>)[inscription[1].id] }"
                     class="center rounded p-2 font-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
                     @click.prevent="
-                      inscriptions.unpaid[inscription[1].id]
+                      (inscriptions.unpaid as Record<string, boolean>)[inscription[1].id]
                         ? (
                           modal_payment = true,
                           payRegistration(inscription[1].team.tournament as unknown as Tournament, inscription[0])
                         )
-                        : $router.push(`/tournament/${inscription[1].team.tournament.id }/team/${inscription[1].team.id }`)"
+                        : $router.push(`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`)"
                     @keydown.prevent="
-                      inscriptions.unpaid[inscription[1].id]
+                      (inscriptions.unpaid as Record<string, boolean>)[inscription[1].id]
                         ? (
                           modal_payment = true,
                           payRegistration(inscription[1].team.tournament as unknown as Tournament, inscription[0])
                         )
-                        : $router.push(`/tournament/${inscription[1].team.tournament.id }/team/${inscription[1].team.id }`)"
+                        : $router.push(`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`)"
                   >
-                    {{ inscriptions.unpaid[inscription[1].id] ? 'Terminer l\'inscription' : (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
+                    {{ (inscriptions.unpaid as Record<string, boolean>)[inscription[1].id] ? 'Terminer l\'inscription' : (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
                   </div>
                 </div>
               </div>
@@ -351,7 +352,7 @@ const openScoreModal = () => {
             <div class="hidden flex-col md:block">
               <router-link
                 class="mt-auto text-zinc-400"
-                :to="`/tournament/${inscription[1].team.tournament.id }/rules`"
+                :to="`/tournament/${inscription[1].team.tournament.id}/rules`"
               >
                 Règlement du tournoi
               </router-link>
@@ -364,7 +365,7 @@ const openScoreModal = () => {
               <img
                 :src="inscription[1].team.tournament.logo"
                 alt="image du tournoi"
-                class="h-32 w-32 max-w-full overflow-hidden"
+                class="size-32 max-w-full overflow-hidden"
                 style="width: 100%; object-fit: cover;"
               />
               <div
@@ -386,15 +387,15 @@ const openScoreModal = () => {
           </div>
         </div>
       </div>
-      <div v-if="inscriptions.past?.length > 0" class="m-4">
+      <div v-if="(inscriptions.past as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="m-4">
         <h1 class="text-xl">
           Autres Editions
         </h1>
         <div class="m-1 grid gap-3 md:grid-cols-3">
           <router-link
-            v-for="inscription in inscriptions.past"
+            v-for="inscription in (inscriptions.past as [string, PlayerRegistrationDeref | RegistrationDeref][])"
             :key="inscription[1].id"
-            :to="`/tournament/${inscription[1].team.tournament.id }/team/${inscription[1].team.id }`"
+            :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
             class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
           >
             <div class="my-1 hidden md:block">
@@ -402,7 +403,7 @@ const openScoreModal = () => {
                 <div>
                   <router-link
                     class="center rounded bg-green-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-                    :to="`/tournament/${inscription[1].team.tournament.id }/team/${inscription[1].team.id }`"
+                    :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
                   >
                     {{ (inscription[1].team.players[0] === user.id || inscription[0] === 'manager') ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
                   </router-link>
@@ -412,7 +413,7 @@ const openScoreModal = () => {
             <div class="hidden flex-col md:block">
               <router-link
                 class="mt-auto text-zinc-400"
-                :to="`/tournament/${inscription[1].team.tournament.id }/rules`"
+                :to="`/tournament/${inscription[1].team.tournament.id}/rules`"
               >
                 Règlement du tournoi
               </router-link>
@@ -420,7 +421,7 @@ const openScoreModal = () => {
             <img
               :src="inscription[1].team.tournament.logo"
               alt="image du tournoi"
-              class="h-32 w-32 max-w-full overflow-hidden"
+              class="size-32 max-w-full overflow-hidden"
               style="width: 100%; object-fit: cover;"
             />
             <div class="m-1 flex flex-1 flex-col justify-center">
@@ -602,9 +603,9 @@ const openScoreModal = () => {
           class="flex justify-between"
           label="{{id}}"
         >
-          <label :for="'input' + id">{{ name }}</label>
+          <label :for="`input${id}`">{{ name }}</label>
           <input
-            :id="'input' + id"
+            :id="`input${id}`"
             v-model="data_score.score[id]"
             :class="{ error: context.invalid }"
             aria-label="score"
@@ -660,9 +661,9 @@ const openScoreModal = () => {
           :on-blur="v$_time_game.$touch"
           label="times"
         >
-          <label :for="'input' + n">Partie {{ n }} </label>
+          <label :for="`input${n}`">Partie {{ n }} </label>
           <input
-            :id="'input' + n"
+            :id="`input${n}`"
             v-model="data_score.times[n]"
             :class="{ error: context.invalid }"
             aria-label="duration"
