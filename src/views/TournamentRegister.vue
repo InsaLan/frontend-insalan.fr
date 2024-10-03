@@ -59,7 +59,7 @@ const rules = computed(() => ({
   accept_rules: { acceptRules },
 }));
 
-const v$ = useVuelidate(rules, register_form, { $autoDirty: true });
+const v$ = useVuelidate(rules, register_form);
 
 const open_modal = ref(false);
 const modal_payment = ref(false);
@@ -171,18 +171,47 @@ const view_password = ref<boolean>(false);
         </button>
       </div>
       <div class="flex flex-col bg-[#2c292d] p-8">
-        <form class="grid gap-x-14 gap-y-2 sm:grid-cols-2">
-          <FormField v-if="create" v-slot="context" :validations="v$.team" class="flex flex-col text-xl" required>
+        <form
+          id="register_form"
+          class="grid gap-x-14 gap-y-2 sm:grid-cols-2"
+          @submit.prevent="create ? register_team() : register_player()"
+        >
+          <FormField
+            v-if="create"
+            v-slot="context"
+            :validations="v$.team"
+            class="flex flex-col text-xl"
+          >
             <label for="team">
               Nom de l'équipe
             </label>
-            <input id="team" v-model="register_form.team" class="text-black" :class="{ error: context.invalid }" placeholder="Équipe 1" type="text"/>
+            <input
+              id="team"
+              v-model="register_form.team"
+              class="text-black"
+              :class="{ error: context.invalid }"
+              placeholder="Équipe 1"
+              type="text"
+              required
+              @blur="v$.team.$touch"
+            />
           </FormField>
-          <FormField v-else v-slot="context" :validations="v$.team" class="flex flex-col text-xl" required>
+          <FormField
+            v-else
+            v-slot="context"
+            :validations="v$.team"
+            class="flex flex-col text-xl"
+          >
             <label for="teams">
               Équipe
             </label>
-            <select id="teams" v-model="register_form.team" :class="{ error: context.invalid }" class="text-black">
+            <select
+              id="teams"
+              v-model="register_form.team"
+              :class="{ error: context.invalid }"
+              class="text-black"
+              required
+            >
               <option value="" selected>
                 Sélectionner une équipe
               </option>
@@ -191,41 +220,86 @@ const view_password = ref<boolean>(false);
               </option>
             </select>
           </FormField>
-          <FormField v-slot="context" :validations="v$.name_in_game" class="flex flex-col text-xl" required>
+          <FormField
+            v-slot="context"
+            :validations="v$.name_in_game"
+            class="flex flex-col text-xl"
+          >
             <label for="name_in_game">
               Pseudo en jeu
             </label>
-            <input id="name_in_game" v-model="register_form.name_in_game" class="text-black disabled:opacity-75" :class="{ error: context.invalid }" :disabled="register_form.role === 'manager'" placeholder="Pseudo" type="text"/>
+            <input
+              id="name_in_game"
+              v-model="register_form.name_in_game"
+              class="text-black disabled:opacity-75"
+              :class="{ error: context.invalid }"
+              :disabled="register_form.role === 'manager'"
+              placeholder="Pseudo"
+              type="text"
+              required
+              @blur="v$.name_in_game.$touch"
+            />
           </FormField>
-          <FormField v-slot="context" :validations="v$.password" class="relative flex flex-col text-xl" required>
+          <FormField
+            v-slot="context"
+            :validations="v$.password"
+            class="flex flex-col text-xl"
+          >
             <label for="pwd">
               Mot de passe
             </label>
-            <input id="pwd" v-model="register_form.password" class="text-black" :class="{ error: context.invalid }" :type="view_password ? 'text' : 'password'"/>
-            <fa-awesome-icon
-              :icon="['fas', view_password ? 'eye-slash' : 'eye']"
-              class="absolute right-8 top-10 z-10"
-              size="s"
-              title="Voir le mot de passe"
-              style="color: black;"
-              @click="view_password = !view_password"
-            />
-            <button type="button" @click="generate_password">
-              <fa-awesome-icon
-                v-if="create"
-                class="absolute right-2 top-10 z-10"
-                icon="fa-solid fa-arrows-rotate"
-                size="s"
-                title="Générer un mot de passe"
-                style="color: black;"
+            <div
+              class="relative flex size-full items-center"
+            >
+              <input
+                id="pwd"
+                v-model="register_form.password"
+                class="size-full text-black"
+                :class="{ error: context.invalid }"
+                :type="view_password ? 'text' : 'password'"
+                required
+                @blur="v$.password.$touch"
               />
-            </button>
+              <button
+                type="button"
+                class="absolute right-8 top-1 z-10 size-8"
+                @click="generate_password"
+              >
+                <fa-awesome-icon
+                  v-if="create"
+                  icon="fa-solid fa-arrows-rotate"
+                  title="Générer un mot de passe"
+                  style="color: black;"
+                />
+              </button>
+              <button
+                type="button"
+                class="absolute right-1 top-1 z-10 size-8"
+                @click="view_password = !view_password"
+              >
+                <fa-awesome-icon
+                  :icon="['fas', view_password ? 'eye-slash' : 'eye']"
+                  title="Voir le mot de passe"
+                  style="color: black;"
+                />
+              </button>
+            </div>
           </FormField>
-          <FormField v-slot="context" :validations="v$.role" class="flex flex-col text-xl" required>
+          <FormField
+            v-slot="context"
+            :validations="v$.role"
+            class="flex flex-col text-xl"
+          >
             <label for="role">
               Rôle dans l'équipe
             </label>
-            <select id="role" v-model="register_form.role" :class="{ error: context.invalid }" class="text-black">
+            <select
+              id="role"
+              v-model="register_form.role"
+              :class="{ error: context.invalid }"
+              class="text-black"
+              required
+            >
               <option value="player">
                 Joueur
               </option>
@@ -244,9 +318,21 @@ const view_password = ref<boolean>(false);
           <li>Pas d'insulte</li>
           <li>Apporter son propre matériel <b>filaire </b></li>
         </ul>
-        <FormField v-slot="context" :validations="v$.accept_rules" class="flex flex-col self-center text-3xl">
-          <div>
-            <input id="check" v-model="register_form.accept_rules" :class="{ error: context.invalid }" type="checkbox"/>
+        <FormField
+          v-slot="context"
+          :validations="v$.accept_rules"
+          class="flex flex-col self-center text-3xl"
+        >
+          <div
+            class="flex w-full items-center justify-center gap-2"
+          >
+            <input
+              id="check"
+              v-model="register_form.accept_rules"
+              :class="{ error: context.invalid }"
+              type="checkbox"
+              required
+            />
             <label for="check"> J'accepte les <router-link :to="`/tournament/${tournament?.id}/rules`" target="_blank" class="text-[#63d1ff]">règles du tournoi</router-link></label>
           </div>
         </FormField>

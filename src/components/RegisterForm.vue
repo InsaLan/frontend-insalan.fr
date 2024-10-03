@@ -50,7 +50,7 @@ const rules = computed(() => ({
   },
   accept_cgu: { acceptGCU },
 }));
-const v$ = useVuelidate(rules, register_form, { $autoDirty: true });
+const v$ = useVuelidate(rules, register_form);
 
 const register_user = async () => {
   const isValid = await v$.value.$validate();

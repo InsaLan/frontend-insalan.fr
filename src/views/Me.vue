@@ -113,7 +113,7 @@ const game_number = computed(() => {
   return Object.values(data_score.score).reduce((a, b) => a + b, 0);
 });
 
-const v$_time_game = useVuelidate(rules_score, data_score, { $autoDirty: true });
+const v$_time_game = useVuelidate(rules_score, data_score);
 
 const closeModalEnterScore = () => {
   invalid_score.value = '';
@@ -602,6 +602,7 @@ const openScoreModal = () => {
           :validations="v$_time_game.score"
           class="flex justify-between"
           label="{{id}}"
+          @blur="v$_time_game.$touch"
         >
           <label :for="`input${id}`">{{ name }}</label>
           <input
@@ -658,8 +659,8 @@ const openScoreModal = () => {
           v-slot="context"
           class="flex justify-between"
           :validations="v$_time_game.times"
-          :on-blur="v$_time_game.$touch"
           label="times"
+          @blur="v$_time_game.$touch"
         >
           <label :for="`input${n}`">Partie {{ n }} </label>
           <input
