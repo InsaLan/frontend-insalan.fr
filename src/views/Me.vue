@@ -668,7 +668,7 @@ const openScoreModal = () => {
             :id="`input${n}`"
             v-model="data_score.times[n]"
             :class="{ error: context.invalid }"
-            aria-label="duration (en minutes)"
+            aria-label="duration (minutes)"
             class="w-24 border-2 bg-theme-bg"
             placeholder="5"
             required
