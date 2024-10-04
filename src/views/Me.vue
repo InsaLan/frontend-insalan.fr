@@ -48,6 +48,7 @@ const rules_email = computed(() => ({
 const v$_email = useVuelidate(rules_email, data_email);
 
 const rules_score = computed(() => ({
+  score: { required },
   times: { required },
 }));
 
@@ -648,7 +649,7 @@ const openScoreModal = () => {
     </template>
     <template #title>
       <h3 id="open_modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Enregistrer les durées de match
+        Enregistrer les durées de match (en minute)
       </h3>
     </template>
     <template #body>
@@ -667,9 +668,9 @@ const openScoreModal = () => {
             :id="`input${n}`"
             v-model="data_score.times[n]"
             :class="{ error: context.invalid }"
-            aria-label="duration"
+            aria-label="duration (en minutes)"
             class="w-24 border-2 bg-theme-bg"
-            placeholder="5 min"
+            placeholder="5"
             required
             type="number"
             min="1"
