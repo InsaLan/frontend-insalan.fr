@@ -7,5 +7,8 @@ import Content from '@/components/Content.vue';
   <h1 class="title">
     L'association InsaLan
   </h1>
-  <Content name="Association"/>
+  <Content
+    class="flex flex-col gap-8 indent-12 lg:px-24"
+    name="Association"
+  />
 </template>
