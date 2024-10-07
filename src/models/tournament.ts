@@ -3,6 +3,7 @@ import type { Caster } from '@/models/caster';
 import type { EventDeref } from '@/models/event';
 import type { Game } from '@/models/game';
 import type { Group } from '@/models/group';
+import type { SeatSlot } from '@/models/seats';
 import type { SwissRound } from '@/models/swiss';
 import type { Team } from '@/models/team';
 
@@ -36,6 +37,7 @@ export interface TournamentDeref extends BaseTournament {
   groups: Group[];
   brackets: Bracket[];
   swissRounds: SwissRound[];
+  seatslots: SeatSlot[];
 }
 
 export interface Tournament extends BaseTournament {

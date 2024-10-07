@@ -70,6 +70,10 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/components/TournamentTeams.vue'),
       },
       {
+        path: 'seatings',
+        component: () => import('@/components/TournamentSeating.vue'),
+      },
+      {
         path: 'groups',
         component: () => import('@/components/TournamentGroups.vue'),
       },
