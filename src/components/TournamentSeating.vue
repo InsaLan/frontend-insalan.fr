@@ -153,13 +153,13 @@ const handleHover = (index: number) => {
                   class="z-[-1] size-8 cursor-pointer object-cover"
                   :class="
                     isTournamentSeat(index)
-                      ? isFocused(index) ? 'hue-rotate-90' : isPicked(index) ? 'hue-rotate-180' : ''
-                      : 'grayscale'
+                      ? isFocused(index) ? 'hue-rotate-180' : isPicked(index) ? 'hue-rotate-[335deg] brightness-100' : 'hue-rotate-60'
+                      : 'grayscale brightness-200'
                   "
                 />
               </template>
               <template v-else>
-                <div class="z-[-1] size-full bg-gray-200"/>
+                <div class="z-[-1] size-full"/>
               </template>
             </div>
           </div>
@@ -169,29 +169,29 @@ const handleHover = (index: number) => {
                 <img
                   alt="Event Seat"
                   src="@/assets/images/seat.png"
-                  class="size-8 object-cover"
+                  class="size-8 object-cover hue-rotate-60"
                 />
-                <span>Places libres du tournois {{ tournament.name }}</span>
+                <span>Places libres du tournois : {{ tournament.name }}</span>
               </div>
               <div class="flex items-center gap-2">
                 <img
                   alt="Event Seat"
                   src="@/assets/images/seat.png"
-                  class="size-8 object-cover hue-rotate-180"
+                  class="size-8 object-cover brightness-100 hue-rotate-[335deg]"
                 />
-                <span>Places occupées du tournois {{ tournament.name }}</span>
+                <span>Places occupées du tournois : {{ tournament.name }}</span>
               </div>
               <div class="flex items-center gap-2">
                 <img
                   alt="Event Seat"
                   src="@/assets/images/seat.png"
-                  class="size-8 object-cover grayscale"
+                  class="size-8 object-cover brightness-200 grayscale"
                 />
-                <span>Places des autres Tournois</span>
+                <span>Places utilisées pour les autres Tournois</span>
               </div>
             </div>
             <p class="mt-2">
-              Pour modifier votre placement, vous devez vous rendre sur la page de votre équipe, accessible depuis
+              Pour modifier votre placement, rendez-vous sur la page de votre équipe, accessible depuis
               <router-link
                 to="/me"
                 class="text-blue-500 underline"
