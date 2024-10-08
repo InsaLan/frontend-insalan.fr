@@ -6,6 +6,7 @@ import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
+import Seating from '@/components/SeatingPlan.vue';
 import { PaymentStatus, type PlayerRegistration, type PlayerRegistrationDeref } from '@/models/registration';
 import type { Team } from '@/models/team';
 import type { TournamentDeref } from '@/models/tournament';
@@ -218,7 +219,7 @@ const kick_member = async (type: string, id: number) => {
     </h1>
 
     <div
-      class="m-b-6 my-5 flex w-5/6 flex-col items-center justify-center rounded-2xl bg-[#144B61] md:w-3/4"
+      class="my-5 mb-6 flex w-5/6 flex-col items-center justify-center rounded-2xl bg-[#144B61] md:w-3/4"
     >
       <div
         class="flex w-full flex-col justify-between border-b-2 border-black p-2 md:flex-row"
@@ -435,6 +436,15 @@ const kick_member = async (type: string, id: number) => {
       >
         Le tournoi est terminé et l'équipe ne peut plus être modifiée.
       </div>
+    </div>
+
+    <div
+      class="mb-6 flex w-5/6 flex-col items-center justify-center overflow-hidden rounded-2xl bg-[#144B61] md:w-3/4"
+    >
+      <Seating
+        :tournament="tournament as TournamentDeref"
+        :team="selected_team"
+      />
     </div>
   </div>
 

@@ -9,6 +9,7 @@ interface BaseTeam {
   substitutes: PlayerRegistration[] | number[];
   validated: boolean;
   captain: string;
+  seat_slot: number | null;
 }
 
 export interface TeamDeref extends BaseTeam {
