@@ -302,6 +302,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     tournament_teams[index].name = response.data.name;
     tournament_teams[index].players = response.data.players;
     tournament_teams[index].substitutes = response.data.substitutes;
+    tournament_teams[index].seat_slot = response.data.seat_slot;
   }
 
   async function leave_team(registration_type: string, registration_id: number) {
