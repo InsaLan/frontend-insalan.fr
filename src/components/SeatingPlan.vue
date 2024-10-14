@@ -83,7 +83,7 @@ const handleHover = (index: number, e: Event) => {
     (seatslot) => seatslot.seats.some((seat) => seat.x === x && seat.y === y),
   );
 
-  if (slot && slot.id !== hoveredTeamSlot.value) {
+  if (slot) {
     hoveredTeamSlot.value = slot.id;
     const team = props.tournament.teams.find((t) => (t as unknown as TeamDeref).seat_slot === slot.id);
     hoveredTeamSlotName.value = team ? (team as unknown as TeamDeref).name : null;
