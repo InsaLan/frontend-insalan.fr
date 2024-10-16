@@ -490,6 +490,8 @@ export const useTournamentStore = defineStore('tournament', () => {
     return res;
   };
 
+  const soloGame = computed(() => (tournament.value as TournamentDeref | undefined)?.game.players_per_team === 1);
+
   function $reset() {
     eventsList.value = {};
     tournamentsList.value = {};
@@ -544,5 +546,6 @@ export const useTournamentStore = defineStore('tournament', () => {
     get_ticket_pdf,
     get_unpaid_registration,
     validate_registration,
+    soloGame,
   };
 });
