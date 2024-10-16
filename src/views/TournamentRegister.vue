@@ -26,9 +26,7 @@ const tournamentStore = useTournamentStore();
 const {
   registerTeam, registerPlayerOrManager, getTournamentFull, payRegistration,
 } = tournamentStore;
-const { tournamentsList } = storeToRefs(tournamentStore);
-const tournament = computed<Tournament | undefined>(() => tournamentsList.value[props.id]);
-// const tournament = ref<Tournament>();
+const { tournament, soloGame } = storeToRefs(tournamentStore);
 
 const acceptRules = helpers.withParams(
   { type: 'acceptRules' },
@@ -52,7 +50,7 @@ const selected_team = computed(() => {
 });
 
 const rules = computed(() => ({
-  team: { required },
+  team: soloGame ? {} : { required },
   name_in_game: register_form.role === 'player' ? { required } : {},
   password: { required, minLengthValue: minLength(8) },
   role: { required },
@@ -67,6 +65,10 @@ const modal_payment = ref(false);
 const register_team = async () => {
   const isValid = await v$.value.$validate();
   if (!isValid) return;
+
+  if (soloGame) {
+    register_form.team = register_form.name_in_game;
+  }
 
   try {
     await registerTeam(
@@ -177,7 +179,7 @@ const view_password = ref<boolean>(false);
           @submit.prevent="create ? register_team() : register_player()"
         >
           <FormField
-            v-if="create"
+            v-if="create && !soloGame"
             v-slot="context"
             :validations="v$.team"
             class="flex flex-col text-xl"
@@ -194,6 +196,27 @@ const view_password = ref<boolean>(false);
               type="text"
               required
               @blur="v$.team.$touch"
+            />
+          </FormField>
+          <FormField
+            v-else-if="soloGame"
+            v-slot="context"
+            :validations="v$.name_in_game"
+            class="flex flex-col text-xl"
+          >
+            <label for="name_in_game">
+              Pseudo en jeu
+            </label>
+            <input
+              id="name_in_game"
+              v-model="register_form.name_in_game"
+              class="text-black disabled:opacity-75"
+              :class="{ error: context.invalid }"
+              :disabled="register_form.role === 'manager'"
+              placeholder="Pseudo"
+              type="text"
+              required
+              @blur="v$.name_in_game.$touch"
             />
           </FormField>
           <FormField
@@ -221,6 +244,7 @@ const view_password = ref<boolean>(false);
             </select>
           </FormField>
           <FormField
+            v-if="!soloGame"
             v-slot="context"
             :validations="v$.name_in_game"
             class="flex flex-col text-xl"
@@ -240,6 +264,7 @@ const view_password = ref<boolean>(false);
               @blur="v$.name_in_game.$touch"
             />
           </FormField>
+          <div v-else/> <!-- for padding -->
           <FormField
             v-slot="context"
             :validations="v$.password"

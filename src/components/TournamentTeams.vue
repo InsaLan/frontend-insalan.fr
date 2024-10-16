@@ -13,7 +13,7 @@ const { getTournamentTeams } = tournamentStore;
 
 getTournamentTeams();
 
-const { tourney_teams } = storeToRefs(tournamentStore);
+const { tourney_teams, soloGame } = storeToRefs(tournamentStore);
 </script>
 
 <template>
@@ -30,6 +30,7 @@ const { tourney_teams } = storeToRefs(tournamentStore);
           v-for="team in tourney_teams.validated_teams"
           :key="team.id"
           :team="team"
+          :solo-game="soloGame"
         />
       </div>
     </div>
