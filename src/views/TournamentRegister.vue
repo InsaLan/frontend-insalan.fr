@@ -199,7 +199,7 @@ const view_password = ref<boolean>(false);
             />
           </FormField>
           <FormField
-            v-else-if="soloGame"
+            v-else-if="create && soloGame"
             v-slot="context"
             :validations="v$.name_in_game"
             class="flex flex-col text-xl"
@@ -243,8 +243,9 @@ const view_password = ref<boolean>(false);
               </option>
             </select>
           </FormField>
+          <div v-if="create && soloGame"/> <!-- for padding -->
           <FormField
-            v-if="!soloGame"
+            v-else
             v-slot="context"
             :validations="v$.name_in_game"
             class="flex flex-col text-xl"
@@ -264,7 +265,6 @@ const view_password = ref<boolean>(false);
               @blur="v$.name_in_game.$touch"
             />
           </FormField>
-          <div v-else/> <!-- for padding -->
           <FormField
             v-slot="context"
             :validations="v$.password"
