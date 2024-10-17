@@ -10,6 +10,7 @@ storeToRefs(useUserStore());
 
 defineProps<{
   team: Team;
+  soloGame?: boolean;
 }>();
 </script>
 
@@ -19,7 +20,10 @@ defineProps<{
       {{ team.name }}
       <img v-if="team.validated" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="inline-block size-6"/>
     </h1>
-    <ul class="ml-4 list-disc text-xl">
+    <ul
+      v-if="soloGame"
+      class="ml-4 list-disc text-xl"
+    >
       <li v-for="player in team.players" :key="((player as PlayerRegistration).user)">
         <p>
           {{ (player as PlayerRegistration).name_in_game }}
