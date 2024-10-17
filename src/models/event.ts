@@ -8,6 +8,7 @@ interface BaseEvent {
   month: number;
   ongoing: boolean;
   logo?: string;
+  seats: [number, number][];
 }
 
 export interface Event extends BaseEvent {

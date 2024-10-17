@@ -24,6 +24,7 @@ interface TournamentDetailSection {
 const sections = computed<Record<string, TournamentDetailSection>>(() => ({
   info: { title: 'Informations', is_available: true },
   teams: { title: 'Équipes', is_available: true },
+  seatings: { title: 'Placement', is_available: true },
   groups: { title: 'Poules', is_available: (tournament.value as TournamentDeref)?.groups.length > 0 || false },
   swiss: { title: 'Système Suisse', is_available: (tournament.value as TournamentDeref)?.swissRounds.length > 0 || false },
   brackets: { title: 'Arbres', is_available: (tournament.value as TournamentDeref)?.brackets.length > 0 || false },
