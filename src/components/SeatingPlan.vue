@@ -144,23 +144,20 @@ const closeModal = () => {
 </script>
 
 <template>
-  <section id="seating">
+  <section id="seating" class="w-full">
     <div v-if="tournament?.event.seats" class="flex flex-col items-center justify-center">
       <div
-        class="m-2 w-screen overflow-x-auto"
-        :style="{
-          maxWidth: `${(maxX + 1) * 32}px`,
-        }"
+        class="m-2 flex w-full flex-col items-center"
       >
+        <h2 class="text-center text-2xl font-bold">
+          Placement des équipes pour : {{ tournament.event.name }}
+        </h2>
         <div
-          class="p-4"
+          class="w-full overflow-x-auto"
           :style="{
-            width: `${(maxX + 1) * 32}px`,
+            maxWidth: `${(maxX + 1) * 32}px`,
           }"
         >
-          <h2 class="mb-4 text-2xl font-bold">
-            Placement des équipes pour : {{ tournament.event.name }}
-          </h2>
           <div
             id="tooltip"
             class="z-1 fixed hidden max-w-60 items-center justify-center overflow-hidden rounded-lg border border-black bg-gray-600 p-2 text-white"
@@ -175,11 +172,12 @@ const closeModal = () => {
             </template>
           </div>
           <div
-            class="grid"
+            class="grid overflow-hidden"
             TournamentDeref
             :style="{
               gridTemplateColumns: `repeat(${maxX + 1}, minmax(0, 1fr))`,
               gridTemplateRows: `repeat(${maxY + 1}, minmax(0, 1fr))`,
+              width: `${(maxX + 1) * 32}px`,
             }"
             @mouseleave="handleHover(-1, $event)"
             @focusout="handleHover(-1, $event)"
@@ -234,54 +232,60 @@ const closeModal = () => {
               </template>
             </div>
           </div>
-          <div class="mt-4 flex flex-col items-center text-sm">
-            <div class="flex items-center space-x-4">
-              <div class="flex items-center gap-2">
-                <img
-                  alt="Event Seat"
-                  src="@/assets/images/seat-empty.png"
-                  class="size-8 object-cover"
-                />
-                <span>Places libres du tournois : {{ tournament.name }}</span>
-              </div>
-              <div v-if="team" class="flex items-center gap-2">
-                <img
-                  alt="Event Seat"
-                  src="@/assets/images/seat-selected.png"
-                  class="size-8 object-cover"
-                />
-                <span>Place actuelle</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <img
-                  alt="Event Seat"
-                  src="@/assets/images/seat-taken.png"
-                  class="size-8 object-cover"
-                />
-                <span>Places occupées du tournois : {{ tournament.name }}</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <img
-                  alt="Event Seat"
-                  src="@/assets/images/seat-event.png"
-                  class="size-8 object-cover"
-                />
-                <span>Places utilisées pour les autres tournois</span>
-              </div>
+        </div>
+        <div class="m-4 flex flex-col items-center text-sm">
+          <div
+            class="grid grid-cols-1 items-center gap-4"
+            :class="{
+              'sm:grid-cols-4': team,
+              'sm:grid-cols-3': !team,
+            }"
+          >
+            <div class="flex items-center gap-2">
+              <img
+                alt="Event Seat"
+                src="@/assets/images/seat-empty.png"
+                class="size-8 object-cover"
+              />
+              <span>Places libres du tournois : {{ tournament.name }}</span>
             </div>
-            <p
-              v-if="!team"
-              class="mt-2"
-            >
-              Pour modifier votre placement, rendez-vous sur la page de votre équipe, accessible depuis
-              <router-link
-                to="/me"
-                class="text-blue-500 underline"
-              >
-                la page "Mon compte"
-              </router-link>
-            </p>
+            <div v-if="team" class="flex items-center gap-2">
+              <img
+                alt="Event Seat"
+                src="@/assets/images/seat-selected.png"
+                class="size-8 object-cover"
+              />
+              <span>Place actuelle de l'équipe</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <img
+                alt="Event Seat"
+                src="@/assets/images/seat-taken.png"
+                class="size-8 object-cover"
+              />
+              <span>Places occupées du tournois : {{ tournament.name }}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <img
+                alt="Event Seat"
+                src="@/assets/images/seat-event.png"
+                class="size-8 object-cover"
+              />
+              <span>Places utilisées pour les autres tournois</span>
+            </div>
           </div>
+          <p
+            v-if="!team"
+            class="mt-2"
+          >
+            Pour modifier votre placement, rendez-vous sur la page de votre équipe, accessible depuis
+            <router-link
+              to="/me"
+              class="text-blue-500 underline"
+            >
+              la page "Mon compte"
+            </router-link>
+          </p>
         </div>
       </div>
     </div>
