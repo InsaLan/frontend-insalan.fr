@@ -59,15 +59,20 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         path: '',
-        redirect: (to) => `${to.fullPath}/info`,
+        component: () => import('@/components/TournamentInfo.vue'),
+        // redirect: (to) => `${to.fullPath}/info`,
+        name: 'tournament_info',
       },
       {
         path: 'info',
-        component: () => import('@/components/TournamentInfo.vue'),
+        redirect: { name: 'tournament_info' },
+        // component: () => import('@/components/TournamentInfo.vue'),
+        // name: 'tournament_info',
       },
       {
         path: 'teams',
         component: () => import('@/components/TournamentTeams.vue'),
+        name: 'tournament_teams',
       },
       {
         path: 'seatings',
@@ -76,22 +81,83 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'groups',
         component: () => import('@/components/TournamentGroups.vue'),
+        name: 'tournament_groups',
       },
       {
         path: 'swiss',
         component: () => import('@/components/TournamentSwiss.vue'),
+        name: 'tournament_swiss',
       },
       {
         path: 'brackets',
         component: () => import('@/components/TournamentBrackets.vue'),
+        name: 'tournament_brackets',
       },
       {
         path: 'planning',
         component: () => import('@/components/TournamentPlanning.vue'),
+        name: 'tournament_planning',
       },
       {
         path: 'rules',
         component: () => import('@/components/TournamentRules.vue'),
+        name: 'tournament_rules',
+      },
+      {
+        path: 'admin',
+        children: [
+          {
+            path: '',
+            component: () => import('@/components/TournamentAdminInfo.vue'),
+            name: 'tournament_admin_info',
+          },
+          {
+            path: 'info',
+            redirect: { name: 'tournament_admin_info' },
+            // component: () => import('@/components/TournamentAdminInfo.vue'),
+            // name: 'tournament_admin_info',
+          },
+          {
+            path: 'teams',
+            component: () => import('@/components/TournamentAdminTeams.vue'),
+            name: 'tournament_admin_teams',
+          },
+          {
+            path: 'groups',
+            children: [
+              {
+                path: '',
+                component: () => import('@/components/TournamentAdminGroups.vue'),
+                name: 'tournament_admin_groups',
+              },
+              {
+                path: 'matchs',
+                component: () => import('@/components/TournamentAdminGroupsMatchs.vue'),
+                name: 'tournament_admin_groups-matchs',
+              },
+            ],
+          },
+          {
+            path: 'swiss',
+            component: () => import('@/components/TournamentAdminSwiss.vue'),
+            name: 'tournament_admin_swiss',
+          },
+          {
+            path: 'brackets',
+            component: () => import('@/components/TournamentAdminBrackets.vue'),
+            name: 'tournament_admin_brackets',
+          },
+          {
+            path: 'planning',
+            component: () => import('@/components/TournamentPlanning.vue'),
+            name: 'tournament_admin_planning',
+          },
+          {
+            path: 'rules',
+            component: () => import('@/components/TournamentRules.vue'),
+            name: 'tournament_admin_rules',
+          },
+        ],
       },
     ],
   },
