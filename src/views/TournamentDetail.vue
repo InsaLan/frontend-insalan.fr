@@ -4,6 +4,7 @@ import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { TournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
+import { useUserStore } from '@/stores/user.store';
 
 const props = defineProps<{
   id: number;
@@ -21,6 +22,9 @@ interface TournamentDetailSection {
   is_available: boolean;
 }
 
+const userStore = useUserStore();
+const { role } = storeToRefs(userStore);
+
 const sections = computed<Record<string, TournamentDetailSection>>(() => ({
   info: { title: 'Informations', is_available: true },
   teams: { title: 'Équipes', is_available: true },
@@ -35,9 +39,17 @@ const sections = computed<Record<string, TournamentDetailSection>>(() => ({
 const router = useRouter();
 const route = useRoute();
 
+const admin_mode = computed(() => route.path.includes('admin'));
+
 const selected_section = computed<string>(() => {
-  const sec = route.path.split('/').at(-1);
-  return sec === undefined ? '' : sec;
+  let sec = 'info';
+  Object.keys(sections.value).forEach((e) => {
+    if (route.path.includes(e)) {
+      sec = e;
+    }
+  });
+
+  return sec;
 });
 
 try {
@@ -46,6 +58,14 @@ try {
 } catch (err: unknown) {
   router.go(-1);
 }
+
+const admin_switch = computed(() => {
+  if (admin_mode.value) {
+    return (route.name as string).replace('admin_', '').split('-').at(0);
+  }
+
+  return (route.name as string).replace('tournament_', 'tournament_admin_').split('-').at(0);
+});
 </script>
 
 <template>
@@ -75,7 +95,7 @@ try {
           <template v-for="(section, key) in sections" :key="key">
             <router-link
               v-if="section.is_available"
-              :to="key"
+              :to="{ name: `tournament_${admin_mode ? 'admin_' : ''}${key}` }"
               :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': key === selected_section }"
               class="text-xl"
               @click="open_dropdown = false"
@@ -84,6 +104,18 @@ try {
             </router-link>
           </template>
         </div>
+        <router-link
+          v-if="role === 'dev' || role === 'staff'"
+          :to="{ name: admin_switch }"
+          :class="{
+            'bg-red-800 hover:bg-red-700': !admin_mode,
+            'bg-blue-800 hover:bg-blue-700': admin_mode,
+          }"
+          type="button"
+          class="-my-2 rounded p-2 text-xl font-bold text-white transition duration-150 ease-in-out md:absolute md:right-5 md:-mt-2"
+        >
+          {{ admin_mode ? 'Mode Normal' : 'Mode Admin' }}
+        </router-link>
       </nav>
     </div>
 
