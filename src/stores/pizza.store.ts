@@ -4,6 +4,7 @@ import { ref } from 'vue';
 import type { Order } from '@/models/order';
 import type { Pizza } from '@/models/pizza';
 import type { AdminTimeslotDeref, Export, Timeslot } from '@/models/timeslot';
+import { frenchFormatFromDate } from '@/utils';
 
 import { useUserStore } from './user.store';
 
@@ -13,6 +14,7 @@ const { csrf } = storeToRefs(useUserStore());
 export const usePizzaStore = defineStore('pizza', () => {
   const pizzaList = ref<Record<number, Pizza>>({});
   const timeslotList = ref<Record<number, Timeslot | AdminTimeslotDeref>>({});
+  const timeslotExportList = ref<Record<number, Export[]>>({});
 
   async function fetchAllPizzas() {
     const res = await axios.get<Pizza[]>('/pizza/pizza/full');
@@ -122,16 +124,32 @@ export const usePizzaStore = defineStore('pizza', () => {
     }
   }
 
-  function frenchFormatFromDate(date: Date): string {
-    const mois: string[] = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-    const year = date.getFullYear();
-    const dayNumber = date.getDate();
-    const month = mois[date.getMonth()];
-    const weekday = date.toLocaleDateString('fr-FR', { weekday: 'long' });
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
+  async function fetchTimeslotExports() {
+    await Promise.all(Object.values(timeslotList.value).map(async ({ id }) => {
+      const res = await axios.get<Export[]>(`/pizza/timeslot/${id}/export`);
+      timeslotExportList.value[id] = res.data;
+    }));
+  }
 
-    return `${weekday} ${dayNumber} ${month} ${year} - ${hours}h${minutes}`;
+  async function deleteExport(exportId: number) {
+    await get_csrf();
+
+    const res = await axios.delete(`/pizza/export/${exportId}`, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf.value,
+      },
+    });
+
+    if (res.status === 204) {
+      Object.values(timeslotList.value).forEach(({ id }) => {
+        for (let i = 0; i < timeslotExportList.value[id].length; i += 1) {
+          if (timeslotExportList.value[id][i].id === exportId) {
+            timeslotExportList.value[id].splice(i, 1);
+          }
+        }
+      });
+    }
   }
 
   async function exportOrders(timeslotId: number) {
@@ -285,14 +303,16 @@ export const usePizzaStore = defineStore('pizza', () => {
   return {
     pizzaList,
     timeslotList,
+    timeslotExportList,
     fetchAllPizzas,
     fetchNextTimeslots,
-    frenchFormatFromDate,
     fetchAdminDetailTimeslot,
     addOrder,
     patchOrder,
     addTimeslot,
     deleteTimeslot,
+    fetchTimeslotExports,
+    deleteExport,
     exportOrders,
     addPizza,
     patchPizza,

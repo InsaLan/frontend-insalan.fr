@@ -10,6 +10,7 @@ import { type Payment, PAYMENT_METHODS } from '@/models/order';
 import type { AdminTimeslotDeref } from '@/models/timeslot';
 import { useErrorStore } from '@/stores/error.store';
 import { usePizzaStore } from '@/stores/pizza.store';
+import { frenchFormatFromDate } from '@/utils';
 
 const { add_error } = useErrorStore();
 
@@ -17,7 +18,6 @@ const pizzaStore = usePizzaStore();
 const { pizzaList, timeslotList } = storeToRefs(pizzaStore);
 const {
   fetchNextTimeslots,
-  frenchFormatFromDate,
   fetchAdminDetailTimeslot,
   fetchAllPizzas,
   addOrder,
