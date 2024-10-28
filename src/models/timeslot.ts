@@ -24,6 +24,6 @@ export interface AdminTimeslotDeref extends Timeslot {
 
 export interface Export {
   id: number;
-  orders: object;
-  time_slot: number;
+  orders: { [key: string]: number };
+  created_at: string;
 }

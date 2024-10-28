@@ -69,6 +69,13 @@ const burger_menu = ref(false);
         <router-link
           v-if="user?.groups.includes('Equipe Bouffe')"
           class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
+          to="/admin/pizza/export/list"
+        >
+          Liste des exports
+        </router-link>
+        <router-link
+          v-if="user?.groups.includes('Equipe Bouffe')"
+          class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
           to="/admin/pizza/list"
         >
           Liste des Pizzas

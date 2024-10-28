@@ -148,6 +148,14 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: '/admin/pizza/export/list',
+    component: () => import('@/views/AdminPizza/AdminPizzaExportList.vue'),
+    beforeEnter: () => {
+      const { isConnected, user } = useUserStore();
+      return (!isConnected || !user.groups.includes('Equipe Bouffe')) ? { path: '/' } : true;
+    },
+  },
+  {
     path: '/archives',
     component: () => import('@/views/Archives.vue'),
   },
