@@ -8,10 +8,10 @@ import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import { type Payment, PAYMENT_METHODS } from '@/models/order';
 import type { AdminTimeslotDeref } from '@/models/timeslot';
-import { useErrorStore } from '@/stores/error.store';
+import { useNotificationStore } from '@/stores/notification.store';
 import { usePizzaStore } from '@/stores/pizza.store';
 
-const { add_error } = useErrorStore();
+const { addNotification } = useNotificationStore();
 
 const pizzaStore = usePizzaStore();
 const { pizzaList, timeslotList } = storeToRefs(pizzaStore);
@@ -85,12 +85,12 @@ const totalPrice = computed(() => {
 const validatePizza = () => {
   // check if payment method is selected
   if (selectedPaymentMethod.value === 'default') {
-    add_error('Veuillez choisir un moyen de paiement');
+    addNotification('Veuillez choisir un moyen de paiement', 'error');
     return;
   }
 
   if (!pseudo.value) {
-    add_error('Veuillez renseigner un pseudo');
+    addNotification('Veuillez renseigner un pseudo', 'error');
     return;
   }
 
@@ -104,7 +104,7 @@ const validatePizza = () => {
   });
 
   if (!hasPizza) {
-    add_error('Veuillez ajouter au moins une pizza');
+    addNotification('Veuillez ajouter au moins une pizza', 'error');
     return;
   }
 

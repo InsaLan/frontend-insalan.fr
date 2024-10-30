@@ -6,8 +6,7 @@ import type { OngoingMatch, ScorePatch } from '@/models/match';
 import { PaymentStatus, type PlayerRegistrationDeref, type RegistrationDeref } from '@/models/registration';
 import type { User, UserPatch, UserPatchError } from '@/models/user';
 
-import { useErrorStore } from './error.store';
-import { useToastStore } from './toast.store';
+import { useNotificationStore } from './notification.store';
 
 export const useUserStore = defineStore('user', () => {
   const user = ref<User>({} as User);
@@ -15,8 +14,7 @@ export const useUserStore = defineStore('user', () => {
   const csrf = ref('');
   const connectionTimestamp = ref(0);
   const router = useRouter();
-  const ToastStore = useToastStore();
-  const ErrorStore = useErrorStore();
+  const NotificationStore = useNotificationStore();
   const ongoing_match = ref<OngoingMatch>({} as OngoingMatch);
   const inscriptions = ref<{
     ongoing: Ref<[string, PlayerRegistrationDeref | RegistrationDeref][]>;
@@ -28,8 +26,7 @@ export const useUserStore = defineStore('user', () => {
     unpaid: ref({}),
   });
   const MailVerified = ref(false);
-  const { setContent } = ToastStore;
-  const { add_error } = ErrorStore;
+  const { addNotification } = NotificationStore;
 
   /*
   * Get a new csrf token from the server
@@ -82,7 +79,7 @@ export const useUserStore = defineStore('user', () => {
       withCredentials: true,
     });
 
-    setContent(`Un email de confirmation vous a été envoyé a ${email} pour confirmer votre compte`, 'success');
+    addNotification(`Un email de confirmation vous a été envoyé a ${email} pour confirmer votre compte`, 'info');
   }
 
   async function login(username: string, password: string) {
@@ -100,7 +97,7 @@ export const useUserStore = defineStore('user', () => {
       const user_data = await axios.get<User>('/user/me/', { withCredentials: true });
       user.value = user_data.data;
       isConnected.value = true;
-      setContent(`Bienvenue ${username}`, 'success');
+      addNotification(`Bienvenue ${username}`, 'info');
       connectionTimestamp.value = Date.now();
       await router.push('/me');
     } catch (err) {
@@ -117,7 +114,7 @@ export const useUserStore = defineStore('user', () => {
       },
       withCredentials: true,
     });
-    setContent(`Un email de confirmation vous a été envoyé a ${email} pour réinitialiser votre compte`, 'success');
+    addNotification(`Un email de confirmation vous a été envoyé a ${email} pour réinitialiser votre compte`, 'info');
   }
 
   async function reset_password(username: string, token: string, password: string, password_confirm: string) {
@@ -137,7 +134,7 @@ export const useUserStore = defineStore('user', () => {
         },
       },
     );
-    setContent('Votre mot de passe a été réinitialisé', 'success');
+    addNotification('Votre mot de passe a été réinitialisé', 'info');
     await router.push('/register');
   }
 
@@ -207,7 +204,7 @@ export const useUserStore = defineStore('user', () => {
         unpaid,
       };
     } catch (err) {
-      add_error('Impossible de récupérer vos inscriptions, veuillez réessayer plus tard ou contacter un administrateur');
+      addNotification('Impossible de récupérer vos inscriptions, veuillez réessayer plus tard ou contacter un administrateur', 'error');
     }
   }
 
@@ -223,11 +220,11 @@ export const useUserStore = defineStore('user', () => {
       });
       if (res.status === 200) {
         if (data.current_password) {
-          setContent('Vos informations ont été modifiées, vous devez vous reconnecter', 'success');
+          addNotification('Vos informations ont été modifiées, vous devez vous reconnecter', 'info');
           await logout();
         } else {
           user.value = { ...user.value, ...data };
-          setContent('Vos informations ont été modifiées', 'success');
+          addNotification('Vos informations ont été modifiées', 'info');
         }
       }
     } catch (err: unknown) {
@@ -235,13 +232,15 @@ export const useUserStore = defineStore('user', () => {
       if (isAxiosError(error)) {
         const request = error.request as XMLHttpRequest;
         if (request.status === 403) {
-          add_error({ data: { status: request.status, message: 'Le mot de passe actuel est différent de celui que vous avez entré' } });
+          addNotification('Le mot de passe actuel est différent de celui que vous avez entré', 'error');
         } else if (request.status === 400) {
           const response = JSON.parse(request.responseText) as UserPatchError;
           if (response.user) {
-            add_error({ data: { status: request.status, message: response.user[0] } });
+            addNotification(response.user, 'error');
+          } else if (response.password) {
+            addNotification(response.password, 'error');
           } else {
-            add_error({ data: { status: request.status, message: response.password as string } });
+            addNotification('Une erreur est survenue', 'error');
           }
         }
       }
@@ -257,7 +256,7 @@ export const useUserStore = defineStore('user', () => {
     ) {
       await logout();
       await router.push('/register');
-      setContent('Votre session a expiré, veuillez vous reconnecter', 'error');
+      addNotification('Votre session a expiré, veuillez vous reconnecter', 'error');
     }
   }
   async function send_score(match: OngoingMatch, data: ScorePatch) {
@@ -273,12 +272,12 @@ export const useUserStore = defineStore('user', () => {
         },
       });
       if (res.status === 200) {
-        setContent('Le score a bien été mis à jour', 'success');
+        addNotification('Le score a bien été mis à jour', 'info');
       }
     } catch (err: unknown) {
       const error = err as Error | AxiosError;
       if (isAxiosError(error)) {
-        // TODO: catch error
+        addNotification(error.response?.data as (string | string[] | { [key: string]: string }), 'error');
       }
     }
     ongoing_match.value = {} as OngoingMatch;

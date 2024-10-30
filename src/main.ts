@@ -29,7 +29,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { type Component, createApp } from 'vue';
 import Multiselect from 'vue-multiselect';
 import { router } from '@/router';
-import { type ErrorMessage, useErrorStore } from '@/stores/error.store';
+import { useNotificationStore } from '@/stores/notification.store';
 
 import App from './App.vue';
 
@@ -78,28 +78,13 @@ createApp(App as Component)
   .use(router)
   .mount('#app');
 
-const { add_error } = useErrorStore();
+const { addNotification } = useNotificationStore();
 
 axios.interceptors.response.use(
   (res) => res,
-  (error: AxiosError<string | { [key: string]: string | ErrorMessage }, unknown>) => {
-    if (typeof error.response?.data === 'string') {
-      add_error({ status: error.response.status, message: error.response.data });
-    } else if (typeof error.response?.data === 'object') {
-      Object.values(error.response.data).forEach((val) => {
-        if (typeof val === 'object') {
-          Object.values(val)
-            .filter((item): item is string => typeof item === 'string')
-            .forEach((item) => add_error({ status: error.response?.status, message: item }));
-        } else {
-          add_error({ status: error.response?.status, message: val });
-        }
-      });
-    } else {
-      add_error({
-        status: error.response?.status,
-        message: 'Une erreur inattendue est survenue, veuillez réessayer plus tard. Si le problème persiste, contactez un administrateur',
-      });
+  (error: AxiosError<string | string[] | { [key: string]: string }, unknown>) => {
+    if (error.response?.data) {
+      addNotification(error.response.data, 'error');
     }
     return Promise.reject(error);
   },
