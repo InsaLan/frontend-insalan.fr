@@ -4,20 +4,31 @@ import { useNotificationStore } from '@/stores/notification.store';
 
 const NotificationStore = useNotificationStore();
 const { notifications } = storeToRefs(NotificationStore);
+const { removeNotification } = NotificationStore;
 </script>
 <template>
-  <div class="pointer-events-none fixed bottom-4 left-1/2 z-50 -translate-x-1/2 space-y-2">
+  <div class="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 space-y-2">
     <TransitionGroup name="notification">
       <div
         v-for="notification in notifications"
         :key="notification.id"
+        class="flex max-w-sm items-center justify-between gap-2 rounded-lg p-4 shadow-lg transition-all duration-300 ease-in-out"
         :class="[
-          'max-w-sm rounded-lg p-4 shadow-lg',
-          'transition-all duration-300 ease-in-out',
           notification.type === 'error' ? 'bg-red-500 text-white' : 'bg-green-500 text-white',
         ]"
       >
-        {{ notification.message }}
+        <div>
+          {{ notification.message }}
+        </div>
+        <button
+          type="button"
+          class="rounded-full p-1 hover:bg-red-600"
+          @click="removeNotification(notification.id)"
+        >
+          <fa-awesome-icon
+            icon="fa-times"
+          />
+        </button>
       </div>
     </TransitionGroup>
   </div>
