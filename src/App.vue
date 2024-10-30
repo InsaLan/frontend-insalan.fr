@@ -1,19 +1,10 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import Error from '@/components/Error.vue';
 import Footer from '@/components/Footer.vue';
 import Navigation from '@/components/Navigation.vue';
-import Toast from '@/components/Toast.vue';
+import Notification from '@/components/Notification.vue';
 import { useContentStore } from '@/stores/content.store';
-import { useErrorStore } from '@/stores/error.store';
-import { useToastStore } from '@/stores/toast.store';
 import { useUserStore } from '@/stores/user.store';
-
-const errorStore = useErrorStore();
-const { flush_errors } = errorStore;
-
-const toastStore = useToastStore();
-const { dismiss } = toastStore;
 
 const contentStore = useContentStore();
 const { fetchStatic } = contentStore;
@@ -23,8 +14,6 @@ const { handle_session_cookie_expiration } = userStore;
 
 onMounted(async () => {
   await handle_session_cookie_expiration();
-  flush_errors();
-  dismiss();
   await fetchStatic();
 });
 
@@ -32,8 +21,7 @@ onMounted(async () => {
 
 <template>
   <Navigation/>
-  <Error/>
-  <Toast/>
+  <Notification/>
   <div class="flex flex-1 flex-col">
     <RouterView v-slot="{ Component }">
       <template v-if="Component">

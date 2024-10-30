@@ -5,10 +5,10 @@ import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { QrcodeStream } from 'vue-qrcode-reader';
 import { type QRData, TicketStatus } from '@/models/tickets';
-import { useErrorStore } from '@/stores/error.store';
+import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
 
-const { add_error } = useErrorStore();
+const { addNotification } = useNotificationStore();
 
 const tournamentStore = useTournamentStore();
 const { get_unpaid_registration, validate_registration } = tournamentStore;
@@ -58,17 +58,17 @@ function cancel() {
 
 const onError = (err: Error) => {
   if (err.name === 'NotAllowedError') {
-    add_error('Vous devez accorder l\'autorisation d\'accès à la caméra');
+    addNotification('Vous devez accorder l\'autorisation d\'accès à la caméra', 'error');
   } else if (err.name === 'NotFoundError') {
-    add_error('Pas d\'appareil photo sur cet appareil');
+    addNotification('Pas d\'appareil photo sur cet appareil', 'error');
   } else if (err.name === 'NotSupportedError' || err.name === 'InsecureContextError') {
-    add_error('Contexte sécurisé requis (HTTPS, localhost)');
+    addNotification('Contexte sécurisé requis (HTTPS, localhost)', 'error');
   } else if (err.name === 'NotReadableError') {
-    add_error('La caméra est-elle déjà utilisée ?');
+    addNotification('La caméra est-elle déjà utilisée ?', 'error');
   } else if (err.name === 'OverconstrainedError') {
-    add_error('Les caméras installées ne sont pas adaptées');
+    addNotification('Les caméras installées ne sont pas adaptées', 'error');
   } else {
-    add_error(err.message);
+    addNotification(err.message, 'error');
   }
 };
 
