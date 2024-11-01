@@ -21,7 +21,6 @@ defineProps<{
       <img v-if="team.validated" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="inline-block size-6"/>
     </h1>
     <ul
-      v-if="soloGame"
       class="ml-4 list-disc text-xl"
     >
       <li v-for="player in team.players" :key="((player as PlayerRegistration).user)">
