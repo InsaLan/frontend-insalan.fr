@@ -27,12 +27,12 @@ const hoveredTeamSlotName = ref<string | null>(null);
 // compute the seating plan to get max X and Y
 const maxX = computed(() => {
   const seats = props.tournament?.event.seats;
-  if (!seats) return 0;
+  if (seats.length === 0) return 0;
   return Math.max(...seats.map((s) => s[0]));
 });
 const maxY = computed(() => {
   const seats = props.tournament?.event.seats;
-  if (!seats) return 0;
+  if (seats.length === 0) return 0;
   return Math.max(...seats.map((s) => s[1]));
 });
 
@@ -145,7 +145,7 @@ const closeModal = () => {
 
 <template>
   <section id="seating" class="w-full">
-    <div v-if="tournament?.event.seats" class="flex flex-col items-center justify-center">
+    <div v-if="tournament?.event.seats.length !== 0" class="flex flex-col items-center justify-center">
       <div
         class="m-2 flex w-full flex-col items-center"
       >
