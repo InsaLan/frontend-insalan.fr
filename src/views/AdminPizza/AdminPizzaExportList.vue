@@ -75,7 +75,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
       <div
         v-for="timeslotExport in timeslotExportList[timeslot.id]"
         :key="timeslotExport.id"
-        class="hover:bg-cyan-800"
+        class="ml-4 hover:bg-cyan-800"
         :class="{ hidden: !timeslotsExpand[timeslot.id] }"
       >
         <div class="flex select-none items-center gap-2 p-2">
