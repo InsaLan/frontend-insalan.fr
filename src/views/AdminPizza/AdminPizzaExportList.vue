@@ -45,6 +45,9 @@ Object.values(timeslotList.value).forEach((timeslot) => {
     Liste des exports
   </h1>
   <div class="mb-6 mt-2 flex flex-col gap-2 px-4">
+    <div v-if="Object.values(timeslotList).length === 0" class="flex justify-center text-2xl">
+      Il n'y a pas de créneau de commande.
+    </div>
     <div
       v-for="timeslot in timeslotList"
       :key="timeslot.id"
