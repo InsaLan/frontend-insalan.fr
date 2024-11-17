@@ -21,10 +21,10 @@ import { useUserStore } from '@/stores/user.store';
 const userStore = useUserStore();
 const tournamentStore = useTournamentStore();
 const {
-  user, role, inscriptions, ongoing_match,
+  user, role, inscriptions, ongoing_match, cart,
 } = storeToRefs(userStore);
 const { fetch_user_inscription_full, patch_user, send_score } = userStore;
-const { payRegistration, get_ticket_pdf } = tournamentStore;
+const { addRegistrationToCart, get_ticket_pdf } = tournamentStore;
 
 await fetch_user_inscription_full();
 
@@ -203,7 +203,7 @@ const openScoreModal = () => {
       <h1 class="m-3 text-center text-4xl font-bold">
         Mon compte
       </h1>
-      <div class="myr-2 flex flex-col place-items-center justify-items-center md:place-items-start md:justify-items-start">
+      <div class="myr-2 place-center flex flex-col justify-between md:place-items-center md:justify-items-center">
         <div class="my-2 flex flex-col place-items-center justify-items-center md:flex-row">
           <div class="m-2 flex place-items-center justify-items-center">
             <a>
@@ -273,6 +273,22 @@ const openScoreModal = () => {
             </div>
           </div>
         </div>
+        <div
+          v-if="cart.length > 0"
+          class="m-2 flex items-center justify-between gap-4 rounded-lg bg-cyan-900 p-4"
+        >
+          <div>
+            <h2 class="text-xl">
+              Vous avez <span class="text-2xl font-bold text-green-600">{{ cart.length }}</span> article{{ cart.length !== 1 ? 's' : '' }} dans votre panier
+            </h2>
+          </div>
+          <router-link
+            class="rounded bg-green-600 px-4 py-2 font-bold text-white transition-colors duration-200 hover:bg-green-700"
+            to="/cart"
+          >
+            Voir le panier
+          </router-link>
+        </div>
         <!--div class="myr-2 ml-1">
           <button
           @click="delete_account()" class="center rounded transition duration-150 ease-in-out p-2 font-bold
@@ -334,14 +350,14 @@ const openScoreModal = () => {
                       (inscriptions.unpaid as Record<string, boolean>)[inscription[1].id]
                         ? (
                           modal_payment = true,
-                          payRegistration(inscription[1].team.tournament as unknown as Tournament, inscription[0])
+                          addRegistrationToCart(inscription[1].team.tournament as unknown as Tournament, inscription[0])
                         )
                         : $router.push(`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`)"
                     @keydown.prevent="
                       (inscriptions.unpaid as Record<string, boolean>)[inscription[1].id]
                         ? (
                           modal_payment = true,
-                          payRegistration(inscription[1].team.tournament as unknown as Tournament, inscription[0])
+                          addRegistrationToCart(inscription[1].team.tournament as unknown as Tournament, inscription[0])
                         )
                         : $router.push(`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`)"
                   >
@@ -564,7 +580,7 @@ const openScoreModal = () => {
   </Modal>
 
   <!-- Simple modal with a loading text for the payment -->
-  <Modal v-if="modal_payment" :close-on-click="false">
+  <Modal v-if="modal_payment">
     <template #icon>
       <div/>
     </template>
@@ -575,13 +591,25 @@ const openScoreModal = () => {
     </template>
     <template #body>
       <div class="p-4 text-justify">
-        Le paiement est en cours de traitement.
+        Votre inscription a été ajouté au paner
         <br>
-        Vous allez être redirigé⋅e vers la page de paiement.
+        Vous pouvez retrouver votre panier depuis votre compte
       </div>
     </template>
     <template #buttons>
-      <div/>
+      <router-link
+        class="mx-4 inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        :to="`/cart`"
+      >
+        Aller au panier
+      </router-link>
+      <button
+        class="mx-4 inline-flex w-full justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        type="button"
+        @click="modal_payment = false"
+      >
+        Rester sur cette page
+      </button>
     </template>
   </Modal>
 
