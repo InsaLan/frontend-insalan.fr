@@ -2,6 +2,7 @@ import axios, { type AxiosError, isAxiosError } from 'axios';
 import { defineStore } from 'pinia';
 import { computed, type Ref, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import type { CartElement } from '@/models/cart';
 import type { OngoingMatch, ScorePatch } from '@/models/match';
 import { PaymentStatus, type PlayerRegistrationDeref, type RegistrationDeref } from '@/models/registration';
 import type { User, UserPatch, UserPatchError } from '@/models/user';
@@ -26,6 +27,7 @@ export const useUserStore = defineStore('user', () => {
     unpaid: ref({}),
   });
   const MailVerified = ref(false);
+  const cart = ref<CartElement[]>([]);
   const { addNotification } = NotificationStore;
 
   /*
@@ -259,6 +261,7 @@ export const useUserStore = defineStore('user', () => {
       addNotification('Votre session a expiré, veuillez vous reconnecter', 'error');
     }
   }
+
   async function send_score(match: OngoingMatch, data: ScorePatch) {
     await get_csrf();
     const { type } = ongoing_match.value.match_type;
@@ -289,6 +292,33 @@ export const useUserStore = defineStore('user', () => {
     return 'joueur';
   });
 
+  function add_product_to_cart(element: CartElement) {
+    cart.value.push(element);
+  }
+
+  async function pay_cart() {
+    const data = {
+      products: cart.value.map((element) => element.product),
+    } as Record<string, unknown>;
+
+    const response = await axios.post<{
+      redirect_url: string;
+    }>('payment/pay/', data, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf.value,
+      },
+    });
+
+    const { redirect_url } = response.data;
+
+    window.location.href = redirect_url;
+  }
+
+  function clear_cart() {
+    cart.value = [];
+  }
+
   return {
     user,
     signin,
@@ -302,6 +332,9 @@ export const useUserStore = defineStore('user', () => {
     get_csrf,
     send_score,
     handle_session_cookie_expiration,
+    add_product_to_cart,
+    pay_cart,
+    clear_cart,
     role,
     isConnected,
     inscriptions,
@@ -309,5 +342,6 @@ export const useUserStore = defineStore('user', () => {
     MailVerified,
     csrf,
     connectionTimestamp,
+    cart,
   };
 }, { persist: true });

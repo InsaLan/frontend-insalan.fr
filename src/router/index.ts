@@ -160,6 +160,10 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/Archives.vue'),
   },
   {
+    path: '/cart',
+    component: () => import('@/views/Cart.vue'),
+  },
+  {
     path: '/:pathMatch(.*)*',
     component: () => import('@/views/NotFound.vue'),
   },

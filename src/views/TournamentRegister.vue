@@ -24,7 +24,7 @@ const { user } = useUserStore();
 const tournamentStore = useTournamentStore();
 
 const {
-  registerTeam, registerPlayerOrManager, getTournamentFull, payRegistration,
+  registerTeam, registerPlayerOrManager, getTournamentFull, addRegistrationToCart,
 } = tournamentStore;
 const { tournament, soloGame } = storeToRefs(tournamentStore);
 
@@ -107,7 +107,7 @@ const register_player = async () => {
 
 const payment = async () => {
   modal_payment.value = true;
-  await payRegistration(tournament.value as Tournament, register_form.role);
+  await addRegistrationToCart(tournament.value as Tournament, register_form.role);
 };
 
 const generate_password = () => {
@@ -434,7 +434,7 @@ const view_password = ref<boolean>(false);
   </Modal>
 
   <!-- Simple modal with a loading text for the payment -->
-  <Modal v-if="modal_payment" :close-on-click="false">
+  <Modal v-if="modal_payment">
     <template #icon>
       <div/>
     </template>
@@ -445,13 +445,25 @@ const view_password = ref<boolean>(false);
     </template>
     <template #body>
       <div class="p-4 text-justify">
-        Le paiement est en cours de traitement.
+        Votre inscription a été ajouté au paner
         <br>
-        Vous allez être redirigé⋅e vers la page de paiement.
+        Vous pouvez retrouver votre panier depuis votre compte
       </div>
     </template>
     <template #buttons>
-      <div/>
+      <router-link
+        class="mx-4 inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        :to="`/cart`"
+      >
+        Aller au panier
+      </router-link>
+      <button
+        class="mx-4 inline-flex w-full justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        type="button"
+        @click="modal_payment = false"
+      >
+        Rester sur cette page
+      </button>
     </template>
   </Modal>
 </template>

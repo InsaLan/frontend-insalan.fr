@@ -14,8 +14,10 @@ import type { Tournament, TournamentDeref } from '@/models/tournament';
 
 import { useUserStore } from './user.store';
 
-const { get_csrf } = useUserStore();
-const { csrf, inscriptions, user } = storeToRefs(useUserStore());
+const { get_csrf, add_product_to_cart } = useUserStore();
+const {
+  csrf, inscriptions, user, cart,
+} = storeToRefs(useUserStore());
 
 export function groupBy<T>(items: T[], key: keyof T): Record<string, T[]> {
   return items.reduce((result, item) => ({
@@ -233,39 +235,39 @@ export const useTournamentStore = defineStore('tournament', () => {
     return res.data;
   }
 
-  async function payRegistration(
+  async function addRegistrationToCart(
     tournament_obj: Tournament,
     role: string,
   ) {
     await get_csrf();
 
     let product_id;
+    let name = 'Place ';
+    let price = 0;
     if (role === 'player') {
       product_id = tournament_obj.player_online_product;
+      name += 'joueur';
+      price = Number(tournament_obj.player_price_online);
     } else if (role === 'manager') {
       product_id = tournament_obj.manager_online_product;
+      name += 'manager';
+      price = Number(tournament_obj.manager_price_online);
     } else if (role === 'substitute') {
       product_id = tournament_obj.substitute_online_product;
+      name += 'remplaçant';
+      price = Number(tournament_obj.player_price_online);
     }
     if (!product_id) return;
+    name += ` - ${tournament_obj.name}`;
 
-    const data = {
-      products: [product_id],
-    } as Record<string, unknown>;
+    // if the product is already in the cart, do not add it again
+    if (cart.value.find((product) => product.product === product_id)) return;
 
-    const response = await axios.post<{
-      redirect_url: string;
-    }>('payment/pay/', data, {
-      withCredentials: true,
-      headers: {
-        'X-CSRFToken': csrf.value,
-      },
+    add_product_to_cart({
+      name,
+      product: product_id,
+      price,
     });
-    await fetchTournamentFull(tournament_obj.id);
-
-    const { redirect_url } = response.data;
-
-    window.location.href = redirect_url;
   }
 
   async function patch_registration(registration_type: string, registration_id: number, data: Record<string, string>) {
@@ -538,7 +540,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     fetchTournamentsFull,
     registerTeam,
     registerPlayerOrManager,
-    payRegistration,
+    addRegistrationToCart,
     patch_registration,
     patch_team,
     leave_team,

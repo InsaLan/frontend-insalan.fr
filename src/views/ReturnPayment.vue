@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
+import { useUserStore } from '@/stores/user.store';
+
+const userStore = useUserStore();
+const { clear_cart } = userStore;
+
 enum ReturnType {
   RETURN = 'return',
   REFUSED = 'refused',
@@ -7,9 +13,15 @@ enum ReturnState {
   SUCCEEDED = 'succeeded',
   REFUSED = 'refused',
 }
-defineProps<{
+const props = defineProps<{
   status: { type: ReturnType; code?: string; error?: string };
 }>();
+
+onMounted(() => {
+  if (props.status.type === ReturnType.RETURN && props.status.code === ReturnState.SUCCEEDED) {
+    clear_cart();
+  }
+});
 
 </script>
 
