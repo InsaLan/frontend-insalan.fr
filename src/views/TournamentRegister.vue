@@ -452,13 +452,13 @@ const view_password = ref<boolean>(false);
     </template>
     <template #buttons>
       <router-link
-        class="mx-4 inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="my-1 inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mx-4 sm:mt-0 sm:w-auto"
         :to="`/cart`"
       >
         Aller au panier
       </router-link>
       <button
-        class="mx-4 inline-flex w-full justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="my-1 inline-flex w-full justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mx-4 sm:mt-0 sm:w-auto"
         type="button"
         @click="modal_payment = false"
       >
