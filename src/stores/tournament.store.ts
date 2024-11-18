@@ -235,12 +235,10 @@ export const useTournamentStore = defineStore('tournament', () => {
     return res.data;
   }
 
-  async function addRegistrationToCart(
+  function addRegistrationToCart(
     tournament_obj: Tournament,
     role: string,
   ) {
-    await get_csrf();
-
     let product_id;
     let name = 'Place ';
     let price = 0;
