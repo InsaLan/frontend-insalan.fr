@@ -164,7 +164,6 @@ const register_user = async () => {
     </form>
   </div>
 
-  <!-- Simple modal with a loading text for the payment -->
   <Modal v-if="modal_cgu" :close-on-click="true" :close-on-escape="true" @close="modal_cgu = false">
     <template #icon>
       <a
