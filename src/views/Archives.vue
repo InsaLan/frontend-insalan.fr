@@ -26,14 +26,21 @@ await fetchAllEvents();
         {{ event.name }} | {{ `${String(event.month).padStart(2, '0')}/${event.year}` }}
       </h2>
       <div
-        class="mx-2 mb-2 flex flex-col gap-4 md:grid md:grid-cols-2 xl:grid-cols-3"
+        class="mx-2 mb-2 flex flex-col gap-4 px-4 md:grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
       >
         <img
+          v-if="event.poster"
           :src="event.poster"
           class="w-full object-contain"
           :alt="`Poster ${event.name}`"
         />
-        <div class="col-span-2 mb-4 grid gap-4 px-4 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3">
+        <div
+          class=" mb-4 grid gap-4"
+          :class="{
+            'col-span-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4': !event.poster,
+            'col-span-1 md:grid-cols-1 xl:col-span-2 xl:grid-cols-2 2xl:col-span-3 2xl:grid-cols-3': event.poster,
+          }"
+        >
           <div
             v-for="tournament in event.tournaments"
             :key="tournament"
