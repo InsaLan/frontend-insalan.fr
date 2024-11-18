@@ -53,12 +53,12 @@ export const useTournamentStore = defineStore('tournament', () => {
   }, [] as Event[]));
 
   async function fetchAllEvents() {
-    const res = await axios.get<Event[]>('/tournament/event');
+    const res = await axios.get<Event[]>('/tournament/event/');
     res.data.forEach((ev) => { eventsList.value[ev.id] = ev; });
   }
 
   async function fetchEventsByYear(year: number) {
-    const res = await axios.get<Event[]>(`tournament/event/year/${year}`);
+    const res = await axios.get<Event[]>(`tournament/event/year/${year}/`);
     res.data.forEach((ev) => { eventsList.value[ev.id] = ev; });
   }
 
@@ -72,7 +72,7 @@ export const useTournamentStore = defineStore('tournament', () => {
   }
 
   async function fetchEventById(id: number) {
-    const res = await axios<Event>(`tournament/event/${id}`);
+    const res = await axios<Event>(`tournament/event/${id}/`);
     eventsList.value[id] = res.data;
   }
 
@@ -124,7 +124,7 @@ export const useTournamentStore = defineStore('tournament', () => {
   }
 
   async function fetchTournamentFull(id: number) {
-    const res = await axios.get<Tournament>(`/tournament/tournament/${id}/full`);
+    const res = await axios.get<Tournament>(`/tournament/tournament/${id}/full/`);
     tournamentsList.value[id] = res.data;
   }
 
@@ -351,7 +351,7 @@ export const useTournamentStore = defineStore('tournament', () => {
   }
 
   async function get_ticket_pdf(token: string) {
-    const response = await axios.get(`/tickets/generate/${token}`, {
+    const response = await axios.get(`/tickets/generate/${token}/`, {
       responseType: 'blob',
     });
     const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -361,6 +361,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     document.body.appendChild(link);
     link.click();
   }
+
   function getTournamentTeams() {
     tourney_teams.value = (tournament.value?.teams as Team[]).reduce((ret, team) => {
       if (team.validated) {
@@ -378,14 +379,14 @@ export const useTournamentStore = defineStore('tournament', () => {
       type: string;
       user: string;
       team: string;
-    }[]>('/tickets/unpaid');
+    }[]>('/tickets/unpaid/');
     unpaidRegistration.value = response.data;
   }
 
   async function validate_registration(type: string, id: number) {
     await get_csrf();
 
-    await axios.post('/tickets/pay', {
+    await axios.post('/tickets/pay/', {
       id,
       type,
     }, {
@@ -404,9 +405,11 @@ export const useTournamentStore = defineStore('tournament', () => {
   function get_validated_team_by_id(id: number) {
     return tourney_teams.value.validated_teams.find((team) => team.id === id);
   }
+
   function get_group_by_id(groups: Group[], id: number) {
     return groups.find((group) => group.id === id);
   }
+
   function is_winning_team(match: Match, team_id: number) {
     if (match.bo_type === BestofType.RANKING) {
       return match.score[team_id] >= Object.keys(match.score).length;
@@ -420,15 +423,18 @@ export const useTournamentStore = defineStore('tournament', () => {
     }
     return 2 * (bracket.depth - 1) + 3;
   }
+
   function get_winner_matchs_per_round(matchs: KnockoutMatch[], round: number) {
     const winner_matchs = matchs.filter((match) => match.bracket_set === BracketSet.WINNER);
     const round_matchs = groupBy(winner_matchs, 'round_number');
     return round_matchs[round];
   }
+
   function get_col_class(bracket: Bracket) {
     const nb_cols = get_bracket_cols_count(bracket);
     return `grid-cols-[repeat(${nb_cols},17rem)]`;
   }
+
   function get_col_style(bracket: Bracket) {
     const nb_cols = get_bracket_cols_count(bracket);
     return { 'grid-template-columns': `repeat(${nb_cols},17rem)` };
