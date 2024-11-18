@@ -297,6 +297,8 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function pay_cart() {
+    await get_csrf();
+
     const data = {
       products: cart.value.map((element) => element.product),
     } as Record<string, unknown>;

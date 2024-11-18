@@ -106,8 +106,8 @@ const register_player = async () => {
 };
 
 const payment = async () => {
+  addRegistrationToCart(tournament.value as Tournament, register_form.role);
   modal_payment.value = true;
-  await addRegistrationToCart(tournament.value as Tournament, register_form.role);
 };
 
 const generate_password = () => {
