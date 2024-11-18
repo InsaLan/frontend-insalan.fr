@@ -8,6 +8,7 @@ interface BaseEvent {
   month: number;
   ongoing: boolean;
   logo?: string;
+  poster?: string;
   seats: [number, number][];
 }
 
