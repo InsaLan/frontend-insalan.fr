@@ -86,45 +86,51 @@ const burger_menu = ref(false);
             class="absolute hidden min-w-48 flex-col rounded-lg border-2 border-white bg-theme-bg p-2 group-hover:flex"
           >
             <div
-              class="font-bold text-gray-400"
+              v-if="user?.groups.includes('Equipe Bouffe')"
+              class="flex flex-col"
             >
-              Team Bouffe :
+              <div
+                class="font-bold text-gray-400"
+              >
+                Team Bouffe :
+              </div>
+              <router-link
+                class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
+                to="/admin/pizza/export/list"
+              >
+                Liste des exports
+              </router-link>
+              <router-link
+                class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
+                to="/admin/pizza/list"
+              >
+                Liste des Pizzas
+              </router-link>
+              <router-link
+                class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
+                to="/admin/pizza"
+              >
+                Menu pizza
+              </router-link>
             </div>
-            <router-link
-              v-if="user?.groups.includes('Equipe Bouffe')"
-              class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
-              to="/admin/pizza/export/list"
-            >
-              Liste des exports
-            </router-link>
-            <router-link
-              v-if="user?.groups.includes('Equipe Bouffe')"
-              class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
-              to="/admin/pizza/list"
-            >
-              Liste des Pizzas
-            </router-link>
-            <router-link
-              v-if="user?.groups.includes('Equipe Bouffe')"
-              class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
-              to="/admin/pizza"
-            >
-              Menu pizza
-            </router-link>
             <div
-              class="font-bold text-gray-400"
-            >
-              Backend :
-            </div>
-            <a
               v-if="role === 'dev' || role === 'staff'"
-              class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
-              :href="`${apiUrl}/admin/`"
-              target="_blank"
-              rel="noopener noreferrer"
+              class="flex flex-col"
             >
-              Panel Admin
-            </a>
+              <div
+                class="font-bold text-gray-400"
+              >
+                Backend :
+              </div>
+              <a
+                class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
+                :href="`${apiUrl}/admin/`"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Panel Admin
+              </a>
+            </div>
           </div>
         </div>
         <router-link class="mx-4 text-[clamp(1rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:text-blue-800" to="/me">
