@@ -17,19 +17,19 @@ export const usePizzaStore = defineStore('pizza', () => {
   const timeslotExportList = ref<Record<number, Export[]>>({});
 
   async function fetchAllPizzas() {
-    const res = await axios.get<Pizza[]>('/pizza/pizza/full');
+    const res = await axios.get<Pizza[]>('/pizza/pizza/full/');
     res.data.forEach((p: Pizza) => { pizzaList.value[p.id] = p; });
   }
 
   async function fetchAdminDetailTimeslot() {
     await Promise.all(Object.values(timeslotList.value).map(async (timeslot) => {
-      const res = await axios.get<AdminTimeslotDeref>(`/pizza/timeslot/${timeslot.id}`);
+      const res = await axios.get<AdminTimeslotDeref>(`/pizza/timeslot/${timeslot.id}/`);
       timeslotList.value[res.data.id] = res.data;
     }));
   }
 
   async function fetchNextTimeslots() {
-    const res = await axios.get<Timeslot[]>('/pizza/timeslot/next');
+    const res = await axios.get<Timeslot[]>('/pizza/timeslot/next/');
     res.data.forEach((p: Timeslot) => { timeslotList.value[p.id] = p; });
   }
 
@@ -126,7 +126,7 @@ export const usePizzaStore = defineStore('pizza', () => {
 
   async function fetchTimeslotExports() {
     await Promise.all(Object.values(timeslotList.value).map(async ({ id }) => {
-      const res = await axios.get<Export[]>(`/pizza/timeslot/${id}/export`);
+      const res = await axios.get<Export[]>(`/pizza/timeslot/${id}/export/`);
       timeslotExportList.value[id] = res.data;
     }));
   }
@@ -134,7 +134,7 @@ export const usePizzaStore = defineStore('pizza', () => {
   async function deleteExport(exportId: number) {
     await get_csrf();
 
-    const res = await axios.delete(`/pizza/export/${exportId}`, {
+    const res = await axios.delete(`/pizza/export/${exportId}/`, {
       withCredentials: true,
       headers: {
         'X-CSRFToken': csrf.value,

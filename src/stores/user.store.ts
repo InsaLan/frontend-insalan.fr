@@ -53,7 +53,7 @@ export const useUserStore = defineStore('user', () => {
   async function verifMail(props: { idname: string; idtoken: string }) {
     // I set
     MailVerified.value = false;
-    await axios.get(`/user/confirm/${props.idname}/${props.idtoken}`);
+    await axios.get(`/user/confirm/${props.idname}/${props.idtoken}/`);
     // Active only if the API Call doesn't return an error
     MailVerified.value = true;
   }
@@ -164,7 +164,7 @@ export const useUserStore = defineStore('user', () => {
       const past: [string, PlayerRegistrationDeref | RegistrationDeref][] = [];
       const unpaid: { [key: number]: boolean } = {};
       // Get all the inscription of the user
-      const registrations = await axios.get<{ 'player': PlayerRegistrationDeref[]; 'manager': RegistrationDeref[]; 'substitute': PlayerRegistrationDeref[]; 'ongoing_match': OngoingMatch }>('/tournament/me');
+      const registrations = await axios.get<{ 'player': PlayerRegistrationDeref[]; 'manager': RegistrationDeref[]; 'substitute': PlayerRegistrationDeref[]; 'ongoing_match': OngoingMatch }>('/tournament/me/');
       // Set the value of the ref object
       registrations.data.player.forEach((registration) => {
         if (registration.team.tournament.event.ongoing) {
@@ -267,7 +267,7 @@ export const useUserStore = defineStore('user', () => {
     const { type } = ongoing_match.value.match_type;
     const { id } = ongoing_match.value.match_type;
     try {
-      const res = await axios.patch(`/tournament/${type}/${id}/match/${match.id}`, data, {
+      const res = await axios.patch(`/tournament/${type}/${id}/match/${match.id}/`, data, {
         withCredentials: true,
         headers: {
           'X-CSRFToken': csrf.value,

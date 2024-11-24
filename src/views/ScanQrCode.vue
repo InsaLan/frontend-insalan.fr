@@ -46,7 +46,7 @@ async function onDetect([detectedCode]: DetectedBarcode[]) {
 }
 
 async function validate() {
-  await axios.get(`/tickets/scan/${qrcodeData.value?.token}`);
+  await axios.get(`/tickets/scan/${qrcodeData.value?.token}/`);
   paused.value = false;
   qrcodeData.value = undefined;
 }
