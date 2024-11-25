@@ -1,6 +1,6 @@
 <template>
   <h1 class="title">
-    Ou nous trouver
+    Où nous trouver
   </h1>
   <section class="mb-4 flex justify-center">
     <div class="size-[512px] border-4">
