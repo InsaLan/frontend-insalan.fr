@@ -8,14 +8,14 @@ const trailer_embed = 'https://www.youtube.com/embed/Bxi-4XEANbE?autoplay=1&mute
 
 const scrollToBottom = () => {
   window.scrollTo({
-    top: document.getElementById("hero")?.clientHeight,
-    behavior: 'smooth'
+    top: document.getElementById('hero')?.clientHeight,
+    behavior: 'smooth',
   });
 };
 </script>
 
 <template>
-  <div class="relative flex h-[calc(100vh_-_6rem)] items-center justify-center" id="hero">
+  <div id="hero" class="relative flex h-[calc(100vh_-_6rem)] items-center justify-center">
     <div class="absolute -z-10 flex size-full items-center justify-center overflow-hidden">
       <iframe
         :src="trailer_embed"
@@ -30,7 +30,7 @@ const scrollToBottom = () => {
       <h1 class="text-shadow text-center text-6xl font-bold text-white">
         {{ getConstant('date_insalan') }}
       </h1>
-      <div id="next" class="m-auto mt-4 size-20 cursor-pointer rounded-full bg-red-500" @click="scrollToBottom()">
+      <div id="next" class="m-auto mt-4 size-20 cursor-pointer rounded-full bg-red-500" @click="scrollToBottom()" @keydown="scrollToBottom()">
         <svg
           aria-hidden="true"
           fill="none"
