@@ -21,7 +21,7 @@ await getOngoingEvents();
     <section class="h-min">
       <Hero/>
     </section>
-    <Content name="main_page"/>
+    <Content id="main_page" class="scroll-mt-24" name="main_page"/>
     <section>
       <div class="title my-2 text-white">
         Tournois

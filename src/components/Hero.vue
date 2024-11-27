@@ -6,11 +6,8 @@ const { getConstant } = contentStore;
 
 const trailer_embed = 'https://www.youtube.com/embed/Bxi-4XEANbE?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&rel=0&enablejsapi=1&playlist=Bxi-4XEANbE&end=36';
 
-const scrollToBottom = () => {
-  window.scrollTo({
-    top: document.getElementById('hero')?.clientHeight,
-    behavior: 'smooth',
-  });
+const scrollPastHero = () => {
+  document.getElementById('main_page')?.scrollIntoView({ behavior: 'smooth' });
 };
 </script>
 
@@ -30,7 +27,7 @@ const scrollToBottom = () => {
       <h1 class="text-shadow text-center text-6xl font-bold text-white">
         {{ getConstant('date_insalan') }}
       </h1>
-      <div id="next" class="m-auto mt-4 size-20 cursor-pointer rounded-full bg-red-500" @click="scrollToBottom()" @keydown="scrollToBottom()">
+      <div id="next" class="m-auto mt-4 size-20 cursor-pointer rounded-full bg-red-500" @click="scrollPastHero()" @keydown="scrollPastHero()">
         <svg
           aria-hidden="true"
           fill="none"
