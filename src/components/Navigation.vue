@@ -42,7 +42,7 @@ const logout_user = async () => {
 const burger_menu = ref(false);
 </script>
 <template>
-  <nav class="sticky top-0 z-50 h-24  bg-theme-bg">
+  <nav id="navigation" class="sticky top-0 z-50 h-24 bg-theme-bg">
     <div id="desktop" class="hidden h-full items-center justify-around border-b-2 border-white xl:flex">
       <router-link to="/">
         <img alt="Logo InsaLan" class="size-[4.5rem]" src="@/assets/images/logo_home.png"/>

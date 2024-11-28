@@ -7,7 +7,10 @@ const { getConstant } = contentStore;
 const trailer_embed = 'https://www.youtube.com/embed/Bxi-4XEANbE?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&rel=0&enablejsapi=1&playlist=Bxi-4XEANbE&end=36';
 
 const scrollPastHero = () => {
-  document.getElementById('main_page')?.scrollIntoView({ behavior: 'smooth' });
+  window.scrollTo({
+    top: (document.getElementById('main_page')?.offsetTop || 0) - (document.getElementById('navigation')?.offsetHeight || 0),
+    behavior: 'smooth',
+  });
 };
 </script>
 
