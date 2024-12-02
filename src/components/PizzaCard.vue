@@ -21,13 +21,13 @@ const pizza = computed<Pizza | undefined>(() => pizzaList.value[props.id]);
       :src="pizza?.image"
       class="max-w-screen aspect-video h-48 w-full text-clip object-cover"
     />
-    <div class="flex h-44 w-full flex-col items-center p-2">
+    <div class="flex w-full flex-col items-center p-2">
       <div class="mb-2 w-3/4 border-b-2">
         <p class="text-center text-2xl font-bold">
           {{ pizza?.name }}
         </p>
       </div>
-      <div class="flex grow items-center">
+      <div class="flex">
         <p class="text-center">
           <span class="font-black">Ingrédients :</span> {{ pizza?.ingredients.join(', ') }}<br>
           <span class="font-black">Allergènes :</span> {{ pizza?.allergens.join(', ') }}
