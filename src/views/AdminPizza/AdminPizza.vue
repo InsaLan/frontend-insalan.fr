@@ -276,6 +276,24 @@ const handleWheel = (event: WheelEvent) => {
   const target = event.target as HTMLInputElement;
   target.blur();
 };
+
+const factorise = (pizzas: number[]) => {
+  const counts: Record<number, number> = {};
+  pizzas.forEach((pizza) => {
+    if (counts[pizza] === undefined) {
+      counts[pizza] = 1;
+    } else {
+      counts[pizza] += 1;
+    }
+  });
+  return Object.keys(counts).map((pizza) => {
+    const pizzaId = parseInt(pizza, 10);
+    if (counts[pizzaId] > 1) {
+      return `${pizzaList.value[pizzaId].name} x${counts[pizzaId]}`;
+    }
+    return pizzaList.value[pizzaId].name;
+  }).join(', ');
+};
 </script>
 <template>
   <div v-if="timeslotList && Object.keys(timeslotList).length > 0" class="flex flex-1 flex-col">
@@ -461,7 +479,7 @@ const handleWheel = (event: WheelEvent) => {
                     {{ order.user }}
                   </div>
                   <div class="flex-1 text-left">
-                    {{ order.pizza?.map((pizzaId: number) => pizzaList[pizzaId]?.name).join(', ') }}
+                    {{ factorise(order.pizza) }}
                   </div>
                   <div class="flex flex-1 flex-col items-center">
                     <label for="isTakenCheckbox-{{ order.id }}" class="flex flex-1 flex-col justify-center">
