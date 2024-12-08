@@ -57,6 +57,9 @@ onMounted(async () => {
       >
         S'inscrire
       </router-link>
+      <button v-else-if="Date.parse(tournament?.registration_open) > Date.now()" type="button" class="rounded bg-green-600 p-2 text-lg opacity-60" disabled>
+        Inscriptions à venir
+      </button>
       <button v-else type="button" class="rounded bg-green-600 p-2 text-lg opacity-60" disabled>
         Inscriptions fermées
       </button>
