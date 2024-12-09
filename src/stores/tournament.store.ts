@@ -232,6 +232,7 @@ export const useTournamentStore = defineStore('tournament', () => {
       },
     });
     await fetchTournamentFull(tournament_id).catch();
+    tournament.value = tournamentsList.value[tournament_id];
     return res.data;
   }
 
