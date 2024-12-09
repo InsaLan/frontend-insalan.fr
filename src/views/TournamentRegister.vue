@@ -66,7 +66,7 @@ const register_team = async () => {
   const isValid = await v$.value.$validate();
   if (!isValid) return;
 
-  if (soloGame) {
+  if (soloGame.value) {
     register_form.team = register_form.name_in_game;
   }
 
