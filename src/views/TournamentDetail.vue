@@ -15,7 +15,6 @@ const { getTournamentFull, getTournamentTeams } = tournamentStore;
 const { tournament } = storeToRefs(tournamentStore);
 
 const open_dropdown = ref(false);
-const dropdown_icon = computed(() => (open_dropdown.value ? 'angle-up' : 'angle-down'));
 
 interface TournamentDetailSection {
   title: string;
@@ -24,6 +23,8 @@ interface TournamentDetailSection {
 
 const userStore = useUserStore();
 const { role } = storeToRefs(userStore);
+
+const isAdmin = computed(() => role.value === 'dev' || role.value === 'staff');
 
 const sections = computed<Record<string, TournamentDetailSection>>(() => ({
   info: { title: 'Informations', is_available: true },
@@ -75,26 +76,27 @@ const admin_switch = computed(() => {
         {{ tournament?.name }}
       </div>
 
-      <nav class="mt-2 flex justify-center gap-16 bg-gray-500 py-4">
+      <nav class="mt-2 flex justify-center gap-10 bg-gray-500 py-4 sm:gap-16">
         <button
           type="button"
-          class="text-xl underline decoration-[#63d1ff] decoration-4 underline-offset-8 md:hidden"
+          class="text-xl underline decoration-[#63d1ff] decoration-4 underline-offset-8 lg:hidden"
           @click="open_dropdown = !open_dropdown"
         >
           {{ sections[selected_section].title }}
           <fa-awesome-icon
-            class="absolute mx-2 my-[0.6rem]"
-            :icon="['fas', dropdown_icon]"
+            class="absolute mx-2 my-[0.6rem] transition duration-150 ease-in-out"
+            icon="fa-solid fa-chevron-up"
             size="2xs"
+            :class="{ 'rotate-180': open_dropdown }"
           />
         </button>
         <div
-          :class="{ 'flex border-y-2 border-white': open_dropdown, hidden: !open_dropdown }"
-          class="absolute z-10 max-h-[60vh] w-screen translate-y-10 flex-col items-center gap-2 overflow-scroll bg-gray-500 py-3 md:static md:z-0 md:flex md:w-auto md:translate-y-0 md:flex-row md:gap-10 md:overflow-visible md:py-0"
+          :class="[open_dropdown ? 'flex border-y-2 border-white' : 'hidden']"
+          class="absolute z-10 max-h-[60vh] w-screen translate-y-10 flex-col items-center gap-2 overflow-scroll bg-gray-500 py-3 lg:static lg:z-0 lg:flex lg:w-auto lg:-translate-x-16 lg:translate-y-0  lg:flex-row lg:gap-4 lg:overflow-visible lg:py-0 xl:gap-10"
         >
           <template v-for="(section, key) in sections" :key="key">
             <router-link
-              v-if="section.is_available"
+              v-if="section.is_available || admin_mode"
               :to="{ name: `tournament_${admin_mode ? 'admin_' : ''}${key}` }"
               :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': key === selected_section }"
               class="text-xl"
@@ -105,20 +107,19 @@ const admin_switch = computed(() => {
           </template>
         </div>
         <router-link
-          v-if="role === 'dev' || role === 'staff'"
+          v-if="isAdmin"
           :to="{ name: admin_switch }"
           :class="{
-            'bg-red-800 hover:bg-red-700': !admin_mode,
-            'bg-blue-800 hover:bg-blue-700': admin_mode,
+            'bg-red-800': !admin_mode,
+            'bg-blue-800': admin_mode,
           }"
           type="button"
-          class="-my-2 rounded p-2 text-xl font-bold text-white transition duration-150 ease-in-out md:absolute md:right-5 md:-mt-2"
+          class="-my-2 rounded p-2 text-xl font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500 sm:absolute sm:right-5 sm:-mt-2"
         >
           {{ admin_mode ? 'Mode Normal' : 'Mode Admin' }}
         </router-link>
       </nav>
     </div>
-
     <RouterView v-slot="{ Component }">
       <component
         :is="Component"
