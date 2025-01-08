@@ -394,7 +394,7 @@ const kick_member = async (type: string, id: number) => {
             @click="showModalTeamPassword = true"
             @keydown.enter="showModalTeamPassword = true"
           >
-            Changer le mot de passe
+            Changer le mot de passe de l'équipe
           </button>
         </div>
         <div

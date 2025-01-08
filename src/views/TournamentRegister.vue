@@ -271,7 +271,7 @@ const view_password = ref<boolean>(false);
             class="flex flex-col text-xl"
           >
             <label for="pwd">
-              Mot de passe
+              Mot de passe de l'équipe
             </label>
             <div
               class="relative flex size-full items-center"
