@@ -27,6 +27,7 @@ interface BaseTournament {
   maxTeam: number;
   validated_teams: number;
   description: string;
+  description_bottom: string;
   casters: Caster[];
   planning: string;
 }
