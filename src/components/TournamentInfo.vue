@@ -128,5 +128,9 @@ const props = defineProps<{
         </svg>
       </div>
     </div>
+
+    <div class="mx-4 mb-2 flex justify-center text-xs">
+      {{ tournament?.description_bottom }}
+    </div>
   </section>
 </template>
