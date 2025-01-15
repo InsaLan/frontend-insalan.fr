@@ -79,12 +79,12 @@ const changePage = async (newPage: number) => {
   page.value = newPage;
   loading.value = true;
 
-  const res = await fetchAllTimeslotsPaginated(1);
+  const res = await fetchAllTimeslotsPaginated(page.value);
   await fetchAdminDetailTimeslot();
   await fetchTimeslotExports();
 
   timeslots_id.value = res.results.map((timeslot) => timeslot.id);
-  max_pages.value = (res.count / 10) + 1;
+  max_pages.value = Math.floor(res.count / 10) + 1;
 
   loading.value = false;
 };
