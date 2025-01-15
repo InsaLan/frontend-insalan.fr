@@ -26,4 +26,5 @@ export interface Export {
   id: number;
   orders: { [key: string]: number };
   created_at: string;
+  time_slot: number;
 }
