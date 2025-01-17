@@ -24,6 +24,7 @@ import {
   faPencil,
   faPenToSquare,
   faPizzaSlice,
+  faSave,
   faTrashCan,
   faWarning,
   faXmark,
@@ -70,6 +71,7 @@ library.add(
   faTrashCan,
   faWarning,
   faXmark,
+  faSave,
 );
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
