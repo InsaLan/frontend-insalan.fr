@@ -499,6 +499,23 @@ export const useTournamentStore = defineStore('tournament', () => {
 
   const soloGame = computed(() => (tournament.value as TournamentDeref | undefined)?.game.players_per_team === 1);
 
+  async function updateTeamsSeeding(modified_seed: { id: number; seed: number }[]) {
+    await get_csrf();
+
+    const res = await axios.patch(
+      '/tournament/team/seeding',
+      modified_seed,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    return res;
+  }
+
   function $reset() {
     eventsList.value = {};
     tournamentsList.value = {};
@@ -553,6 +570,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     get_ticket_pdf,
     get_unpaid_registration,
     validate_registration,
+    updateTeamsSeeding,
     soloGame,
   };
 });

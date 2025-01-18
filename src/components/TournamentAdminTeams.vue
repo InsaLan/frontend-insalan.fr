@@ -4,6 +4,7 @@ import { integer, maxValue, minValue } from '@vuelidate/validators';
 import { storeToRefs } from 'pinia';
 import { computed, reactive } from 'vue';
 import FormField from '@/components/FormField.vue';
+import type { Team } from '@/models/team';
 import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
@@ -16,18 +17,18 @@ const NotificationStore = useNotificationStore();
 const { addNotification } = NotificationStore;
 
 const tournamentStore = useTournamentStore();
-const { getTournamentTeams } = tournamentStore;
+const { getTournamentTeams, updateTeamsSeeding } = tournamentStore;
 getTournamentTeams();
 
 const { tourney_teams } = storeToRefs(tournamentStore);
 
-const seeding_form = reactive(tourney_teams.value.validated_teams.reduce((res, item) => {
-  res[item.id] = item.seed;
+const seeding_form = reactive(tourney_teams.value.validated_teams.reduce((res, team) => {
+  res[team.id] = team.seed;
   return res;
 }, {} as Record<number, number>));
 
-const rules = computed(() => tourney_teams.value.validated_teams.reduce((res, item) => {
-  res[item.id] = {
+const rules = computed(() => tourney_teams.value.validated_teams.reduce((res, team) => {
+  res[team.id] = {
     integer,
     minValueValue: minValue(0),
     maxValueRef: maxValue(tournament.maxTeam),
@@ -50,6 +51,33 @@ const save_seeds = async () => {
     addNotification('Les seeds doivent être unique', 'error');
     return;
   }
+
+  const modified_seed = tourney_teams.value.validated_teams.reduce((res, team) => {
+    if (team.seed !== seeding_form[team.id]) {
+      res.push({ id: team.id, seed: seeding_form[team.id] });
+    }
+    return res;
+  }, [] as { id: number; seed: number }[]);
+
+  if (modified_seed.length === 0) {
+    addNotification('Pas de modification', 'info');
+    return;
+  }
+
+  const res = await updateTeamsSeeding(modified_seed);
+
+  const seed_mapping = (res.data as { id: number; seed: number }[]).reduce((ret, item) => {
+    ret[item.id] = item.seed;
+    return ret;
+  }, {} as Record<number, number>);
+
+  (tournament.teams as Team[]).forEach((team) => {
+    if (team.id in seed_mapping) {
+      team.seed = seed_mapping[team.id];
+    }
+  });
+
+  addNotification('Seed modifiés avec succès.', 'info');
 };
 
 </script>
@@ -58,8 +86,6 @@ const save_seeds = async () => {
   <h4 class="py-4 text-center text-2xl">
     Liste des équipes et seeding
   </h4>
-  {{ tournament.teams }}
-  {{ seeding_form }}
   <p class="text-center">
     Le seed d'une équipe doit être un entier compris entre 1 et {{ tournament.maxTeam }}.
     Chaque seed doit être unique.
@@ -73,10 +99,10 @@ const save_seeds = async () => {
     </colgroup>
     <thead>
       <tr>
-        <th class="border-2">
+        <th class="border-2 p-2 text-xl">
           Équipe
         </th>
-        <th class="border-2">
+        <th class="border-2 p-2 text-xl">
           Seed
         </th>
       </tr>
@@ -94,14 +120,13 @@ const save_seeds = async () => {
             v-slot="context"
             :validations="v$[team.id]"
           >
-            <label for="seed" class="hidden"/>
-            <input id="seed" v-model="seeding_form[team.id]" type="number" class="border-0 bg-inherit text-center" :class="{ error: context.invalid }">
+            <input id="seed" v-model="seeding_form[team.id]" type="number" class="border-0 border-b-2 bg-inherit text-center" :class="{ error: context.invalid, 'text-orange-300': team.seed !== seeding_form[team.id], 'text-red-500': context.invalid }">
           </FormField>
         </td>
       </tr>
     </tbody>
   </table>
-  <button type="submit" class="mx-auto rounded bg-blue-800 p-2 text-xl font-bold text-white transition duration-150 ease-in-out hover:bg-blue-700" @click="save_seeds">
+  <button type="submit" class="mx-auto mb-8 rounded bg-blue-800 p-2 text-xl font-bold text-white transition duration-150 ease-in-out hover:bg-blue-700" @click="save_seeds">
     Sauvegarder
   </button>
 </template>
