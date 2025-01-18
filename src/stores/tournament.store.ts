@@ -39,7 +39,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     'team': string;
   }[]>([]);
 
-  const tourney_teams = ref<Record<string, Team[]>>({});
+  const tourney_teams = ref({ validated_teams: [] as Team[], non_validated_teams: [] as Team[] });
   const tournament = ref<Tournament | TournamentDeref>();
   const ongoingEvents = computed(() => Object.values(eventsList.value).reduce((res, item) => {
     if (item.ongoing) {
@@ -403,7 +403,10 @@ export const useTournamentStore = defineStore('tournament', () => {
     ));
   }
 
-  function get_validated_team_by_id(id: number) {
+  function get_validated_team_by_id(id: number | string) {
+    if (typeof id === 'string') {
+      id = Number(id);
+    }
     return tourney_teams.value.validated_teams.find((team) => team.id === id);
   }
 
