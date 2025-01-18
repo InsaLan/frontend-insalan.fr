@@ -536,6 +536,49 @@ export const useTournamentStore = defineStore('tournament', () => {
     return res;
   }
 
+  async function createGroups(data: {
+    tournament: number;
+    count: number;
+    team_per_group: number;
+    names: string[];
+    use_seeding: boolean;
+  }) {
+    await get_csrf();
+
+    const res = await axios.post<Group[]>(
+      `/tournament/tournament/${data.tournament}/group/generate/`,
+      data,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    (tournament.value as TournamentDeref).groups = res.data;
+  }
+
+  async function deleteGroups(tournament_id: number): Promise<boolean> {
+    await get_csrf();
+
+    const res = await axios.delete(
+      `/tournament/tournament/${tournament_id}/group/delete/`,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    if (res.status !== 204) return false;
+
+    (tournament.value as TournamentDeref).groups = [];
+
+    return true;
+  }
+
   async function deleteGroup(group_id: number) {
     await get_csrf();
 
@@ -615,6 +658,8 @@ export const useTournamentStore = defineStore('tournament', () => {
     updateTeamsSeeding,
     editGroup,
     deleteGroup,
+    createGroups,
+    deleteGroups,
     soloGame,
   };
 });
