@@ -5,15 +5,15 @@ import { storeToRefs } from 'pinia';
 import { computed, reactive } from 'vue';
 import FormField from '@/components/FormField.vue';
 import type { TournamentDeref } from '@/models/tournament';
-import { useErrorStore } from '@/stores/error.store';
+import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const { tournament } = defineProps<{
   tournament: TournamentDeref;
 }>();
 
-const ErrorStore = useErrorStore();
-const { add_error } = ErrorStore;
+const NotificationStore = useNotificationStore();
+const { addNotification } = NotificationStore;
 
 const tournamentStore = useTournamentStore();
 const { getTournamentTeams } = tournamentStore;
@@ -47,7 +47,8 @@ const save_seeds = async () => {
   if (!isValid) return;
 
   if (unique.size !== non_zero.length) {
-    add_error('Les seeds doivent être unique');
+    addNotification('Les seeds doivent être unique', 'error');
+    return;
   }
 };
 
