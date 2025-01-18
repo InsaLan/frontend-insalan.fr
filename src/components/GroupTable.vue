@@ -28,6 +28,9 @@ const { get_validated_team_by_id } = TournamentStore;
         </th>
         <th class="m-4 border-separate truncate border border-slate-500 bg-slate-200 p-4 text-center leading-none text-black">
           Score
+          <p v-if="Object.keys(group.tiebreak_scores).length" class="text-lg">
+            (tiebreak)
+          </p>
         </th>
       </tr>
     </thead>
@@ -38,7 +41,7 @@ const { get_validated_team_by_id } = TournamentStore;
             get_validated_team_by_id(team_id)?.name }}
         </td>
         <td class="border-separate border border-slate-500 p-4 text-center">
-          {{ score }}
+          {{ score }} {{ group.tiebreak_scores[team_id] ? `(+${group.tiebreak_scores[team_id]})` : '' }}
         </td>
       </tr>
     </tbody>
