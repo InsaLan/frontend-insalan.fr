@@ -519,6 +519,45 @@ export const useTournamentStore = defineStore('tournament', () => {
     return res;
   }
 
+  async function editGroup(group_id: number, data: Record<string, number | string | Record<number, number>>) {
+    await get_csrf();
+
+    const res = await axios.patch(
+      `/tournament/group/${group_id}/`,
+      data,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    return res;
+  }
+
+  async function deleteGroup(group_id: number) {
+    await get_csrf();
+
+    const res = await axios.delete(
+      `/tournament/group/${group_id}/`,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    if (res.status !== 204) return false;
+
+    (tournament.value as TournamentDeref).groups = (tournament.value as TournamentDeref)
+      .groups
+      .filter((group) => group.id !== group_id);
+
+    return true;
+  }
+
   function $reset() {
     eventsList.value = {};
     tournamentsList.value = {};
@@ -574,6 +613,8 @@ export const useTournamentStore = defineStore('tournament', () => {
     get_unpaid_registration,
     validate_registration,
     updateTeamsSeeding,
+    editGroup,
+    deleteGroup,
     soloGame,
   };
 });
