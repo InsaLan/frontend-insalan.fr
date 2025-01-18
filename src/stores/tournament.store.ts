@@ -6,7 +6,7 @@ import {
 } from '@/models/bracket';
 import type { Event } from '@/models/event';
 import type { Group } from '@/models/group';
-import { BestofType, type Match } from '@/models/match';
+import { BestofType, type Match, MatchStatus } from '@/models/match';
 import type { PlayerRegistration, PlayerRegistrationDeref } from '@/models/registration';
 import type { SwissMatch } from '@/models/swiss';
 import type { Team } from '@/models/team';
@@ -645,6 +645,31 @@ export const useTournamentStore = defineStore('tournament', () => {
     return true;
   }
 
+  async function launchMatchs(data: {
+    tournament: number;
+    round?: number;
+    matchs?: number[];
+  }) {
+    await get_csrf();
+
+    const res = await axios.patch<number[]>(
+      `/tournament/tournament/${data.tournament}/group/matchs/launch/`,
+      data,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    (tournament.value as TournamentDeref).groups.forEach((group) => group.matchs.forEach((match) => {
+      if (res.data.includes(match.id)) {
+        match.status = MatchStatus.ONGOING;
+      }
+    }));
+  }
+
   function $reset() {
     eventsList.value = {};
     tournamentsList.value = {};
@@ -706,6 +731,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     deleteGroups,
     createGroupMatchs,
     deleteGroupMatchs,
+    launchMatchs,
     soloGame,
   };
 });
