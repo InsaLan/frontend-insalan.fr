@@ -21,13 +21,20 @@ const { tournament } = defineProps<{
 }>();
 
 const tournamentStore = useTournamentStore();
-const { getTournamentTeams, createGroups, deleteGroups } = tournamentStore;
+const {
+  getTournamentTeams,
+  createGroups,
+  createGroupMatchs,
+  deleteGroups,
+  deleteGroupMatchs,
+} = tournamentStore;
 getTournamentTeams();
 
 const NotificationStore = useNotificationStore();
 const { addNotification } = NotificationStore;
 
 const has_groups = computed(() => (tournament.groups.length ?? 0) > 0);
+const has_matchs = computed(() => has_groups.value && (tournament.groups[0].matchs.length ?? 0) > 0);
 
 const modal_open = ref(false);
 const modal_type = ref('');
@@ -71,7 +78,21 @@ const create_groups = async () => {
   addNotification('Les poules ont bien été créées.', 'info');
 };
 
-const create_matchs = async () => {};
+const create_delete_matchs = async () => {
+  if (has_matchs.value) {
+    open_modal('delete_matchs');
+    return;
+  }
+
+  if (!has_groups.value) {
+    addNotification('Il n\'existent pas de poules', 'info');
+    return;
+  }
+
+  await createGroupMatchs(tournament.id, tournament.groups.map((group) => group.id));
+
+  addNotification('Les matchs ont bien été créés.', 'info');
+};
 
 const launch_round = async () => {};
 
@@ -79,6 +100,14 @@ const delete_groups = async () => {
   const res = await deleteGroups(tournament.id);
 
   if (res) addNotification('Les poules ont bien été supprimées', 'info');
+
+  modal_open.value = false;
+};
+
+const delete_group_matchs = async () => {
+  const res = await deleteGroupMatchs(tournament.id);
+
+  if (res) addNotification('Les matchs de poules ont bien été supprimées', 'info');
 
   modal_open.value = false;
 };
@@ -102,10 +131,12 @@ const delete_groups = async () => {
 
       <button
         type="button"
-        class="center rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-        @click="create_matchs"
+        class="center rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
+        :class="[has_matchs ? 'bg-red-500' : 'bg-blue-800', has_groups ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
+        :disabled="!has_groups"
+        @click="create_delete_matchs"
       >
-        Créer les matchs
+        {{ has_matchs ? 'Supprimer' : 'Créer' }} les matchs
       </button>
     </div>
     <div
@@ -254,6 +285,33 @@ const delete_groups = async () => {
         class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
         type="button"
         @click="delete_groups"
+      >
+        Valider
+      </button>
+      <button
+        class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        type="button"
+        @click="modal_open = false;"
+      >
+        Annuler
+      </button>
+    </template>
+  </Modal>
+
+  <Modal v-if="modal_open && modal_type === 'delete_matchs'">
+    <template #title>
+      <h3>
+        Supprimer les matchs
+      </h3>
+    </template>
+    <template #body>
+      Les matchs des poules vont êtres supprimés si aucun n'est en cours ou terminés.
+    </template>
+    <template #buttons>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+        type="button"
+        @click="delete_group_matchs"
       >
         Valider
       </button>
