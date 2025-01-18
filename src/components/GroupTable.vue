@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { Group } from '@/models/group';
-import type { Team } from '@/models/team';
+import { useTournamentStore } from '@/stores/tournament.store';
 
-const props = defineProps<{
+defineProps<{
   group: Group;
-  teams: Record<string, Team[]>;
 }>();
-const get_validated_team_by_id = (id: number) => props.teams.validated_teams.find((team) => team.id === id);
+
+const TournamentStore = useTournamentStore();
+const { get_validated_team_by_id } = TournamentStore;
 
 </script>
 <template>
@@ -23,21 +24,21 @@ const get_validated_team_by_id = (id: number) => props.teams.validated_teams.fin
       </tr>
       <tr class="w-auto">
         <th class="border-separate border border-slate-500 bg-slate-200 p-4 text-center text-black">
-          Equipe
+          Équipe
         </th>
-        <th class="m-4 border-separate truncate border border-slate-500 bg-slate-200 p-4 text-center text-black">
+        <th class="m-4 border-separate truncate border border-slate-500 bg-slate-200 p-4 text-center leading-none text-black">
           Score
         </th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="team_id in group.teams" :key="team_id">
+      <tr v-for="score, team_id in group.scores" :key="team_id">
         <td class="border-separate truncate border border-slate-500 p-4 text-center">
           {{
             get_validated_team_by_id(team_id)?.name }}
         </td>
         <td class="border-separate border border-slate-500 p-4 text-center">
-          {{ group.scores[team_id] }}
+          {{ score }}
         </td>
       </tr>
     </tbody>
