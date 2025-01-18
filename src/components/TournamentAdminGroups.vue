@@ -27,6 +27,7 @@ const {
   createGroupMatchs,
   deleteGroups,
   deleteGroupMatchs,
+  launchMatchs,
 } = tournamentStore;
 getTournamentTeams();
 
@@ -62,6 +63,13 @@ const rules_group = computed(() => ({
 
 const v$ = useVuelidate(rules_group, group_data);
 
+const round = ref(1);
+const round_rule = computed(() => ({
+  round: { required, integer, between: between(1, Math.max(...tournament.groups.map((group) => group.round_count))) },
+}));
+
+const v_round$ = useVuelidate(round_rule, { round });
+
 const open_modal = (type: string) => {
   modal_open.value = true;
   modal_type.value = type;
@@ -94,7 +102,27 @@ const create_delete_matchs = async () => {
   addNotification('Les matchs ont bien été créés.', 'info');
 };
 
-const launch_round = async () => {};
+const open_launch_round_modal = async () => {
+  if (!has_matchs.value) {
+    addNotification('Il n\'existent pas de matchs.', 'info');
+    return;
+  }
+
+  // open_round_modal.value = true;
+  open_modal('launch_round');
+};
+
+const launch_round_matchs = async () => {
+  const is_valid = await v_round$.value.$validate();
+
+  if (!is_valid) return;
+
+  await launchMatchs({ tournament: tournament.id, round: round.value });
+
+  addNotification(`Les matchs du round ${round.value} ont bien été lancés.`, 'info');
+
+  modal_open.value = false;
+};
 
 const delete_groups = async () => {
   const res = await deleteGroups(tournament.id);
@@ -144,8 +172,10 @@ const delete_group_matchs = async () => {
     >
       <button
         type="button"
-        class="center rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-        @click="launch_round"
+        class="center rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
+        :class="[!has_matchs ? '-z-10 opacity-60' : 'hover:ring hover:ring-pink-500']"
+        :disabled="!has_matchs"
+        @click="open_launch_round_modal"
       >
         Lancer un round
       </button>
@@ -314,6 +344,58 @@ const delete_group_matchs = async () => {
         @click="delete_group_matchs"
       >
         Valider
+      </button>
+      <button
+        class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        type="button"
+        @click="modal_open = false;"
+      >
+        Annuler
+      </button>
+    </template>
+  </Modal>
+
+  <Modal v-if="modal_open && modal_type === 'launch_round'">
+    <template #icon>
+      <div/>
+    </template>
+    <template #title>
+      <h3 class="text-white-900 text-base font-semibold leading-6">
+        Lancer les matchs d'un round
+      </h3>
+    </template>
+    <template #body>
+      <form
+        id="create_groups_form"
+        class="m-4 flex flex-col gap-4"
+        @submit.prevent="launch_round_matchs"
+      >
+        <FormField
+          v-slot="context"
+          :validations="v_round$.round"
+        >
+          <label for="round">
+            Numéro du round
+          </label>
+          <input
+            id="round"
+            v-model="round"
+            type="number"
+            name="round"
+            aria-label="Round number"
+            class="ml-2 bg-inherit"
+            :class="{ error: context.invalid }"
+          >
+        </FormField>
+      </form>
+    </template>
+    <template #buttons>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+        type="button"
+        @click="launch_round_matchs"
+      >
+        Lancer le round
       </button>
       <button
         class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
