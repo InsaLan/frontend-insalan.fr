@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
-import {
-  minLength, required, sameAs,
-} from '@vuelidate/validators';
 import { computed, reactive } from 'vue';
 import { useUserStore } from '@/stores/user.store';
+import {
+  minLength, required, sameAs,
+} from '@/support/locales/errors.fr';
 
 import FormField from './FormField.vue';
 import PasswordInput from './PasswordInput.vue';

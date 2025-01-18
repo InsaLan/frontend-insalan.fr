@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
-import {
-  helpers, minLength, required,
-} from '@vuelidate/validators';
 import { storeToRefs } from 'pinia';
 import {
   computed, reactive, ref,
@@ -14,6 +11,9 @@ import type { Team } from '@/models/team';
 import type { Tournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
+import {
+  acceptRules, minLength, required,
+} from '@/support/locales/errors.fr';
 
 const props = defineProps<{
   id: number;
@@ -27,11 +27,6 @@ const {
   registerTeam, registerPlayerOrManager, getTournamentFull, addRegistrationToCart,
 } = tournamentStore;
 const { tournament, soloGame } = storeToRefs(tournamentStore);
-
-const acceptRules = helpers.withParams(
-  { type: 'acceptRules' },
-  (value) => value === true,
-);
 
 const register_form = reactive({
   team: '',

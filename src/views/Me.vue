@@ -1,9 +1,5 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
-import {
-  email, minLength,
-  required, sameAs,
-} from '@vuelidate/validators';
 import { storeToRefs } from 'pinia';
 import {
   computed, reactive, ref,
@@ -17,6 +13,10 @@ import type { PlayerRegistrationDeref, RegistrationDeref } from '@/models/regist
 import type { Tournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
+import {
+  email, minLength,
+  required, sameAs,
+} from '@/support/locales/errors.fr';
 
 const userStore = useUserStore();
 const tournamentStore = useTournamentStore();
