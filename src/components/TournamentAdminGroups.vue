@@ -143,14 +143,14 @@ const delete_group_matchs = async () => {
 
 <template>
   <div
-    class="m-8 flex justify-center gap-16"
+    class="m-8 flex gap-16"
   >
     <div
-      class="flex flex-col gap-8 sm:flex-row"
+      class="flex w-1/2 flex-col justify-end gap-8 sm:flex-row"
     >
       <button
         type="button"
-        class="center rounded p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+        class="rounded p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
         :class="[has_groups ? 'bg-red-500' : 'bg-blue-800']"
         @click="open_modal(has_groups ? 'delete_groups' : 'create_groups')"
       >
@@ -159,7 +159,7 @@ const delete_group_matchs = async () => {
 
       <button
         type="button"
-        class="center rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
+        class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
         :class="[has_matchs ? 'bg-red-500' : 'bg-blue-800', has_groups ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
         :disabled="!has_groups"
         @click="create_delete_matchs"
@@ -168,11 +168,11 @@ const delete_group_matchs = async () => {
       </button>
     </div>
     <div
-      class="flex flex-col gap-8 sm:flex-row"
+      class="flex w-1/2 flex-col gap-8 sm:flex-row"
     >
       <button
         type="button"
-        class="center rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
+        class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
         :class="[!has_matchs ? '-z-10 opacity-60' : 'hover:ring hover:ring-pink-500']"
         :disabled="!has_matchs"
         @click="open_launch_round_modal"
@@ -182,7 +182,7 @@ const delete_group_matchs = async () => {
 
       <router-link
         :to="{ name: 'tournament_admin_groups-matchs' }"
-        class="rounded bg-blue-800 p-2 text-center font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+        class="content-center rounded bg-blue-800 p-2 text-center font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
       >
         Gérer les matchs
       </router-link>
