@@ -12,8 +12,10 @@ import type { SwissMatch } from '@/models/swiss';
 import type { Team } from '@/models/team';
 import type { Tournament, TournamentDeref } from '@/models/tournament';
 
+import { useNotificationStore } from './notification.store';
 import { useUserStore } from './user.store';
 
+const { addNotification } = useNotificationStore();
 const { get_csrf, add_product_to_cart } = useUserStore();
 const {
   csrf, inscriptions, user, cart,
@@ -652,7 +654,7 @@ export const useTournamentStore = defineStore('tournament', () => {
   }) {
     await get_csrf();
 
-    const res = await axios.patch<number[]>(
+    const res = await axios.patch<{ matchs: number[]; warning: boolean }>(
       `/tournament/tournament/${data.tournament}/group/matchs/launch/`,
       data,
       {
@@ -664,10 +666,14 @@ export const useTournamentStore = defineStore('tournament', () => {
     );
 
     (tournament.value as TournamentDeref).groups.forEach((group) => group.matchs.forEach((match) => {
-      if (res.data.includes(match.id)) {
+      if (res.data.matchs.includes(match.id)) {
         match.status = MatchStatus.ONGOING;
       }
     }));
+
+    if (res.data.warning) {
+      addNotification('Des matchs n\'ont pas pu être lancé car une des équipes est dans un match en cours.', 'warn');
+    }
   }
 
   function $reset() {
