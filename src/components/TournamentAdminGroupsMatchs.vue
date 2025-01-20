@@ -83,6 +83,19 @@ const select_match = (match: Match) => {
     }
   }
 };
+
+const launch_selected_matchs = async () => {
+  if (!has_matchs.value) {
+    addNotification('Il n\'existe pas de matchs.', 'info');
+    return;
+  }
+
+  await launchMatchs({ tournament: tournament.id, matchs: Array.from(selected_matchs.value) });
+
+  selected_matchs.value.clear();
+
+  addNotification('Les matchs ont bien été lancés.', 'info');
+};
 </script>
 
 <template>
@@ -100,6 +113,15 @@ const select_match = (match: Match) => {
       @click="open_launch_round_modal"
     >
       Lancer un round
+    </button>
+    <button
+      type="button"
+      class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
+      :class="[!has_matchs ? '-z-10 opacity-60' : 'hover:ring hover:ring-pink-500']"
+      :disabled="!has_matchs"
+      @click="launch_selected_matchs"
+    >
+      Lancer les matchs sélectionnés
     </button>
   </div>
 
