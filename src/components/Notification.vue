@@ -12,10 +12,12 @@ const { removeNotification } = NotificationStore;
       <div
         v-for="notification in notifications"
         :key="notification.id"
-        class="flex max-w-sm items-center justify-between gap-2 rounded-lg p-4 shadow-lg transition-all duration-300 ease-in-out"
-        :class="[
-          notification.type === 'error' ? 'bg-red-500 text-white' : 'bg-green-500 text-white',
-        ]"
+        class="flex max-w-sm items-center justify-between gap-2 rounded-lg p-4 text-white shadow-lg transition-all duration-300 ease-in-out"
+        :class="{
+          'bg-red-500': notification.type === 'error',
+          'bg-green-500': notification.type === 'info',
+          'bg-orange-500': notification.type === 'warn',
+        }"
       >
         <div>
           {{ notification.message }}

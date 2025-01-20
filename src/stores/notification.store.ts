@@ -4,7 +4,7 @@ import { ref } from 'vue';
 interface Notification {
   id: number;
   message: string;
-  type: 'error' | 'info';
+  type: 'error' | 'info' | 'warn';
 }
 
 export const useNotificationStore = defineStore('notification', () => {
@@ -19,7 +19,7 @@ export const useNotificationStore = defineStore('notification', () => {
 
   function addNotification(
     message: string | string[] | { [key: string]: string },
-    type: 'error' | 'info',
+    type: 'error' | 'info' | 'warn',
   ) {
     if (Array.isArray(message)) {
       message.forEach((m) => addNotification(m, type));
