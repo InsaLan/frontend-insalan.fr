@@ -100,11 +100,8 @@ const launch_selected_matchs = async () => {
 
 <template>
   <div
-    class="flex justify-center gap-8"
+    class="m-4 flex flex-wrap justify-center gap-4 lg:mb-0 lg:gap-8"
   >
-    <router-link :to="{ name: 'tournament_admin_groups' }">
-      Gérer les poules
-    </router-link>
     <button
       type="button"
       class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
@@ -123,6 +120,12 @@ const launch_selected_matchs = async () => {
     >
       Lancer les matchs sélectionnés
     </button>
+    <router-link
+      :to="{ name: 'tournament_admin_groups' }"
+      class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+    >
+      Gérer les poules
+    </router-link>
   </div>
 
   <div class="m-2 overflow-auto md:m-4 xl:m-8">
@@ -137,7 +140,7 @@ const launch_selected_matchs = async () => {
           v-for="round in max_round"
           :key="round"
           :class="{ 'border-r': round < max_round }"
-          class="w-56 lg:w-[34rem]"
+          class="w-56 xl:w-[34rem]"
         >
           Tour {{ round }}
         </th>
