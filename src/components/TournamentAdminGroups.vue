@@ -93,7 +93,7 @@ const create_delete_matchs = async () => {
   }
 
   if (!has_groups.value) {
-    addNotification('Il n\'existent pas de poules', 'info');
+    addNotification('Il n\'existe pas de poules', 'info');
     return;
   }
 
@@ -104,7 +104,7 @@ const create_delete_matchs = async () => {
 
 const open_launch_round_modal = async () => {
   if (!has_matchs.value) {
-    addNotification('Il n\'existent pas de matchs.', 'info');
+    addNotification('Il n\'existe pas de matchs.', 'info');
     return;
   }
 

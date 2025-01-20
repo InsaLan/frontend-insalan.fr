@@ -51,7 +51,7 @@ const v_round$ = useVuelidate(round_rule, { round_to_launch });
 
 const open_launch_round_modal = async () => {
   if (!has_matchs.value) {
-    addNotification('Il n\'existent pas de matchs.', 'info');
+    addNotification('Il n\'existe pas de matchs.', 'info');
     return;
   }
 
