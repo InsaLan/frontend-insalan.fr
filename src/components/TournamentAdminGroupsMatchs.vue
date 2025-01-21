@@ -90,6 +90,11 @@ const launch_selected_matchs = async () => {
     return;
   }
 
+  if (selected_matchs.value.size === 0) {
+    addNotification('Aucun match sélectionné.', 'warn');
+    return;
+  }
+
   await launchMatchs({ tournament: tournament.id, matchs: Array.from(selected_matchs.value) });
 
   selected_matchs.value.clear();
@@ -114,8 +119,8 @@ const launch_selected_matchs = async () => {
     <button
       type="button"
       class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
-      :class="[!has_matchs ? '-z-10 opacity-60' : 'hover:ring hover:ring-pink-500']"
-      :disabled="!has_matchs"
+      :class="[!has_matchs || selected_matchs.size === 0 ? '-z-10 opacity-60' : 'hover:ring hover:ring-pink-500']"
+      :disabled="!has_matchs || selected_matchs.size === 0 "
       @click="launch_selected_matchs"
     >
       Lancer les matchs sélectionnés
