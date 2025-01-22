@@ -25,7 +25,7 @@ const {
   getTournamentFull, getTournamentTeams, patch_registration, patch_team, leave_team,
 } = tournamentStore;
 const { fetch_user_inscription_full } = userStore;
-const { tournament } = storeToRefs(tournamentStore);
+const { tournament, soloGame } = storeToRefs(tournamentStore);
 // const { fetch_user_inscription_full, patch_user, send_score } = userStore;
 const { inscriptions } = storeToRefs(userStore);
 
@@ -235,7 +235,8 @@ const kick_member = async (type: string, id: number) => {
         </div>
         <button
           v-if="
-            (tournament as TournamentDeref)?.event.ongoing
+            !soloGame
+              && (tournament as TournamentDeref)?.event.ongoing
               && (
                 team_registration?.[0] === 'manager'
                 || (
