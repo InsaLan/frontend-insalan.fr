@@ -155,7 +155,6 @@ export const useUserStore = defineStore('user', () => {
   /*
     * Fetch all the inscription of a user
     * TODO: ADD manager handling
-    * @param user_id: the id of the user
   */
   async function fetch_user_inscription_full() {
     try {

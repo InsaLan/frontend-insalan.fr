@@ -29,7 +29,9 @@ const { tournament, soloGame } = storeToRefs(tournamentStore);
 // const { fetch_user_inscription_full, patch_user, send_score } = userStore;
 const { inscriptions } = storeToRefs(userStore);
 
-const team_registration = inscriptions.value?.ongoing.find((inscription) => inscription[1].team.id === props.teamId);
+const team_registration = computed(
+  () => inscriptions.value?.ongoing.find((inscription) => inscription[1].team.id === props.teamId),
+);
 
 const router = useRouter();
 
@@ -49,7 +51,7 @@ try {
   }
 
   // Check if the player exists in the team
-  if (!team_registration) {
+  if (!team_registration.value) {
     router.go(-1);
   }
 } catch (err: unknown) {
@@ -60,7 +62,7 @@ try {
 const showModalNameInGame = ref(false);
 
 const data_name_in_game = ref({
-  name_in_game: (team_registration?.[1] as unknown as PlayerRegistration)?.name_in_game ?? '',
+  name_in_game: (team_registration.value?.[1] as unknown as PlayerRegistration)?.name_in_game ?? '',
 });
 const rules_name_in_game = computed(() => ({
   name_in_game: { required },
@@ -72,7 +74,7 @@ const closeModalNameInGame = () => {
 };
 
 const ValidateModalNameInGame = async () => {
-  const current_name = (team_registration?.[1] as unknown as PlayerRegistration)?.name_in_game;
+  const current_name = (team_registration.value?.[1] as unknown as PlayerRegistration)?.name_in_game;
 
   let data = {};
   const isValid = await v$_name_in_game.value.$validate();
@@ -81,8 +83,8 @@ const ValidateModalNameInGame = async () => {
     name_in_game: data_name_in_game.value.name_in_game,
   } as Record<string, string>;
   await patch_registration(
-    team_registration?.[0] ?? '',
-    team_registration?.[1].id ?? -1,
+    team_registration.value?.[0] ?? '',
+    team_registration.value?.[1].id ?? -1,
     data,
   );
 
