@@ -108,7 +108,6 @@ const open_launch_round_modal = async () => {
     return;
   }
 
-  // open_round_modal.value = true;
   open_modal('launch_round');
 };
 
