@@ -55,7 +55,6 @@ const open_launch_round_modal = async () => {
     return;
   }
 
-  // open_round_modal.value = true;
   open_modal('launch_round');
 };
 
@@ -250,7 +249,7 @@ const launch_selected_matchs = async () => {
       >
         <FormField
           v-slot="context"
-          :validations="v_round$.round"
+          :validations="v_round$.round_to_launch"
         >
           <label for="round">
             Numéro du round
