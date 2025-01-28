@@ -334,7 +334,7 @@ const delete_group_matchs = async () => {
       </h3>
     </template>
     <template #body>
-      Les matchs des poules vont êtres supprimés si aucun n'est en cours ou terminés.
+      Les matchs des poules vont êtres supprimés si aucun match n'est en cours ou terminés.
     </template>
     <template #buttons>
       <button
