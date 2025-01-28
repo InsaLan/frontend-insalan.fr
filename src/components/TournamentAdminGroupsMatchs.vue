@@ -222,7 +222,7 @@ const launch_selected_matchs = async () => {
                 <td
                   class="w-6 text-right"
                 >
-                  {{ group.scores[team_id] }}
+                  {{ match.score[team_id] }}
                 </td>
               </tr>
             </table>
