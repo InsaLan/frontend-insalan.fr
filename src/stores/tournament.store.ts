@@ -8,7 +8,7 @@ import type { Event } from '@/models/event';
 import type { Group } from '@/models/group';
 import { BestofType, type Match, MatchStatus } from '@/models/match';
 import type { PlayerRegistration, PlayerRegistrationDeref } from '@/models/registration';
-import type { SwissMatch } from '@/models/swiss';
+import type { SwissMatch, SwissRound } from '@/models/swiss';
 import type { Team } from '@/models/team';
 import type { Tournament, TournamentDeref } from '@/models/tournament';
 
@@ -676,6 +676,46 @@ export const useTournamentStore = defineStore('tournament', () => {
     }
   }
 
+  async function createSwiss(tournament_id: number, data: {
+    min_score: number;
+    use_seeding: boolean;
+  }) {
+    await get_csrf();
+
+    const res = await axios.post<SwissRound[]>(
+      `/tournament/tournament/${tournament_id}/swiss/generate/`,
+      data,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    (tournament.value as TournamentDeref).swissRounds = res.data;
+  }
+
+  async function deleteSwiss(tournament_id: number): Promise<boolean> {
+    await get_csrf();
+
+    const res = await axios.delete(
+      `/tournament/tournament/${tournament_id}/swiss/delete/`,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    if (res.status !== 204) return false;
+
+    (tournament.value as TournamentDeref).swissRounds = [];
+
+    return true;
+  }
+
   function $reset() {
     eventsList.value = {};
     tournamentsList.value = {};
@@ -738,6 +778,8 @@ export const useTournamentStore = defineStore('tournament', () => {
     createGroupMatchs,
     deleteGroupMatchs,
     launchMatchs,
+    createSwiss,
+    deleteSwiss,
     soloGame,
   };
 });
