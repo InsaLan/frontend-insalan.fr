@@ -209,18 +209,18 @@ const open_launch_round_modal = () => {};
             </th>
           </tr>
           <tr
-            v-for="team_id in match.teams"
-            :key="team_id"
+            v-for="idx in tournament.game.team_per_match"
+            :key="idx"
           >
             <td
               class="w-52 truncate"
             >
-              {{ get_validated_team_by_id(team_id)?.name }}
+              {{ get_validated_team_by_id(match.teams[idx - 1])?.name ?? 'TBD' }}
             </td>
             <td
               class="w-6 text-right"
             >
-              {{ match.score[team_id] }}
+              {{ match.score[idx - 1] ?? 0 }}
             </td>
           </tr>
         </table>
