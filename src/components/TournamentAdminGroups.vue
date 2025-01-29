@@ -35,7 +35,7 @@ const NotificationStore = useNotificationStore();
 const { addNotification } = NotificationStore;
 
 const has_groups = computed(() => (tournament.groups.length ?? 0) > 0);
-const has_matchs = computed(() => has_groups.value && (tournament.groups[0].matchs.length ?? 0) > 0);
+const has_matchs = computed(() => has_groups.value && tournament.groups.some((g) => g.matchs.length > 0));
 
 const modal_open = ref(false);
 const modal_type = ref('');
