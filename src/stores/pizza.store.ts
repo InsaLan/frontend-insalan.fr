@@ -147,7 +147,7 @@ export const usePizzaStore = defineStore('pizza', () => {
     }));
   }
 
-  async function fetchTimeslotDetails(exportId: number) {
+  async function downloadTimeslotDetails(exportId: number) {
     await get_csrf();
 
     const res = await axios.get<Export>(`/pizza/export/${exportId}/`, {
@@ -163,7 +163,7 @@ export const usePizzaStore = defineStore('pizza', () => {
     data += `${frenchFormatFromDate(new Date(timeslotList.value[res.data.time_slot].delivery_time))}\n`;
     let totalPizzas = 0;
 
-    data += `export ${res.data.id + 1}\n`;
+    data += `export ${res.data.id}\n`;
     Object.entries(res.data.orders).forEach(([pizza, quantity]: [string, number]) => {
       totalPizzas += quantity;
       data += `  - ${pizza} : ${quantity}\n`;
@@ -362,7 +362,7 @@ export const usePizzaStore = defineStore('pizza', () => {
     fetchTimeslotExports,
     deleteExport,
     exportOrders,
-    fetchTimeslotDetails,
+    downloadTimeslotDetails,
     addPizza,
     patchPizza,
     deletePizza,

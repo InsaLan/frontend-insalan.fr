@@ -14,7 +14,7 @@ const {
   fetchAdminDetailTimeslot,
   fetchTimeslotExports,
   deleteExport,
-  fetchTimeslotDetails,
+  downloadTimeslotDetails,
   exportOrders,
 } = pizzaStore;
 
@@ -175,8 +175,8 @@ Object.values(timeslotList.value).forEach((timeslot) => {
           :key="timeslotExport.id"
           class="ml-4 hover:bg-cyan-800"
           :class="{ hidden: !timeslotsExpand[timeslot.id] }"
-          @click="fetchTimeslotDetails(timeslotExport.id)"
-          @keydown.enter="fetchTimeslotDetails(timeslotExport.id)"
+          @click="downloadTimeslotDetails(timeslotExport.id)"
+          @keydown.enter="downloadTimeslotDetails(timeslotExport.id)"
         >
           <div class="flex select-none items-center gap-2 p-2">
             <div class="flex size-8 items-center px-3">
