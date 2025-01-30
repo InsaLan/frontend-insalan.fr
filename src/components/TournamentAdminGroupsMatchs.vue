@@ -94,7 +94,7 @@ const launch_selected_matchs = async () => {
     return;
   }
 
-  await launchMatchs({ tournament: tournament.id, matchs: Array.from(selected_matchs.value) });
+  await launchMatchs({ tournament: tournament.id, matchs: Array.from(selected_matchs.value) }, 'group');
 
   selected_matchs.value.clear();
 

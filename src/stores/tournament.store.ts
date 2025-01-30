@@ -651,11 +651,11 @@ export const useTournamentStore = defineStore('tournament', () => {
     tournament: number;
     round?: number;
     matchs?: number[];
-  }) {
+  }, type: 'group' | 'swiss' | 'bracket') {
     await get_csrf();
 
     const res = await axios.patch<{ matchs: number[]; warning: boolean }>(
-      `/tournament/tournament/${data.tournament}/group/matchs/launch/`,
+      `/tournament/tournament/${data.tournament}/${type}/matchs/launch/`,
       data,
       {
         withCredentials: true,
@@ -665,7 +665,17 @@ export const useTournamentStore = defineStore('tournament', () => {
       },
     );
 
-    (tournament.value as TournamentDeref).groups.forEach((group) => group.matchs.forEach((match) => {
+    let match_list;
+
+    if (type === 'group') {
+      match_list = (tournament.value as TournamentDeref).groups;
+    } else if (type === 'swiss') {
+      match_list = (tournament.value as TournamentDeref).swissRounds;
+    } else if (type === 'bracket') {
+      match_list = (tournament.value as TournamentDeref).brackets;
+    }
+
+    match_list?.forEach((group) => group.matchs.forEach((match) => {
       if (res.data.matchs.includes(match.id)) {
         match.status = MatchStatus.ONGOING;
       }
