@@ -6,12 +6,16 @@ import { ref } from 'vue';
 
 export type Constant = { name: string; value: string };
 export type Content = { name: string; content: string };
+export type File = { name: string; file: string };
 
 export const useContentStore = defineStore('content', () => {
   const contents = ref<Record<string, string>>({});
   const constants = ref<Record<string, string>>({});
+  const files = ref<Record<string, string>>({});
+
   // captures named group matching the pattern ${name}
-  const re = /\$\{(?<name>\w+)\}/gm;
+  const re_constant = /\$\{(?<name>\w+)\}/gm;
+  const re_file = /\$\[(?<name>\w+)\]/gm;
 
   const md = new MarkdownIt({
     html: true,
@@ -28,13 +32,23 @@ export const useContentStore = defineStore('content', () => {
   md.use(MarkdownItClass, classesMapping);
 
   async function fetchStatic() {
-    const fetch_content = await axios.get<Content[]>('/content/content/');
-    const fetch_constant = await axios.get<Constant[]>('/content/constant/');
-    fetch_constant.data.forEach((constant: Constant) => {
+    const fetch_cms = await axios.get<{
+      contents:Content[];
+      constants:Constant[];
+      files:File[];
+    }>('/content/full/');
+    fetch_cms.data.constants.forEach((constant: Constant) => {
       constants.value[constant.name] = constant.value;
     });
-    fetch_content.data.forEach((content: Content) => {
-      contents.value[content.name] = md.render(content.content.replace(re, (_, name: string) => constants.value[name]));
+    fetch_cms.data.files.forEach((file: File) => {
+      files.value[file.name] = file.file;
+    });
+    fetch_cms.data.contents.forEach((content: Content) => {
+      contents.value[content.name] = md.render(
+        content.content
+          .replace(re_constant, (_, name: string) => constants.value[name])
+          .replace(re_file, (_, name: string) => `[${name}](${files.value[name]})`),
+      );
     });
   }
 
@@ -50,10 +64,17 @@ export const useContentStore = defineStore('content', () => {
     return constants.value[name];
   }
 
+  function getFile(name: string): string {
+    if (files.value[name] === undefined) return '';
+
+    return files.value[name];
+  }
+
   return {
     md,
     fetchStatic,
     getContent,
     getConstant,
+    getFile,
   };
 });
