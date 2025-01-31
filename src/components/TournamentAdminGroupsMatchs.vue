@@ -63,7 +63,7 @@ const launch_round_matchs = async () => {
 
   if (!is_valid) return;
 
-  await launchMatchs({ tournament: tournament.id, round: round_to_launch.value });
+  await launchMatchs({ tournament: tournament.id, round: round_to_launch.value }, 'group');
 
   addNotification(`Les matchs du round ${round_to_launch.value} ont bien été lancés.`, 'info');
 
