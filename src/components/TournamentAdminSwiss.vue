@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
-import { integer, minValue, required } from '@vuelidate/validators';
+import {
+  between,
+  integer,
+  minValue,
+  required,
+} from '@vuelidate/validators';
 import { computed, reactive, ref } from 'vue';
 import { type Match, MatchStatus } from '@/models/match';
 import type { TournamentDeref } from '@/models/tournament';
@@ -96,7 +101,37 @@ const delete_swiss = async () => {
 
 const open_create_round_modal = () => {};
 
-const open_launch_round_modal = () => {};
+const open_launch_round_modal = () => {
+  if (!has_matchs.value) {
+    addNotification('Il n\'existe pas de matchs.', 'info');
+    return;
+  }
+
+  open_modal('launch_round');
+};
+
+const round_to_launch = ref(1);
+const round_rules = computed(() => ({
+  round_to_launch: {
+    required,
+    integer,
+    between: between(1, Math.max(...roundCounts.value)),
+  },
+}));
+
+const v_round$ = useVuelidate(round_rules, { round_to_launch });
+
+const launch_round_matchs = async () => {
+  const is_valid = await v_round$.value.$validate();
+
+  if (!is_valid) return;
+
+  await launchMatchs({ tournament: tournament.id, round: round_to_launch.value }, 'swiss');
+
+  addNotification(`Les matchs du round ${round_to_launch.value} ont bien été lancés.`, 'info');
+
+  modal_open.value = false;
+};
 
 </script>
 
@@ -321,6 +356,58 @@ const open_launch_round_modal = () => {};
         @click="delete_swiss"
       >
         Valider
+      </button>
+      <button
+        class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        type="button"
+        @click="modal_open = false;"
+      >
+        Annuler
+      </button>
+    </template>
+  </Modal>
+
+  <Modal v-if="modal_open && modal_type === 'launch_round'">
+    <template #icon>
+      <div/>
+    </template>
+    <template #title>
+      <h3 class="text-white-900 text-base font-semibold leading-6">
+        Lancer les matchs d'un tour
+      </h3>
+    </template>
+    <template #body>
+      <form
+        id="create_groups_form"
+        class="m-4 flex flex-col gap-4"
+        @submit.prevent="launch_round_matchs"
+      >
+        <FormField
+          v-slot="context"
+          :validations="v_round$.round_to_launch"
+        >
+          <label for="round">
+            Numéro du tour
+          </label>
+          <input
+            id="round"
+            v-model="round_to_launch"
+            type="number"
+            name="round"
+            aria-label="Round number"
+            class="ml-2 bg-inherit"
+            :class="{ error: context.invalid }"
+          >
+        </FormField>
+      </form>
+    </template>
+    <template #buttons>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+        type="button"
+        @click="launch_round_matchs"
+      >
+        Lancer le tour
       </button>
       <button
         class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
