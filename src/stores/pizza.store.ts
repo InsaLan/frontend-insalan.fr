@@ -2,6 +2,7 @@ import axios from 'axios';
 import { defineStore, storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import type { Order } from '@/models/order';
+import type { Pagination } from '@/models/pagination';
 import type { Pizza } from '@/models/pizza';
 import type { AdminTimeslotDeref, Export, Timeslot } from '@/models/timeslot';
 import { frenchFormatFromDate } from '@/utils';
@@ -13,7 +14,7 @@ const { csrf } = storeToRefs(useUserStore());
 
 export const usePizzaStore = defineStore('pizza', () => {
   const pizzaList = ref<Record<number, Pizza>>({});
-  const timeslotList = ref<Record<number, Timeslot | AdminTimeslotDeref>>({});
+  const timeslotList = ref<Record<number, (Timeslot | AdminTimeslotDeref) & { cached: boolean }>>({});
   const timeslotExportList = ref<Record<number, Export[]>>({});
 
   async function fetchAllPizzas() {
@@ -23,14 +24,28 @@ export const usePizzaStore = defineStore('pizza', () => {
 
   async function fetchAdminDetailTimeslot() {
     await Promise.all(Object.values(timeslotList.value).map(async (timeslot) => {
+      if (timeslot.cached) return;
       const res = await axios.get<AdminTimeslotDeref>(`/pizza/timeslot/${timeslot.id}/`);
-      timeslotList.value[res.data.id] = res.data;
+      timeslotList.value[res.data.id] = { ...res.data, cached: true };
     }));
   }
 
   async function fetchNextTimeslots() {
+    // clear timeslotList
+    timeslotList.value = {};
+
     const res = await axios.get<Timeslot[]>('/pizza/timeslot/next/');
-    res.data.forEach((p: Timeslot) => { timeslotList.value[p.id] = p; });
+    res.data.forEach((p: Timeslot) => { timeslotList.value[p.id] = { ...p, cached: false }; });
+  }
+
+  async function fetchAllTimeslotsPaginated(page: number = 0): Promise<Pagination<Timeslot>> {
+    const res = await axios.get<Pagination<Timeslot>>(`/pizza/timeslot/full/?page=${page}`);
+    res.data.results.forEach((p: Timeslot) => {
+      if (p.id in timeslotList.value) return;
+      timeslotList.value[p.id] = { ...p, cached: false };
+    });
+
+    return res.data;
   }
 
   async function deleteTimeslot(timeslotId: number) {
@@ -79,7 +94,7 @@ export const usePizzaStore = defineStore('pizza', () => {
       },
     });
     if (res.status === 201) {
-      timeslotList.value[res.data.id] = res.data;
+      timeslotList.value[res.data.id] = { ...res.data, cached: false };
     }
   }
 
@@ -126,9 +141,41 @@ export const usePizzaStore = defineStore('pizza', () => {
 
   async function fetchTimeslotExports() {
     await Promise.all(Object.values(timeslotList.value).map(async ({ id }) => {
+      if (id in timeslotExportList.value) return;
       const res = await axios.get<Export[]>(`/pizza/timeslot/${id}/export/`);
       timeslotExportList.value[id] = res.data;
     }));
+  }
+
+  async function downloadTimeslotDetails(exportId: number) {
+    await get_csrf();
+
+    const res = await axios.get<Export>(`/pizza/export/${exportId}/`, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf.value,
+      },
+    });
+    if (res.status !== 200) {
+      return;
+    }
+    let data = '';
+    data += `${frenchFormatFromDate(new Date(timeslotList.value[res.data.time_slot].delivery_time))}\n`;
+    let totalPizzas = 0;
+
+    data += `export ${res.data.id}\n`;
+    Object.entries(res.data.orders).forEach(([pizza, quantity]: [string, number]) => {
+      totalPizzas += quantity;
+      data += `  - ${pizza} : ${quantity}\n`;
+    });
+    data += `Nombre de pizza : ${totalPizzas}\n`;
+
+    const url = window.URL.createObjectURL(new Blob([data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `export_${frenchFormatFromDate(new Date(timeslotList.value[res.data.time_slot].delivery_time))}_${res.data.id}.txt`);
+    document.body.appendChild(link);
+    link.click();
   }
 
   async function deleteExport(exportId: number) {
@@ -305,6 +352,7 @@ export const usePizzaStore = defineStore('pizza', () => {
     timeslotList,
     timeslotExportList,
     fetchAllPizzas,
+    fetchAllTimeslotsPaginated,
     fetchNextTimeslots,
     fetchAdminDetailTimeslot,
     addOrder,
@@ -314,6 +362,7 @@ export const usePizzaStore = defineStore('pizza', () => {
     fetchTimeslotExports,
     deleteExport,
     exportOrders,
+    downloadTimeslotDetails,
     addPizza,
     patchPizza,
     deletePizza,
