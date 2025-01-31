@@ -445,7 +445,7 @@ const view_password = ref<boolean>(false);
     </template>
     <template #body>
       <div class="p-4 text-justify">
-        Votre inscription a été ajouté au paner
+        Votre inscription a été ajoutée au panier
         <br>
         Vous pouvez retrouver votre panier depuis votre compte
       </div>
