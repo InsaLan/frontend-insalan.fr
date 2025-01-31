@@ -17,7 +17,7 @@ const props = defineProps<{
       {{ tournament?.description }}
     </h2>
 
-    <div class="grid gap-7 md:grid-cols-3">
+    <div class="grid gap-7 lg:grid-cols-3">
       <div class="flex w-full flex-col items-center md:my-24">
         <h3 class="mb-6 text-4xl">
           Format
