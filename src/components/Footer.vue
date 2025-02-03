@@ -1,4 +1,6 @@
 <script setup lang="ts">
+
+const buildYear = BUILD_YEAR;
 </script>
 
 <template>
@@ -183,7 +185,7 @@
       </div>
       <div class="grid">
         <p class="text-center">
-          Insalan 2023 - 2023
+          Insalan 2023 - {{ buildYear }}
         </p>
         <p class="mb-2 text-center">
           Code & design: équipe web
