@@ -101,7 +101,7 @@ const props = defineProps<{
                   {{ tournament?.casters[0].name }}
                 </text>
                 <!-- eslint-disable-next-line tailwindcss/migration-from-tailwind-2 -->
-                <image :href="tournament?.casters[0].image" class="overflow-clip" width="3.5" height="3" x="4.5" y="4.5"/>
+                <image :href="tournament?.casters[0].image" width="3.5" height="3" x="4.5" y="4.5"/>
               </g>
               <text v-else font-size="1" textLength="7.5" text-anchor="middle" x="4" y="4.25">
                 {{ tournament?.casters[0].name }}
@@ -114,14 +114,14 @@ const props = defineProps<{
                 {{ tournament?.casters[0].name }}
               </text>
               <!-- eslint-disable-next-line tailwindcss/migration-from-tailwind-2 -->
-              <image :href="tournament?.casters[0].image" class="overflow-clip" width="3.5" height="3" x="4.5"/>
+              <image :href="tournament?.casters[0].image" width="3.5" height="3" x="4.5"/>
             </a>
             <a :href="tournament?.casters[1].url">
               <text font-size="1" textLength="3.5" text-anchor="middle" x="6" y="6.25">
                 {{ tournament?.casters[1].name }}
               </text>
               <!-- eslint-disable-next-line tailwindcss/migration-from-tailwind-2 -->
-              <image :href="tournament?.casters[1].image" class="overflow-clip" width="3.5" height="3" y="4.5"/>
+              <image :href="tournament?.casters[1].image" width="3.5" height="3" y="4.5"/>
             </a>
             <text font-size="1" text-anchor="middle" x="4" y="4.25">&</text>
           </g>
