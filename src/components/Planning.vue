@@ -23,6 +23,7 @@ const props = defineProps<{
 
 const events = ref<Event[]>([]);
 const currentDate = ref(new Date());
+const focusedEvent = ref<string | null>(null);
 
 const getTotalInterval = computed(() => {
   if (events.value.length === 0) {
@@ -126,11 +127,15 @@ const getEventStyle = (event: Event, day: Date) => {
   const durationMinutes = (eventEnd.getTime() - eventStart.getTime()) / (1000 * 60);
 
   // if there are multiple events at the same time, we need to adjust the width
-  const sameStartEvents = getEventsForDay(day).filter(
-    (e) => e.start.getTime() === event.start.getTime(),
-  );
-  const width = 100 / sameStartEvents.length;
-  const left = sameStartEvents.indexOf(event) * width;
+  let width = 100;
+  let left = 0;
+  if (focusedEvent.value !== event.id) {
+    const sameStartEvents = getEventsForDay(day).filter(
+      (e) => e.start.getTime() === event.start.getTime(),
+    );
+    width = 100 / sameStartEvents.length;
+    left = sameStartEvents.indexOf(event) * width;
+  }
 
   return {
     top: `${(startMinutes / totalMinutes) * 100 + offset}%`,
@@ -197,7 +202,7 @@ watch(() => props.link, fetchEvents);
                 v-for="event in getEventsForDay(day)"
                 :key="event.start.toISOString()"
                 :class="[
-                  'absolute flex w-full cursor-pointer flex-col overflow-hidden rounded border border-black p-1 text-center text-xs text-white shadow-lg transition-transform duration-200 hover:z-10 hover:shadow-xl hover:ring hover:ring-blue-500 focus:z-10 focus:ring focus:ring-blue-500',
+                  'absolute flex cursor-pointer flex-col overflow-hidden rounded border border-black p-1 text-center text-xs text-white shadow-lg transition-transform duration-200 hover:z-10 hover:shadow-xl hover:ring hover:ring-blue-500 focus:z-10 focus:ring focus:ring-blue-500',
                   colors[
                     event.id.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0)
                     % colors.length
@@ -205,6 +210,10 @@ watch(() => props.link, fetchEvents);
                 ]"
                 :style="getEventStyle(event, day)"
                 type="button"
+                @focus="focusedEvent = event.id"
+                @blur="focusedEvent = null"
+                @mouseenter="focusedEvent = event.id"
+                @mouseleave="focusedEvent = null"
               >
                 <div class="font-bold">
                   {{ format(event.start, 'HH:mm') }} - {{ format(event.end, 'HH:mm') }}
