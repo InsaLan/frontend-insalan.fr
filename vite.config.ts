@@ -12,6 +12,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  define: {
+    BUILD_YEAR: new Date().getFullYear(),
+  },
   server: {
     host: true,
     port: 5173,

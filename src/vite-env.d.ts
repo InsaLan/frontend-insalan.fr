@@ -15,3 +15,5 @@ declare module 'markdown-it-class' {
 
   export default function markdownitTagClass(md: MarkdownIt, mapping?: object = {}): void;
 }
+
+declare const BUILD_YEAR: number;
