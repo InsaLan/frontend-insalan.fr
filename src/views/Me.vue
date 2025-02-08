@@ -343,25 +343,31 @@ const openScoreModal = () => {
             <div class="block">
               <div class="flex flex-1 flex-col justify-center">
                 <div class="m-2 flex flex-row items-stretch justify-center gap-2">
-                  <div
-                    :class="{ [`bg-red-600`]: (inscriptions.unpaid as Record<string, boolean>)[inscription[1].id], [`bg-green-600`]: !(inscriptions.unpaid as Record<string, boolean>)[inscription[1].id] }"
-                    class="center rounded p-2 font-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
-                    @click.prevent="
-                      (inscriptions.unpaid as Record<string, boolean>)[inscription[1].id]
-                        ? (
-                          modal_payment = true,
-                          addRegistrationToCart(inscription[1].team.tournament as unknown as Tournament, inscription[0])
-                        )
-                        : $router.push(`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`)"
-                    @keydown.prevent="
-                      (inscriptions.unpaid as Record<string, boolean>)[inscription[1].id]
-                        ? (
-                          modal_payment = true,
-                          addRegistrationToCart(inscription[1].team.tournament as unknown as Tournament, inscription[0])
-                        )
-                        : $router.push(`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`)"
+                  <router-link
+                    class="center flex flex-1 items-center justify-center rounded bg-green-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
+                    :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
                   >
-                    {{ (inscriptions.unpaid as Record<string, boolean>)[inscription[1].id] ? 'Terminer l\'inscription' : (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
+                    <div>
+                      {{ (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
+                    </div>
+                  </router-link>
+                  <div
+                    v-if="(inscriptions.unpaid as Record<string, boolean>)[inscription[1].id]"
+                    class="center flex flex-1 items-center justify-center rounded bg-red-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
+                    @click.prevent="
+                      (
+                        modal_payment = true,
+                        addRegistrationToCart(inscription[1].team.tournament as unknown as Tournament, inscription[0])
+                      )"
+                    @keydown.prevent="
+                      (
+                        modal_payment = true,
+                        addRegistrationToCart(inscription[1].team.tournament as unknown as Tournament, inscription[0])
+                      )"
+                  >
+                    <div>
+                      Terminer l'inscription
+                    </div>
                   </div>
                 </div>
               </div>
