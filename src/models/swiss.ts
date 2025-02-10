@@ -17,4 +17,5 @@ export interface SwissSeeding {
 
 export interface SwissMatch extends Match {
   swiss: SwissRound;
+  score_group: number;
 }
