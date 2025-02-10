@@ -11,6 +11,7 @@ import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
 
+import AdminMatch from './AdminMatch.vue';
 import FormField from './FormField.vue';
 import Modal from './Modal.vue';
 
@@ -23,7 +24,6 @@ const { addNotification } = NotificationStore;
 
 const tournamentStore = useTournamentStore();
 const {
-  get_validated_team_by_id,
   get_matchs_per_round,
   launchMatchs,
 } = tournamentStore;
@@ -164,7 +164,16 @@ const launch_selected_matchs = async () => {
           class=""
         >
           <div class="flex flex-wrap justify-around gap-2 p-2">
-            <table
+            <AdminMatch
+              v-for="match in matchs"
+              :key="match.id"
+              :match="match"
+              :selected="selected_matchs.has(match.id)"
+              :team-per-match="tournament.game.team_per_match"
+              @click="select_match(match)"
+              @keypress="select_match(match)"
+            />
+            <!-- <table
               v-for="match in matchs"
               :key="match.id"
               class="border-separate rounded border px-2 pb-2"
@@ -225,7 +234,7 @@ const launch_selected_matchs = async () => {
                   {{ match.score[team_id] }}
                 </td>
               </tr>
-            </table>
+            </table> -->
           </div>
         </td>
       </tr>
