@@ -10,7 +10,7 @@ import { computed, reactive, ref } from 'vue';
 import { type Match, MatchStatus } from '@/models/match';
 import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
-import { useTournamentStore } from '@/stores/tournament.store';
+import { groupBy, useTournamentStore } from '@/stores/tournament.store';
 
 import AdminMatch from './AdminMatch.vue';
 import FormField from './FormField.vue';
@@ -175,6 +175,7 @@ const launch_round_matchs = async () => {
       Lancer les matchs séléctionnés
     </button>
   </div>
+
   <div
     class="m-2 flex flex-col items-center md:m-4 lg:m-8"
   >
@@ -184,8 +185,8 @@ const launch_round_matchs = async () => {
       class="flex w-full overflow-x-auto pb-4"
     >
       <div
-        class="grid size-full items-center gap-x-10 gap-y-5"
-        :style="{ 'grid-template-columns': `repeat(${roundCounts[swiss_idx]},minmax(0,1fr))` }"
+        class="grid size-full gap-x-10 gap-y-5"
+        :style="{ 'grid-template-columns': `repeat(${roundCounts[swiss_idx]}, minmax(16rem,1fr))` }"
       >
         <h1
           v-for="round_idx in roundCounts[swiss_idx]"
@@ -195,19 +196,44 @@ const launch_round_matchs = async () => {
           Tour {{ round_idx }}
         </h1>
         <div
-          v-for="round_idx in roundCounts[swiss_idx]"
+          v-for="(round_matchs, round_idx) in groupBy(swiss.matchs, 'round_number')"
           :key="round_idx"
-          class="flex flex-col gap-3"
+          class="flex flex-col gap-6"
         >
-          <AdminMatch
-            v-for="match in swiss.matchs.filter((m) => m.round_number === round_idx)"
-            :key="match.id"
-            :match="match"
-            :selected="selected_matchs.has(match.id)"
-            :team-per-match="tournament.game.team_per_match"
-            @click="select_match(match)"
-            @keypress="select_match(match)"
-          />
+          <div
+            v-for="(matchs, score_group) in groupBy(round_matchs, 'score_group')"
+            :key="score_group"
+            class="border-2 border-gray-500"
+          >
+            <div
+              class="bg-gray-500 text-center"
+            >
+              <div
+                v-if="Number(round_idx) <= swiss.min_score"
+              >
+                {{ Number(round_idx) - 1 - Number(score_group) }} - {{ score_group }}
+              </div>
+              <div v-else>
+                {{ swiss.min_score - 1 - Number(score_group) }} -
+                {{ Number(round_idx) - swiss.min_score + Number(score_group) }}
+              </div>
+            </div>
+
+            <div
+              class="flex flex-col items-center gap-3 p-2"
+            >
+              <AdminMatch
+                v-for="match in matchs"
+                :key="match.id"
+                :match="match"
+                :selected="selected_matchs.has(match.id)"
+                :team-per-match="tournament.game.team_per_match"
+                class="w-full"
+                @click="select_match(match)"
+                @keypress="select_match(match)"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
