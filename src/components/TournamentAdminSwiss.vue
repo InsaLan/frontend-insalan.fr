@@ -12,6 +12,7 @@ import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
 
+import AdminMatch from './AdminMatch.vue';
 import FormField from './FormField.vue';
 import Modal from './Modal.vue';
 
@@ -23,7 +24,6 @@ const { addNotification } = useNotificationStore();
 
 const {
   launchMatchs,
-  get_validated_team_by_id,
   createSwiss,
   deleteSwiss,
 } = useTournamentStore();
@@ -175,90 +175,40 @@ const launch_round_matchs = async () => {
       Lancer les matchs séléctionnés
     </button>
   </div>
-
   <div
-    v-for="(swiss, swiss_idx) in tournament.swissRounds"
-    :key="swiss_idx"
-    class="m-2 flex justify-center overflow-x-auto md:m-4 lg:m-8"
+    class="m-2 flex flex-col items-center md:m-4 lg:m-8"
   >
     <div
-      class="grid h-full items-center gap-x-20 gap-y-5"
-      :style="{ 'grid-template-columns': `repeat(${roundCounts[swiss_idx]},31rem)` }"
+      v-for="(swiss, swiss_idx) in tournament.swissRounds"
+      :key="swiss_idx"
+      class="flex w-full overflow-x-auto pb-4"
     >
-      <h1
-        v-for="round_idx in roundCounts[swiss_idx]"
-        :key="round_idx"
-        class="text-center text-3xl"
-      >
-        Tour {{ round_idx }}
-      </h1>
       <div
-        v-for="round_idx in roundCounts[swiss_idx]"
-        :key="round_idx"
-        class="flex flex-col"
+        class="grid size-full items-center gap-x-10 gap-y-5"
+        :style="{ 'grid-template-columns': `repeat(${roundCounts[swiss_idx]},minmax(0,1fr))` }"
       >
-        <table
-          v-for="match in tournament.swissRounds[0].matchs.filter((m) => m.round_number === round_idx)"
-          :key="match.id"
-          class="border-separate rounded border px-2 pb-2"
-          :class="[
-            selected_matchs.has(match.id)
-              ? 'border-4 border-blue-800'
-              : 'm-[3px]',
-            match.status === MatchStatus.SCHEDULED && !selected_matchs.has(match.id)
-              ? 'hover:m-[2px] hover:border-2 hover:border-blue-800'
-              : '',
-          ]"
-          @click="select_match(match)"
-          @keypress="select_match(match)"
+        <h1
+          v-for="round_idx in roundCounts[swiss_idx]"
+          :key="round_idx"
+          class="text-center text-3xl"
         >
-          <tr>
-            <th
-              colspan="2"
-              class="border-b-2"
-            >
-              <div
-                class="grid w-full grid-cols-[1fr,2fr,1fr]"
-              >
-                <span class="text-left">BO {{ match.bo_type }}</span>
-
-                <span v-if="match.status === MatchStatus.SCHEDULED" class="text-center text-blue-500">
-                  <fa-awesome-icon
-                    icon="fa-solid fa-clock"
-                  />
-                  Prévu
-                </span>
-                <span v-else-if="match.status === MatchStatus.ONGOING" class="text-center text-orange-500">
-                  <fa-awesome-icon
-                    icon="fa-solid fa-arrows-rotate"
-                  />
-                  En cours
-                </span>
-                <span v-else class="text-center text-green-500">
-                  <fa-awesome-icon
-                    icon="fa-solid fa-check"
-                  />
-                  Terminé
-                </span>
-              </div>
-            </th>
-          </tr>
-          <tr
-            v-for="idx in tournament.game.team_per_match"
-            :key="idx"
-          >
-            <td
-              class="w-52 truncate"
-            >
-              {{ get_validated_team_by_id(match.teams[idx - 1])?.name ?? 'TBD' }}
-            </td>
-            <td
-              class="w-6 text-right"
-            >
-              {{ match.score[idx - 1] ?? 0 }}
-            </td>
-          </tr>
-        </table>
+          Tour {{ round_idx }}
+        </h1>
+        <div
+          v-for="round_idx in roundCounts[swiss_idx]"
+          :key="round_idx"
+          class="flex flex-col gap-3"
+        >
+          <AdminMatch
+            v-for="match in swiss.matchs.filter((m) => m.round_number === round_idx)"
+            :key="match.id"
+            :match="match"
+            :selected="selected_matchs.has(match.id)"
+            :team-per-match="tournament.game.team_per_match"
+            @click="select_match(match)"
+            @keypress="select_match(match)"
+          />
+        </div>
       </div>
     </div>
   </div>
