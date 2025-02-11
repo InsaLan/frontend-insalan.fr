@@ -50,7 +50,7 @@ try {
 
 <template>
   <div v-if="tournament?.is_announced" class="flex min-h-[calc(100vh_-_6rem)] flex-col">
-    <div class="sticky top-24 z-50 bg-[#2c292d]">
+    <div class="z-25 sticky top-24 bg-[#2c292d]">
       <div class="text-center text-6xl font-bold text-white">
         {{ tournament?.name }}
       </div>
