@@ -26,6 +26,7 @@ const {
   launchMatchs,
   createSwiss,
   deleteSwiss,
+  createSwissRound,
 } = useTournamentStore();
 
 const roundCounts = computed(() => tournament.swissRounds.map((s) => 2 * s.min_score - 1));
@@ -99,8 +100,6 @@ const delete_swiss = async () => {
   modal_open.value = false;
 };
 
-const open_create_round_modal = () => {};
-
 const open_launch_round_modal = () => {
   if (!has_matchs.value) {
     addNotification('Il n\'existe pas de matchs.', 'info');
@@ -131,6 +130,36 @@ const launch_round_matchs = async () => {
   addNotification(`Les matchs du round ${round_to_launch.value} ont bien été lancés.`, 'info');
 
   modal_open.value = false;
+};
+
+const open_create_round_modal = () => {
+  if (!has_matchs.value) {
+    addNotification('Il n\'existe pas de matchs.', 'info');
+    return;
+  }
+
+  open_modal('create_round');
+};
+
+const round_to_create = ref(2);
+const create_round_rules = computed(() => ({
+  round_to_create: {
+    required,
+    integer,
+    between: between(2, Math.max(...roundCounts.value)),
+  },
+}));
+const v_create_round$ = useVuelidate(create_round_rules, { round_to_create });
+
+const create_round = async () => {
+  const is_valid = await v_create_round$.value.$validate();
+
+  if (!is_valid) return;
+
+  await createSwissRound(tournament.id, tournament.swissRounds[0].id, round_to_create.value);
+
+  modal_open.value = false;
+  addNotification(`Les matchs du tour ${round_to_create.value} ont bien été générés.`, 'info');
 };
 
 </script>
@@ -384,6 +413,62 @@ const launch_round_matchs = async () => {
         @click="launch_round_matchs"
       >
         Lancer le tour
+      </button>
+      <button
+        class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        type="button"
+        @click="modal_open = false;"
+      >
+        Annuler
+      </button>
+    </template>
+  </Modal>
+
+  <Modal v-if="modal_open && modal_type === 'create_round'">
+    <template #icon>
+      <div/>
+    </template>
+    <template #title>
+      <h3 class="text-white-900 text-base font-semibold leading-6">
+        Générer les matchs d'un tour.
+        <br>
+        Les résultats du tour précédant vont être utilisés pour produire les nouveaux matchs.
+        <br>
+        Les rencontres au sein d'un même groupe de score sont déterminé aléatoirement.
+      </h3>
+    </template>
+    <template #body>
+      <form
+        id="create_groups_form"
+        class="m-4 flex flex-col gap-4"
+        @submit.prevent="create_round"
+      >
+        <FormField
+          v-slot="context"
+          :validations="v_create_round$.round_to_create"
+        >
+          <label for="round">
+            Numéro du tour
+          </label>
+          <input
+            id="round"
+            v-model="round_to_create"
+            type="number"
+            name="round"
+            aria-label="Round number"
+            class="ml-2 bg-inherit"
+            :class="{ error: context.invalid }"
+          >
+        </FormField>
+      </form>
+    </template>
+    <template #buttons>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+        type="button"
+        @click="create_round"
+      >
+        Générer le tour
       </button>
       <button
         class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"

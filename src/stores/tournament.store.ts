@@ -723,7 +723,28 @@ export const useTournamentStore = defineStore('tournament', () => {
 
     (tournament.value as TournamentDeref).swissRounds = [];
 
-    return true;
+
+  async function createSwissRound(tournament_id: number, swiss: number, round: number) {
+    await get_csrf();
+
+    const res = await axios.patch<Record<string, SwissMatch>>(
+      `/tournament/tournament/${tournament_id}/swiss/round/generate/`,
+      { swiss, round },
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    (tournament.value as TournamentDeref).swissRounds[0].matchs.forEach(
+      (match, index, matchs) => {
+        if (Object.keys(res.data).includes(match.id.toString())) {
+          matchs[index] = res.data[match.id.toString()];
+        }
+      },
+    );
   }
 
   function $reset() {
@@ -790,6 +811,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     launchMatchs,
     createSwiss,
     deleteSwiss,
+    createSwissRound,
     soloGame,
   };
 });
