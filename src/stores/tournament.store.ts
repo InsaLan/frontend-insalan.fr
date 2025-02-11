@@ -693,7 +693,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     await get_csrf();
 
     const res = await axios.post<SwissRound[]>(
-      `/tournament/tournament/${tournament_id}/swiss/generate/`,
+      `/tournament/tournament/${tournament_id}/swiss/create/`,
       data,
       {
         withCredentials: true,
