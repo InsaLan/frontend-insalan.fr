@@ -10,6 +10,7 @@ interface BaseEvent {
   logo?: string;
   poster?: string;
   seats: [number, number][];
+  planning_file: string;
 }
 
 export interface Event extends BaseEvent {

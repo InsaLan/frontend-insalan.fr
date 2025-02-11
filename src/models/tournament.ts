@@ -29,7 +29,7 @@ interface BaseTournament {
   description: string;
   description_bottom: string;
   casters: Caster[];
-  planning: string;
+  planning_file: string;
 }
 
 export interface TournamentDeref extends BaseTournament {
