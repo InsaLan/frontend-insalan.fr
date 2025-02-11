@@ -8,7 +8,7 @@ const { match, selected, teamPerMatch } = defineProps<{
   teamPerMatch: number;
 }>();
 
-const { get_validated_team_by_id } = useTournamentStore();
+const { get_validated_team_by_id, is_winning_team } = useTournamentStore();
 
 </script>
 
@@ -67,6 +67,7 @@ const { get_validated_team_by_id } = useTournamentStore();
         </td>
         <td
           class="w-6 text-right"
+          :class="{ 'text-green-500': is_winning_team(match, match.teams[idx - 1]) }"
         >
           {{ match.score[match.teams[idx - 1]] ?? 0 }}
         </td>
