@@ -23,7 +23,7 @@ getTournamentTeams();
 const { tourney_teams } = storeToRefs(tournamentStore);
 
 const seeding_form = reactive(tourney_teams.value.validated_teams.reduce((res, team) => {
-  res[team.id] = team.seed;
+  res[team.id] = (team.seed as number);
   return res;
 }, {} as Record<number, number>));
 
@@ -34,7 +34,7 @@ const rules = computed(() => tourney_teams.value.validated_teams.reduce((res, te
     maxValueRef: maxValue(tournament.maxTeam),
   };
   return res;
-}, {} as Record<number, ValidationRule>));
+}, {} as Record<number, { integer: ValidationRule; minValueValue: ValidationRule; maxValueRef: ValidationRule }>));
 
 const v$ = useVuelidate(rules, seeding_form);
 
