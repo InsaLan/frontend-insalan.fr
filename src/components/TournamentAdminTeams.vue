@@ -23,7 +23,7 @@ getTournamentTeams();
 const { tourney_teams } = storeToRefs(tournamentStore);
 
 const seeding_form = reactive(tourney_teams.value.validated_teams.reduce((res, team) => {
-  res[team.id] = (team.seed as number);
+  res[team.id] = team.seed;
   return res;
 }, {} as Record<number, number>));
 
