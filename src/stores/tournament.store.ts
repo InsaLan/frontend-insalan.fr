@@ -723,6 +723,8 @@ export const useTournamentStore = defineStore('tournament', () => {
 
     (tournament.value as TournamentDeref).swissRounds = [];
 
+    return true;
+  }
 
   async function createSwissRound(tournament_id: number, swiss: number, round: number) {
     await get_csrf();
