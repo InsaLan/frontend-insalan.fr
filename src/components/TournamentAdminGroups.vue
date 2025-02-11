@@ -48,7 +48,7 @@ const group_data = reactive({
 });
 
 const update_names = (event: Event) => {
-  const names = (event.target?.value as string).split(',');
+  const names = (event.target as HTMLInputElement)?.value.split(',');
   names.forEach((el) => el.trim());
   group_data.names = names;
 };

@@ -43,7 +43,7 @@ const save_group_name = async () => {
   addNotification('Nom de la poule modifiée', 'info');
 };
 
-const data_tieabreak = reactive(group.value.teams.reduce((res, item) => {
+const data_tiebreak = reactive(group.value.teams.reduce((res, item) => {
   if (Object.keys(group.value.tiebreak_scores).includes(item.toString())) {
     res[item] = group.value.tiebreak_scores[item];
   } else {
@@ -57,8 +57,8 @@ const rules_tiebreak = computed(() => group.value.teams.reduce((res, item) => {
     minValue: minValue(0),
   };
   return res;
-}, {} as Record<number, ValidationRule>));
-const v$_tiebreak = useVuelidate(rules_tiebreak, data_tieabreak);
+}, {} as Record<number, { integer: ValidationRule; minValue: ValidationRule }>));
+const v$_tiebreak = useVuelidate(rules_tiebreak, data_tiebreak);
 
 const save_tiebreak_scores = async () => {
   const is_valid = await v$_tiebreak.value.$validate();
@@ -66,7 +66,7 @@ const save_tiebreak_scores = async () => {
   if (!is_valid) return;
 
   const modified_tiebreak = Object.fromEntries(
-    Object.entries(data_tieabreak).filter(
+    Object.entries(data_tiebreak).filter(
       ([k, v]) => v !== (Object.keys(group.value.tiebreak_scores).includes(k) ? group.value.tiebreak_scores[k] : 0),
     ),
   );
@@ -178,8 +178,8 @@ const delete_group = async (confirm: boolean) => {
           {{ score }}
           (<input
             id="tiebreak"
-            v-model="data_tieabreak[team_id]"
-            :class="{ 'text-orange-300': data_tieabreak[team_id] !== (Object.keys(group.tiebreak_scores).includes(team_id.toString()) ? group.tiebreak_scores[team_id] : 0) }"
+            v-model="data_tiebreak[team_id]"
+            :class="{ 'text-orange-300': data_tiebreak[team_id] !== (Object.keys(group.tiebreak_scores).includes(team_id.toString()) ? group.tiebreak_scores[team_id] : 0) }"
             class="border-0 border-b-2 bg-inherit p-0 text-center text-3xl"
             type="number"
             name="tieabreak"

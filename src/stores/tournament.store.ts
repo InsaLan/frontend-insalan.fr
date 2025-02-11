@@ -544,7 +544,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     team_per_group: number;
     names: string[];
     use_seeding: boolean;
-  }) {
+  }): Promise<void> {
     await get_csrf();
 
     const res = await axios.post<Group[]>(
@@ -581,7 +581,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     return true;
   }
 
-  async function deleteGroup(group_id: number) {
+  async function deleteGroup(group_id: number): Promise<boolean> {
     await get_csrf();
 
     const res = await axios.delete(
