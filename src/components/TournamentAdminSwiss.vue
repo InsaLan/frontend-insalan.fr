@@ -183,7 +183,7 @@ const create_round = async () => {
       :disabled="!has_swiss"
       @click="open_create_round_modal"
     >
-      Générer un round
+      Générer un tour
     </button>
     <button
       type="button"
@@ -192,7 +192,7 @@ const create_round = async () => {
       :disabled="!has_matchs"
       @click="open_launch_round_modal"
     >
-      Lancer un round
+      Lancer un tour
     </button>
     <button
       type="button"
