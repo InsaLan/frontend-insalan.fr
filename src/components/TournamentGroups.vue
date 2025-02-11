@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
 import { computed, ref, toRef } from 'vue';
 import GroupTable from '@/components/GroupTable.vue';
 import type { Group } from '@/models/group';
@@ -26,8 +25,6 @@ const {
 getTournamentTeams();
 
 const group_details = computed<Group | undefined>(() => get_group_by_id(groups || [], show_group_details.value));
-
-const { tourney_teams } = storeToRefs(tournamentStore);
 </script>
 
 <template>
@@ -53,7 +50,6 @@ const { tourney_teams } = storeToRefs(tournamentStore);
         @keydown.enter="show_group_details = group.id"
       >
         <GroupTable
-          :teams="tourney_teams"
           :group="group"
         />
       </div>
@@ -72,7 +68,6 @@ const { tourney_teams } = storeToRefs(tournamentStore);
     <div class="flex flex-col justify-center gap-10 md:flex-row md:gap-3">
       <div class="max-h-96 md:ml-10 md:w-1/2">
         <GroupTable
-          :teams="tourney_teams"
           :group="group_details"
         />
       </div>

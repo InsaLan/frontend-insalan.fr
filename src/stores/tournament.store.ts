@@ -6,14 +6,16 @@ import {
 } from '@/models/bracket';
 import type { Event } from '@/models/event';
 import type { Group } from '@/models/group';
-import { BestofType, type Match } from '@/models/match';
+import { BestofType, type Match, MatchStatus } from '@/models/match';
 import type { PlayerRegistration, PlayerRegistrationDeref } from '@/models/registration';
-import type { SwissMatch } from '@/models/swiss';
+import type { SwissMatch, SwissRound } from '@/models/swiss';
 import type { Team } from '@/models/team';
 import type { Tournament, TournamentDeref } from '@/models/tournament';
 
+import { useNotificationStore } from './notification.store';
 import { useUserStore } from './user.store';
 
+const { addNotification } = useNotificationStore();
 const { get_csrf, add_product_to_cart } = useUserStore();
 const {
   csrf, inscriptions, user, cart,
@@ -39,7 +41,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     'team': string;
   }[]>([]);
 
-  const tourney_teams = ref<Record<string, Team[]>>({});
+  const tourney_teams = ref({ validated_teams: [] as Team[], non_validated_teams: [] as Team[] });
   const tournament = ref<Tournament | TournamentDeref>();
   const ongoingEvents = computed(() => Object.values(eventsList.value).reduce((res, item) => {
     if (item.ongoing) {
@@ -403,7 +405,10 @@ export const useTournamentStore = defineStore('tournament', () => {
     ));
   }
 
-  function get_validated_team_by_id(id: number) {
+  function get_validated_team_by_id(id: number | string) {
+    if (typeof id === 'string') {
+      id = Number(id);
+    }
     return tourney_teams.value.validated_teams.find((team) => team.id === id);
   }
 
@@ -413,7 +418,7 @@ export const useTournamentStore = defineStore('tournament', () => {
 
   function is_winning_team(match: Match, team_id: number) {
     if (match.bo_type === BestofType.RANKING) {
-      return match.score[team_id] >= Object.keys(match.score).length;
+      return match.score[team_id] === 1;
     }
     return match.score[team_id] >= Math.ceil(match.bo_type / 2);
   }
@@ -499,6 +504,251 @@ export const useTournamentStore = defineStore('tournament', () => {
 
   const soloGame = computed(() => (tournament.value as TournamentDeref | undefined)?.game.players_per_team === 1);
 
+  async function updateTeamsSeeding(modified_seed: { id: number; seed: number }[]) {
+    await get_csrf();
+
+    const res = await axios.patch(
+      '/tournament/team/seeding',
+      modified_seed,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    return res;
+  }
+
+  async function editGroup(group_id: number, data: Record<string, number | string | Record<number, number>>) {
+    await get_csrf();
+
+    const res = await axios.patch(
+      `/tournament/group/${group_id}/`,
+      data,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    return res;
+  }
+
+  async function createGroups(data: {
+    tournament: number;
+    count: number;
+    team_per_group: number;
+    names: string[];
+    use_seeding: boolean;
+  }): Promise<void> {
+    await get_csrf();
+
+    const res = await axios.post<Group[]>(
+      `/tournament/tournament/${data.tournament}/group/generate/`,
+      data,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    (tournament.value as TournamentDeref).groups = res.data;
+  }
+
+  async function deleteGroups(tournament_id: number): Promise<boolean> {
+    await get_csrf();
+
+    const res = await axios.delete(
+      `/tournament/tournament/${tournament_id}/group/delete/`,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    if (res.status !== 204) return false;
+
+    (tournament.value as TournamentDeref).groups = [];
+
+    return true;
+  }
+
+  async function deleteGroup(group_id: number): Promise<boolean> {
+    await get_csrf();
+
+    const res = await axios.delete(
+      `/tournament/group/${group_id}/`,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    if (res.status !== 204) return false;
+
+    (tournament.value as TournamentDeref).groups = (tournament.value as TournamentDeref)
+      .groups
+      .filter((group) => group.id !== group_id);
+
+    return true;
+  }
+
+  async function createGroupMatchs(tournament_id: number, groups: number[]) {
+    await get_csrf();
+
+    // groups.push(15);
+
+    const res = await axios.post<Group[]>(
+      `/tournament/tournament/${tournament_id}/group/matchs/generate/`,
+      {
+        tournament: tournament_id,
+        groups,
+      },
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    (tournament.value as TournamentDeref).groups = res.data;
+  }
+
+  async function deleteGroupMatchs(tournament_id: number) {
+    await get_csrf();
+
+    const res = await axios.delete(
+      `/tournament/tournament/${tournament_id}/group/matchs/delete/`,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    if (res.status !== 204) return false;
+
+    (tournament.value as TournamentDeref).groups.forEach((group) => {
+      group.matchs = [];
+    });
+
+    return true;
+  }
+
+  async function launchMatchs(data: {
+    tournament: number;
+    round?: number;
+    matchs?: number[];
+  }, type: 'group' | 'swiss' | 'bracket') {
+    await get_csrf();
+
+    const res = await axios.patch<{ matchs: number[]; warning: boolean }>(
+      `/tournament/tournament/${data.tournament}/${type}/matchs/launch/`,
+      data,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    let match_list;
+
+    if (type === 'group') {
+      match_list = (tournament.value as TournamentDeref).groups;
+    } else if (type === 'swiss') {
+      match_list = (tournament.value as TournamentDeref).swissRounds;
+    } else if (type === 'bracket') {
+      match_list = (tournament.value as TournamentDeref).brackets;
+    }
+
+    match_list?.forEach((group) => group.matchs.forEach((match) => {
+      if (res.data.matchs.includes(match.id)) {
+        match.status = MatchStatus.ONGOING;
+      }
+    }));
+
+    if (res.data.warning) {
+      addNotification('Des matchs n\'ont pas pu être lancé car une des équipes est dans un match en cours.', 'warn');
+    }
+  }
+
+  async function createSwiss(tournament_id: number, data: {
+    min_score: number;
+    use_seeding: boolean;
+  }) {
+    await get_csrf();
+
+    const res = await axios.post<SwissRound[]>(
+      `/tournament/tournament/${tournament_id}/swiss/create/`,
+      data,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    (tournament.value as TournamentDeref).swissRounds = res.data;
+  }
+
+  async function deleteSwiss(tournament_id: number): Promise<boolean> {
+    await get_csrf();
+
+    const res = await axios.delete(
+      `/tournament/tournament/${tournament_id}/swiss/delete/`,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    if (res.status !== 204) return false;
+
+    (tournament.value as TournamentDeref).swissRounds = [];
+
+    return true;
+  }
+
+  async function createSwissRound(tournament_id: number, swiss: number, round: number) {
+    await get_csrf();
+
+    const res = await axios.patch<Record<string, SwissMatch>>(
+      `/tournament/tournament/${tournament_id}/swiss/round/generate/`,
+      { swiss, round },
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    (tournament.value as TournamentDeref).swissRounds[0].matchs.forEach(
+      (match, index, matchs) => {
+        if (Object.keys(res.data).includes(match.id.toString())) {
+          matchs[index] = res.data[match.id.toString()];
+        }
+      },
+    );
+  }
+
   function $reset() {
     eventsList.value = {};
     tournamentsList.value = {};
@@ -553,6 +803,17 @@ export const useTournamentStore = defineStore('tournament', () => {
     get_ticket_pdf,
     get_unpaid_registration,
     validate_registration,
+    updateTeamsSeeding,
+    editGroup,
+    deleteGroup,
+    createGroups,
+    deleteGroups,
+    createGroupMatchs,
+    deleteGroupMatchs,
+    launchMatchs,
+    createSwiss,
+    deleteSwiss,
+    createSwissRound,
     soloGame,
   };
 });
