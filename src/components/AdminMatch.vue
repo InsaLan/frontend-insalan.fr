@@ -68,7 +68,7 @@ const { get_validated_team_by_id } = useTournamentStore();
         <td
           class="w-6 text-right"
         >
-          {{ match.score[idx - 1] ?? 0 }}
+          {{ match.score[match.teams[idx - 1]] ?? 0 }}
         </td>
       </tr>
     </tbody>
