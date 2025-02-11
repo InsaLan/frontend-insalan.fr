@@ -14,11 +14,11 @@ const { get_validated_team_by_id } = useTournamentStore();
 
 <template>
   <table
-    class="border-separate rounded border border-white px-2 pb-2"
+    class="border-separate rounded border px-2 pb-2"
     :class="[
       selected
         ? 'border-4 border-blue-800'
-        : 'm-[3px]',
+        : 'm-[3px] border-white',
       match.status === MatchStatus.SCHEDULED && !selected
         ? 'hover:m-[2px] hover:border-2 hover:border-blue-800'
         : '',
