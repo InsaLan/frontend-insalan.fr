@@ -57,7 +57,7 @@ const { get_validated_team_by_id, is_winning_team } = useTournamentStore();
         </th>
       </tr>
       <tr
-        v-for="idx in (match.status === MatchStatus.ONGOING ? match.teams.length : teamPerMatch)"
+        v-for="idx in (match.status !== MatchStatus.SCHEDULED ? match.teams.length : teamPerMatch)"
         :key="idx"
       >
         <td
