@@ -7,7 +7,12 @@ import {
   required,
 } from '@vuelidate/validators';
 import { computed, reactive, ref } from 'vue';
-import { type Match, MatchStatus, MatchTypeEnum } from '@/models/match';
+import {
+  BestofType,
+  type Match,
+  MatchStatus,
+  MatchTypeEnum,
+} from '@/models/match';
 import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { groupBy, useTournamentStore } from '@/stores/tournament.store';
@@ -73,10 +78,12 @@ const open_modal = (type: string) => {
 const swiss_data = reactive({
   min_score: 0,
   use_seeding: true,
+  bo_type: BestofType.BO1,
 });
 const swiss_rules = computed(() => ({
   min_score: { integer, required, minValue: minValue(1) },
   use_seeding: { required },
+  bo_type: { required },
 }));
 
 const v$ = useVuelidate(swiss_rules, swiss_data);
@@ -320,6 +327,29 @@ const create_round = async () => {
             class="ml-2 bg-inherit"
             type="checkbox"
           >
+        </FormField>
+        <FormField
+          v-slot="context"
+          :validations="v$.bo_type"
+        >
+          <label for="bo_type">
+            Type de BO
+          </label>
+          <select
+            id="bo_type"
+            v-model="swiss_data.bo_type"
+            name="bo_type"
+            class="ml-2 bg-inherit"
+            :class="{ error: context.invalid }"
+          >
+            <option
+              v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"
+              :key="value"
+              :value="value"
+            >
+              {{ value === '0' ? 'Classement' : `BO ${value}` }}
+            </option>
+          </select>
         </FormField>
         <button class="hidden" type="submit"/>
       </form>
