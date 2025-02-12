@@ -8,6 +8,7 @@ import {
   required,
 } from '@vuelidate/validators';
 import { computed, reactive, ref } from 'vue';
+import { BestofType } from '@/models/match';
 import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
@@ -86,19 +87,16 @@ const create_groups = async () => {
   addNotification('Les poules ont bien été créées.', 'info');
 };
 
-const create_delete_matchs = async () => {
-  if (has_matchs.value) {
-    open_modal('delete_matchs');
-    return;
-  }
-
+const bo_type = ref(BestofType.BO1);
+const create_group_matchs = async () => {
   if (!has_groups.value) {
     addNotification('Il n\'existe pas de poules', 'info');
     return;
   }
 
-  await createGroupMatchs(tournament.id, tournament.groups.map((group) => group.id));
+  await createGroupMatchs(tournament.id, tournament.groups.map((group) => group.id), bo_type.value);
 
+  modal_open.value = false;
   addNotification('Les matchs ont bien été créés.', 'info');
 };
 
@@ -161,7 +159,7 @@ const delete_group_matchs = async () => {
         class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
         :class="[has_matchs ? 'bg-red-500' : 'bg-blue-800', has_groups ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
         :disabled="!has_groups"
-        @click="create_delete_matchs"
+        @click="open_modal(has_matchs ? 'delete_matchs' : 'create_matchs')"
       >
         {{ has_matchs ? 'Supprimer' : 'Créer' }} les matchs
       </button>
@@ -314,6 +312,58 @@ const delete_group_matchs = async () => {
         class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
         type="button"
         @click="delete_groups"
+      >
+        Valider
+      </button>
+      <button
+        class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        type="button"
+        @click="modal_open = false;"
+      >
+        Annuler
+      </button>
+    </template>
+  </Modal>
+
+  <Modal v-if="modal_open && modal_type === 'create_matchs'">
+    <template #icon>
+      <div/>
+    </template>
+    <template #title>
+      <h3>
+        Créer les matchs
+      </h3>
+    </template>
+    <template #body>
+      Les matchs des poules vont être créés.
+
+      <div
+        class="flex items-center gap-4 pt-2"
+      >
+        <label for="bo_type">
+          Type de BO
+        </label>
+        <select
+          id="bo_type"
+          v-model="bo_type"
+          name="bo_type"
+          class="bg-inherit"
+        >
+          <option
+            v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"
+            :key="value"
+            :value="value"
+          >
+            {{ value === '0' ? 'Classement' : `BO ${value}` }}
+          </option>
+        </select>
+      </div>
+    </template>
+    <template #buttons>
+      <button
+        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+        type="button"
+        @click="create_group_matchs"
       >
         Valider
       </button>
