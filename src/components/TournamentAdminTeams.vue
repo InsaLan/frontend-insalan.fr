@@ -86,46 +86,49 @@ const save_seeds = async () => {
   <h4 class="py-4 text-center text-2xl">
     Liste des équipes et seeding
   </h4>
-  <p class="text-center">
+  <p class="mx-4 text-center">
     Le seed d'une équipe doit être un entier compris entre 1 et {{ tournament.maxTeam }}.
     Chaque seed doit être unique.
     Une équipe avec un seed de 0 sera ignorer lors des calculs faisant intervenir le seeding.
-    Toutes les équipes sans seed seront placées aléatoirement après toutes les équipes seeder.
+    <br>
+    Toutes les équipes sans seed seront placées aléatoirement après toutes les équipes seedées.
   </p>
-  <table class="mx-auto my-4 border-2 lg:w-3/5">
-    <colgroup>
-      <col class="w-4/5"/>
-      <col class="w-1/5"/>
-    </colgroup>
-    <thead>
-      <tr>
-        <th class="border-2 p-2 text-xl">
-          Équipe
-        </th>
-        <th class="border-2 p-2 text-xl">
-          Seed
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="team in tourney_teams.validated_teams"
-        :key="team.id"
-      >
-        <td class="border p-2">
-          {{ team.name }}
-        </td>
-        <td align="center" class="border">
-          <FormField
-            v-slot="context"
-            :validations="v$[team.id]"
-          >
-            <input id="seed" v-model="seeding_form[team.id]" type="number" class="border-0 border-b-2 bg-inherit text-center" :class="{ error: context.invalid, 'text-orange-300': team.seed !== seeding_form[team.id], 'text-red-500': context.invalid }">
-          </FormField>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="flex justify-center">
+    <table class="m-4 w-full border-2 lg:w-3/5">
+      <colgroup>
+        <col class="w-4/5"/>
+        <col class="w-1/5"/>
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="border-2 p-2 text-xl">
+            Équipe
+          </th>
+          <th class="border-2 p-2 text-xl">
+            Seed
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="team in tourney_teams.validated_teams"
+          :key="team.id"
+        >
+          <td class="border p-2">
+            {{ team.name }}
+          </td>
+          <td align="center" class="border p-1">
+            <FormField
+              v-slot="context"
+              :validations="v$[team.id]"
+            >
+              <input id="seed" v-model="seeding_form[team.id]" type="number" class="border-2 bg-inherit text-center" :class="{ error: context.invalid, 'text-orange-300': team.seed !== seeding_form[team.id], 'text-red-500': context.invalid }">
+            </FormField>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <button type="submit" class="mx-auto mb-8 rounded bg-blue-800 p-2 text-xl font-bold text-white transition duration-150 ease-in-out hover:bg-blue-700" @click="save_seeds">
     Sauvegarder
   </button>

@@ -109,7 +109,7 @@ const routes: RouteRecordRaw[] = [
         children: [
           {
             path: '',
-            component: () => import('@/components/TournamentAdminInfo.vue'),
+            component: () => import('@/components/TournamentInfo.vue'),
             name: 'tournament_admin_info',
           },
           {
