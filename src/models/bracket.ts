@@ -21,6 +21,6 @@ export interface Bracket {
 }
 
 export interface KnockoutMatch extends Match {
-  bracket: Bracket;
+  bracket: Bracket['id'];
   bracket_set: BracketSet;
 }
