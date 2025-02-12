@@ -134,18 +134,18 @@ const delete_group = async (confirm: boolean) => {
               :size="data_name.name.length"
             >
             <fa-awesome-icon
-              class="px-2 text-red-600 hover:cursor-pointer"
-              icon="fa-solid fa-xmark"
-              size="lg"
-              title="Cancel"
-              @click="edit_name = false"
-            />
-            <fa-awesome-icon
-              class="hover:cursor-pointer"
+              class="px-2 hover:cursor-pointer"
               icon="fa-solid fa-save"
-              size="lg"
+              size="sm"
               title="Save group name"
               @click="save_group_name"
+            />
+            <fa-awesome-icon
+              class="text-red-500 hover:cursor-pointer"
+              icon="fa-solid fa-xmark"
+              size="sm"
+              title="Cancel"
+              @click="edit_name = false"
             />
           </div>
         </th>

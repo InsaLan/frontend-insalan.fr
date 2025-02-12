@@ -142,16 +142,16 @@ const patch_match = async () => {
               >
                 <fa-awesome-icon
                   class="pr-2 text-green-500 hover:cursor-pointer"
-                  icon="fa-solid fa-check"
+                  icon="fa-solid fa-save"
                   size="lg"
-                  title="Save match changes"
+                  title="Save changer"
                   @click="patch_match"
                 />
                 <fa-awesome-icon
                   class="text-red-500 hover:cursor-pointer"
-                  icon="fa-solid fa-trash-can"
-                  size="sm"
-                  title="Cancel match changes"
+                  icon="fa-solid fa-xmark"
+                  size="xl"
+                  title="Cancel"
                   @click="edit_mode = false"
                 />
               </div>
