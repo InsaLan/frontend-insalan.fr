@@ -424,7 +424,7 @@ export const useTournamentStore = defineStore('tournament', () => {
 
   function is_winning_team(match: Match, team_id: number) {
     if (match.bo_type === BestofType.RANKING) {
-      return match.score[team_id] === 1;
+      return match.score[team_id] > 0 && match.score[team_id] <= Math.ceil(match.teams.length / 2);
     }
     return match.score[team_id] >= Math.ceil(match.bo_type / 2);
   }
