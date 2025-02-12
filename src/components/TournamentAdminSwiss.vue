@@ -7,7 +7,7 @@ import {
   required,
 } from '@vuelidate/validators';
 import { computed, reactive, ref } from 'vue';
-import { type Match, MatchStatus } from '@/models/match';
+import { type Match, MatchStatus, MatchTypeEnum } from '@/models/match';
 import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { groupBy, useTournamentStore } from '@/stores/tournament.store';
@@ -252,9 +252,10 @@ const create_round = async () => {
               class="flex flex-col items-center gap-3 p-2"
             >
               <AdminMatch
-                v-for="match in matchs"
+                v-for="(match, match_idx) in matchs"
                 :key="match.id"
-                :match="match"
+                v-model="matchs[match_idx]"
+                :match-type="{ type: MatchTypeEnum.SWISS, id: match.swiss }"
                 :selected="selected_matchs.has(match.id)"
                 :team-per-match="tournament.game.team_per_match"
                 class="w-full"

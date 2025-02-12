@@ -5,8 +5,14 @@ import {
   type Bracket, BracketSet, BracketType, type KnockoutMatch,
 } from '@/models/bracket';
 import type { Event } from '@/models/event';
-import type { Group } from '@/models/group';
-import { BestofType, type Match, MatchStatus } from '@/models/match';
+import type { Group, GroupMatch } from '@/models/group';
+import {
+  BestofType,
+  type Match,
+  MatchStatus,
+  type MatchType,
+  MatchTypeEnum,
+} from '@/models/match';
 import type { PlayerRegistration, PlayerRegistrationDeref } from '@/models/registration';
 import type { SwissMatch, SwissRound } from '@/models/swiss';
 import type { Team } from '@/models/team';
@@ -749,6 +755,60 @@ export const useTournamentStore = defineStore('tournament', () => {
     );
   }
 
+  async function patchMatch(
+    data: {
+      bo_type: BestofType;
+      teams: number[];
+    },
+    match_id: number,
+    match_type: MatchType,
+  ) {
+    await get_csrf();
+
+    const res = await axios.patch<GroupMatch | KnockoutMatch | SwissMatch>(
+      `/tournament/${match_type.type}/${match_type.id}/match/${match_id}/`,
+      data,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    if (match_type.type === MatchTypeEnum.BRACKET) {
+      (tournament.value as TournamentDeref).brackets.forEach((bracket) => {
+        if (bracket.id === match_type.id) {
+          bracket.matchs.forEach((match, idx, matchs) => {
+            if (match.id === match_id) {
+              matchs[idx] = res.data as KnockoutMatch;
+            }
+          });
+        }
+      });
+    } else if (match_type.type === MatchTypeEnum.GROUP) {
+      (tournament.value as TournamentDeref).groups.forEach((group) => {
+        if (group.id === match_type.id) {
+          group.matchs.forEach((match, idx, matchs) => {
+            if (match.id === match_id) {
+              matchs[idx] = res.data as GroupMatch;
+            }
+          });
+        }
+      });
+    } else {
+      (tournament.value as TournamentDeref).swissRounds.forEach((swiss) => {
+        if (swiss.id === match_type.id) {
+          swiss.matchs.forEach((match, idx, matchs) => {
+            if (match.id === match_id) {
+              matchs[idx] = res.data as SwissMatch;
+            }
+          });
+        }
+      });
+    }
+  }
+
   function $reset() {
     eventsList.value = {};
     tournamentsList.value = {};
@@ -814,6 +874,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     createSwiss,
     deleteSwiss,
     createSwissRound,
+    patchMatch,
     soloGame,
   };
 });
