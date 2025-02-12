@@ -609,7 +609,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     return true;
   }
 
-  async function createGroupMatchs(tournament_id: number, groups: number[]) {
+  async function createGroupMatchs(tournament_id: number, groups: number[], bo_type: BestofType) {
     await get_csrf();
 
     // groups.push(15);
@@ -619,6 +619,7 @@ export const useTournamentStore = defineStore('tournament', () => {
       {
         tournament: tournament_id,
         groups,
+        bo_type,
       },
       {
         withCredentials: true,
