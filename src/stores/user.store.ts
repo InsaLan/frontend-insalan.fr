@@ -266,7 +266,7 @@ export const useUserStore = defineStore('user', () => {
     const { type } = ongoing_match.value.match_type;
     const { id } = ongoing_match.value.match_type;
     try {
-      const res = await axios.patch(`/tournament/${type}/${id}/match/${match.id}/`, data, {
+      const res = await axios.patch(`/tournament/${type}/${id}/match/${match.id}/score/`, data, {
         withCredentials: true,
         headers: {
           'X-CSRFToken': csrf.value,
