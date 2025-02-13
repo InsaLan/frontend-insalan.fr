@@ -258,17 +258,21 @@ const create_round = async () => {
             <div
               class="flex flex-col items-center gap-3 p-2"
             >
-              <AdminMatch
+              <div
                 v-for="match in matchs"
                 :key="match.id"
-                :match="match"
-                :match-type="{ type: MatchTypeEnum.SWISS, id: match.swiss }"
-                :selected="selected_matchs.has(match.id)"
-                :team-per-match="tournament.game.team_per_match"
-                class="w-full"
-                @click="select_match(match)"
-                @keypress="select_match(match)"
-              />
+                class="flex w-full"
+              >
+                <AdminMatch
+                  :match="match"
+                  :match-type="{ type: MatchTypeEnum.SWISS, id: match.swiss }"
+                  :selected="selected_matchs.has(match.id)"
+                  :team-per-match="tournament.game.team_per_match"
+                  class="w-full"
+                  @click="select_match(match)"
+                  @keypress="select_match(match)"
+                />
+              </div>
             </div>
           </div>
         </div>
