@@ -810,6 +810,52 @@ export const useTournamentStore = defineStore('tournament', () => {
     }
   }
 
+  async function createBracket(
+    tournament_id: number,
+    data: {
+      name: string;
+      team_count: number;
+      bracket_type: BracketType;
+    },
+  ) {
+    await get_csrf();
+
+    const res = await axios.post<Bracket>(
+      `/tournament/tournament/${tournament_id}/bracket/create/`,
+      data,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    (tournament.value as TournamentDeref).brackets.push(res.data);
+  }
+
+  async function deleteBracket(bracket_id: number) {
+    await get_csrf();
+
+    const res = await axios.delete(
+      `/tournament/bracket/${bracket_id}/`,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    if (res.status !== 204) return false;
+
+    (tournament.value as TournamentDeref).brackets = (tournament.value as TournamentDeref)
+      .brackets
+      .filter((bracket) => bracket.id !== bracket_id);
+
+    return true;
+  }
+
   function $reset() {
     eventsList.value = {};
     tournamentsList.value = {};
@@ -876,6 +922,8 @@ export const useTournamentStore = defineStore('tournament', () => {
     deleteSwiss,
     createSwissRound,
     patchMatch,
+    createBracket,
+    deleteBracket,
     soloGame,
   };
 });
