@@ -71,7 +71,7 @@ const patch_match = async () => {
 };
 
 const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) => {
-  if (!selectable) return;
+  if (!selectable || edit_mode) return;
 
   if (m.status === MatchStatus.SCHEDULED) {
     if (selected_matchs.value?.has(m.id)) {
