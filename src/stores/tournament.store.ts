@@ -452,7 +452,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     return { 'grid-template-columns': `repeat(${nb_cols},17rem)` };
   }
 
-  const get_matchs_per_round = (matchs: Match[]) => {
+  const get_matchs_per_round = <T extends GroupMatch | KnockoutMatch | SwissMatch>(matchs: T[]) => {
     const reversed_rounds = groupBy(matchs, 'round_number');
     return Object.values(reversed_rounds).reverse();
   };
