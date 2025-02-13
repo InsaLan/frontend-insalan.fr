@@ -6,7 +6,7 @@ import {
   required,
 } from '@vuelidate/validators';
 import { computed, ref } from 'vue';
-import { type Match, MatchStatus, MatchTypeEnum } from '@/models/match';
+import { MatchTypeEnum } from '@/models/match';
 import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
@@ -73,15 +73,6 @@ const launch_round_matchs = async () => {
 const max_round = computed(() => Math.max(...tournament.groups.map((group) => group.round_count)));
 
 const selected_matchs = ref(new Set<number>());
-const select_match = (match: Match) => {
-  if (match.status === MatchStatus.SCHEDULED) {
-    if (selected_matchs.value.has(match.id)) {
-      selected_matchs.value.delete(match.id);
-    } else {
-      selected_matchs.value.add(match.id);
-    }
-  }
-};
 
 const launch_selected_matchs = async () => {
   if (!has_matchs.value) {
@@ -166,12 +157,13 @@ const launch_selected_matchs = async () => {
             <AdminMatch
               v-for="match in matchs"
               :key="match.id"
+              v-model="selected_matchs"
               :match="match"
               :match-type="{ type: MatchTypeEnum.GROUP, id: match.group }"
               :selected="selected_matchs.has(match.id)"
               :team-per-match="tournament.game.team_per_match"
-              @click="select_match(match)"
-              @keypress="select_match(match)"
+              :editable="true"
+              :selectable="true"
             />
           </div>
         </td>

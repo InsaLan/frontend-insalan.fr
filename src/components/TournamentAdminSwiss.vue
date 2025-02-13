@@ -9,8 +9,6 @@ import {
 import { computed, reactive, ref } from 'vue';
 import {
   BestofType,
-  type Match,
-  MatchStatus,
   MatchTypeEnum,
 } from '@/models/match';
 import type { TournamentDeref } from '@/models/tournament';
@@ -40,15 +38,6 @@ const has_swiss = computed(() => tournament.swissRounds.length > 0);
 const has_matchs = computed(() => has_swiss.value && tournament.swissRounds.some((s) => s.matchs.length > 0));
 
 const selected_matchs = ref(new Set<number>());
-const select_match = (match: Match) => {
-  if (match.status === MatchStatus.SCHEDULED) {
-    if (selected_matchs.value.has(match.id)) {
-      selected_matchs.value.delete(match.id);
-    } else {
-      selected_matchs.value.add(match.id);
-    }
-  }
-};
 
 const launch_selected_matchs = async () => {
   if (!has_matchs.value) {
@@ -264,13 +253,13 @@ const create_round = async () => {
                 class="flex w-full"
               >
                 <AdminMatch
+                  v-model="selected_matchs"
                   :match="match"
                   :match-type="{ type: MatchTypeEnum.SWISS, id: match.swiss }"
-                  :selected="selected_matchs.has(match.id)"
                   :team-per-match="tournament.game.team_per_match"
+                  :editable="true"
+                  :selectable="true"
                   class="w-full"
-                  @click="select_match(match)"
-                  @keypress="select_match(match)"
                 />
               </div>
             </div>
