@@ -5,26 +5,31 @@ import { storeToRefs } from 'pinia';
 import {
   computed,
   reactive,
-  type Ref,
   ref,
 } from 'vue';
+import type { KnockoutMatch } from '@/models/bracket';
+import type { GroupMatch } from '@/models/group';
 import {
   BestofType,
-  type Match,
   MatchStatus,
   type MatchType,
 } from '@/models/match';
+import type { SwissMatch } from '@/models/swiss';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
 
-const { matchType, selected, teamPerMatch } = defineProps<{
+const {
+  match,
+  matchType,
+  selected,
+  teamPerMatch,
+} = defineProps<{
+  match: GroupMatch | KnockoutMatch | SwissMatch;
   matchType: MatchType;
   selected: boolean;
   teamPerMatch: number;
 }>();
-
-const match = defineModel<Match>() as Ref<Match>;
 
 const { addNotification } = useNotificationStore();
 
@@ -37,8 +42,8 @@ const is_admin = computed(() => user.value.is_staff || user.value.is_superuser);
 const edit_mode = ref(false);
 
 const match_info = reactive({
-  bo_type: match.value.bo_type,
-  teams: match.value.teams.concat(Array(teamPerMatch - match.value.teams.length).fill(0)),
+  bo_type: match.bo_type,
+  teams: match.teams.concat(Array(teamPerMatch - match.teams.length).fill(0)),
 });
 const match_info_rules = computed(() => ({
   bo_type: { required },
@@ -52,7 +57,7 @@ const patch_match = async () => {
 
   if (!is_valid) return;
 
-  await patchMatch(match_info, match.value.id, matchType);
+  await patchMatch(match_info, match.id, matchType);
 
   addNotification('Le match a bien été modifié.', 'info');
   edit_mode.value = false;

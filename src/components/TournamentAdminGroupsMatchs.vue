@@ -6,7 +6,6 @@ import {
   required,
 } from '@vuelidate/validators';
 import { computed, ref } from 'vue';
-import type { GroupMatch } from '@/models/group';
 import { type Match, MatchStatus, MatchTypeEnum } from '@/models/match';
 import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
@@ -165,9 +164,9 @@ const launch_selected_matchs = async () => {
         >
           <div class="flex flex-wrap justify-around gap-2 p-2">
             <AdminMatch
-              v-for="(match, match_idx) in matchs as GroupMatch[]"
+              v-for="match in matchs"
               :key="match.id"
-              v-model="matchs[match_idx]"
+              :match="match"
               :match-type="{ type: MatchTypeEnum.GROUP, id: match.group }"
               :selected="selected_matchs.has(match.id)"
               :team-per-match="tournament.game.team_per_match"

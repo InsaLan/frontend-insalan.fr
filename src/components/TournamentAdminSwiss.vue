@@ -259,9 +259,9 @@ const create_round = async () => {
               class="flex flex-col items-center gap-3 p-2"
             >
               <AdminMatch
-                v-for="(match, match_idx) in matchs"
+                v-for="match in matchs"
                 :key="match.id"
-                v-model="matchs[match_idx]"
+                :match="match"
                 :match-type="{ type: MatchTypeEnum.SWISS, id: match.swiss }"
                 :selected="selected_matchs.has(match.id)"
                 :team-per-match="tournament.game.team_per_match"
