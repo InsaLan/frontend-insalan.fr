@@ -22,14 +22,19 @@ import { useUserStore } from '@/stores/user.store';
 const {
   match,
   matchType,
-  selected,
   teamPerMatch,
+  editable = false,
+  selectable = false,
 } = defineProps<{
   match: GroupMatch | KnockoutMatch | SwissMatch;
   matchType: MatchType;
-  selected: boolean;
   teamPerMatch: number;
+  editable?: boolean;
+  selectable?: boolean;
 }>();
+
+const selected_matchs = defineModel<Set<number>>();
+const selected = computed(() => selected_matchs.value?.has(match.id));
 
 const { addNotification } = useNotificationStore();
 
@@ -62,6 +67,18 @@ const patch_match = async () => {
   addNotification('Le match a bien été modifié.', 'info');
   edit_mode.value = false;
 };
+
+const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) => {
+  if (!selectable) return;
+
+  if (m.status === MatchStatus.SCHEDULED) {
+    if (selected_matchs.value?.has(m.id)) {
+      selected_matchs.value.delete(m.id);
+    } else {
+      selected_matchs.value?.add(m.id);
+    }
+  }
+};
 </script>
 
 <template>
@@ -71,10 +88,12 @@ const patch_match = async () => {
       selected
         ? 'border-4 border-blue-800'
         : 'm-[3px] border-white',
-      match.status === MatchStatus.SCHEDULED && !selected
+      match.status === MatchStatus.SCHEDULED && !selected && selectable && !edit_mode
         ? 'hover:m-[2px] hover:border-2 hover:border-blue-800'
         : '',
     ]"
+    @click="select_match(match)"
+    @keypress="select_match(match)"
   >
     <thead>
       <tr>
@@ -99,6 +118,7 @@ const patch_match = async () => {
                 v-model="match_info.bo_type"
                 name="bo_type"
                 class="bg-inherit"
+                @click.stop
               >
                 <option
                   v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"
@@ -130,7 +150,7 @@ const patch_match = async () => {
             </span>
 
             <div
-              v-if="is_admin && match.status === MatchStatus.SCHEDULED"
+              v-if="is_admin && editable && match.status === MatchStatus.SCHEDULED"
               class="flex items-center justify-end"
             >
               <fa-awesome-icon
@@ -139,7 +159,7 @@ const patch_match = async () => {
                 icon="fa-solid fa-pencil"
                 size="xs"
                 title="Edit match"
-                @click="edit_mode = true"
+                @click.stop="if (editable) edit_mode = true;"
               />
 
               <div
@@ -150,14 +170,14 @@ const patch_match = async () => {
                   icon="fa-solid fa-save"
                   size="lg"
                   title="Save changer"
-                  @click="patch_match"
+                  @click.stop="patch_match"
                 />
                 <fa-awesome-icon
                   class="text-red-500 hover:cursor-pointer"
                   icon="fa-solid fa-xmark"
                   size="xl"
                   title="Cancel"
-                  @click="edit_mode = false"
+                  @click.stop="edit_mode = false"
                 />
               </div>
             </div>
@@ -196,6 +216,7 @@ const patch_match = async () => {
             v-model="match_info.teams[idx - 1]"
             name="select_team"
             class="bg-inherit"
+            @click.stop
           >
             <option
               v-for="team in validated_teams"
