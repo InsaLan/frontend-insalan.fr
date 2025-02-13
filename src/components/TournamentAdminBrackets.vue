@@ -236,6 +236,11 @@ const launch_round_matchs = async () => {
       :key="bracket.id"
       class="mx-4 overflow-x-auto"
     >
+      <h2
+        class="ml-4 p-2 text-2xl"
+      >
+        Arbre principal
+      </h2>
       <div
         class="grid h-full items-center gap-x-10 gap-y-2"
         :style="get_col_style(bracket)"
@@ -291,6 +296,12 @@ const launch_round_matchs = async () => {
           </p>
         </div>
       </div>
+
+      <h2
+        class="ml-4 p-2 text-2xl"
+      >
+        Arbre de repêchage
+      </h2>
 
       <div
         class="grid items-center gap-x-10 gap-y-2"
