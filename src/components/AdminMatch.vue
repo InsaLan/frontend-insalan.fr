@@ -221,7 +221,9 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
             @click.stop
           >
             <option
-              v-for="team in validated_teams"
+              v-for="team in validated_teams.filter(
+                (t) => t.id === match_info.teams[idx - 1] || !match_info.teams.includes(t.id),
+              )"
               :key="team.id"
               :value="team.id"
             >
