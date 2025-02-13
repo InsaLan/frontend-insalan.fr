@@ -62,6 +62,8 @@ const patch_match = async () => {
 
   if (!is_valid) return;
 
+  match_info.teams = match_info.teams.filter((t) => t !== 0);
+
   await patchMatch(match_info, match.id, matchType);
 
   addNotification('Le match a bien été modifié.', 'info');
@@ -225,7 +227,7 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
             >
               {{ team.name }}
             </option>
-            <option value="0">
+            <option :value="0">
               TBD
             </option>
           </select>
