@@ -162,7 +162,6 @@ const launch_selected_matchs = async () => {
           v-for="matchs in get_matchs_per_round(group.matchs).reverse()"
           :key="matchs[0].round_number"
           :class="{ 'border-r': matchs[0].round_number < max_round }"
-          class=""
         >
           <div class="flex flex-wrap justify-around gap-2 p-2">
             <AdminMatch
@@ -175,68 +174,6 @@ const launch_selected_matchs = async () => {
               @click="select_match(match)"
               @keypress="select_match(match)"
             />
-            <!-- <table
-              v-for="match in matchs"
-              :key="match.id"
-              class="border-separate rounded border px-2 pb-2"
-              :class="[
-                selected_matchs.has(match.id)
-                  ? 'border-4 border-blue-800'
-                  : 'm-[3px]',
-                match.status === MatchStatus.SCHEDULED && !selected_matchs.has(match.id)
-                  ? 'hover:m-[2px] hover:border-2 hover:border-blue-800'
-                  : '',
-              ]"
-              @click="select_match(match)"
-              @keypress="select_match(match)"
-            >
-              <tr>
-                <th
-                  colspan="2"
-                  class="border-b-2"
-                >
-                  <div
-                    class="grid w-full grid-cols-[1fr,2fr,1fr]"
-                  >
-                    <span class="text-left">BO {{ match.bo_type }}</span>
-
-                    <span v-if="match.status === MatchStatus.SCHEDULED" class="text-center text-blue-500">
-                      <fa-awesome-icon
-                        icon="fa-solid fa-clock"
-                      />
-                      Prévu
-                    </span>
-                    <span v-else-if="match.status === MatchStatus.ONGOING" class="text-center text-orange-500">
-                      <fa-awesome-icon
-                        icon="fa-solid fa-arrows-rotate"
-                      />
-                      En cours
-                    </span>
-                    <span v-else class="text-center text-green-500">
-                      <fa-awesome-icon
-                        icon="fa-solid fa-check"
-                      />
-                      Terminé
-                    </span>
-                  </div>
-                </th>
-              </tr>
-              <tr
-                v-for="team_id in match.teams"
-                :key="team_id"
-              >
-                <td
-                  class="w-52 truncate"
-                >
-                  {{ get_validated_team_by_id(team_id)?.name }}
-                </td>
-                <td
-                  class="w-6 text-right"
-                >
-                  {{ match.score[team_id] }}
-                </td>
-              </tr>
-            </table> -->
           </div>
         </td>
       </tr>
