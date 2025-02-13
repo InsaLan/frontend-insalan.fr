@@ -135,6 +135,23 @@ const launch_round_matchs = async () => {
   modal_open.value = false;
 };
 
+const bracket_round_title = (depth: number, round_idx: number) => {
+  if (round_idx < depth - 2) {
+    return `${2 ** depth - round_idx}ᵉ de finale`;
+  }
+  if (round_idx === depth - 2) {
+    return 'Quart de finale';
+  }
+  if (round_idx === depth - 1) {
+    return 'Demi finale';
+  }
+  if (round_idx === depth) {
+    return 'Finale';
+  }
+
+  return '';
+};
+
 </script>
 
 <template>
@@ -198,6 +215,13 @@ const launch_round_matchs = async () => {
         :style="get_col_style(bracket)"
       >
         <div
+          v-for="round_idx in bracket.depth + 1"
+          :key="round_idx"
+          class="text-center text-xl"
+        >
+          {{ bracket_round_title(bracket.depth, round_idx) }}
+        </div>
+        <div
           v-for="(games, round_idx) in get_matchs_per_round(bracket.matchs)"
           :key="round_idx"
           class="flex h-full flex-col justify-around gap-4"
@@ -245,6 +269,21 @@ const launch_round_matchs = async () => {
         class="grid h-full items-center gap-x-10 gap-y-2"
         :style="get_col_style(bracket)"
       >
+        <div
+          v-for="round_idx in 2 * bracket.depth + 1"
+          :key="round_idx"
+          class="text-center text-xl"
+        >
+          {{
+            (round_idx === 1)
+              ? bracket_round_title(bracket.depth, round_idx)
+              : (round_idx % 2 === 0 && round_idx < 2 * bracket.depth)
+                ? bracket_round_title(bracket.depth, (round_idx + 2) / 2)
+                : (round_idx === 2 * bracket.depth)
+                  ? 'Grande finale'
+                  : ''
+          }}
+        </div>
         <div
           class="flex h-full flex-col justify-around gap-4"
         >
@@ -307,6 +346,19 @@ const launch_round_matchs = async () => {
         class="grid items-center gap-x-10 gap-y-2"
         :style="get_col_style(bracket)"
       >
+        <div
+          v-for="round_idx in 2 * bracket.depth + 1"
+          :key="round_idx"
+          class="text-center text-xl"
+        >
+          {{
+            (round_idx !== 1 && round_idx < 2 * bracket.depth - 1)
+              ? `Tour ${round_idx - 1}`
+              : (round_idx === 2 * bracket.depth - 1)
+                ? 'Finale'
+                : ''
+          }}
+        </div>
         <div/>
         <div
           v-for="(games, round_idx) in get_looser_matchs(bracket.matchs)"
