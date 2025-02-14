@@ -137,7 +137,7 @@ const launch_round_matchs = async () => {
 
 const bracket_round_title = (depth: number, round_idx: number) => {
   if (round_idx < depth - 2) {
-    return `${2 ** depth - round_idx}ᵉ de finale`;
+    return `${2 ** (depth - round_idx)}ᵉ de finale`;
   }
   if (round_idx === depth - 2) {
     return 'Quart de finale';
