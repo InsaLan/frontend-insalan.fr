@@ -48,7 +48,7 @@ const launch_selected_matchs = async () => {
     addNotification('Aucun match sélectionné', 'info');
   }
 
-  await launchMatchs({ tournament: tournament.id, matchs: Array.from(selected_matchs.value) }, 'swiss');
+  await launchMatchs({ tournament: tournament.id, matchs: Array.from(selected_matchs.value) }, 'bracket');
 
   selected_matchs.value.clear();
 
