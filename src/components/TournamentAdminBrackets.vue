@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
-import { between, integer, required } from '@vuelidate/validators';
+import { between, required } from '@vuelidate/validators';
 import { computed, reactive, ref } from 'vue';
 import { BracketType } from '@/models/bracket';
 import { MatchTypeEnum } from '@/models/match';
@@ -103,38 +103,6 @@ const delete_bracket = async () => {
   modal_open.value = false;
 };
 
-const open_launch_round_modal = () => {
-  if (!has_matchs.value) {
-    addNotification('Il n\'existe pas de matchs.', 'info');
-    return;
-  }
-
-  open_modal('launch_round');
-};
-
-const round_to_launch = ref(1);
-const round_rules = computed(() => ({
-  round_to_launch: {
-    required,
-    integer,
-    between: between(1, 10),
-  },
-}));
-
-const v_round$ = useVuelidate(round_rules, { round_to_launch });
-
-const launch_round_matchs = async () => {
-  const is_valid = await v_round$.value.$validate();
-
-  if (!is_valid) return;
-
-  await launchMatchs({ tournament: tournament.id, round: round_to_launch.value }, 'bracket');
-
-  addNotification(`Les matchs du round ${round_to_launch.value} ont bien été lancés.`, 'info');
-
-  modal_open.value = false;
-};
-
 const bracket_round_title = (depth: number, round_idx: number) => {
   if (round_idx < depth - 2) {
     return `${2 ** (depth - round_idx)}ᵉ de finale`;
@@ -151,20 +119,33 @@ const bracket_round_title = (depth: number, round_idx: number) => {
 
   return '';
 };
-
 </script>
 
 <template>
-  <button
-    type="button"
-    class="m-2 rounded bg-blue-800 p-2 text-xl font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-    @click="open_modal('create_bracket')"
+  <div
+    class="m-4 flex flex-wrap justify-center gap-4 lg:m-8 lg:mb-2 lg:gap-16"
   >
-    Créer un arbre
-    <fa-awesome-icon
-      icon="fa-solid fa-circle-plus"
-    />
-  </button>
+    <button
+      type="button"
+      class="rounded bg-blue-800 p-2 text-xl font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+      @click="open_modal('create_bracket')"
+    >
+      Créer un arbre
+      <fa-awesome-icon
+        icon="fa-solid fa-circle-plus"
+      />
+    </button>
+
+    <button
+      type="button"
+      class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
+      :class="[has_matchs && selected_matchs.size > 0 ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
+      :disabled="!has_matchs || selected_matchs.size === 0"
+      @click="launch_selected_matchs"
+    >
+      Lancer les matchs séléctionnés
+    </button>
+  </div>
 
   <div
     v-for="bracket in tournament.brackets"
@@ -173,37 +154,14 @@ const bracket_round_title = (depth: number, round_idx: number) => {
   >
     <h1 class="title">
       Arbre {{ bracket.name }}
-    </h1>
-
-    <div
-      class="m-4 flex flex-wrap justify-center gap-4 lg:mx-8 lg:gap-16"
-    >
-      <button
-        type="button"
-        class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
-        :class="[has_matchs ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
-        :disabled="!has_matchs"
-        @click="open_launch_round_modal"
-      >
-        Lancer un tour
-      </button>
-      <button
-        type="button"
-        class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
-        :class="[has_matchs && selected_matchs.size > 0 ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
-        :disabled="!has_matchs || selected_matchs.size === 0"
-        @click="launch_selected_matchs"
-      >
-        Lancer les matchs séléctionnés
-      </button>
-      <button
-        type="button"
-        class="rounded bg-red-500 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+      <fa-awesome-icon
+        icon="fa-solid fa-trash-can"
+        size="xs"
+        class="ml-3 text-red-500 hover:cursor-pointer"
+        title="Delete bracket"
         @click="open_delete_bracket_modal(bracket.id)"
-      >
-        Supprimer l'arbre
-      </button>
-    </div>
+      />
+    </h1>
 
     <div
       v-if="bracket.bracket_type === BracketType.SINGLE"
@@ -497,58 +455,6 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         @click="delete_bracket"
       >
         Valider
-      </button>
-      <button
-        class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
-        type="button"
-        @click="modal_open = false;"
-      >
-        Annuler
-      </button>
-    </template>
-  </Modal>
-
-  <Modal v-if="modal_open && modal_type === 'launch_round'">
-    <template #icon>
-      <div/>
-    </template>
-    <template #title>
-      <h3 class="text-white-900 text-base font-semibold leading-6">
-        Lancer les matchs d'un tour
-      </h3>
-    </template>
-    <template #body>
-      <form
-        id="create_groups_form"
-        class="m-4 flex flex-col gap-4"
-        @submit.prevent="launch_round_matchs"
-      >
-        <FormField
-          v-slot="context"
-          :validations="v_round$.round_to_launch"
-        >
-          <label for="round">
-            Numéro du tour
-          </label>
-          <input
-            id="round"
-            v-model="round_to_launch"
-            type="number"
-            name="round"
-            aria-label="Round number"
-            class="ml-2 bg-inherit"
-            :class="{ error: context.invalid }"
-          >
-        </FormField>
-      </form>
-    </template>
-    <template #buttons>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-        type="button"
-        @click="launch_round_matchs"
-      >
-        Lancer le tour
       </button>
       <button
         class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
