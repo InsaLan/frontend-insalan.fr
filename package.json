@@ -27,7 +27,9 @@
     "vue": "^3.5.10",
     "vue-multiselect": "^3.1.0",
     "vue-qrcode-reader": "^5.5.10",
-    "vue-router": "^4.4.5"
+    "vue-router": "^4.4.5",
+    "date-fns": "^4.1.0",
+    "ical.js": "^2.1.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.10.4",
