@@ -174,7 +174,7 @@ const delete_group_matchs = async () => {
         :disabled="!has_matchs"
         @click="open_launch_round_modal"
       >
-        Lancer un round
+        Lancer un tour
       </button>
 
       <router-link
@@ -410,7 +410,7 @@ const delete_group_matchs = async () => {
     </template>
     <template #title>
       <h3 class="text-white-900 text-base font-semibold leading-6">
-        Lancer les matchs d'un round
+        Lancer les matchs d'un tour
       </h3>
     </template>
     <template #body>
@@ -424,7 +424,7 @@ const delete_group_matchs = async () => {
           :validations="v_round$.round"
         >
           <label for="round">
-            Numéro du round
+            Numéro du tour
           </label>
           <input
             id="round"
@@ -444,7 +444,7 @@ const delete_group_matchs = async () => {
         type="button"
         @click="launch_round_matchs"
       >
-        Lancer le round
+        Lancer le tour
       </button>
       <button
         class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
