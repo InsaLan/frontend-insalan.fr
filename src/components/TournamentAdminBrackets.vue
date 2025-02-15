@@ -108,10 +108,10 @@ const bracket_round_title = (depth: number, round_idx: number) => {
     return `${2 ** (depth - round_idx)}ᵉ de finale`;
   }
   if (round_idx === depth - 2) {
-    return 'Quart de finale';
+    return 'Quarts de finale';
   }
   if (round_idx === depth - 1) {
-    return 'Demi finale';
+    return 'Demi-finales';
   }
   if (round_idx === depth) {
     return 'Finale';
