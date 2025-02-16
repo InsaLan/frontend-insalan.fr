@@ -192,10 +192,12 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
         v-for="idx in (match.status !== MatchStatus.SCHEDULED ? match.teams.length : teamPerMatch)"
         :key="idx"
       >
-        <td
-          class="w-52 truncate"
-        >
-          {{ get_validated_team_by_id(match.teams[idx - 1])?.name ?? 'TBD' }}
+        <td>
+          <div
+            class="w-52 truncate"
+          >
+            {{ get_validated_team_by_id(match.teams[idx - 1])?.name ?? 'TBD' }}
+          </div>
         </td>
         <td
           class="w-6 text-right"
@@ -210,14 +212,12 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
         v-for="idx in teamPerMatch"
         :key="idx"
       >
-        <td
-          class="w-52 truncate"
-        >
+        <td>
           <select
             id="select_team"
             v-model="match_info.teams[idx - 1]"
             name="select_team"
-            class="bg-inherit"
+            class="w-52 truncate bg-inherit"
             @click.stop
           >
             <option
