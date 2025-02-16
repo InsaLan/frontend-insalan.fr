@@ -6,14 +6,13 @@ import {
   required,
 } from '@vuelidate/validators';
 import { computed, ref } from 'vue';
+import FormField from '@/components/FormField.vue';
+import Modal from '@/components/Modal.vue';
+import AdminMatch from '@/components/Tournament/Admin/AdminMatch.vue';
 import { MatchTypeEnum } from '@/models/match';
 import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
-
-import AdminMatch from './AdminMatch.vue';
-import FormField from './FormField.vue';
-import Modal from './Modal.vue';
 
 const { tournament } = defineProps<{
   tournament: TournamentDeref;

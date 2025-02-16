@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, toRef } from 'vue';
-import GroupTable from '@/components/GroupTable.vue';
+import GroupTable from '@/components/Tournament/GroupTable.vue';
 import type { Group } from '@/models/group';
 import type { TournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';

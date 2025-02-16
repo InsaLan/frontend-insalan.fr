@@ -7,11 +7,10 @@ import {
   type Ref,
   ref,
 } from 'vue';
+import Modal from '@/components/Modal.vue';
 import type { Group } from '@/models/group';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
-
-import Modal from './Modal.vue';
 
 const group = defineModel<Group>() as Ref<Group>;
 

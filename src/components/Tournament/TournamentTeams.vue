@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import TeamCard from '@/components/TeamCard.vue';
+import TeamCard from '@/components/Tournament/TeamCard.vue';
 import type { TournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 

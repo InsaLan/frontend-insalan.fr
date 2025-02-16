@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SwissRoundTable from '@/components/SwissRoundTable.vue';
+import SwissRoundTable from '@/components/Tournament/SwissRoundTable.vue';
 import type { TournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
