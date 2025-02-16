@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import KnockoutMatchCard from '@/components/KnockoutMatchCard.vue';
+import KnockoutMatchCard from '@/components/Tournament/KnockoutMatchCard.vue';
 import { BracketType, type KnockoutMatch } from '@/models/bracket';
 import type { TournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';

@@ -8,14 +8,13 @@ import {
   required,
 } from '@vuelidate/validators';
 import { computed, reactive, ref } from 'vue';
+import FormField from '@/components/FormField.vue';
+import Modal from '@/components/Modal.vue';
+import AdminGroupTable from '@/components/Tournament/Admin/AdminGroupTable.vue';
 import { BestofType } from '@/models/match';
 import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
-
-import AdminGroupTable from './AdminGroupTable.vue';
-import FormField from './FormField.vue';
-import Modal from './Modal.vue';
 
 const { tournament } = defineProps<{
   tournament: TournamentDeref;

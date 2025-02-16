@@ -2,16 +2,15 @@
 import useVuelidate from '@vuelidate/core';
 import { between, required } from '@vuelidate/validators';
 import { computed, reactive, ref } from 'vue';
+import FormField from '@/components/FormField.vue';
+import Modal from '@/components/Modal.vue';
+import AdminMatch from '@/components/Tournament/Admin/AdminMatch.vue';
 import { BracketType } from '@/models/bracket';
 import { MatchTypeEnum } from '@/models/match';
 import type { Team } from '@/models/team';
 import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
-
-import AdminMatch from './AdminMatch.vue';
-import FormField from './FormField.vue';
-import Modal from './Modal.vue';
 
 const { tournament } = defineProps<{
   tournament: TournamentDeref;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import KnockoutMatchCard from '@/components/KnockoutMatchCard.vue';
+import KnockoutMatchCard from '@/components/Tournament/KnockoutMatchCard.vue';
 
 defineProps<{
   rounds: Record<string, Record<string, string | Record<string, string | number | boolean | undefined>[]>[]>;

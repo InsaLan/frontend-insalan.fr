@@ -6,7 +6,7 @@ import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
-import Seating from '@/components/SeatingPlan.vue';
+import Seating from '@/components/Tournament/SeatingPlan.vue';
 import { PaymentStatus, type PlayerRegistration, type PlayerRegistrationDeref } from '@/models/registration';
 import type { Team } from '@/models/team';
 import type { TournamentDeref } from '@/models/tournament';
