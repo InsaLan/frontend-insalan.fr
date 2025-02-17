@@ -199,7 +199,7 @@ const openScoreModal = () => {
 
 <template>
   <div class="ml-1 flex flex-col md:flex-row">
-    <div id="profile" class="items-center md:w-2/6">
+    <div id="profile" class="mb-3 items-center md:w-2/6">
       <h1 class="m-3 text-center text-4xl font-bold">
         Mon compte
       </h1>
