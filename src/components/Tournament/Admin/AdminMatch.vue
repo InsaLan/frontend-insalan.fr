@@ -49,10 +49,12 @@ const edit_mode = ref(false);
 const match_info = reactive({
   bo_type: match.bo_type,
   teams: match.teams.concat(Array(teamPerMatch - match.teams.length).fill(0)),
+  status: match.status,
 });
 const match_info_rules = computed(() => ({
   bo_type: { required },
   teams: { required, minLength: minLength(0), maxLength: maxLength(teamPerMatch) },
+  status: { required },
 }));
 
 const v$ = useVuelidate(match_info_rules, match_info);
@@ -132,24 +134,52 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
               </select>
             </span>
 
-            <span v-if="match.status === MatchStatus.SCHEDULED" class="text-center text-blue-500">
-              <fa-awesome-icon
-                icon="fa-solid fa-clock"
-              />
-              Prévu
-            </span>
-            <span v-else-if="match.status === MatchStatus.ONGOING" class="text-center text-orange-500">
-              <fa-awesome-icon
-                icon="fa-solid fa-arrows-rotate"
-              />
-              En cours
-            </span>
-            <span v-else class="text-center text-green-500">
-              <fa-awesome-icon
-                icon="fa-solid fa-check"
-              />
-              Terminé
-            </span>
+            <div
+              v-if="!edit_mode"
+            >
+              <span v-if="match.status === MatchStatus.SCHEDULED" class="text-center text-blue-500">
+                <fa-awesome-icon
+                  icon="fa-solid fa-clock"
+                />
+                Prévu
+              </span>
+              <span v-else-if="match.status === MatchStatus.ONGOING" class="text-center text-orange-500">
+                <fa-awesome-icon
+                  icon="fa-solid fa-arrows-rotate"
+                />
+                En cours
+              </span>
+              <span v-else class="text-center text-green-500">
+                <fa-awesome-icon
+                  icon="fa-solid fa-check"
+                />
+                Terminé
+              </span>
+            </div>
+            <div
+              v-else
+            >
+              <select
+                id="match_status"
+                v-model="match_info.status"
+                name="match_status"
+                class="bg-inherit"
+              >
+                <option
+                  v-for="match_status in MatchStatus"
+                  :key="match_status"
+                  :value="match_status"
+                >
+                  {{
+                    match_status === MatchStatus.SCHEDULED
+                      ? 'Prévu'
+                      : match_status === MatchStatus.ONGOING
+                        ? 'En cours'
+                        : 'Terminé'
+                  }}
+                </option>
+              </select>
+            </div>
 
             <div
               v-if="is_admin && editable && match.status === MatchStatus.SCHEDULED"
