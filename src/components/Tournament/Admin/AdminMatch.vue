@@ -195,6 +195,7 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
         <td>
           <div
             class="w-52 truncate"
+            :class="{ 'text-green-500': is_winning_team(match, match.teams[idx - 1]) }"
           >
             {{ get_validated_team_by_id(match.teams[idx - 1])?.name ?? 'TBD' }}
           </div>
