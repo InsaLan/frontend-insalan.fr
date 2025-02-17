@@ -4,7 +4,7 @@ import { computed } from 'vue';
 import Content from '@/components/Content.vue';
 import Hero from '@/components/Hero.vue';
 import Partners from '@/components/Partners.vue';
-import TournamentCard from '@/components/TournamentCard.vue';
+import TournamentCard from '@/components/Tournament/TournamentCard.vue';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const tournamentStore = useTournamentStore();
