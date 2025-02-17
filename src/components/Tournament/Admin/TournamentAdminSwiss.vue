@@ -244,12 +244,12 @@ const create_round = async () => {
             </div>
 
             <div
-              class="flex flex-col items-center gap-3 p-2"
+              class="flex flex-col items-center gap-3"
             >
               <div
                 v-for="match in matchs"
                 :key="match.id"
-                class="flex w-full"
+                class="m-2 flex w-full"
               >
                 <AdminMatch
                   v-model="selected_matchs"
