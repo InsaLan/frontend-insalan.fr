@@ -50,12 +50,35 @@ const match_info = reactive({
   bo_type: match.bo_type,
   teams: match.teams.concat(Array(teamPerMatch - match.teams.length).fill(0)),
   status: match.status,
+  score: validated_teams.reduce((acc, team) => {
+    if (Object.keys(match.score).includes(team.id.toString())) {
+      acc[team.id] = match.score[team.id];
+    } else {
+      acc[team.id] = 0;
+    }
+    return acc;
+  }, {} as Record<number, number>),
 });
 const match_info_rules = computed(() => ({
   bo_type: { required },
   teams: { required, minLength: minLength(0), maxLength: maxLength(teamPerMatch) },
   status: { required },
+  score: { required },
 }));
+
+const reset = () => {
+  match_info.bo_type = match.bo_type;
+  match_info.teams = match.teams.concat(Array(teamPerMatch - match.teams.length).fill(0));
+  match_info.status = match.status;
+  match_info.score = validated_teams.reduce((acc, team) => {
+    if (Object.keys(match.score).includes(team.id.toString())) {
+      acc[team.id] = match.score[team.id];
+    } else {
+      acc[team.id] = 0;
+    }
+    return acc;
+  }, {} as Record<number, number>);
+};
 
 const v$ = useVuelidate(match_info_rules, match_info);
 
@@ -64,7 +87,11 @@ const patch_match = async () => {
 
   if (!is_valid) return;
 
-  match_info.teams = match_info.teams.filter((t) => t !== 0);
+  match_info.teams = match_info.teams.filter((team_id) => team_id !== 0);
+  match_info.score = Object.fromEntries(
+    Object.entries(match_info.score)
+      .filter(([team_id]) => match_info.teams.includes(Number(team_id))),
+  );
 
   await patchMatch(match_info, match.id, matchType);
 
@@ -182,7 +209,7 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
             </div>
 
             <div
-              v-if="is_admin && editable && match.status === MatchStatus.SCHEDULED"
+              v-if="is_admin && editable"
               class="flex items-center justify-end"
             >
               <fa-awesome-icon
@@ -209,7 +236,7 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
                   icon="fa-solid fa-xmark"
                   size="xl"
                   title="Cancel"
-                  @click.stop="edit_mode = false"
+                  @click.stop="edit_mode = false; reset()"
                 />
               </div>
             </div>
@@ -268,7 +295,13 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
         <td
           class="w-6 text-right"
         >
-          0
+          <input
+            id="score"
+            v-model="match_info.score[match_info.teams[idx - 1]]"
+            type="number"
+            name="score"
+            class="bg-inherit"
+          />
         </td>
       </tr>
     </tbody>
