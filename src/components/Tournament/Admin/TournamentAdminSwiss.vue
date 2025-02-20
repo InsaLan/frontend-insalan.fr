@@ -249,7 +249,7 @@ const create_round = async () => {
               <div
                 v-for="match in matchs"
                 :key="match.id"
-                class="m-2 flex w-full"
+                class="m-2 flex w-full overflow-x-auto"
               >
                 <AdminMatch
                   v-model="selected_matchs"
@@ -258,7 +258,6 @@ const create_round = async () => {
                   :team-per-match="tournament.game.team_per_match"
                   :editable="true"
                   :selectable="true"
-                  class="w-full"
                 />
               </div>
             </div>

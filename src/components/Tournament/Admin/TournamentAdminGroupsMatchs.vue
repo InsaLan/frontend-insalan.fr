@@ -126,47 +126,51 @@ const launch_selected_matchs = async () => {
     <table
       class="w-full table-fixed"
     >
-      <tr class="border-b-2">
-        <th class="w-32 border-r-2 p-2">
-          Poule
-        </th>
-        <th
-          v-for="round in max_round"
-          :key="round"
-          :class="{ 'border-r': round < max_round }"
-          class="w-56 xl:w-[34rem]"
+      <thead>
+        <tr class="border-b-2">
+          <th class="w-32 border-r-2 p-2">
+            Poule
+          </th>
+          <th
+            v-for="round in max_round"
+            :key="round"
+            :class="{ 'border-r': round < max_round }"
+            class="w-56 xl:w-[34rem]"
+          >
+            Tour {{ round }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="group in tournament.groups"
+          :key="group.id"
+          class="border-b"
         >
-          Tour {{ round }}
-        </th>
-      </tr>
-      <tr
-        v-for="group in tournament.groups"
-        :key="group.id"
-        class="border-b"
-      >
-        <td class="border-r-2 text-center">
-          {{ group.name }}
-        </td>
-        <td
-          v-for="matchs in get_matchs_per_round(group.matchs).reverse()"
-          :key="matchs[0].round_number"
-          :class="{ 'border-r': matchs[0].round_number < max_round }"
-        >
-          <div class="flex flex-wrap justify-around gap-2 p-2">
-            <AdminMatch
-              v-for="match in matchs"
-              :key="match.id"
-              v-model="selected_matchs"
-              :match="match"
-              :match-type="{ type: MatchTypeEnum.GROUP, id: match.group }"
-              :selected="selected_matchs.has(match.id)"
-              :team-per-match="tournament.game.team_per_match"
-              :editable="true"
-              :selectable="true"
-            />
-          </div>
-        </td>
-      </tr>
+          <td class="border-r-2 text-center">
+            {{ group.name }}
+          </td>
+          <td
+            v-for="matchs in get_matchs_per_round(group.matchs).reverse()"
+            :key="matchs[0].round_number"
+            :class="{ 'border-r': matchs[0].round_number < max_round }"
+          >
+            <div class="flex flex-wrap justify-around gap-2 p-2">
+              <AdminMatch
+                v-for="match in matchs"
+                :key="match.id"
+                v-model="selected_matchs"
+                :match="match"
+                :match-type="{ type: MatchTypeEnum.GROUP, id: match.group }"
+                :selected="selected_matchs.has(match.id)"
+                :team-per-match="tournament.game.team_per_match"
+                :editable="true"
+                :selectable="true"
+              />
+            </div>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 
