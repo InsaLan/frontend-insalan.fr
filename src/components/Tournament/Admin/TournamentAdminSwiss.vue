@@ -210,7 +210,7 @@ const create_round = async () => {
     >
       <div
         class="grid size-full gap-x-10 gap-y-5"
-        :style="{ 'grid-template-columns': `repeat(${roundCounts[swiss_idx]}, minmax(16rem,1fr))` }"
+        :style="{ 'grid-template-columns': `repeat(${roundCounts[swiss_idx]}, minmax(18rem,1fr))` }"
       >
         <h1
           v-for="round_idx in roundCounts[swiss_idx]"
@@ -249,7 +249,7 @@ const create_round = async () => {
               <div
                 v-for="match in matchs"
                 :key="match.id"
-                class="m-2 flex w-full overflow-x-auto"
+                class="m-2 flex w-full"
               >
                 <AdminMatch
                   v-model="selected_matchs"
@@ -258,6 +258,7 @@ const create_round = async () => {
                   :team-per-match="tournament.game.team_per_match"
                   :editable="true"
                   :selectable="true"
+                  class="grow"
                 />
               </div>
             </div>

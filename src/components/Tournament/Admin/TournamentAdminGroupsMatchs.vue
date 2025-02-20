@@ -135,7 +135,7 @@ const launch_selected_matchs = async () => {
             v-for="round in max_round"
             :key="round"
             :class="{ 'border-r': round < max_round }"
-            class="w-56 xl:w-[34rem]"
+            class="w-56 xl:w-[36rem]"
           >
             Tour {{ round }}
           </th>
