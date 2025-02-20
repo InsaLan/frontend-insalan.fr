@@ -148,7 +148,7 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
                 id="bo_type"
                 v-model="match_info.bo_type"
                 name="bo_type"
-                class="bg-inherit"
+                class="bg-inherit py-1 pl-1"
                 @click.stop
               >
                 <option
@@ -190,7 +190,7 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
                 id="match_status"
                 v-model="match_info.status"
                 name="match_status"
-                class="bg-inherit"
+                class="bg-inherit py-1 pl-1"
               >
                 <option
                   v-for="match_status in MatchStatus"
@@ -252,17 +252,19 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
       >
         <td>
           <div
-            class="w-52 truncate"
+            class="min-w-52 truncate"
             :class="{ 'text-green-500': is_winning_team(match, match.teams[idx - 1]) }"
           >
             {{ get_validated_team_by_id(match.teams[idx - 1])?.name ?? 'TBD' }}
           </div>
         </td>
-        <td
-          class="w-6 text-right"
-          :class="{ 'text-green-500': is_winning_team(match, match.teams[idx - 1]) }"
-        >
-          {{ match.score[match.teams[idx - 1]] ?? 0 }}
+        <td>
+          <div
+            class="min-w-8 text-right"
+            :class="{ 'text-green-500': is_winning_team(match, match.teams[idx - 1]) }"
+          >
+            {{ match.score[match.teams[idx - 1]] ?? 0 }}
+          </div>
         </td>
       </tr>
     </tbody>
@@ -276,7 +278,7 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
             id="select_team"
             v-model="match_info.teams[idx - 1]"
             name="select_team"
-            class="w-52 truncate bg-inherit"
+            class="min-w-[12.5rem] truncate bg-inherit p-1"
             @click.stop
           >
             <option
@@ -293,18 +295,22 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
             </option>
           </select>
         </td>
-        <td
-          class="w-6 text-right"
-        >
+        <td>
           <input
             id="score"
-            v-model="match_info.score[match_info.teams[idx - 1]]"
+            v-model.number="match_info.score[match_info.teams[idx - 1]]"
             type="number"
             name="score"
-            class="bg-inherit"
+            class="w-10 bg-inherit p-1 text-right"
           />
         </td>
       </tr>
     </tbody>
   </table>
 </template>
+
+<style>
+input[type="number"] {
+  appearance: textfield;
+}
+</style>
