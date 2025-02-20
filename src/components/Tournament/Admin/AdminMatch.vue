@@ -133,7 +133,7 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
           class="border-b-2"
         >
           <div
-            class="grid w-full grid-cols-[1fr,2fr,1fr] items-center"
+            class="flex flex-row items-center justify-between"
           >
             <span
               v-if="!edit_mode"
@@ -214,7 +214,7 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
             >
               <fa-awesome-icon
                 v-if="!edit_mode"
-                class="hover:cursor-pointer"
+                class="hover:cursor-pointer hover:text-gray-500"
                 icon="fa-solid fa-pencil"
                 size="xs"
                 title="Edit match"
@@ -223,16 +223,17 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
 
               <div
                 v-else
+                class="flex items-center gap-2"
               >
                 <fa-awesome-icon
-                  class="pr-2 text-green-500 hover:cursor-pointer"
+                  class="text-green-500 hover:cursor-pointer hover:text-green-700"
                   icon="fa-solid fa-save"
                   size="lg"
                   title="Save changer"
                   @click.stop="patch_match"
                 />
                 <fa-awesome-icon
-                  class="text-red-500 hover:cursor-pointer"
+                  class="text-red-500 hover:cursor-pointer hover:text-red-700"
                   icon="fa-solid fa-xmark"
                   size="xl"
                   title="Cancel"
