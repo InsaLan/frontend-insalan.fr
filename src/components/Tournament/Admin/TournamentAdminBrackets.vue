@@ -6,7 +6,7 @@ import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import AdminMatch from '@/components/Tournament/Admin/AdminMatch.vue';
 import { BracketType } from '@/models/bracket';
-import { MatchTypeEnum } from '@/models/match';
+import { BestofType, MatchTypeEnum } from '@/models/match';
 import type { Team } from '@/models/team';
 import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
@@ -66,11 +66,13 @@ const bracket_data = reactive({
   name: '',
   team_count: 0,
   bracket_type: BracketType.SINGLE,
+  bo_type: BestofType.BO1,
 });
 const bracket_rules = computed(() => ({
   name: { required },
   team_count: { required, between: between(2, (tournament.teams as Team[]).filter((t) => t.validated).length) },
   bracket_type: { required },
+  bo_type: { required },
 }));
 
 const v$ = useVuelidate(bracket_rules, bracket_data);
@@ -412,6 +414,29 @@ const bracket_round_title = (depth: number, round_idx: number) => {
             type="number"
             :class="{ error: context.invalid }"
           />
+        </FormField>
+        <FormField
+          v-slot="context"
+          :validations="v$.bo_type"
+        >
+          <label for="bo_type">
+            Type de BO
+          </label>
+          <select
+            id="bo_type"
+            v-model="bracket_data.bo_type"
+            name="bo_type"
+            class="ml-2 bg-inherit"
+            :class="{ error: context.invalid }"
+          >
+            <option
+              v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"
+              :key="value"
+              :value="value"
+            >
+              {{ value === '0' ? 'Classement' : `BO ${value}` }}
+            </option>
+          </select>
         </FormField>
         <button class="hidden" type="submit"/>
       </form>
