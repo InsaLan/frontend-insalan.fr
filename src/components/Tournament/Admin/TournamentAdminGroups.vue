@@ -177,8 +177,9 @@ const delete_group_matchs = async () => {
       </button>
 
       <router-link
-        :to="{ name: 'tournament_admin_groups-matchs' }"
-        class="content-center rounded bg-blue-800 p-2 text-center font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+        :to="{ name: has_matchs ? 'tournament_admin_groups-matchs' : '' }"
+        class="content-center rounded bg-blue-800 p-2 text-center font-bold transition duration-150 ease-in-out "
+        :class="[has_matchs ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
       >
         Gérer les matchs
       </router-link>

@@ -122,7 +122,10 @@ const launch_selected_matchs = async () => {
     </router-link>
   </div>
 
-  <div class="m-2 overflow-auto md:m-4 xl:m-8">
+  <div
+    v-if="has_groups"
+    class="m-2 overflow-auto md:m-4 xl:m-8"
+  >
     <table
       class="w-full table-fixed"
     >
