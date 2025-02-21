@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import KnockoutMatchCard from '@/components/Tournament/KnockoutMatchCard.vue';
-import { BracketType, type KnockoutMatch } from '@/models/bracket';
+import { BracketType } from '@/models/bracket';
 import type { TournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
-const props = defineProps<{
+const { tournament } = defineProps<{
   tournament: TournamentDeref;
 }>();
 
@@ -12,7 +12,6 @@ const tournamentStore = useTournamentStore();
 const {
   get_col_style,
   get_matchs_per_round,
-  knockout_match_results,
   get_winner_matchs_per_round,
   get_looser_matchs,
   get_validated_team_by_id,
@@ -40,13 +39,13 @@ const bracket_round_title = (depth: number, round_idx: number) => {
 <template>
   <section id="brackets">
     <h1
-      v-if="props.tournament.brackets.length === 0"
+      v-if="tournament.brackets.length === 0"
       class="mt-6 text-center text-4xl"
     >
       Les arbres ne sont pas disponibles.
     </h1>
     <div
-      v-for="bracket in props.tournament.brackets"
+      v-for="bracket in tournament.brackets"
       v-else
       :key="bracket.id"
       class="mb-5"
@@ -81,9 +80,8 @@ const bracket_round_title = (depth: number, round_idx: number) => {
               class="m-2 divide-y"
             >
               <KnockoutMatchCard
-                :team-per-match="props.tournament.game.team_per_match"
-                :teams="knockout_match_results(game as KnockoutMatch)"
-                :status="game.status"
+                :match="game"
+                :team-per-match="tournament.game.team_per_match"
               />
             </div>
           </div>
@@ -142,9 +140,8 @@ const bracket_round_title = (depth: number, round_idx: number) => {
               class="m-2 divide-y"
             >
               <KnockoutMatchCard
-                :team-per-match="props.tournament.game.team_per_match"
-                :teams="knockout_match_results(game)"
-                :status="game.status"
+                :match="game"
+                :team-per-match="tournament.game.team_per_match"
               />
             </div>
           </div>
@@ -163,9 +160,8 @@ const bracket_round_title = (depth: number, round_idx: number) => {
                 class="m-2 divide-y"
               >
                 <KnockoutMatchCard
-                  :team-per-match="props.tournament.game.team_per_match"
-                  :teams="knockout_match_results(game)"
-                  :status="game.status"
+                  :match="game"
+                  :team-per-match="tournament.game.team_per_match"
                 />
               </div>
             </div>
@@ -222,9 +218,8 @@ const bracket_round_title = (depth: number, round_idx: number) => {
               class="m-2 divide-y"
             >
               <KnockoutMatchCard
-                :team-per-match="props.tournament.game.team_per_match"
-                :teams="knockout_match_results(game)"
-                :status="game.status"
+                :match="game"
+                :team-per-match="tournament.game.team_per_match"
               />
             </div>
           </div>

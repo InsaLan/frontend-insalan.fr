@@ -463,51 +463,6 @@ export const useTournamentStore = defineStore('tournament', () => {
     return Object.values(round_matchs).reverse();
   };
 
-  const knockout_match_results = (match: KnockoutMatch) => {
-    const match_results = [] as Record<string, string | number | boolean | undefined>[];
-    match.teams.forEach((team) => {
-      const data = {} as Record<string, string | number | boolean | undefined>;
-      data.name = get_validated_team_by_id(team)?.name;
-      data.score = match.score[team];
-      data.is_winner = is_winning_team(match, team);
-      match_results.push(data);
-    });
-
-    return match_results;
-  };
-
-  const swiss_match_results = (matchs : SwissMatch[]) => {
-    const round_matchs = groupBy(matchs, 'round_number');
-    const res = {} as Record<
-    string,
-    Record<
-    string,
-    string | Record<
-    string,
-    string | number | boolean | undefined
-    >[]
-    >[]
-    >;
-    Object.entries(round_matchs).forEach(([round, roundMatchs]) => {
-      res[round] = [] as Record<string, string | Record<string, string | number | boolean | undefined>[]>[];
-      roundMatchs.forEach((match) => {
-        const tmp = {} as { teams: Record<string, string | number | boolean | undefined>[]; status: string };
-        tmp.teams = [];
-        tmp.status = match.status;
-        match.teams.forEach((team) => {
-          const data = {} as { name: string | undefined; score: number; is_winner: boolean };
-          data.name = get_validated_team_by_id(team)?.name;
-          data.score = match.score[team];
-          data.is_winner = is_winning_team(match, team);
-          tmp.teams.push(data);
-        });
-        res[round].push(tmp);
-      });
-    });
-
-    return res;
-  };
-
   const soloGame = computed(() => (tournament.value as TournamentDeref | undefined)?.game.players_per_team === 1);
 
   async function updateTeamsSeeding(modified_seed: { id: number; seed: number }[]) {
@@ -878,8 +833,6 @@ export const useTournamentStore = defineStore('tournament', () => {
     get_bracket_cols_count,
     get_matchs_per_round,
     get_looser_matchs,
-    knockout_match_results,
-    swiss_match_results,
     getEvent,
     getEvents,
     getTournamentTeams,
