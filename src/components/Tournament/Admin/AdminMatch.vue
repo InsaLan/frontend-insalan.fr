@@ -252,7 +252,7 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
       >
         <td>
           <div
-            class="min-w-52 truncate"
+            class="w-52 truncate"
             :class="{ 'text-green-500': is_winning_team(match, match.teams[idx - 1]) }"
           >
             {{ get_validated_team_by_id(match.teams[idx - 1])?.name ?? 'TBD' }}
@@ -278,7 +278,7 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
             id="select_team"
             v-model="match_info.teams[idx - 1]"
             name="select_team"
-            class="min-w-[12.5rem] truncate bg-inherit p-1"
+            class="w-[12.5rem] truncate bg-inherit p-1"
             @click.stop
           >
             <option
