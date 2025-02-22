@@ -169,6 +169,7 @@ const launch_selected_matchs = async () => {
                 :team-per-match="tournament.game.team_per_match"
                 :editable="true"
                 :selectable="true"
+                class="grow"
               />
             </div>
           </td>
