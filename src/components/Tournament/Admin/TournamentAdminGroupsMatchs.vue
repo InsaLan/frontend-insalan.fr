@@ -1,10 +1,5 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
-import {
-  between,
-  integer,
-  required,
-} from '@vuelidate/validators';
 import { computed, ref } from 'vue';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
@@ -13,6 +8,11 @@ import { MatchTypeEnum } from '@/models/match';
 import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
+import {
+  between,
+  integer,
+  required,
+} from '@/support/locales/errors.fr';
 
 const { tournament } = defineProps<{
   tournament: TournamentDeref;
@@ -209,6 +209,7 @@ const launch_selected_matchs = async () => {
             aria-label="Round number"
             class="ml-2 bg-inherit"
             :class="{ error: context.invalid }"
+            @blur="v_round$.round_to_launch.$touch"
           >
         </FormField>
       </form>

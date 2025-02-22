@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useVuelidate } from '@vuelidate/core';
-import { maxLength, minLength, required } from '@vuelidate/validators';
+import { useVuelidate, type ValidationRule } from '@vuelidate/core';
 import { storeToRefs } from 'pinia';
 import {
   computed,
@@ -18,6 +17,12 @@ import type { SwissMatch } from '@/models/swiss';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
+import {
+  between,
+  maxLength,
+  minLength,
+  required,
+} from '@/support/locales/errors.fr';
 
 const {
   match,
@@ -45,6 +50,14 @@ const { isAdmin } = storeToRefs(useUserStore());
 
 const edit_mode = ref(false);
 
+const max_score = computed(() => {
+  if (match.bo_type === BestofType.RANKING) {
+    return match.teams.length;
+  }
+
+  return match.bo_type as number;
+});
+
 const match_info = reactive({
   bo_type: match.bo_type,
   teams: match.teams.concat(Array(teamPerMatch - match.teams.length).fill(0)),
@@ -62,7 +75,12 @@ const match_info_rules = computed(() => ({
   bo_type: { required },
   teams: { required, minLength: minLength(0), maxLength: maxLength(teamPerMatch) },
   status: { required },
-  score: { required },
+  score: Object.entries(match_info.score).reduce((res, team) => {
+    res[Number(team[0])] = {
+      between: between(0, max_score),
+    };
+    return res;
+  }, {} as Record<number, { between: ValidationRule }>),
 }));
 
 const reset = () => {
@@ -91,6 +109,15 @@ const patch_match = async () => {
     Object.entries(match_info.score)
       .filter(([team_id]) => match_info.teams.includes(Number(team_id))),
   );
+
+  const score_sum = Object.values(match_info.score).reduce((a, b) => a + b, 0);
+  const n = match_info.teams.length;
+  if (
+    (match.bo_type === BestofType.RANKING && score_sum !== (n * (n + 1)) / 2)
+    || (match.bo_type !== BestofType.RANKING && score_sum > (match.bo_type as number))
+  ) {
+    addNotification('Les scores que vous avez rentrés ne sont pas valide !', 'error');
+  }
 
   await patchMatch(match_info, match.id, matchType);
 

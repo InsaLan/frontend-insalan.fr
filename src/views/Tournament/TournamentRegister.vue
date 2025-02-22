@@ -46,7 +46,7 @@ const selected_team = computed(() => {
 
 const rules = computed(() => ({
   team: soloGame ? {} : { required },
-  name_in_game: register_form.role === 'player' ? { required } : {},
+  name_in_game: register_form.role !== 'manager' ? { required } : {},
   password: { required, minLengthValue: minLength(8) },
   role: { required },
   accept_rules: { acceptRules },

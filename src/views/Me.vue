@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useVuelidate } from '@vuelidate/core';
+import { useVuelidate, type ValidationRule } from '@vuelidate/core';
 import { storeToRefs } from 'pinia';
 import {
   computed, reactive, ref,
@@ -14,7 +14,8 @@ import type { Tournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
 import {
-  email, minLength,
+  between, email,
+  minLength,
   required, sameAs,
 } from '@/support/locales/errors.fr';
 
@@ -47,11 +48,6 @@ const rules_email = computed(() => ({
 }));
 const v$_email = useVuelidate(rules_email, data_email);
 
-const rules_score = computed(() => ({
-  score: { required },
-  times: { required },
-}));
-
 const data_password = reactive({
   new_password: '',
   password_validation: '',
@@ -73,17 +69,45 @@ const modal_enter_score = ref(false);
 const modal_enter_times = ref(false);
 const invalid_score = ref('');
 
+const max_score = computed(() => {
+  if (ongoing_match.value.bo_type === BestofType.RANKING) {
+    return ongoing_match.value.teams.length;
+  }
+
+  return ongoing_match.value.bo_type as number;
+});
+
 const data_score: { score: { [id: number]: number }; times: number[] } = reactive({
-  score: {},
+  score: Object.values(ongoing_match.value.teams).reduce((res, team) => {
+    res[team.id] = 0;
+    return res;
+  }, {} as Record<number, number>),
   times: [],
 });
+
+const game_number = computed(() => {
+  if (ongoing_match.value.bo_type === BestofType.RANKING) {
+    return 1;
+  }
+  return Object.values(data_score.score).reduce((a, b) => a + b, 0);
+});
+
+const rules_score = computed(() => ({
+  score: Object.entries(data_score.score).reduce((res, team) => {
+    res[Number(team[0])] = {
+      between: between(0, max_score),
+    };
+    return res;
+  }, {} as Record<number, { between: ValidationRule }>),
+  times: { required },
+}));
 
 const NextModalEnterScore = () => {
   if (ongoing_match.value.bo_type !== BestofType.RANKING) {
     const score_total = Object.values(data_score.score).reduce((a, b) => a + b, 0);
     if (score_total > (ongoing_match.value.bo_type as number)
         || Object.keys(data_score.score).length === 0) {
-      invalid_score.value = "Le score que vous avez rentrés n'est pas valide!";
+      invalid_score.value = 'Les scores que vous avez rentrés ne sont pas valide !';
     } else {
       invalid_score.value = '';
       modal_enter_times.value = true;
@@ -93,7 +117,7 @@ const NextModalEnterScore = () => {
     const ranks = Object.values(data_score.score).reduce((a, b) => a + b, 0);
     const n = Object.keys(ongoing_match.value.teams).length;
     if (ranks !== (n * (n + 1)) / 2) {
-      invalid_score.value = "Le score que vous avez rentrés n'est pas valide!";
+      invalid_score.value = 'Les scores que vous avez rentrés ne sont pas valide !';
     } else {
       invalid_score.value = '';
       modal_enter_times.value = true;
@@ -107,12 +131,6 @@ const PrevModalEnterScore = () => {
   modal_enter_score.value = true;
   invalid_score.value = '';
 };
-const game_number = computed(() => {
-  if (ongoing_match.value.bo_type === BestofType.RANKING) {
-    return 1;
-  }
-  return Object.values(data_score.score).reduce((a, b) => a + b, 0);
-});
 
 const v$_time_game = useVuelidate(rules_score, data_score);
 
@@ -629,28 +647,30 @@ const openScoreModal = () => {
       </h3>
     </template>
     <template #body>
-      <form id="patch-user" class="mt-2" @submit.prevent="validateModal">
+      <form id="patch-user" class="mt-2" @submit.prevent="">
         <FormField
           v-for="(name, id) in ongoing_match.teams"
           :key="id"
           v-slot="context"
-          :validations="v$_time_game.score"
-          class="flex justify-between"
+          :validations="v$_time_game.score[id]"
           label="{{id}}"
-          @blur="v$_time_game.$touch"
         >
-          <label :for="`input${id}`">{{ name }}</label>
-          <input
-            :id="`input${id}`"
-            v-model="data_score.score[id]"
-            :class="{ error: context.invalid }"
-            aria-label="score"
-            class="w-24 border-2 bg-theme-bg"
-            placeholder="score"
-            required
-            type="number"
-            min="0"
-          />
+          <div
+            class="flex items-center justify-between"
+          >
+            <label :for="`input${id}`">{{ name }}</label>
+            <input
+              :id="`input${id}`"
+              v-model="data_score.score[id]"
+              :class="{ error: context.invalid }"
+              aria-label="score"
+              class="w-24 border-2 bg-theme-bg"
+              placeholder="score"
+              required
+              type="number"
+              @blur="v$_time_game.score[id].$touch"
+            />
+          </div>
         </FormField>
         <!-- hidden submit button with tailwind-->
         <button class="hidden" type="submit"/>
@@ -687,12 +707,12 @@ const openScoreModal = () => {
       </h3>
     </template>
     <template #body>
-      <form id="patch-user" class="mt-2" @submit.prevent="validateModal">
+      <form id="patch-user" class="mt-2" @submit.prevent="">
         <FormField
           v-for="n in game_number"
           :key="n"
           v-slot="context"
-          class="flex justify-between"
+          class="flex items-center justify-between"
           :validations="v$_time_game.times"
           label="times"
           @blur="v$_time_game.$touch"

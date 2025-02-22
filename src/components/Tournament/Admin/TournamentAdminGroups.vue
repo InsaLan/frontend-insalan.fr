@@ -1,12 +1,5 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
-import {
-  between,
-  integer,
-  minLength,
-  minValue,
-  required,
-} from '@vuelidate/validators';
 import { computed, reactive, ref } from 'vue';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
@@ -15,6 +8,12 @@ import { BestofType } from '@/models/match';
 import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
+import {
+  between,
+  integer,
+  minLength,
+  required,
+} from '@/support/locales/errors.fr';
 
 const { tournament } = defineProps<{
   tournament: TournamentDeref;
@@ -55,8 +54,16 @@ const update_names = (event: Event) => {
 
 const rules_group = computed(() => ({
   tournament: {},
-  count: { required, integer, between: between(1, (tournament.teams.length ?? 0) / 2) },
-  team_per_group: { required, integer, minValue: minValue(2) },
+  count: {
+    required,
+    integer,
+    between: between(1, (tournament.teams.length ?? 0) / 2),
+  },
+  team_per_group: {
+    required,
+    integer,
+    between: between(2, tournament.teams.length),
+  },
   names: { minLength: minLength(group_data.count) },
   use_seeding: { required },
 }));
@@ -219,43 +226,51 @@ const delete_group_matchs = async () => {
         <FormField
           v-slot="context"
           :validations="v$.count"
+          class="flex flex-col"
         >
-          <label for="group_count">
-            Nombre de poules
-          </label>
-          <input
-            id="group_count"
-            v-model="group_data.count"
-            :class="{ error: context.invalid }"
-            aria-label="Group count"
-            class="ml-2 bg-inherit"
-            type="number"
-          >
+          <div>
+            <label for="group_count">
+              Nombre de poules
+            </label>
+            <input
+              id="group_count"
+              v-model="group_data.count"
+              :class="{ error: context.invalid }"
+              aria-label="Group count"
+              class="ml-2 bg-inherit"
+              type="number"
+              @blur="v$.count.$touch"
+            >
+          </div>
         </FormField>
         <FormField
           v-slot="context"
           :validations="v$.team_per_group"
+          class="flex flex-col"
         >
-          <label for="team_per_group">
-            Nombre d'équipes par poules
-          </label>
-          <input
-            id="team_per_group"
-            v-model="group_data.team_per_group"
-            :class="{ error: context.invalid }"
-            aria-label="Team per group"
-            class="ml-2 bg-inherit"
-            type="number"
-          >
+          <div>
+            <label for="team_per_group">
+              Nombre d'équipes par poules
+            </label>
+            <input
+              id="team_per_group"
+              v-model="group_data.team_per_group"
+              :class="{ error: context.invalid }"
+              aria-label="Team per group"
+              class="ml-2 bg-inherit"
+              type="number"
+              @blur="v$.team_per_group.$touch"
+            >
+          </div>
         </FormField>
         <FormField
           v-slot="context"
           :validations="v$.names"
+          class="flex flex-col"
         >
           <label for="names">
             Noms des poules (Liste de noms séparées par des virgules)
           </label>
-          <br>
           <input
             id="names"
             :class="{ error: context.invalid }"
@@ -264,23 +279,28 @@ const delete_group_matchs = async () => {
             type="text"
             :value="group_data.names.join(',')"
             @input="update_names"
+            @blur="v$.names.$touch"
           >
         </FormField>
         <FormField
           v-slot="context"
           :validations="v$.use_seeding"
+          class="flex flex-col"
         >
-          <label for="seeding">
-            Utiliser le seeding des équipes
-          </label>
-          <input
-            id="seeding"
-            v-model="group_data.use_seeding"
-            :class="{ error: context.invalid }"
-            aria-label="Use team seeding"
-            class="ml-2 bg-inherit"
-            type="checkbox"
-          >
+          <div>
+            <label for="seeding">
+              Utiliser le seeding des équipes
+            </label>
+            <input
+              id="seeding"
+              v-model="group_data.use_seeding"
+              :class="{ error: context.invalid }"
+              aria-label="Use team seeding"
+              class="ml-2 bg-inherit"
+              type="checkbox"
+              @blur="v$.use_seeding.$touch"
+            >
+          </div>
         </FormField>
         <button class="hidden" type="submit"/>
       </form>
@@ -439,6 +459,7 @@ const delete_group_matchs = async () => {
             aria-label="Round number"
             class="ml-2 bg-inherit"
             :class="{ error: context.invalid }"
+            @blur="v_round$.round.$touch"
           >
         </FormField>
       </form>

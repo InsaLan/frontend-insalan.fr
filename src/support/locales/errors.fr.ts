@@ -20,19 +20,19 @@ export const sameAs = <E = unknown>(equalTo: E | Ref<E>, otherName: string = 'ch
 export const minLength = (min: number | Ref<number>) => helpers.withMessage(
   ({
     $params,
-  }) => `Il faut ${$params.min} caractères minimum`,
+  }) => `La longueur doit être supérieur à ${$params.min}`,
   vminLength(min),
 );
 export const maxLength = (max: number | Ref<number>) => helpers.withMessage(
   ({
     $params,
-  }) => `Il faut ${$params.max} caractères maximum`,
+  }) => `La longueur doit être inférieur à ${$params.max}`,
   vmaxLength(max),
 );
 export const between = (min: number | Ref<number>, max: number | Ref<number>) => helpers.withMessage(
   ({
     $params,
-  }) => `Doit être compris entre ${$params.min} et ${$params.max}`,
+  }) => `La valeur doit être comprise entre ${$params.min} et ${$params.max}`,
   vbetween(min, max),
 );
 export const minValue = (min: number | Ref<number> | string | Ref<string>) => helpers.withMessage(

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useVuelidate, type ValidationRule } from '@vuelidate/core';
-import { integer, maxValue, minValue } from '@vuelidate/validators';
 import { storeToRefs } from 'pinia';
 import { computed, reactive } from 'vue';
 import FormField from '@/components/FormField.vue';
@@ -8,6 +7,7 @@ import type { Team } from '@/models/team';
 import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
+import { between, integer } from '@/support/locales/errors.fr';
 
 const { tournament } = defineProps<{
   tournament: TournamentDeref;
@@ -17,8 +17,8 @@ const NotificationStore = useNotificationStore();
 const { addNotification } = NotificationStore;
 
 const tournamentStore = useTournamentStore();
-const { getTournamentTeams, updateTeamsSeeding } = tournamentStore;
-getTournamentTeams();
+const { updateTeamsSeeding } = tournamentStore;
+const { validated_teams } = storeToRefs(tournamentStore).tourney_teams.value;
 
 const { tourney_teams } = storeToRefs(tournamentStore);
 
@@ -30,11 +30,10 @@ const seeding_form = reactive(tourney_teams.value.validated_teams.reduce((res, t
 const rules = computed(() => tourney_teams.value.validated_teams.reduce((res, team) => {
   res[team.id] = {
     integer,
-    minValueValue: minValue(0),
-    maxValueRef: maxValue(tournament.maxTeam),
+    between: between(0, validated_teams.length),
   };
   return res;
-}, {} as Record<number, { integer: ValidationRule; minValueValue: ValidationRule; maxValueRef: ValidationRule }>));
+}, {} as Record<number, { integer: ValidationRule; between: ValidationRule }>));
 
 const v$ = useVuelidate(rules, seeding_form);
 
@@ -122,7 +121,14 @@ const save_seeds = async () => {
               v-slot="context"
               :validations="v$[team.id]"
             >
-              <input id="seed" v-model="seeding_form[team.id]" type="number" class="border-2 bg-inherit text-center" :class="{ error: context.invalid, 'text-orange-300': team.seed !== seeding_form[team.id], 'text-red-500': context.invalid }">
+              <input
+                id="seed"
+                v-model="seeding_form[team.id]"
+                type="number"
+                class="border-2 bg-inherit text-center"
+                :class="{ error: context.invalid, 'text-orange-300': team.seed !== seeding_form[team.id], 'text-red-500': context.invalid }"
+                @blur="v$[team.id].$touch"
+              >
             </FormField>
           </td>
         </tr>
