@@ -133,7 +133,7 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
           class="border-b-2"
         >
           <div
-            class="flex flex-row items-center justify-between"
+            class="grid grid-cols-[1fr,2fr,1fr] items-center"
           >
             <span
               v-if="!edit_mode"
