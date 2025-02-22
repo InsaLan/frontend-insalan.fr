@@ -113,8 +113,8 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
 </script>
 
 <template>
-  <table
-    class="border-separate rounded border px-2 pb-2"
+  <div
+    class="min-w-0 border-separate rounded border px-2 py-1"
     :class="[
       selected
         ? 'border-4 border-blue-800'
@@ -126,187 +126,173 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
     @click="select_match(match)"
     @keypress="select_match(match)"
   >
-    <thead>
-      <tr>
-        <th
-          colspan="2"
-          class="border-b-2"
+    <div
+      class="mb-1 grid grid-cols-[1fr,2fr,1fr] border-b-2"
+    >
+      <span
+        v-if="!edit_mode"
+      >
+        {{ match.bo_type === BestofType.RANKING ? 'Cls' : `BO ${match.bo_type}` }}
+      </span>
+      <span
+        v-else
+      >
+        <select
+          id="bo_type"
+          v-model="match_info.bo_type"
+          name="bo_type"
+          class="bg-inherit py-1 pl-1"
+          @click.stop
         >
-          <div
-            class="grid grid-cols-[1fr,2fr,1fr] items-center"
+          <option
+            v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"
+            :key="value"
+            :value="value"
           >
-            <span
-              v-if="!edit_mode"
-              class="text-left"
-            >
-              {{ match.bo_type === BestofType.RANKING ? 'Cls' : `BO ${match.bo_type}` }}
-            </span>
-            <span
-              v-else
-            >
-              <select
-                id="bo_type"
-                v-model="match_info.bo_type"
-                name="bo_type"
-                class="bg-inherit py-1 pl-1"
-                @click.stop
-              >
-                <option
-                  v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"
-                  :key="value"
-                  :value="value"
-                >
-                  {{ value === '0' ? 'Cls' : `BO ${value}` }}
-                </option>
-              </select>
-            </span>
+            {{ value === '0' ? 'Cls' : `BO ${value}` }}
+          </option>
+        </select>
+      </span>
 
-            <div
-              v-if="!edit_mode"
-            >
-              <span v-if="match.status === MatchStatus.SCHEDULED" class="text-center text-blue-500">
-                <fa-awesome-icon
-                  icon="fa-solid fa-clock"
-                />
-                Prévu
-              </span>
-              <span v-else-if="match.status === MatchStatus.ONGOING" class="text-center text-orange-500">
-                <fa-awesome-icon
-                  icon="fa-solid fa-arrows-rotate"
-                />
-                En cours
-              </span>
-              <span v-else class="text-center text-green-500">
-                <fa-awesome-icon
-                  icon="fa-solid fa-check"
-                />
-                Terminé
-              </span>
-            </div>
-            <div
-              v-else
-            >
-              <select
-                id="match_status"
-                v-model="match_info.status"
-                name="match_status"
-                class="bg-inherit py-1 pl-1"
-              >
-                <option
-                  v-for="match_status in MatchStatus"
-                  :key="match_status"
-                  :value="match_status"
-                >
-                  {{
-                    match_status === MatchStatus.SCHEDULED
-                      ? 'Prévu'
-                      : match_status === MatchStatus.ONGOING
-                        ? 'En cours'
-                        : 'Terminé'
-                  }}
-                </option>
-              </select>
-            </div>
+      <div
+        v-if="!edit_mode"
+        class="text-center"
+      >
+        <span v-if="match.status === MatchStatus.SCHEDULED" class="text-center text-blue-500">
+          <fa-awesome-icon
+            icon="fa-solid fa-clock"
+          />
+          Prévu
+        </span>
+        <span v-else-if="match.status === MatchStatus.ONGOING" class="text-center text-orange-500">
+          <fa-awesome-icon
+            icon="fa-solid fa-arrows-rotate"
+          />
+          En cours
+        </span>
+        <span v-else class="text-center text-green-500">
+          <fa-awesome-icon
+            icon="fa-solid fa-check"
+          />
+          Terminé
+        </span>
+      </div>
+      <div
+        v-else
+        class="text-center"
+      >
+        <select
+          id="match_status"
+          v-model="match_info.status"
+          name="match_status"
+          class="bg-inherit py-1 pl-1"
+        >
+          <option
+            v-for="match_status in MatchStatus"
+            :key="match_status"
+            :value="match_status"
+          >
+            {{
+              match_status === MatchStatus.SCHEDULED
+                ? 'Prévu'
+                : match_status === MatchStatus.ONGOING
+                  ? 'En cours'
+                  : 'Terminé'
+            }}
+          </option>
+        </select>
+      </div>
 
-            <div
-              v-if="is_admin && editable"
-              class="flex items-center justify-end"
-            >
-              <fa-awesome-icon
-                v-if="!edit_mode"
-                class="hover:cursor-pointer hover:text-gray-500"
-                icon="fa-solid fa-pencil"
-                size="xs"
-                title="Edit match"
-                @click.stop="if (editable) edit_mode = true;"
-              />
+      <div
+        v-if="is_admin && editable"
+        class="flex items-center justify-end"
+      >
+        <fa-awesome-icon
+          v-if="!edit_mode"
+          class="hover:cursor-pointer hover:text-gray-500"
+          icon="fa-solid fa-pencil"
+          size="sm"
+          title="Edit match"
+          @click.stop="if (editable) edit_mode = true;"
+        />
 
-              <div
-                v-else
-                class="flex items-center gap-2"
-              >
-                <fa-awesome-icon
-                  class="text-green-500 hover:cursor-pointer hover:text-green-700"
-                  icon="fa-solid fa-save"
-                  size="lg"
-                  title="Save changer"
-                  @click.stop="patch_match"
-                />
-                <fa-awesome-icon
-                  class="text-red-500 hover:cursor-pointer hover:text-red-700"
-                  icon="fa-solid fa-xmark"
-                  size="xl"
-                  title="Cancel"
-                  @click.stop="edit_mode = false; reset()"
-                />
-              </div>
-            </div>
-          </div>
-        </th>
-      </tr>
-    </thead>
-    <tbody v-if="!edit_mode">
-      <tr
+        <div
+          v-else
+          class="flex items-center gap-2"
+        >
+          <fa-awesome-icon
+            class="text-green-500 hover:cursor-pointer hover:text-green-700"
+            icon="fa-solid fa-save"
+            size="lg"
+            title="Save changer"
+            @click.stop="patch_match"
+          />
+          <fa-awesome-icon
+            class="text-red-500 hover:cursor-pointer hover:text-red-700"
+            icon="fa-solid fa-xmark"
+            size="xl"
+            title="Cancel"
+            @click.stop="edit_mode = false; reset()"
+          />
+        </div>
+      </div>
+    </div>
+    <div v-if="!edit_mode">
+      <div
         v-for="idx in (match.status !== MatchStatus.SCHEDULED ? match.teams.length : teamPerMatch)"
         :key="idx"
+        class="flex justify-between gap-3"
       >
-        <td>
-          <div
-            class="w-52 truncate"
-            :class="{ 'text-green-500': is_winning_team(match, match.teams[idx - 1]) }"
-          >
-            {{ get_validated_team_by_id(match.teams[idx - 1])?.name ?? 'TBD' }}
-          </div>
-        </td>
-        <td>
-          <div
-            class="min-w-8 text-right"
-            :class="{ 'text-green-500': is_winning_team(match, match.teams[idx - 1]) }"
-          >
-            {{ match.score[match.teams[idx - 1]] ?? 0 }}
-          </div>
-        </td>
-      </tr>
-    </tbody>
-    <tbody v-else>
-      <tr
+        <div
+          class="truncate"
+          :class="{ 'text-green-500': is_winning_team(match, match.teams[idx - 1]) }"
+        >
+          {{ get_validated_team_by_id(match.teams[idx - 1])?.name ?? 'TBD' }}
+        </div>
+        <div
+          class="text-right"
+          :class="{ 'text-green-500': is_winning_team(match, match.teams[idx - 1]) }"
+        >
+          {{ match.score[match.teams[idx - 1]] ?? 0 }}
+        </div>
+      </div>
+    </div>
+    <div v-else>
+      <div
         v-for="idx in teamPerMatch"
         :key="idx"
+        class="flex justify-between"
       >
-        <td>
-          <select
-            id="select_team"
-            v-model="match_info.teams[idx - 1]"
-            name="select_team"
-            class="w-[12.5rem] truncate bg-inherit p-1"
-            @click.stop
+        <select
+          id="select_team"
+          v-model="match_info.teams[idx - 1]"
+          name="select_team"
+          class="grow truncate bg-inherit py-1 pl-1"
+          @click.stop
+        >
+          <option
+            v-for="team in validated_teams.filter(
+              (t) => t.id === match_info.teams[idx - 1] || !match_info.teams.includes(t.id),
+            )"
+            :key="team.id"
+            :value="team.id"
           >
-            <option
-              v-for="team in validated_teams.filter(
-                (t) => t.id === match_info.teams[idx - 1] || !match_info.teams.includes(t.id),
-              )"
-              :key="team.id"
-              :value="team.id"
-            >
-              {{ team.name }}
-            </option>
-            <option :value="0">
-              TBD
-            </option>
-          </select>
-        </td>
-        <td>
-          <input
-            id="score"
-            v-model.number="match_info.score[match_info.teams[idx - 1]]"
-            type="number"
-            name="score"
-            class="w-10 bg-inherit p-1 text-right"
-          />
-        </td>
-      </tr>
-    </tbody>
-  </table>
+            {{ team.name }}
+          </option>
+          <option :value="0">
+            TBD
+          </option>
+        </select>
+        <input
+          id="score"
+          v-model.number="match_info.score[match_info.teams[idx - 1]]"
+          type="number"
+          name="score"
+          class="w-10 bg-inherit p-1 text-right"
+        />
+      </div>
+    </div>
+  </div>
 </template>
 
 <style>
