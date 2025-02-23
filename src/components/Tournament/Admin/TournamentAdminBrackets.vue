@@ -199,7 +199,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         </div>
         <div
           v-if="bracket.winner !== null"
-          class="w-40 bg-yellow-600 p-2"
+          class="bg-yellow-600 p-2"
         >
           <h1
             class="text-bold text-center text-2xl"
@@ -207,7 +207,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
             Vainqueur
           </h1>
           <p
-            class="text-center text-xl"
+            class="truncate text-wrap text-center text-xl"
           >
             {{ get_validated_team_by_id(bracket.winner)?.name }}
           </p>
@@ -281,7 +281,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         </div>
         <div
           v-if="bracket.winner !== null"
-          class="w-40 bg-yellow-600 p-2"
+          class="bg-yellow-600 p-2"
         >
           <h1
             class="text-bold text-center text-2xl"
@@ -289,7 +289,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
             Vainqueur
           </h1>
           <p
-            class="text-center text-xl"
+            class="truncate text-wrap text-center text-xl"
           >
             {{ get_validated_team_by_id(bracket.winner)?.name }}
           </p>
