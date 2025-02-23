@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
 import { between, required } from '@vuelidate/validators';
+import { storeToRefs } from 'pinia';
 import { computed, reactive, ref } from 'vue';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import AdminMatch from '@/components/Tournament/Admin/AdminMatch.vue';
 import { BracketType } from '@/models/bracket';
 import { BestofType, MatchTypeEnum } from '@/models/match';
-import type { Team } from '@/models/team';
 import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
@@ -29,6 +29,7 @@ const {
   createBracket,
   deleteBracket,
 } = useTournamentStore();
+const { validated_teams } = storeToRefs(useTournamentStore()).tourney_teams.value;
 
 const has_brackets = computed(() => tournament.brackets.length > 0);
 const has_matchs = computed(() => has_brackets.value && tournament.brackets.some((b) => b.matchs.length > 0));
@@ -70,7 +71,7 @@ const bracket_data = reactive({
 });
 const bracket_rules = computed(() => ({
   name: { required },
-  team_count: { required, between: between(2, (tournament.teams as Team[]).filter((t) => t.validated).length) },
+  team_count: { required, between: between(2, validated_teams.length) },
   bracket_type: { required },
   bo_type: { required },
 }));
