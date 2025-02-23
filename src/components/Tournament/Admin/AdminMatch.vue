@@ -114,11 +114,12 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
 
 <template>
   <div
-    class="m-2 min-w-0 rounded bg-slate-700 px-2 py-1"
+    class="m-2 min-w-0 rounded bg-cyan-900 px-2 py-1 font-black shadow-lg"
     :class="{
-      'ring-4 ring-blue-800': selected,
-      'hover:ring-2 hover:ring-blue-800': match.status === MatchStatus.SCHEDULED && !selected && selectable && !edit_mode,
+      'ring-4 ring-[#63d1ff]': selected,
+      'hover:ring-2 hover:ring-[#63d1ff]': match.status === MatchStatus.SCHEDULED && !selected && selectable && !edit_mode,
     }"
+    style="text-shadow: black 0 0 2px;"
     @click="select_match(match)"
     @keypress="select_match(match)"
   >
@@ -238,16 +239,15 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
         v-for="idx in (match.status !== MatchStatus.SCHEDULED ? match.teams.length : teamPerMatch)"
         :key="idx"
         class="flex justify-between gap-3"
+        :class="{ 'text-green-500': is_winning_team(match, match.teams[idx - 1]) }"
       >
         <div
           class="truncate"
-          :class="{ 'text-green-500': is_winning_team(match, match.teams[idx - 1]) }"
         >
           {{ get_validated_team_by_id(match.teams[idx - 1])?.name ?? 'TBD' }}
         </div>
         <div
           class="text-right"
-          :class="{ 'text-green-500': is_winning_team(match, match.teams[idx - 1]) }"
         >
           {{ match.score[match.teams[idx - 1]] ?? 0 }}
         </div>
