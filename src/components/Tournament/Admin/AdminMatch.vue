@@ -114,15 +114,11 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
 
 <template>
   <div
-    class="min-w-0 border-separate rounded border px-2 py-1"
-    :class="[
-      selected
-        ? 'border-4 border-blue-800'
-        : 'm-[3px] border-white',
-      match.status === MatchStatus.SCHEDULED && !selected && selectable && !edit_mode
-        ? 'hover:m-[2px] hover:border-2 hover:border-blue-800'
-        : '',
-    ]"
+    class="m-2 min-w-0 rounded bg-slate-700 px-2 py-1"
+    :class="{
+      'ring-4 ring-blue-800': selected,
+      'hover:ring-2 hover:ring-blue-800': match.status === MatchStatus.SCHEDULED && !selected && selectable && !edit_mode,
+    }"
     @click="select_match(match)"
     @keypress="select_match(match)"
   >

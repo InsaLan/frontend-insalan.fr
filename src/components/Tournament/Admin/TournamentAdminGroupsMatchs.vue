@@ -158,7 +158,7 @@ const launch_selected_matchs = async () => {
             :key="matchs[0].round_number"
             :class="{ 'border-r': matchs[0].round_number < max_round }"
           >
-            <div class="flex flex-wrap justify-around gap-2 p-2">
+            <div class="flex flex-wrap justify-around p-1">
               <AdminMatch
                 v-for="match in matchs"
                 :key="match.id"

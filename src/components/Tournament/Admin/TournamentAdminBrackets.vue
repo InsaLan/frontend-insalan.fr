@@ -184,7 +184,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         <div
           v-for="(games, round_idx) in get_matchs_per_round(bracket.matchs)"
           :key="round_idx"
-          class="flex h-full flex-col justify-around gap-4"
+          class="flex h-full flex-col justify-around gap-2"
         >
           <AdminMatch
             v-for="game in games"
@@ -245,7 +245,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
           }}
         </div>
         <div
-          class="flex h-full flex-col justify-around gap-4"
+          class="flex h-full flex-col justify-around gap-2"
         >
           <AdminMatch
             v-for="game in get_winner_matchs_per_round(bracket.matchs, bracket.depth)"
@@ -265,7 +265,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         >
           <div
             v-if="col_idx % 2"
-            class="flex h-full flex-col justify-around gap-4"
+            class="flex h-full flex-col justify-around gap-2"
           >
             <AdminMatch
               v-for="game in get_winner_matchs_per_round(bracket.matchs, bracket.depth - (col_idx - 1) / 2 - 1)"
@@ -323,7 +323,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         <div
           v-for="(games, round_idx) in get_looser_matchs(bracket.matchs)"
           :key="round_idx"
-          class="flex h-full flex-col justify-around gap-4"
+          class="flex h-full flex-col justify-around gap-2"
         >
           <AdminMatch
             v-for="game in games"
