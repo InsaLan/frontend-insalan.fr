@@ -96,6 +96,15 @@ const launch_selected_matchs = async () => {
   <div
     class="m-4 flex flex-wrap justify-center gap-4 lg:mb-0 lg:gap-8"
   >
+    <router-link
+      :to="{ name: 'tournament_admin_groups' }"
+      class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+    >
+      <fa-awesome-icon
+        icon="fa-solid fa-arrow-left"
+      />
+      Gérer les poules
+    </router-link>
     <button
       type="button"
       class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
@@ -114,49 +123,42 @@ const launch_selected_matchs = async () => {
     >
       Lancer les matchs sélectionnés
     </button>
-    <router-link
-      :to="{ name: 'tournament_admin_groups' }"
-      class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-    >
-      Gérer les poules
-    </router-link>
   </div>
 
   <div
     v-if="has_groups"
-    class="m-2 overflow-auto md:m-4 xl:m-8"
+    class="m-2 flex justify-center md:m-4 xl:m-8"
   >
-    <table
-      class="w-full table-fixed"
+    <div
+      class="overflow-x-auto"
     >
-      <thead>
-        <tr class="border-b-2">
-          <th class="w-32 border-r-2 p-2">
-            Poule
-          </th>
-          <th
-            v-for="round in max_round"
-            :key="round"
-            :class="{ 'border-r': round < max_round }"
-            class="w-56 xl:w-[36rem]"
-          >
-            Tour {{ round }}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
+      <div
+        class="grid"
+        :style="{ 'grid-template-columns': `6rem repeat(${max_round}, 18rem)` }"
+      >
+        <span class="border-b-2 border-r-2 p-2 text-center text-xl">
+          Poule
+        </span>
+        <div
+          v-for="round in max_round"
+          :key="round"
+          class="border-b-2 border-r text-center text-xl"
+        >
+          Tour {{ round }}
+        </div>
+        <template
           v-for="group in tournament.groups"
           :key="group.id"
-          class="border-b"
         >
-          <td class="border-r-2 text-center">
+          <div
+            class="flex items-center justify-center text-wrap border-b border-r-2 text-xl"
+          >
             {{ group.name }}
-          </td>
-          <td
+          </div>
+          <div
             v-for="matchs in get_matchs_per_round(group.matchs).reverse()"
             :key="matchs[0].round_number"
-            :class="{ 'border-r': matchs[0].round_number < max_round }"
+            class="border-b border-r"
           >
             <div class="flex flex-wrap justify-around p-1">
               <AdminMatch
@@ -172,10 +174,10 @@ const launch_selected_matchs = async () => {
                 class="grow"
               />
             </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </div>
+        </template>
+      </div>
+    </div>
   </div>
 
   <Modal v-if="modal_open && modal_type === 'launch_round'">
