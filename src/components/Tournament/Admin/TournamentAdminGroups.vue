@@ -182,6 +182,9 @@ const delete_group_matchs = async () => {
         :class="[has_matchs ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
       >
         Gérer les matchs
+        <fa-awesome-icon
+          icon="fa-solid fa-arrow-right"
+        />
       </router-link>
     </div>
   </div>
