@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import axios from 'axios';
 import {
-  addDays, endOfDay, format, isWithinInterval, max, min, startOfDay, subDays,
+  addDays, endOfDay, format, isWithinInterval, max, min, setHours, startOfDay, subDays,
 } from 'date-fns';
 import ICAL from 'ical.js';
 import {
@@ -114,16 +114,18 @@ const getEventsForDay = (day: Date) => events.value.filter(
     || isWithinInterval(event.end, { start: startOfDay(day), end: endOfDay(day) }),
 );
 
+const START_HOURE = 8; // Start displaying events at 8 am;
+
 const getEventStyle = (event: Event, day: Date) => {
   const offset = 0.08;
 
-  const dayStart = startOfDay(day);
+  const dayStart = setHours(startOfDay(day), START_HOURE);
   const dayEnd = endOfDay(day);
   const eventStart = max([event.start, dayStart]);
   const eventEnd = min([event.end, dayEnd]);
 
-  const totalMinutes = 24 * 60;
-  const startMinutes = (eventStart.getHours() * 60 + eventStart.getMinutes());
+  const totalMinutes = (24 - START_HOURE) * 60;
+  const startMinutes = (eventStart.getHours() * 60 + eventStart.getMinutes()) - (60 * START_HOURE);
   const durationMinutes = (eventEnd.getTime() - eventStart.getTime()) / (1000 * 60);
 
   // if there are multiple events at the same time, we need to adjust the width
@@ -145,7 +147,7 @@ const getEventStyle = (event: Event, day: Date) => {
   };
 };
 
-const timeSlots = computed(() => Array.from({ length: 24 }, (_, i) => i));
+const timeSlots = computed(() => Array.from({ length: 24 - START_HOURE }, (_, i) => i + START_HOURE));
 
 onMounted(fetchEvents);
 watch(() => props.link, fetchEvents);
@@ -191,12 +193,12 @@ watch(() => props.link, fetchEvents);
             <h2 class="bg-gray-100 p-3 text-center text-sm font-bold text-black">
               {{ frenchDayFormatFromDate(day) }}
             </h2>
-            <div class="relative h-[1440px] border-t border-gray-200">
+            <div class="relative border-t border-gray-200" :style="{ height: `${60 * (24 - START_HOURE)}px` }">
               <div
                 v-for="hour in timeSlots"
                 :key="hour"
                 class="absolute inset-x-0 border-t border-gray-500"
-                :style="{ top: `${(hour / 24) * 100 - 0.04}%` }"
+                :style="{ top: `${((hour - START_HOURE) / (24 - START_HOURE)) * 100 - 0.04}%` }"
               />
               <button
                 v-for="event in getEventsForDay(day)"
