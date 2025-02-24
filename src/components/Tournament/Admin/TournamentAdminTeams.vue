@@ -120,6 +120,7 @@ const save_seeds = async () => {
             <FormField
               v-slot="context"
               :validations="v$[team.id]"
+              class="flex flex-col"
             >
               <input
                 id="seed"

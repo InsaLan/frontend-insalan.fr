@@ -6,6 +6,7 @@ import {
   reactive,
   ref,
 } from 'vue';
+import FormField from '@/components/FormField.vue';
 import type { KnockoutMatch } from '@/models/bracket';
 import type { GroupMatch } from '@/models/group';
 import {
@@ -280,39 +281,48 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
       </div>
     </div>
     <div v-else>
-      <div
+      <FormField
         v-for="idx in teamPerMatch"
         :key="idx"
-        class="flex justify-between"
+        v-slot="context"
+        :validations="v$.score[match_info.teams[idx - 1]]"
+        class="flex flex-col"
       >
-        <select
-          id="select_team"
-          v-model="match_info.teams[idx - 1]"
-          name="select_team"
-          class="grow truncate bg-inherit py-1 pl-1"
-          @click.stop
+        <div
+          class="flex justify-between"
         >
-          <option
-            v-for="team in validated_teams.filter(
-              (t) => t.id === match_info.teams[idx - 1] || !match_info.teams.includes(t.id),
-            )"
-            :key="team.id"
-            :value="team.id"
+          <select
+            id="select_team"
+            v-model="match_info.teams[idx - 1]"
+            name="select_team"
+            class="grow truncate bg-inherit py-1 pl-1"
+            @click.stop
           >
-            {{ team.name }}
-          </option>
-          <option :value="0">
-            TBD
-          </option>
-        </select>
-        <input
-          id="score"
-          v-model.number="match_info.score[match_info.teams[idx - 1]]"
-          type="number"
-          name="score"
-          class="w-10 bg-inherit p-1 text-right"
-        />
-      </div>
+            <option
+              v-for="team in validated_teams.filter(
+                (t) => t.id === match_info.teams[idx - 1] || !match_info.teams.includes(t.id),
+              )"
+              :key="team.id"
+              :value="team.id"
+            >
+              {{ team.name }}
+            </option>
+            <option :value="0">
+              TBD
+            </option>
+          </select>
+
+          <input
+            id="score"
+            v-model.number="match_info.score[match_info.teams[idx - 1]]"
+            type="number"
+            name="score"
+            :class="{ error: context.invalid }"
+            class="w-10 bg-inherit p-1 text-right"
+            @blur="v$.score[match_info.teams[idx - 1]].$touch"
+          />
+        </div>
+      </FormField>
     </div>
   </div>
 </template>
