@@ -160,7 +160,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         icon="fa-solid fa-trash-can"
         size="xs"
         class="ml-3 text-red-500 hover:cursor-pointer"
-        title="Delete bracket"
+        title="Supprimer l'arbre"
         @click="open_delete_bracket_modal(bracket.id)"
       />
     </h1>

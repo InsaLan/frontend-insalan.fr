@@ -112,14 +112,14 @@ const delete_group = async (confirm: boolean) => {
               class="hover:cursor-pointer"
               icon="fa-solid fa-pencil"
               size="2xs"
-              title="Edit group name"
+              title="Éditer le nom de la poule"
               @click="edit_name = true"
             />
             <fa-awesome-icon
               class="mx-2 text-red-500 hover:cursor-pointer"
               icon="fa-solid fa-trash-can"
               size="2xs"
-              title="Delete Group"
+              title="Supprimer la poule"
               @click="delete_group(false)"
             />
           </div>
@@ -136,14 +136,14 @@ const delete_group = async (confirm: boolean) => {
               class="px-2 hover:cursor-pointer"
               icon="fa-solid fa-save"
               size="sm"
-              title="Save group name"
+              title="Sauvegarder le nom de la poule"
               @click="save_group_name"
             />
             <fa-awesome-icon
               class="text-red-500 hover:cursor-pointer"
               icon="fa-solid fa-xmark"
               size="sm"
-              title="Cancel"
+              title="Annuler"
               @click="edit_name = false"
             />
           </div>
@@ -161,7 +161,7 @@ const delete_group = async (confirm: boolean) => {
               class="hover:cursor-pointer"
               icon="fa-solid fa-save"
               size="lg"
-              title="Save tiebreak scores"
+              title="Sauvegarder les scores de tiebreak"
               @click="save_tiebreak_scores"
             />
           </p>

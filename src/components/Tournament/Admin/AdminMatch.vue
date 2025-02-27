@@ -209,7 +209,7 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
           class="hover:cursor-pointer hover:text-gray-500"
           icon="fa-solid fa-pencil"
           size="sm"
-          title="Edit match"
+          title="Éditer le match"
           @click.stop="if (editable) edit_mode = true;"
         />
 
@@ -221,14 +221,14 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
             class="text-green-500 hover:cursor-pointer hover:text-green-700"
             icon="fa-solid fa-save"
             size="lg"
-            title="Save changer"
+            title="Sauvegarder"
             @click.stop="patch_match"
           />
           <fa-awesome-icon
             class="text-red-500 hover:cursor-pointer hover:text-red-700"
             icon="fa-solid fa-xmark"
             size="xl"
-            title="Cancel"
+            title="Annuler"
             @click.stop="edit_mode = false; reset()"
           />
         </div>
