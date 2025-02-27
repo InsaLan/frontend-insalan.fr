@@ -70,7 +70,7 @@ const match_info = reactive({
       acc[team.id] = 0;
     }
     return acc;
-  }, {} as Record<number, number>),
+  }, { 0: 0 } as Record<number, number>),
 });
 const match_info_rules = computed(() => ({
   bo_type: { required },
@@ -95,7 +95,7 @@ const reset = () => {
       acc[team.id] = 0;
     }
     return acc;
-  }, {} as Record<number, number>);
+  }, { 0: 0 } as Record<number, number>);
 };
 
 const v$ = useVuelidate(match_info_rules, match_info);
@@ -105,22 +105,28 @@ const patch_match = async () => {
 
   if (!is_valid) return;
 
-  match_info.teams = match_info.teams.filter((team_id) => team_id !== 0);
-  match_info.score = Object.fromEntries(
-    Object.entries(match_info.score)
-      .filter(([team_id]) => match_info.teams.includes(Number(team_id))),
+  const match_info_clean = { ...match_info };
+
+  match_info_clean.teams = match_info_clean.teams.filter((team_id) => team_id !== 0);
+  match_info_clean.score = Object.fromEntries(
+    Object.entries(match_info_clean.score)
+      .filter(([team_id]) => match_info_clean.teams.includes(Number(team_id))),
   );
 
-  const score_sum = Object.values(match_info.score).reduce((a, b) => a + b, 0);
-  const n = match_info.teams.length;
+  const score_sum = Object.values(match_info_clean.score).reduce((a, b) => a + b, 0);
+  const n = match_info_clean.teams.length;
   if (
-    (match.bo_type === BestofType.RANKING && score_sum !== (n * (n + 1)) / 2)
-    || (match.bo_type !== BestofType.RANKING && score_sum > (match.bo_type as number))
+    match_info_clean.status === MatchStatus.COMPLETED
+    && (
+      (match.bo_type === BestofType.RANKING && score_sum !== (n * (n + 1)) / 2)
+      || (match.bo_type !== BestofType.RANKING && score_sum > (match.bo_type as number))
+    )
   ) {
     addNotification('Les scores que vous avez rentrés ne sont pas valide !', 'error');
+    return;
   }
 
-  await patchMatch(match_info, match.id, matchType);
+  await patchMatch(match_info_clean, match.id, matchType);
 
   addNotification('Le match a bien été modifié.', 'info');
   edit_mode.value = false;
@@ -135,6 +141,13 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
     } else {
       selected_matchs.value?.add(m.id);
     }
+  }
+};
+
+const open_edition = () => {
+  if (editable) {
+    reset();
+    edit_mode.value = true;
   }
 };
 </script>
@@ -237,7 +250,7 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
           icon="fa-solid fa-pencil"
           size="sm"
           title="Éditer le match"
-          @click.stop="if (editable) edit_mode = true;"
+          @click.stop="open_edition"
         />
 
         <div
