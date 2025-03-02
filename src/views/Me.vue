@@ -625,7 +625,7 @@ const openScoreModal = () => {
     </template>
     <template #title>
       <h3 id="open_modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Enregistrer le score
+        Enregistrer le {{ ongoing_match.bo_type === BestofType.RANKING ? 'classement' : 'score' }}
       </h3>
     </template>
     <template #body>
