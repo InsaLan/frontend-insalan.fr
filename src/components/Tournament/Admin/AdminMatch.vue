@@ -33,7 +33,7 @@ const {
   selectable?: boolean;
 }>();
 
-const selected_matchs = defineModel<Set<number>>();
+const selected_matchs = defineModel<Set<number>>({ default: new Set() });
 const selected = computed(() => selected_matchs.value?.has(match.id));
 
 const { addNotification } = useNotificationStore();
@@ -99,7 +99,7 @@ const patch_match = async () => {
 };
 
 const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) => {
-  if (!selectable || edit_mode.value || m.teams.length === 0) return;
+  if (!isAdmin || !selectable || edit_mode.value || m.teams.length === 0) return;
 
   if (m.status === MatchStatus.SCHEDULED) {
     if (selected_matchs.value?.has(m.id)) {
