@@ -41,8 +41,7 @@ const { addNotification } = useNotificationStore();
 const { get_validated_team_by_id, is_winning_team, patchMatch } = useTournamentStore();
 const { validated_teams } = storeToRefs(useTournamentStore()).tourney_teams.value;
 
-const { user } = storeToRefs(useUserStore());
-const is_admin = computed(() => user.value.is_staff || user.value.is_superuser);
+const { isAdmin } = storeToRefs(useUserStore());
 
 const edit_mode = ref(false);
 
@@ -201,7 +200,7 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
       </div>
 
       <div
-        v-if="is_admin && editable"
+        v-if="isAdmin && editable"
         class="flex items-center justify-end"
       >
         <fa-awesome-icon
