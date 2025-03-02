@@ -29,9 +29,9 @@ const getTotalInterval = computed(() => {
   if (events.value.length === 0) {
     return 0;
   }
-  return Math.ceil(
-    (events.value[events.value.length - 1].end.getTime() - events.value[0].start.getTime()) / (1000 * 60 * 60 * 24),
-  );
+  const start = startOfDay(events.value[0].start);
+  const end = endOfDay(events.value[events.value.length - 1].end);
+  return Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
 });
 
 const nbDays = computed(() => {
@@ -182,7 +182,7 @@ watch(() => props.link, fetchEvents);
       </div>
       <div>
         <div
-          :class="`grid gap-4 grid-cols-${nbDays * 2 + 1}`"
+          :class="`grid gap-4 grid-cols-${nbDays * 2 + 2}`"
         >
           <div class="flex w-full flex-col-reverse py-2">
             <div v-for="hour in timeSlots.slice().reverse()" :key="hour" class="flex h-[60px] items-start justify-end text-xs text-gray-500">
@@ -226,6 +226,7 @@ watch(() => props.link, fetchEvents);
               </button>
             </div>
           </div>
+          <div/>
         </div>
       </div>
     </div>
