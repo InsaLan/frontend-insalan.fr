@@ -10,7 +10,7 @@ import {
 import { computed, reactive, ref } from 'vue';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
-import AdminGroupTable from '@/components/Tournament/Admin/AdminGroupTable.vue';
+import GroupTable from '@/components/Tournament/GroupTable.vue';
 import { BestofType } from '@/models/match';
 import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
@@ -189,14 +189,16 @@ const delete_group_matchs = async () => {
     </div>
   </div>
 
-  <div class="mb-10 flex flex-1 flex-wrap justify-center gap-20">
-    <div
-      v-for="(group, idx) in tournament.groups"
+  <div
+    class="m-4 mt-0 flex flex-wrap justify-center gap-6 md:m-6 md:mt-0 lg:m-8 lg:mt-0 lg:gap-8 2xl:m-9 2xl:mt-0 2xl:gap-10"
+  >
+    <GroupTable
+      v-for="group in tournament.groups"
       :key="group.id"
-      class="m-2 lg:m-0 lg:w-2/5"
-    >
-      <AdminGroupTable v-model="(tournament as TournamentDeref).groups[idx]"/>
-    </div>
+      :group="group"
+      :editable="true"
+      class="w-[27rem] shrink"
+    />
   </div>
 
   <Modal v-if="modal_open && modal_type === 'create_groups'">

@@ -482,10 +482,18 @@ export const useTournamentStore = defineStore('tournament', () => {
     return res;
   }
 
-  async function editGroup(group_id: number, data: Record<string, number | string | Record<number, number>>) {
+  async function editGroup(
+    group_id: number,
+    data: {
+      name: string;
+      teams: number[];
+      seeding: Record<string, number>;
+      tiebreak_scores: Record<string, number>;
+    },
+  ) {
     await get_csrf();
 
-    const res = await axios.patch(
+    const res = await axios.patch<Group>(
       `/tournament/group/${group_id}/`,
       data,
       {
@@ -496,7 +504,13 @@ export const useTournamentStore = defineStore('tournament', () => {
       },
     );
 
-    return res;
+    (tournament.value as TournamentDeref).groups.forEach(
+      (group, idx, groups) => {
+        if (group.id === res.data.id) {
+          groups[idx] = res.data;
+        }
+      },
+    );
   }
 
   async function createGroups(data: {
