@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia';
 import { computed, reactive, ref } from 'vue';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
-import AdminMatch from '@/components/Tournament/Admin/AdminMatch.vue';
+import MatchCard from '@/components/Tournament/MatchCard.vue';
 import { BracketType } from '@/models/bracket';
 import { BestofType, MatchTypeEnum } from '@/models/match';
 import type { TournamentDeref } from '@/models/tournament';
@@ -159,7 +159,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
       <fa-awesome-icon
         icon="fa-solid fa-trash-can"
         size="xs"
-        class="ml-3 text-red-500 hover:cursor-pointer"
+        class="ml-3 text-red-500 hover:cursor-pointer hover:text-red-700"
         title="Supprimer l'arbre"
         @click="open_delete_bracket_modal(bracket.id)"
       />
@@ -186,7 +186,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
           :key="round_idx"
           class="flex h-full flex-col justify-around gap-2"
         >
-          <AdminMatch
+          <MatchCard
             v-for="game in games"
             :key="game.id"
             v-model="selected_matchs"
@@ -247,7 +247,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         <div
           class="flex h-full flex-col justify-around gap-2"
         >
-          <AdminMatch
+          <MatchCard
             v-for="game in get_winner_matchs_per_round(bracket.matchs, bracket.depth)"
             :key="game.id"
             v-model="selected_matchs"
@@ -267,7 +267,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
             v-if="col_idx % 2"
             class="flex h-full flex-col justify-around gap-2"
           >
-            <AdminMatch
+            <MatchCard
               v-for="game in get_winner_matchs_per_round(bracket.matchs, bracket.depth - (col_idx - 1) / 2 - 1)"
               :key="game.id"
               v-model="selected_matchs"
@@ -325,7 +325,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
           :key="round_idx"
           class="flex h-full flex-col justify-around gap-2"
         >
-          <AdminMatch
+          <MatchCard
             v-for="game in games"
             :key="game.id"
             v-model="selected_matchs"
