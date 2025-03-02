@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, toRef } from 'vue';
+import AdminMatch from '@/components/Tournament/Admin/AdminMatch.vue';
 import GroupTable from '@/components/Tournament/GroupTable.vue';
 import type { Group } from '@/models/group';
+import { MatchTypeEnum } from '@/models/match';
 import type { TournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
@@ -19,7 +21,6 @@ const {
   getTournamentTeams,
   get_group_by_id,
   get_matchs_per_round,
-  get_validated_team_by_id,
 } = tournamentStore;
 
 getTournamentTeams();
@@ -40,94 +41,61 @@ const group_details = computed<Group | undefined>(() => get_group_by_id(groups |
     </h1>
     <div
       v-else
-      class="my-10 flex flex-1 flex-wrap justify-center gap-20"
+      class="m-4 flex flex-wrap justify-center gap-6 md:m-6 lg:m-8 lg:gap-8 2xl:m-9 2xl:gap-10"
     >
-      <div
-        v-for="group in groups"
+      <GroupTable
+        v-for="group in tournament.groups"
         :key="group.id"
-        class="m-2 border-collapse border-slate-500 hover:ring-8 hover:ring-slate-500 lg:m-0 lg:w-2/5"
+        :group="group"
+        class="w-[27rem] shrink hover:cursor-pointer hover:rounded hover:ring-4 hover:ring-[#63d1ff]"
         @click="show_group_details = group.id"
         @keydown.enter="show_group_details = group.id"
-      >
-        <GroupTable
-          :group="group"
-        />
-      </div>
+      />
     </div>
   </section>
 
-  <section v-if="group_details !== undefined" id="group" :class="{ hidden: show_group_details === 0 }" class="flex flex-col p-4">
-    <nav class="my-5 flex justify-center gap-3">
-      <button type="button" class="w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto" @click="show_group_details = 0">
+  <section
+    v-if="group_details !== undefined"
+    id="group"
+    :class="{ hidden: show_group_details === 0 }"
+    class="flex flex-col gap-5 p-4 lg:gap-8 lg:p-8"
+  >
+    <nav class="flex justify-center gap-3">
+      <button type="button" class="justify-center rounded-md bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500" @click="show_group_details = 0">
         <fa-awesome-icon icon="fa-solid fa-arrow-left"/> Retour
       </button>
       <h1 class="text-center text-3xl font-black">
         {{ group_details?.name }}
       </h1>
     </nav>
-    <div class="flex flex-col justify-center gap-10 md:flex-row md:gap-3">
-      <div class="max-h-96 md:ml-10 md:w-1/2">
+    <div class="flex flex-col justify-center gap-10 lg:flex-row lg:gap-3">
+      <div class="flex lg:w-1/2">
         <GroupTable
           :group="group_details"
+          class="h-min grow"
         />
       </div>
-      <div class="flex flex-col-reverse md:w-1/2">
+      <div
+        class="flex flex-col lg:w-1/2"
+      >
         <div
-          v-for="matchs in get_matchs_per_round(group_details?.matchs ?? [])"
+          v-for="matchs in get_matchs_per_round(group_details?.matchs ?? []).reverse()"
           :key="matchs[0].id"
         >
           <h1 class="text-center text-3xl font-black">
-            Round {{ matchs[0].round_number }}
+            Tour {{ matchs[0].round_number }}
           </h1>
-          <div class="gap-4">
-            <div v-for="game in matchs" :key="game.id">
-              <div v-if="game.teams.length === 2" class="flex justify-center">
-                <div class="mb-4 flex flex-1 justify-between divide-x overflow-hidden border-2 text-xl font-bold md:ml-10">
-                  <div class="w-full truncate p-3">
-                    {{ get_validated_team_by_id(game.teams[0])?.name || "TBD" }}
-                  </div>
-                  <div class="p-3">
-                    {{ game.score[game.teams[0]] }}
-                  </div>
-                </div>
-                <div class="mb-4 flex flex-1 divide-x overflow-hidden border-2 text-xl font-bold md:mr-10">
-                  <div class="p-3">
-                    {{ game.score[game.teams[1]] }}
-                  </div>
-                  <div class="w-full truncate p-3 text-right">
-                    {{ get_validated_team_by_id(game.teams[1])?.name || "TBD" }}
-                  </div>
-                </div>
-              </div>
-              <div v-else class="flex justify-center">
-                <div>
-                  <div class="mx-5 mb-4 flex flex-1 justify-between divide-x border-2 text-xl font-bold">
-                    <table>
-                      <thead>
-                        <tr>
-                          <th class="troncate border-separate border border-slate-500 bg-slate-200 p-4 text-center text-black">
-                            Equipe
-                          </th>
-                          <th class="border-separate border border-slate-500 bg-slate-200 p-4 text-center text-black">
-                            Score
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="team_id in game.teams" :key="team_id">
-                          <td class="border-separate border border-slate-500 p-4 text-center">
-                            {{ get_validated_team_by_id(team_id)?.name || "TBD" }}
-                          </td>
-                          <td class="border-separate border border-slate-500 p-4 text-center">
-                            {{ game.score[team_id] }}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div
+            class="flex flex-wrap items-center justify-center"
+          >
+            <AdminMatch
+              v-for="match in matchs"
+              :key="match.id"
+              :match="match"
+              :match-type="{ type: MatchTypeEnum.GROUP, id: match.group }"
+              :team-per-match="tournament.game.team_per_match"
+              class="w-[23rem] shrink"
+            />
           </div>
         </div>
       </div>
