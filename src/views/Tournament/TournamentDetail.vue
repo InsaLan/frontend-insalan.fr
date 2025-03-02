@@ -22,9 +22,7 @@ interface TournamentDetailSection {
 }
 
 const userStore = useUserStore();
-const { role } = storeToRefs(userStore);
-
-const isAdmin = computed(() => role.value === 'dev' || role.value === 'staff');
+const { isAdmin } = storeToRefs(userStore);
 
 const sections = computed<Record<string, TournamentDetailSection>>(() => ({
   info: { title: 'Informations', is_available: true },

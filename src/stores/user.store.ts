@@ -12,6 +12,7 @@ import { useNotificationStore } from './notification.store';
 export const useUserStore = defineStore('user', () => {
   const user = ref<User>({} as User);
   const isConnected = ref(false);
+  const isAdmin = computed(() => user.value.is_staff || user.value.is_superuser);
   const csrf = ref('');
   const connectionTimestamp = ref(0);
   const router = useRouter();
@@ -322,6 +323,7 @@ export const useUserStore = defineStore('user', () => {
 
   return {
     user,
+    isAdmin,
     signin,
     login,
     logout,
