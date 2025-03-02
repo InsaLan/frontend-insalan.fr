@@ -167,7 +167,6 @@ const launch_selected_matchs = async () => {
                 v-model="selected_matchs"
                 :match="match"
                 :match-type="{ type: MatchTypeEnum.GROUP, id: match.group }"
-                :selected="selected_matchs.has(match.id)"
                 :team-per-match="tournament.game.team_per_match"
                 :editable="true"
                 :selectable="true"
