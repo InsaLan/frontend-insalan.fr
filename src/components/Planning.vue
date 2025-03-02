@@ -29,9 +29,9 @@ const getTotalInterval = computed(() => {
   if (events.value.length === 0) {
     return 0;
   }
-  return Math.ceil(
-    (events.value[events.value.length - 1].end.getTime() - events.value[0].start.getTime()) / (1000 * 60 * 60 * 24),
-  );
+  const start = startOfDay(events.value[0].start);
+  const end = endOfDay(events.value[events.value.length - 1].end);
+  return Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
 });
 
 const nbDays = computed(() => {
