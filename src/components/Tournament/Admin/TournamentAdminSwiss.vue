@@ -9,7 +9,7 @@ import {
 import { computed, reactive, ref } from 'vue';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
-import AdminMatch from '@/components/Tournament/Admin/AdminMatch.vue';
+import MatchCard from '@/components/Tournament/MatchCard.vue';
 import {
   BestofType,
   MatchTypeEnum,
@@ -249,16 +249,15 @@ const create_round = async () => {
               <div
                 v-for="match in matchs"
                 :key="match.id"
-                class="flex w-full"
+                class="w-full"
               >
-                <AdminMatch
+                <MatchCard
                   v-model="selected_matchs"
                   :match="match"
                   :match-type="{ type: MatchTypeEnum.SWISS, id: match.swiss }"
                   :team-per-match="tournament.game.team_per_match"
                   :editable="true"
                   :selectable="true"
-                  class="grow"
                 />
               </div>
             </div>

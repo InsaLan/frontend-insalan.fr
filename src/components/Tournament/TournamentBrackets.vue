@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import KnockoutMatchCard from '@/components/Tournament/KnockoutMatchCard.vue';
+import MatchCard from '@/components/Tournament/MatchCard.vue';
 import { BracketType } from '@/models/bracket';
+import { MatchTypeEnum } from '@/models/match';
 import type { TournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
@@ -79,8 +80,9 @@ const bracket_round_title = (depth: number, round_idx: number) => {
               :key="game.id"
               class="m-2 divide-y"
             >
-              <KnockoutMatchCard
+              <MatchCard
                 :match="game"
+                :match-type="{ type: MatchTypeEnum.BRACKET, id: game.bracket }"
                 :team-per-match="tournament.game.team_per_match"
               />
             </div>
@@ -139,8 +141,9 @@ const bracket_round_title = (depth: number, round_idx: number) => {
               :key="game.id"
               class="m-2 divide-y"
             >
-              <KnockoutMatchCard
+              <MatchCard
                 :match="game"
+                :match-type="{ type: MatchTypeEnum.BRACKET, id: game.bracket }"
                 :team-per-match="tournament.game.team_per_match"
               />
             </div>
@@ -159,8 +162,9 @@ const bracket_round_title = (depth: number, round_idx: number) => {
                 :key="game.id"
                 class="m-2 divide-y"
               >
-                <KnockoutMatchCard
+                <MatchCard
                   :match="game"
+                  :match-type="{ type: MatchTypeEnum.BRACKET, id: game.bracket }"
                   :team-per-match="tournament.game.team_per_match"
                 />
               </div>
@@ -217,8 +221,9 @@ const bracket_round_title = (depth: number, round_idx: number) => {
               :key="game.id"
               class="m-2 divide-y"
             >
-              <KnockoutMatchCard
+              <MatchCard
                 :match="game"
+                :match-type="{ type: MatchTypeEnum.BRACKET, id: game.bracket }"
                 :team-per-match="tournament.game.team_per_match"
               />
             </div>

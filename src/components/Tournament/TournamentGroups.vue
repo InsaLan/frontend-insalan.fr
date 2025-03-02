@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, toRef } from 'vue';
-import AdminMatch from '@/components/Tournament/Admin/AdminMatch.vue';
 import GroupTable from '@/components/Tournament/GroupTable.vue';
+import MatchCard from '@/components/Tournament/MatchCard.vue';
 import type { Group } from '@/models/group';
 import { MatchTypeEnum } from '@/models/match';
 import type { TournamentDeref } from '@/models/tournament';
@@ -88,7 +88,7 @@ const group_details = computed<Group | undefined>(() => get_group_by_id(groups |
           <div
             class="flex flex-wrap items-center justify-center"
           >
-            <AdminMatch
+            <MatchCard
               v-for="match in matchs"
               :key="match.id"
               :match="match"
