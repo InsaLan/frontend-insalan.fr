@@ -156,13 +156,13 @@ const launch_selected_matchs = async () => {
             {{ group.name }}
           </div>
           <div
-            v-for="matchs in get_matchs_per_round(group.matchs).reverse()"
-            :key="matchs[0].round_number"
+            v-for="round in max_round"
+            :key="round"
             class="border-b border-r"
           >
             <div class="flex flex-wrap justify-around p-1">
               <MatchCard
-                v-for="match in matchs"
+                v-for="match in get_matchs_per_round(group.matchs).reverse()[round - 1]"
                 :key="match.id"
                 v-model="selected_matchs"
                 :match="match"
