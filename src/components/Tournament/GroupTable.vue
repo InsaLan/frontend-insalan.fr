@@ -7,7 +7,6 @@ import {
   ref,
   watchEffect,
 } from 'vue';
-import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import type { Group } from '@/models/group';
 import { useNotificationStore } from '@/stores/notification.store';
@@ -214,6 +213,13 @@ watchEffect(() => {
     </div>
 
     <div
+      v-if="v$.$invalid"
+      class="bg-red-500 text-center"
+    >
+      {{ v$.$errors.at(0)?.$message }}
+    </div>
+
+    <div
       class="grid items-center justify-center gap-y-2 p-2 text-center text-xl"
       :class="[editable && isAdmin ? 'grid-cols-[1fr,3fr,1fr]' : 'grid-cols-[4fr,1fr]']"
     >
@@ -274,21 +280,16 @@ watchEffect(() => {
           <div
             v-if="editable && isAdmin"
           >
-            <FormField
-              v-slot="context"
-              :validations="v$.seeding[group_data.teams[idx - 1]]"
-            >
-              <input
-                id="seed"
-                v-model.number="group_data.seeding[group_data.teams[idx - 1]]"
-                type="number"
-                name="seed"
-                class="w-10 bg-inherit p-1 text-center"
-                :class="{ error: context.invalid }"
-                style="appearance: textfield;"
-                @blur="v$.seeding[group_data.teams[idx - 1]].$touch"
-              />
-            </FormField>
+            <input
+              id="seed"
+              v-model.number="group_data.seeding[group_data.teams[idx - 1]]"
+              type="number"
+              name="seed"
+              class="w-10 bg-inherit p-1 text-center"
+              :class="{ error: v$.seeding[group_data.teams[idx - 1]].$error }"
+              style="appearance: textfield;"
+              @blur="v$.seeding[group_data.teams[idx - 1]].$touch"
+            />
           </div>
           <div
             class="flex min-w-0"
@@ -316,22 +317,16 @@ watchEffect(() => {
           </div>
           <div>
             {{ group.scores[group_data.teams[idx - 1]] ?? 0 }}
-            (<FormField
-              v-slot="context"
-              :validations="v$.tiebreak_scores[group_data.teams[idx - 1]]"
-              class="inline"
-            >
-              <input
-                id="seed"
-                v-model.number="group_data.tiebreak_scores[group_data.teams[idx - 1]]"
-                type="number"
-                name="seed"
-                class="w-10 bg-inherit p-1 text-center"
-                :class="{ error: context.invalid }"
-                style="appearance: textfield;"
-                @blur="v$.tiebreak_scores[group_data.teams[idx - 1]].$touch"
-              />
-            </FormField>)
+            (<input
+              id="seed"
+              v-model.number="group_data.tiebreak_scores[group_data.teams[idx - 1]]"
+              type="number"
+              name="seed"
+              class="w-10 bg-inherit p-1 text-center"
+              :class="{ error: v$.tiebreak_scores[group_data.teams[idx - 1]].$error }"
+              style="appearance: textfield;"
+              @blur="v$.tiebreak_scores[group_data.teams[idx - 1]].$touch"
+            />)
           </div>
         </template>
       </template>
