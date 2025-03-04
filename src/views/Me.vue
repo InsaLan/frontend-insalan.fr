@@ -70,6 +70,8 @@ const modal_enter_times = ref(false);
 const invalid_score = ref('');
 
 const max_score = computed(() => {
+  if (ongoing_match.value === null) return 0;
+
   if (ongoing_match.value.bo_type === BestofType.RANKING) {
     return ongoing_match.value.teams.length;
   }
@@ -78,7 +80,7 @@ const max_score = computed(() => {
 });
 
 const data_score: { score: { [id: number]: number }; times: number[] } = reactive({
-  score: Object.values(ongoing_match.value.teams).reduce((res, team) => {
+  score: Object.values(ongoing_match.value?.teams ?? {}).reduce((res, team) => {
     res[team.id] = 0;
     return res;
   }, {} as Record<number, number>),
@@ -86,6 +88,8 @@ const data_score: { score: { [id: number]: number }; times: number[] } = reactiv
 });
 
 const game_number = computed(() => {
+  if (ongoing_match.value === null) return 0;
+
   if (ongoing_match.value.bo_type === BestofType.RANKING) {
     return 1;
   }
@@ -103,6 +107,8 @@ const rules_score = computed(() => ({
 }));
 
 const NextModalEnterScore = () => {
+  if (ongoing_match.value === null) return;
+
   if (ongoing_match.value.bo_type !== BestofType.RANKING) {
     const score_total = Object.values(data_score.score).reduce((a, b) => a + b, 0);
     if (score_total > (ongoing_match.value.bo_type as number)
@@ -148,6 +154,8 @@ const closeModal = () => {
   showModal.value = false;
 };
 const sendScore = async () => {
+  if (ongoing_match.value === null) return;
+
   const scores = ({} as ScorePatch);
   const times = data_score.times.filter((time) => time !== null);
   if (times.length !== game_number.value) {
@@ -208,7 +216,9 @@ const editField = (field: string) => {
   openModal();
 };
 const openScoreModal = () => {
-  Object.keys(ongoing_match?.value.teams).forEach((id) => {
+  if (ongoing_match.value === null) return;
+
+  Object.keys(ongoing_match.value.teams).forEach((id) => {
     data_score.score[parseInt(id, 10)] = 0;
   });
   modal_enter_score.value = true;
@@ -314,13 +324,13 @@ const openScoreModal = () => {
            Supprimer son compte</button>
         </div-->
       </div>
-      <div v-if="Object.keys(ongoing_match).length > 0" id="ongoing_match">
+      <div v-if="Object.keys(ongoing_match ?? {}).length > 0" id="ongoing_match">
         <h1 class="m-3 text-center text-4xl font-bold">
           Partie en cours
         </h1>
         <div class="mx-4 flex flex-col justify-around rounded-md bg-cyan-900">
           <div class="flex w-full flex-col divide-y">
-            <div v-for="team in ongoing_match.teams" :key="team.id" class="mx-2 p-4">
+            <div v-for="team in ongoing_match?.teams" :key="team.id" class="mx-2 p-4">
               <p class="truncate text-xl font-bold">
                 {{ team }}
               </p>
@@ -649,7 +659,7 @@ const openScoreModal = () => {
     <template #body>
       <form id="patch-user" class="mt-2" @submit.prevent="">
         <FormField
-          v-for="(name, id) in ongoing_match.teams"
+          v-for="(name, id) in ongoing_match?.teams"
           :key="id"
           v-slot="context"
           :validations="v$_time_game.score[id]"
