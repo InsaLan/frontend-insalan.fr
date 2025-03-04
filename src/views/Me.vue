@@ -80,8 +80,8 @@ const max_score = computed(() => {
 });
 
 const data_score: { score: { [id: number]: number }; times: number[] } = reactive({
-  score: Object.values(ongoing_match.value?.teams ?? {}).reduce((res, team) => {
-    res[team.id] = 0;
+  score: Object.keys(ongoing_match.value?.teams ?? {}).reduce((res, team) => {
+    res[Number(team)] = 0;
     return res;
   }, {} as Record<number, number>),
   times: [],
@@ -330,7 +330,7 @@ const openScoreModal = () => {
         </h1>
         <div class="mx-4 flex flex-col justify-around rounded-md bg-cyan-900">
           <div class="flex w-full flex-col divide-y">
-            <div v-for="team in ongoing_match?.teams" :key="team.id" class="mx-2 p-4">
+            <div v-for="team, team_id in ongoing_match?.teams" :key="team_id" class="mx-2 p-4">
               <p class="truncate text-xl font-bold">
                 {{ team }}
               </p>
@@ -671,7 +671,7 @@ const openScoreModal = () => {
             <label :for="`input${id}`">{{ name }}</label>
             <input
               :id="`input${id}`"
-              v-model="data_score.score[id]"
+              v-model="data_score.score[Number(id)]"
               :class="{ error: context.invalid }"
               aria-label="score"
               class="w-24 border-2 bg-theme-bg"

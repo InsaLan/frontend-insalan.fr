@@ -42,7 +42,7 @@ export interface ScorePatch {
   times: number[];
 }
 export interface OngoingMatch extends BaseMatch {
-  teams: { id: number; name: string }[];
+  teams: { [id: string]: [name: string] };
   match_type: MatchType;
 }
 export interface Score {
