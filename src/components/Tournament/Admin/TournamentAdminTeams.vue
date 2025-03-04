@@ -7,7 +7,7 @@ import type { Team } from '@/models/team';
 import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
-import { between, integer } from '@/support/locales/errors.fr';
+import { between, integer, required } from '@/support/locales/errors.fr';
 
 const { tournament } = defineProps<{
   tournament: TournamentDeref;
@@ -29,11 +29,12 @@ const seeding_form = reactive(tourney_teams.value.validated_teams.reduce((res, t
 
 const rules = computed(() => tourney_teams.value.validated_teams.reduce((res, team) => {
   res[team.id] = {
+    required,
     integer,
     between: between(0, validated_teams.length),
   };
   return res;
-}, {} as Record<number, { integer: ValidationRule; between: ValidationRule }>));
+}, {} as Record<number, { required: ValidationRule; integer: ValidationRule; between: ValidationRule }>));
 
 const v$ = useVuelidate(rules, seeding_form);
 

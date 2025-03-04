@@ -78,10 +78,11 @@ const match_info_rules = computed(() => ({
   status: { required },
   score: Object.entries(match_info.score).reduce((res, team) => {
     res[Number(team[0])] = {
+      required,
       between: between(0, max_score),
     };
     return res;
-  }, {} as Record<number, { between: ValidationRule }>),
+  }, {} as Record<number, { required: ValidationRule; between: ValidationRule }>),
 }));
 
 const reset = () => {
