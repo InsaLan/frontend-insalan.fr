@@ -73,7 +73,7 @@ const max_score = computed(() => {
   if (ongoing_match.value === null) return 0;
 
   if (ongoing_match.value.bo_type === BestofType.RANKING) {
-    return ongoing_match.value.teams.length;
+    return Object.keys(ongoing_match.value.teams).length;
   }
 
   return ongoing_match.value.bo_type as number;
@@ -99,7 +99,7 @@ const game_number = computed(() => {
 const rules_score = computed(() => ({
   score: Object.entries(data_score.score).reduce((res, team) => {
     res[Number(team[0])] = {
-      between: between(0, max_score),
+      between: between(0, max_score.value),
     };
     return res;
   }, {} as Record<number, { between: ValidationRule }>),
