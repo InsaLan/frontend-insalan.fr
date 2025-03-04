@@ -22,7 +22,7 @@ interface TournamentDetailSection {
 }
 
 const userStore = useUserStore();
-const { isAdmin } = storeToRefs(userStore);
+const { user } = storeToRefs(userStore);
 
 const sections = computed<Record<string, TournamentDetailSection>>(() => ({
   info: { title: 'Informations', is_available: true },
@@ -105,7 +105,7 @@ const admin_switch = computed(() => {
           </template>
         </div>
         <router-link
-          v-if="isAdmin"
+          v-if="user.groups.includes('Equipe Tournois')"
           :to="{ name: admin_switch }"
           :class="{
             'bg-red-800': !admin_mode,
