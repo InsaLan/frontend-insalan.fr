@@ -324,7 +324,7 @@ const openScoreModal = () => {
            Supprimer son compte</button>
         </div-->
       </div>
-      <div v-if="Object.keys(ongoing_match ?? {}).length > 0" id="ongoing_match">
+      <div v-if="ongoing_match !== null" id="ongoing_match">
         <h1 class="m-3 text-center text-4xl font-bold">
           Partie en cours
         </h1>
@@ -653,7 +653,7 @@ const openScoreModal = () => {
     </template>
     <template #title>
       <h3 id="open_modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Enregistrer le {{ ongoing_match.bo_type === BestofType.RANKING ? 'classement' : 'score' }}
+        Enregistrer le {{ ongoing_match?.bo_type === BestofType.RANKING ? 'classement' : 'score' }}
       </h3>
     </template>
     <template #body>
