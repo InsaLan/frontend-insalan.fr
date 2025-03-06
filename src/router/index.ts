@@ -119,8 +119,6 @@ const routes: RouteRecordRaw[] = [
           {
             path: 'info',
             redirect: { name: 'tournament_admin_info' },
-            // component: () => import('@/components/TournamentAdminInfo.vue'),
-            // name: 'tournament_admin_info',
           },
           {
             path: 'teams',
