@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
-import { required } from '@vuelidate/validators';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -12,6 +11,7 @@ import type { Team } from '@/models/team';
 import type { TournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
+import { required } from '@/support/locales/errors.fr';
 
 const props = defineProps<{
   id: number;

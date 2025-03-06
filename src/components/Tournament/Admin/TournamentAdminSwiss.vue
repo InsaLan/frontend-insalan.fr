@@ -1,11 +1,5 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
-import {
-  between,
-  integer,
-  minValue,
-  required,
-} from '@vuelidate/validators';
 import { computed, reactive, ref } from 'vue';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
@@ -17,6 +11,12 @@ import {
 import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { groupBy, useTournamentStore } from '@/stores/tournament.store';
+import {
+  between,
+  integer,
+  minValue,
+  required,
+} from '@/support/locales/errors.fr';
 
 const { tournament } = defineProps<{
   tournament: TournamentDeref;
@@ -301,6 +301,7 @@ const create_round = async () => {
             aria-label="Score for qualification"
             class="ml-2 bg-inherit"
             :class="{ error: context.invalid }"
+            @blur="v$.min_score.$touch"
           />
         </FormField>
         <FormField
@@ -317,6 +318,7 @@ const create_round = async () => {
             aria-label="Use team seeding"
             class="ml-2 bg-inherit"
             type="checkbox"
+            @blur="v$.use_seeding.$touch"
           >
         </FormField>
         <FormField
@@ -332,6 +334,7 @@ const create_round = async () => {
             name="bo_type"
             class="ml-2 bg-inherit"
             :class="{ error: context.invalid }"
+            @blur="v$.bo_type.$touch"
           >
             <option
               v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"
@@ -424,6 +427,7 @@ const create_round = async () => {
             aria-label="Round number"
             class="ml-2 bg-inherit"
             :class="{ error: context.invalid }"
+            @blur="v_round$.round_to_launch.$touch"
           >
         </FormField>
       </form>
@@ -480,6 +484,7 @@ const create_round = async () => {
             aria-label="Round number"
             class="ml-2 bg-inherit"
             :class="{ error: context.invalid }"
+            @blur="v_create_round$.round_to_create.$touch"
           >
         </FormField>
       </form>

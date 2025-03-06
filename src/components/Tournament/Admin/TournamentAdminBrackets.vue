@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
-import { between, required } from '@vuelidate/validators';
 import { storeToRefs } from 'pinia';
 import { computed, reactive, ref } from 'vue';
 import FormField from '@/components/FormField.vue';
@@ -11,6 +10,7 @@ import { BestofType, MatchTypeEnum } from '@/models/match';
 import type { TournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
+import { between, required } from '@/support/locales/errors.fr';
 
 const { tournament } = defineProps<{
   tournament: TournamentDeref;
@@ -375,6 +375,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
             aria-label="Bracket's name"
             class="ml-2 bg-inherit"
             :class="{ error: context.invalid }"
+            @blur="v$.name.$touch"
           />
         </FormField>
         <FormField
@@ -390,6 +391,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
             :class="{ error: context.invalid }"
             aria-label="Bracket's type"
             class="ml-2 bg-inherit"
+            @blur="v$.bracket_type.$touch"
           >
             <option
               v-for="bracket_type in Object.keys(BracketType).filter((v) => !Number.isInteger(Number(v)))"
@@ -414,6 +416,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
             class="ml-2 bg-inherit"
             type="number"
             :class="{ error: context.invalid }"
+            @blur="v$.team_count.$touch"
           />
         </FormField>
         <FormField
@@ -429,6 +432,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
             name="bo_type"
             class="ml-2 bg-inherit"
             :class="{ error: context.invalid }"
+            @blur="v$.bo_type.$touch"
           >
             <option
               v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
-import { required } from '@vuelidate/validators';
 import { computed, reactive, ref } from 'vue';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import StringListInput from '@/components/StringListInput.vue';
 import type { Pizza } from '@/models/pizza';
+import { required } from '@/support/locales/errors.fr';
 
 const props = defineProps<{
   title: string;

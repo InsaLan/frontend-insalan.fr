@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
-import { email, required } from '@vuelidate/validators';
 import { computed, reactive, ref } from 'vue';
 import { useUserStore } from '@/stores/user.store';
+import { email, required } from '@/support/locales/errors.fr';
 
 import FormField from './FormField.vue';
 import Modal from './Modal.vue';

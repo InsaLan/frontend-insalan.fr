@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
 import {
-  email, helpers, minLength, required, sameAs,
-} from '@vuelidate/validators';
-import {
   computed, reactive, ref,
 } from 'vue';
 import { useContentStore } from '@/stores/content.store';
 import { useUserStore } from '@/stores/user.store';
+import {
+  acceptGCU, email, minLength, required, sameAs,
+} from '@/support/locales/errors.fr';
 
 import Content from './Content.vue';
 import FormField from './FormField.vue';
@@ -26,10 +26,6 @@ const show_modal_cgu = (event: MouseEvent | KeyboardEvent) => {
 };
 
 const { signin } = useUserStore();
-const acceptGCU = helpers.withParams(
-  { type: 'acceptGcu' },
-  (value) => value === true,
-);
 // Register form validation
 const register_form = reactive({
   username: '',

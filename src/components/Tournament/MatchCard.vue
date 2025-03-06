@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useVuelidate } from '@vuelidate/core';
-import { maxLength, minLength, required } from '@vuelidate/validators';
+import { useVuelidate, type ValidationRule } from '@vuelidate/core';
 import { storeToRefs } from 'pinia';
 import {
   computed,
   reactive,
   ref,
 } from 'vue';
+import FormField from '@/components/FormField.vue';
 import type { KnockoutMatch } from '@/models/bracket';
 import type { GroupMatch } from '@/models/group';
 import {
@@ -18,6 +18,12 @@ import type { SwissMatch } from '@/models/swiss';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
+import {
+  between,
+  maxLength,
+  minLength,
+  required,
+} from '@/support/locales/errors.fr';
 
 const {
   match,
@@ -45,6 +51,14 @@ const { isAdmin } = storeToRefs(useUserStore());
 
 const edit_mode = ref(false);
 
+const max_score = computed(() => {
+  if (match.bo_type === BestofType.RANKING) {
+    return match.teams.length;
+  }
+
+  return match.bo_type as number;
+});
+
 const match_info = reactive({
   bo_type: match.bo_type,
   teams: match.teams.concat(Array(teamPerMatch - match.teams.length).fill(0)),
@@ -56,13 +70,19 @@ const match_info = reactive({
       acc[team.id] = 0;
     }
     return acc;
-  }, {} as Record<number, number>),
+  }, { 0: 0 } as Record<number, number>),
 });
 const match_info_rules = computed(() => ({
   bo_type: { required },
   teams: { required, minLength: minLength(0), maxLength: maxLength(teamPerMatch) },
   status: { required },
-  score: { required },
+  score: Object.entries(match_info.score).reduce((res, team) => {
+    res[Number(team[0])] = {
+      required,
+      between: between(0, max_score),
+    };
+    return res;
+  }, {} as Record<number, { required: ValidationRule; between: ValidationRule }>),
 }));
 
 const reset = () => {
@@ -76,7 +96,7 @@ const reset = () => {
       acc[team.id] = 0;
     }
     return acc;
-  }, {} as Record<number, number>);
+  }, { 0: 0 } as Record<number, number>);
 };
 
 const v$ = useVuelidate(match_info_rules, match_info);
@@ -86,13 +106,28 @@ const patch_match = async () => {
 
   if (!is_valid) return;
 
-  match_info.teams = match_info.teams.filter((team_id) => team_id !== 0);
-  match_info.score = Object.fromEntries(
-    Object.entries(match_info.score)
-      .filter(([team_id]) => match_info.teams.includes(Number(team_id))),
+  const match_info_clean = { ...match_info };
+
+  match_info_clean.teams = match_info_clean.teams.filter((team_id) => team_id !== 0);
+  match_info_clean.score = Object.fromEntries(
+    Object.entries(match_info_clean.score)
+      .filter(([team_id]) => match_info_clean.teams.includes(Number(team_id))),
   );
 
-  await patchMatch(match_info, match.id, matchType);
+  const score_sum = Object.values(match_info_clean.score).reduce((a, b) => a + b, 0);
+  const n = match_info_clean.teams.length;
+  if (
+    match_info_clean.status === MatchStatus.COMPLETED
+    && (
+      (match.bo_type === BestofType.RANKING && score_sum !== (n * (n + 1)) / 2)
+      || (match.bo_type !== BestofType.RANKING && score_sum > (match.bo_type as number))
+    )
+  ) {
+    addNotification('Les scores que vous avez rentrés ne sont pas valide !', 'error');
+    return;
+  }
+
+  await patchMatch(match_info_clean, match.id, matchType);
 
   addNotification('Le match a bien été modifié.', 'info');
   edit_mode.value = false;
@@ -107,6 +142,13 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
     } else {
       selected_matchs.value?.add(m.id);
     }
+  }
+};
+
+const open_edition = () => {
+  if (editable) {
+    reset();
+    edit_mode.value = true;
   }
 };
 </script>
@@ -209,7 +251,7 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
           icon="fa-solid fa-pencil"
           size="sm"
           title="Éditer le match"
-          @click.stop="if (editable) edit_mode = true;"
+          @click.stop="open_edition"
         />
 
         <div
@@ -253,39 +295,48 @@ const select_match = <M extends GroupMatch | KnockoutMatch | SwissMatch>(m: M) =
       </div>
     </div>
     <div v-else>
-      <div
+      <FormField
         v-for="idx in teamPerMatch"
         :key="idx"
-        class="flex justify-between"
+        v-slot="context"
+        :validations="v$.score[match_info.teams[idx - 1]]"
+        class="flex flex-col"
       >
-        <select
-          id="select_team"
-          v-model="match_info.teams[idx - 1]"
-          name="select_team"
-          class="grow truncate bg-inherit py-1 pl-1"
-          @click.stop
+        <div
+          class="flex justify-between"
         >
-          <option
-            v-for="team in validated_teams.filter(
-              (t) => t.id === match_info.teams[idx - 1] || !match_info.teams.includes(t.id),
-            )"
-            :key="team.id"
-            :value="team.id"
+          <select
+            id="select_team"
+            v-model="match_info.teams[idx - 1]"
+            name="select_team"
+            class="grow truncate bg-inherit py-1 pl-1"
+            @click.stop
           >
-            {{ team.name }}
-          </option>
-          <option :value="0">
-            TBD
-          </option>
-        </select>
-        <input
-          id="score"
-          v-model.number="match_info.score[match_info.teams[idx - 1]]"
-          type="number"
-          name="score"
-          class="w-10 bg-inherit p-1 text-right"
-        />
-      </div>
+            <option
+              v-for="team in validated_teams.filter(
+                (t) => t.id === match_info.teams[idx - 1] || !match_info.teams.includes(t.id),
+              )"
+              :key="team.id"
+              :value="team.id"
+            >
+              {{ team.name }}
+            </option>
+            <option :value="0">
+              TBD
+            </option>
+          </select>
+
+          <input
+            id="score"
+            v-model.number="match_info.score[match_info.teams[idx - 1]]"
+            type="number"
+            name="score"
+            :class="{ error: context.invalid }"
+            class="w-10 bg-inherit p-1 text-right"
+            @blur="v$.score[match_info.teams[idx - 1]].$touch"
+          />
+        </div>
+      </FormField>
     </div>
   </div>
 </template>
