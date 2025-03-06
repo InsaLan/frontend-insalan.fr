@@ -10,6 +10,7 @@ interface BaseTeam {
   validated: boolean;
   captain: string;
   seat_slot: number | null;
+  seed: number;
 }
 
 export interface TeamDeref extends BaseTeam {

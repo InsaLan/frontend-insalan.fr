@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
-import { required } from '@vuelidate/validators';
 import { storeToRefs } from 'pinia';
 import { computed, reactive, ref } from 'vue';
 import Multiselect from 'vue-multiselect';
@@ -10,6 +9,7 @@ import { type Payment, PAYMENT_METHODS } from '@/models/order';
 import type { AdminTimeslotDeref } from '@/models/timeslot';
 import { useNotificationStore } from '@/stores/notification.store';
 import { usePizzaStore } from '@/stores/pizza.store';
+import { required } from '@/support/locales/errors.fr';
 import { frenchFormatFromDate } from '@/utils';
 
 const { addNotification } = useNotificationStore();

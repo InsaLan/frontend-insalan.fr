@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import TournamentCard from '@/components/TournamentCard.vue';
+import TournamentCard from '@/components/Tournament/TournamentCard.vue';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const tournamentStore = useTournamentStore();

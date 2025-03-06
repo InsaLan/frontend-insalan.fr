@@ -1,5 +1,5 @@
 <template>
-  <div aria-labelledby="modal-title" aria-modal="true" class="relative z-10" role="dialog">
+  <div aria-labelledby="modal-title" aria-modal="true" class="relative z-50" role="dialog">
     <div class="fixed inset-0 bg-gray-900/75 transition-opacity"/>
     <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
       <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">

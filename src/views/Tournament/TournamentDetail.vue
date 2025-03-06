@@ -4,6 +4,7 @@ import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { TournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
+import { useUserStore } from '@/stores/user.store';
 
 const props = defineProps<{
   id: number;
@@ -14,19 +15,21 @@ const { getTournamentFull, getTournamentTeams } = tournamentStore;
 const { tournament } = storeToRefs(tournamentStore);
 
 const open_dropdown = ref(false);
-const dropdown_icon = computed(() => (open_dropdown.value ? 'angle-up' : 'angle-down'));
 
 interface TournamentDetailSection {
   title: string;
   is_available: boolean;
 }
 
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
+
 const sections = computed<Record<string, TournamentDetailSection>>(() => ({
   info: { title: 'Informations', is_available: true },
   teams: { title: 'Équipes', is_available: true },
   seatings: { title: 'Placement', is_available: true },
   groups: { title: 'Poules', is_available: (tournament.value as TournamentDeref)?.groups.length > 0 || false },
-  swiss: { title: 'Système Suisse', is_available: (tournament.value as TournamentDeref)?.swissRounds.length > 0 || false },
+  swiss: { title: 'Ronde Suisse', is_available: (tournament.value as TournamentDeref)?.swissRounds.length > 0 || false },
   brackets: { title: 'Arbres', is_available: (tournament.value as TournamentDeref)?.brackets.length > 0 || false },
   planning: { title: 'Planning', is_available: true },
   rules: { title: 'Règlement', is_available: true },
@@ -35,9 +38,17 @@ const sections = computed<Record<string, TournamentDetailSection>>(() => ({
 const router = useRouter();
 const route = useRoute();
 
+const admin_mode = computed(() => route.path.includes('admin'));
+
 const selected_section = computed<string>(() => {
-  const sec = route.path.split('/').at(-1);
-  return sec === undefined ? '' : sec;
+  let sec = 'info';
+  Object.keys(sections.value).forEach((e) => {
+    if (route.path.includes(e)) {
+      sec = e;
+    }
+  });
+
+  return sec;
 });
 
 try {
@@ -46,36 +57,45 @@ try {
 } catch (err: unknown) {
   router.go(-1);
 }
+
+const admin_switch = computed(() => {
+  if (admin_mode.value) {
+    return (route.name as string).replace('admin_', '').split('-').at(0);
+  }
+
+  return (route.name as string).replace('tournament_', 'tournament_admin_').split('-').at(0);
+});
 </script>
 
 <template>
   <div v-if="tournament?.is_announced" class="flex min-h-[calc(100vh_-_6rem)] flex-col">
     <div class="sticky top-24 z-50 bg-[#2c292d]">
-      <div class="text-center text-6xl font-bold text-white">
+      <div class="py-2 text-center text-6xl font-bold text-white">
         {{ tournament?.name }}
       </div>
 
-      <nav class="mt-2 flex justify-center gap-16 bg-gray-500 py-4">
+      <nav class="mt-2 flex justify-center gap-10 bg-gray-500 py-4 sm:gap-16">
         <button
           type="button"
-          class="text-xl underline decoration-[#63d1ff] decoration-4 underline-offset-8 md:hidden"
+          class="text-xl underline decoration-[#63d1ff] decoration-4 underline-offset-8 lg:hidden"
           @click="open_dropdown = !open_dropdown"
         >
           {{ sections[selected_section].title }}
           <fa-awesome-icon
-            class="absolute mx-2 my-[0.6rem]"
-            :icon="['fas', dropdown_icon]"
+            class="absolute mx-2 my-[0.6rem] transition duration-150 ease-in-out"
+            icon="fa-solid fa-chevron-up"
             size="2xs"
+            :class="{ 'rotate-180': open_dropdown }"
           />
         </button>
         <div
-          :class="{ 'flex border-y-2 border-white': open_dropdown, hidden: !open_dropdown }"
-          class="absolute z-10 max-h-[60vh] w-screen translate-y-10 flex-col items-center gap-2 overflow-scroll bg-gray-500 py-3 md:static md:z-0 md:flex md:w-auto md:translate-y-0 md:flex-row md:gap-10 md:overflow-visible md:py-0"
+          :class="[open_dropdown ? 'flex border-y-2 border-white' : 'hidden']"
+          class="absolute z-10 max-h-[60vh] w-screen translate-y-10 flex-col items-center gap-2 overflow-scroll bg-gray-500 py-3 lg:static lg:z-0 lg:flex lg:w-auto lg:-translate-x-16 lg:translate-y-0  lg:flex-row lg:gap-4 lg:overflow-visible lg:py-0 xl:gap-10"
         >
           <template v-for="(section, key) in sections" :key="key">
             <router-link
-              v-if="section.is_available"
-              :to="key"
+              v-if="section.is_available || admin_mode"
+              :to="{ name: `tournament_${admin_mode ? 'admin_' : ''}${key}` }"
               :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': key === selected_section }"
               class="text-xl"
               @click="open_dropdown = false"
@@ -84,9 +104,20 @@ try {
             </router-link>
           </template>
         </div>
+        <router-link
+          v-if="user.groups.includes('Equipe Tournois')"
+          :to="{ name: admin_switch }"
+          :class="{
+            'bg-red-800': !admin_mode,
+            'bg-blue-800': admin_mode,
+          }"
+          type="button"
+          class="-my-2 rounded p-2 text-xl font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500 sm:absolute sm:right-5 sm:-mt-2"
+        >
+          {{ admin_mode ? 'Mode Normal' : 'Mode Admin' }}
+        </router-link>
       </nav>
     </div>
-
     <RouterView v-slot="{ Component }">
       <component
         :is="Component"

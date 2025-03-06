@@ -12,11 +12,12 @@ import { useNotificationStore } from './notification.store';
 export const useUserStore = defineStore('user', () => {
   const user = ref<User>({} as User);
   const isConnected = ref(false);
+  const isAdmin = computed(() => user.value.is_staff || user.value.is_superuser);
   const csrf = ref('');
   const connectionTimestamp = ref(0);
   const router = useRouter();
   const NotificationStore = useNotificationStore();
-  const ongoing_match = ref<OngoingMatch>({} as OngoingMatch);
+  const ongoing_match = ref<OngoingMatch | null>(null);
   const inscriptions = ref<{
     ongoing: Ref<[string, PlayerRegistrationDeref | RegistrationDeref][]>;
     past: Ref<[string, PlayerRegistrationDeref | RegistrationDeref][]>;
@@ -163,7 +164,7 @@ export const useUserStore = defineStore('user', () => {
       const past: [string, PlayerRegistrationDeref | RegistrationDeref][] = [];
       const unpaid: { [key: number]: boolean } = {};
       // Get all the inscription of the user
-      const registrations = await axios.get<{ 'player': PlayerRegistrationDeref[]; 'manager': RegistrationDeref[]; 'substitute': PlayerRegistrationDeref[]; 'ongoing_match': OngoingMatch }>('/tournament/me/');
+      const registrations = await axios.get<{ 'player': PlayerRegistrationDeref[]; 'manager': RegistrationDeref[]; 'substitute': PlayerRegistrationDeref[]; 'ongoing_match': OngoingMatch | null }>('/tournament/me/');
       // Set the value of the ref object
       registrations.data.player.forEach((registration) => {
         if (registration.team.tournament.event.ongoing) {
@@ -198,7 +199,7 @@ export const useUserStore = defineStore('user', () => {
           unpaid[registration.id] = true;
         }
       });
-      ongoing_match.value = registrations.data.ongoing_match || {} as OngoingMatch;
+      ongoing_match.value = registrations.data.ongoing_match;
       inscriptions.value = {
         ongoing,
         past,
@@ -263,10 +264,10 @@ export const useUserStore = defineStore('user', () => {
 
   async function send_score(match: OngoingMatch, data: ScorePatch) {
     await get_csrf();
-    const { type } = ongoing_match.value.match_type;
-    const { id } = ongoing_match.value.match_type;
+    const { type } = match.match_type;
+    const { id } = match.match_type;
     try {
-      const res = await axios.patch(`/tournament/${type}/${id}/match/${match.id}/`, data, {
+      const res = await axios.patch(`/tournament/${type}/${id}/match/${match.id}/score/`, data, {
         withCredentials: true,
         headers: {
           'X-CSRFToken': csrf.value,
@@ -282,7 +283,7 @@ export const useUserStore = defineStore('user', () => {
         addNotification(error.response?.data as (string | string[] | { [key: string]: string }), 'error');
       }
     }
-    ongoing_match.value = {} as OngoingMatch;
+    ongoing_match.value = null;
   }
 
   const role = computed(() => {
@@ -322,6 +323,7 @@ export const useUserStore = defineStore('user', () => {
 
   return {
     user,
+    isAdmin,
     signin,
     login,
     logout,
