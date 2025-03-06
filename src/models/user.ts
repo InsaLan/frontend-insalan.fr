@@ -16,7 +16,7 @@ export interface User {
   is_staff: boolean;
   is_superuser: boolean;
   is_active: boolean;
-  groups?: string[];
+  groups: string[];
   user_permissions: unknown[];
 }
 
