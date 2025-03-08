@@ -75,6 +75,7 @@ const fetchEvents = async () => {
 
   // Set currentDate to the next event from now
   const now = new Date();
+  now.setHours(0, 0, 0, 0);
   const nextEvent = events.value.find((event) => event.start > now);
   if (nextEvent) {
     currentDate.value = nextEvent.start;
