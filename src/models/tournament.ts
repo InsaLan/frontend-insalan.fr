@@ -11,11 +11,22 @@ interface BaseTournament {
   id: number;
   teams: Team[] | Team['id'][];
   name: string;
-  is_announced: boolean;
   rules: string;
+  logo?: string;
+  maxTeam: number;
+  validated_teams: number;
+  description: string;
+  description_bottom: string;
+  game: Game;
+  groups: Group[];
+  brackets: Bracket[];
+  swissRounds: SwissRound[];
+}
+
+interface BaseEventTournament extends BaseTournament {
+  is_announced: boolean;
   registration_open: string;
   registration_close: string;
-  logo?: string;
   player_price_online: string;
   player_price_onsite: string;
   manager_price_online: string;
@@ -24,27 +35,22 @@ interface BaseTournament {
   manager_online_product: number;
   player_online_product: number;
   substitute_online_product: number;
-  maxTeam: number;
-  validated_teams: number;
-  description: string;
-  description_bottom: string;
   casters: Caster[];
   planning_file: string;
 }
 
-export interface TournamentDeref extends BaseTournament {
+export interface EventTournament extends BaseEventTournament {
+  event: number;
+}
+
+export interface EventTournamentDeref extends BaseEventTournament {
   event: EventDeref;
-  game: Game;
-  groups: Group[];
-  brackets: Bracket[];
-  swissRounds: SwissRound[];
   seatslots: SeatSlot[];
 }
 
-export interface Tournament extends BaseTournament {
-  event: number;
-  game: Game;
-  groups: Group[];
-  brackets: Bracket[];
-  swissRounds: SwissRound[];
+export interface PrivateTournament extends BaseTournament {
+  password: boolean;
+  running: boolean;
+  start: string;
+  rewards: string;
 }

@@ -4,13 +4,13 @@ import { storeToRefs } from 'pinia';
 import { computed, reactive } from 'vue';
 import FormField from '@/components/FormField.vue';
 import type { Team } from '@/models/team';
-import type { TournamentDeref } from '@/models/tournament';
+import type { EventTournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { between, integer, required } from '@/support/locales/errors.fr';
 
 const { tournament } = defineProps<{
-  tournament: TournamentDeref;
+  tournament: EventTournamentDeref;
 }>();
 
 const NotificationStore = useNotificationStore();

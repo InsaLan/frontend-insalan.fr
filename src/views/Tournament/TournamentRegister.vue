@@ -8,7 +8,7 @@ import { useRoute, useRouter } from 'vue-router';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import type { Team } from '@/models/team';
-import type { Tournament } from '@/models/tournament';
+import type { EventTournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
 import {
@@ -24,9 +24,9 @@ const { user } = useUserStore();
 const tournamentStore = useTournamentStore();
 
 const {
-  registerTeam, registerPlayerOrManager, getTournamentFull, addRegistrationToCart,
+  registerTeam, registerPlayerOrManager, getTournamentFull, addRegistrationToCart, getPrivateTournaments,
 } = tournamentStore;
-const { tournament, soloGame } = storeToRefs(tournamentStore);
+const { tournament, soloGame, privateTournaments } = storeToRefs(tournamentStore);
 
 const register_form = reactive({
   team: '',
@@ -101,7 +101,7 @@ const register_player = async () => {
 };
 
 const payment = async () => {
-  addRegistrationToCart(tournament.value as Tournament, register_form.role);
+  addRegistrationToCart(tournament.value as EventTournament, register_form.role);
   modal_payment.value = true;
 };
 
@@ -115,12 +115,23 @@ const generate_password = () => {
 
 const create = ref(true);
 
+if (Object.keys(privateTournaments.value).length === 0) {
+  await getPrivateTournaments();
+}
+
 const router = useRouter();
 const { query } = useRoute();
-try {
-  await getTournamentFull(props.id);
-} catch (err: unknown) {
-  router.go(-1);
+if (props.id in privateTournaments.value) {
+  tournament.value = privateTournaments.value[props.id];
+} else {
+  try {
+    await getTournamentFull(props.id);
+  } catch (err: unknown) {
+    router.go(-1);
+  }
+  if (tournament.value && 'registration_open' in tournament.value && Date.parse(tournament.value.registration_open ?? '') > Date.now()) {
+    router.go(-1);
+  }
 }
 if ('team' in query && 'pwd' in query) {
   const res = (tournament.value?.teams as Team[]).filter((val) => val.id === Number(query.team));
@@ -129,9 +140,6 @@ if ('team' in query && 'pwd' in query) {
     register_form.team = res[0].name;
     register_form.password = query.pwd as string;
   }
-}
-if (Date.parse(tournament.value?.registration_open ?? '') > Date.now()) {
-  router.go(-1);
 }
 
 const host = import.meta.env.VITE_WEBSITE_HOST as string;
@@ -413,6 +421,7 @@ const view_password = ref<boolean>(false);
     </template>
     <template #buttons>
       <button
+        v-if="!(props.id in privateTournaments)"
         class="ml-2 inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:mt-0 sm:w-auto"
         type="button"
         @click="payment"

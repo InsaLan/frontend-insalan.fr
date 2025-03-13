@@ -19,10 +19,12 @@ export const useUserStore = defineStore('user', () => {
   const NotificationStore = useNotificationStore();
   const ongoing_match = ref<OngoingMatch | null>(null);
   const inscriptions = ref<{
+    private_regs: [string, PlayerRegistrationDeref | RegistrationDeref][];
     ongoing: Ref<[string, PlayerRegistrationDeref | RegistrationDeref][]>;
     past: Ref<[string, PlayerRegistrationDeref | RegistrationDeref][]>;
     unpaid: Ref<Record<string, boolean>>;
   }>({
+    private_regs: [],
     ongoing: ref([]),
     past: ref([]),
     unpaid: ref({}),
@@ -160,6 +162,7 @@ export const useUserStore = defineStore('user', () => {
   async function fetch_user_inscription_full() {
     try {
       // ref object to store the data
+      const private_regs: [string, PlayerRegistrationDeref | RegistrationDeref][] = [];
       const ongoing: [string, PlayerRegistrationDeref | RegistrationDeref][] = [];
       const past: [string, PlayerRegistrationDeref | RegistrationDeref][] = [];
       const unpaid: { [key: number]: boolean } = {};
@@ -167,7 +170,9 @@ export const useUserStore = defineStore('user', () => {
       const registrations = await axios.get<{ 'player': PlayerRegistrationDeref[]; 'manager': RegistrationDeref[]; 'substitute': PlayerRegistrationDeref[]; 'ongoing_match': OngoingMatch | null }>('/tournament/me/');
       // Set the value of the ref object
       registrations.data.player.forEach((registration) => {
-        if (registration.team.tournament.event.ongoing) {
+        if (!('event' in registration.team.tournament)) {
+          private_regs.push(['player', registration]);
+        } else if (registration.team.tournament.event.ongoing) {
           ongoing.push(['player', registration]);
         } else {
           past.push(['player', registration]);
@@ -178,7 +183,9 @@ export const useUserStore = defineStore('user', () => {
         }
       });
       registrations.data.manager.forEach((registration) => {
-        if (registration.team.tournament.event.ongoing) {
+        if (!('event' in registration.team.tournament)) {
+          private_regs.push(['manager', registration]);
+        } else if (registration.team.tournament.event.ongoing) {
           ongoing.push(['manager', registration]);
         } else {
           past.push(['manager', registration]);
@@ -201,6 +208,7 @@ export const useUserStore = defineStore('user', () => {
       });
       ongoing_match.value = registrations.data.ongoing_match;
       inscriptions.value = {
+        private_regs,
         ongoing,
         past,
         unpaid,

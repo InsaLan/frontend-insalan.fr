@@ -1,10 +1,10 @@
 import type { Match } from '@/models/match';
-import type { Tournament } from '@/models/tournament';
+import type { EventTournament } from '@/models/tournament';
 
 export interface Group {
   id: number;
   name: string;
-  tournament: Tournament;
+  tournament: EventTournament;
   matchs: GroupMatch[];
   teams: number[];
   round_count: number;

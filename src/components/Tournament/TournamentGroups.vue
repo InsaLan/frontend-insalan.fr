@@ -4,11 +4,11 @@ import GroupTable from '@/components/Tournament/GroupTable.vue';
 import MatchCard from '@/components/Tournament/MatchCard.vue';
 import type { Group } from '@/models/group';
 import { MatchTypeEnum } from '@/models/match';
-import type { TournamentDeref } from '@/models/tournament';
+import type { EventTournamentDeref, PrivateTournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const props = defineProps<{
-  tournament: TournamentDeref;
+  tournament: EventTournamentDeref | PrivateTournament;
 }>();
 
 const tournament = toRef(props, 'tournament');

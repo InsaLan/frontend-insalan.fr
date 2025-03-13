@@ -1,5 +1,5 @@
 import type { Team } from '@/models/team';
-import type { Tournament } from '@/models/tournament';
+import type { EventTournament } from '@/models/tournament';
 import type { User } from '@/models/user';
 
 export enum TicketStatus {
@@ -13,6 +13,6 @@ export interface QRData {
   identity: string;
   token: string;
   status: TicketStatus;
-  tournament: Tournament['name'];
+  tournament: EventTournament['name'];
   team: Team['name'];
 }
