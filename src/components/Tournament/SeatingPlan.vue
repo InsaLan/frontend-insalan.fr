@@ -4,7 +4,7 @@ import {
 } from 'vue';
 import Modal from '@/components/Modal.vue';
 import type { Team, TeamDeref } from '@/models/team';
-import type { TournamentDeref } from '@/models/tournament';
+import type { EventTournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const tournamentStore = useTournamentStore();
@@ -17,7 +17,7 @@ const showModal = ref(false);
 const selectedTeamSlot = ref<number | null>(null);
 
 const props = defineProps<{
-  tournament: TournamentDeref;
+  tournament: EventTournamentDeref;
   team: Team | null;
 }>();
 

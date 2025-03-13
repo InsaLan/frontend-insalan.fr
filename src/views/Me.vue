@@ -10,7 +10,7 @@ import Modal from '@/components/Modal.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
 import { BestofType, type ScorePatch } from '@/models/match';
 import type { PlayerRegistrationDeref, RegistrationDeref } from '@/models/registration';
-import type { Tournament } from '@/models/tournament';
+import type { EventTournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
 import {
@@ -385,12 +385,16 @@ const openScoreModal = () => {
                     @click.prevent="
                       (
                         modal_payment = true,
-                        addRegistrationToCart(inscription[1].team.tournament as unknown as Tournament, inscription[0])
+                        addRegistrationToCart(
+                          inscription[1].team.tournament as unknown as EventTournament, inscription[0],
+                        )
                       )"
                     @keydown.prevent="
                       (
                         modal_payment = true,
-                        addRegistrationToCart(inscription[1].team.tournament as unknown as Tournament, inscription[0])
+                        addRegistrationToCart(
+                          inscription[1].team.tournament as unknown as EventTournament, inscription[0],
+                        )
                       )"
                   >
                     <div>
@@ -481,6 +485,51 @@ const openScoreModal = () => {
               </p>
             </div>
           </router-link>
+        </div>
+      </div>
+      <div v-if="(inscriptions.private_regs as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="m-4">
+        <h1 class="text-xl">
+          Tournois secondaires
+        </h1>
+        <div class="m-1 grid gap-3 md:grid-cols-3">
+          <div
+            v-for="inscription in (
+              inscriptions.private_regs as [string, PlayerRegistrationDeref | RegistrationDeref][]
+            )"
+            :key="inscription[1].id"
+            :class="{ /*[`bg-red-900`]: inscriptions.unpaid[inscription.team.id]*/ }"
+            class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
+          >
+            <div class="block">
+              <div class="flex flex-1 flex-col justify-center">
+                <div class="m-2 flex flex-row items-stretch justify-center gap-2">
+                  <router-link
+                    class="center flex flex-1 items-center justify-center rounded bg-green-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
+                    :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
+                  >
+                    <div>
+                      {{ (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
+                    </div>
+                  </router-link>
+                </div>
+              </div>
+            </div>
+            <div class="hidden flex-col md:block">
+              <router-link
+                class="mt-auto text-zinc-400"
+                :to="`/tournament/${inscription[1].team.tournament.id}/rules`"
+              >
+                Règlement du tournoi
+              </router-link>
+            </div>
+            <div
+              class="m-1 flex flex-1 flex-col justify-center"
+            >
+              <p class="text-xl">
+                {{ inscription[1].team.name }}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

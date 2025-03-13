@@ -16,7 +16,7 @@ import {
 import type { PlayerRegistration, PlayerRegistrationDeref } from '@/models/registration';
 import type { SwissMatch, SwissRound } from '@/models/swiss';
 import type { Team } from '@/models/team';
-import type { Tournament, TournamentDeref } from '@/models/tournament';
+import type { EventTournament, EventTournamentDeref, PrivateTournament } from '@/models/tournament';
 
 import { useNotificationStore } from './notification.store';
 import { useUserStore } from './user.store';
@@ -39,7 +39,8 @@ export function groupBy<T>(items: T[], key: keyof T): Record<string, T[]> {
 
 export const useTournamentStore = defineStore('tournament', () => {
   const eventsList = ref<Record<number, Event>>({});
-  const tournamentsList = ref<Record<number, Tournament>>({});
+  const tournamentsList = ref<Record<number, EventTournament>>({});
+  const privateTournaments = ref<Record<number, PrivateTournament>>({});
   const unpaidRegistration = ref<{
     'id': number;
     'type': string;
@@ -48,7 +49,7 @@ export const useTournamentStore = defineStore('tournament', () => {
   }[]>([]);
 
   const tourney_teams = ref({ validated_teams: [] as Team[], non_validated_teams: [] as Team[] });
-  const tournament = ref<Tournament | TournamentDeref>();
+  const tournament = ref<EventTournament | EventTournamentDeref | PrivateTournament>();
   const ongoingEvents = computed(() => Object.values(eventsList.value).reduce((res, item) => {
     if (item.ongoing) {
       res.push(item);
@@ -125,7 +126,7 @@ export const useTournamentStore = defineStore('tournament', () => {
    * Tournaments  *
    ************** */
   async function fetchTournament(id: number) {
-    const res = await axios.get<Tournament>(`/tournament/tournament/${id}/`);
+    const res = await axios.get<EventTournament>(`/tournament/tournament/${id}/`);
     tournamentsList.value[id] = res.data;
   }
 
@@ -134,7 +135,7 @@ export const useTournamentStore = defineStore('tournament', () => {
   }
 
   async function fetchTournamentFull(id: number) {
-    const res = await axios.get<Tournament>(`/tournament/tournament/${id}/full/`);
+    const res = await axios.get<EventTournament>(`/tournament/tournament/${id}/full/`);
     tournamentsList.value[id] = res.data;
   }
 
@@ -142,11 +143,17 @@ export const useTournamentStore = defineStore('tournament', () => {
     await Promise.all<void>(ids.map<Promise<void>>((id) => fetchTournamentFull(id)));
   }
 
+  async function fetchPrivateTournaments() {
+    const res = await axios<PrivateTournament[]>('tournament/tournament/privates/');
+    res.data.forEach((ev) => { privateTournaments.value[ev.id] = ev; });
+  }
+
   async function getTournament(id: number) {
     if (!(id in tournamentsList.value)) {
       await fetchTournament(id);
     }
   }
+
   async function getTournaments(ids: number[]) {
     const missing: number[] = [];
     ids.forEach((id) => {
@@ -176,6 +183,10 @@ export const useTournamentStore = defineStore('tournament', () => {
     if (missing.length > 0) {
       await fetchTournamentsFull(missing);
     }
+  }
+
+  async function getPrivateTournaments() {
+    await fetchPrivateTournaments();
   }
 
   async function registerPlayerOrManager(
@@ -239,13 +250,17 @@ export const useTournamentStore = defineStore('tournament', () => {
         'X-CSRFToken': csrf.value,
       },
     });
+    if (tournament_id in privateTournaments.value) {
+      await getPrivateTournaments();
+      return res.data;
+    }
     await fetchTournamentFull(tournament_id).catch();
     tournament.value = tournamentsList.value[tournament_id];
     return res.data;
   }
 
   function addRegistrationToCart(
-    tournament_obj: Tournament,
+    tournament_obj: EventTournament,
     role: string,
   ) {
     let product_id;
@@ -463,7 +478,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     return Object.values(round_matchs).reverse();
   };
 
-  const soloGame = computed(() => (tournament.value as TournamentDeref | undefined)?.game.players_per_team === 1);
+  const soloGame = computed(() => (tournament.value as EventTournamentDeref | undefined)?.game.players_per_team === 1);
 
   async function updateTeamsSeeding(modified_seed: { id: number; seed: number }[]) {
     await get_csrf();
@@ -504,7 +519,7 @@ export const useTournamentStore = defineStore('tournament', () => {
       },
     );
 
-    (tournament.value as TournamentDeref).groups.forEach(
+    (tournament.value as EventTournamentDeref).groups.forEach(
       (group, idx, groups) => {
         if (group.id === res.data.id) {
           groups[idx] = res.data;
@@ -533,7 +548,7 @@ export const useTournamentStore = defineStore('tournament', () => {
       },
     );
 
-    (tournament.value as TournamentDeref).groups = res.data;
+    (tournament.value as EventTournamentDeref).groups = res.data;
   }
 
   async function deleteGroups(tournament_id: number): Promise<boolean> {
@@ -551,7 +566,7 @@ export const useTournamentStore = defineStore('tournament', () => {
 
     if (res.status !== 204) return false;
 
-    (tournament.value as TournamentDeref).groups = [];
+    (tournament.value as EventTournamentDeref).groups = [];
 
     return true;
   }
@@ -571,7 +586,7 @@ export const useTournamentStore = defineStore('tournament', () => {
 
     if (res.status !== 204) return false;
 
-    (tournament.value as TournamentDeref).groups = (tournament.value as TournamentDeref)
+    (tournament.value as EventTournamentDeref).groups = (tournament.value as EventTournamentDeref)
       .groups
       .filter((group) => group.id !== group_id);
 
@@ -598,7 +613,7 @@ export const useTournamentStore = defineStore('tournament', () => {
       },
     );
 
-    (tournament.value as TournamentDeref).groups = res.data;
+    (tournament.value as EventTournamentDeref).groups = res.data;
   }
 
   async function deleteGroupMatchs(tournament_id: number) {
@@ -616,7 +631,7 @@ export const useTournamentStore = defineStore('tournament', () => {
 
     if (res.status !== 204) return false;
 
-    (tournament.value as TournamentDeref).groups.forEach((group) => {
+    (tournament.value as EventTournamentDeref).groups.forEach((group) => {
       group.matchs = [];
     });
 
@@ -644,11 +659,11 @@ export const useTournamentStore = defineStore('tournament', () => {
     let match_list;
 
     if (type === 'group') {
-      match_list = (tournament.value as TournamentDeref).groups;
+      match_list = (tournament.value as EventTournamentDeref).groups;
     } else if (type === 'swiss') {
-      match_list = (tournament.value as TournamentDeref).swissRounds;
+      match_list = (tournament.value as EventTournamentDeref).swissRounds;
     } else if (type === 'bracket') {
-      match_list = (tournament.value as TournamentDeref).brackets;
+      match_list = (tournament.value as EventTournamentDeref).brackets;
     }
 
     match_list?.forEach((group) => group.matchs.forEach((match) => {
@@ -679,7 +694,7 @@ export const useTournamentStore = defineStore('tournament', () => {
       },
     );
 
-    (tournament.value as TournamentDeref).swissRounds = res.data;
+    (tournament.value as EventTournamentDeref).swissRounds = res.data;
   }
 
   async function deleteSwiss(tournament_id: number): Promise<boolean> {
@@ -697,7 +712,7 @@ export const useTournamentStore = defineStore('tournament', () => {
 
     if (res.status !== 204) return false;
 
-    (tournament.value as TournamentDeref).swissRounds = [];
+    (tournament.value as EventTournamentDeref).swissRounds = [];
 
     return true;
   }
@@ -716,7 +731,7 @@ export const useTournamentStore = defineStore('tournament', () => {
       },
     );
 
-    (tournament.value as TournamentDeref).swissRounds[0].matchs.forEach(
+    (tournament.value as EventTournamentDeref).swissRounds[0].matchs.forEach(
       (match, index, matchs) => {
         if (Object.keys(res.data).includes(match.id.toString())) {
           matchs[index] = res.data[match.id.toString()];
@@ -747,7 +762,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     );
 
     if (match_type.type === MatchTypeEnum.BRACKET) {
-      (tournament.value as TournamentDeref).brackets.forEach((bracket) => {
+      (tournament.value as EventTournamentDeref).brackets.forEach((bracket) => {
         if (bracket.id === match_type.id) {
           bracket.matchs.forEach((match, idx, matchs) => {
             if (match.id === match_id) {
@@ -757,7 +772,7 @@ export const useTournamentStore = defineStore('tournament', () => {
         }
       });
     } else if (match_type.type === MatchTypeEnum.GROUP) {
-      (tournament.value as TournamentDeref).groups.forEach((group) => {
+      (tournament.value as EventTournamentDeref).groups.forEach((group) => {
         if (group.id === match_type.id) {
           group.matchs.forEach((match, idx, matchs) => {
             if (match.id === match_id) {
@@ -767,7 +782,7 @@ export const useTournamentStore = defineStore('tournament', () => {
         }
       });
     } else {
-      (tournament.value as TournamentDeref).swissRounds.forEach((swiss) => {
+      (tournament.value as EventTournamentDeref).swissRounds.forEach((swiss) => {
         if (swiss.id === match_type.id) {
           swiss.matchs.forEach((match, idx, matchs) => {
             if (match.id === match_id) {
@@ -800,7 +815,7 @@ export const useTournamentStore = defineStore('tournament', () => {
       },
     );
 
-    (tournament.value as TournamentDeref).brackets.push(res.data);
+    (tournament.value as EventTournamentDeref).brackets.push(res.data);
   }
 
   async function deleteBracket(bracket_id: number) {
@@ -818,7 +833,7 @@ export const useTournamentStore = defineStore('tournament', () => {
 
     if (res.status !== 204) return false;
 
-    (tournament.value as TournamentDeref).brackets = (tournament.value as TournamentDeref)
+    (tournament.value as EventTournamentDeref).brackets = (tournament.value as EventTournamentDeref)
       .brackets
       .filter((bracket) => bracket.id !== bracket_id);
 
@@ -834,6 +849,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     oldEvents,
     eventsList,
     ongoingEvents,
+    privateTournaments,
     tournamentsList,
     unpaidRegistration,
     tourney_teams,
@@ -856,6 +872,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     getTournaments,
     getTournamentFull,
     getTournamentsFull,
+    getPrivateTournaments,
     fetchAllEvents,
     fetchEventsByYear,
     fetchEventsByYears,
@@ -867,6 +884,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     fetchTournaments,
     fetchTournamentFull,
     fetchTournamentsFull,
+    fetchPrivateTournaments,
     registerTeam,
     registerPlayerOrManager,
     addRegistrationToCart,

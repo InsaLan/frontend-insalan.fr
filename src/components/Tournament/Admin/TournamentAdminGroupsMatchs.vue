@@ -5,7 +5,7 @@ import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import MatchCard from '@/components/Tournament/MatchCard.vue';
 import { MatchTypeEnum } from '@/models/match';
-import type { TournamentDeref } from '@/models/tournament';
+import type { EventTournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
 import {
@@ -15,7 +15,7 @@ import {
 } from '@/support/locales/errors.fr';
 
 const { tournament } = defineProps<{
-  tournament: TournamentDeref;
+  tournament: EventTournamentDeref;
 }>();
 
 const NotificationStore = useNotificationStore();

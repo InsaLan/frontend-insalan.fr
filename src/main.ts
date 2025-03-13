@@ -19,6 +19,7 @@ import {
   faEye,
   faEyeSlash,
   faFile,
+  faGift,
   faHammer,
   faMagnifyingGlass,
   faPencil,
@@ -26,6 +27,7 @@ import {
   faPizzaSlice,
   faSave,
   faTrashCan,
+  faTrophy,
   faWarning,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
@@ -72,6 +74,8 @@ library.add(
   faWarning,
   faXmark,
   faSave,
+  faGift,
+  faTrophy,
 );
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;

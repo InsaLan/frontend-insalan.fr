@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed, onMounted } from 'vue';
-import type { Tournament, TournamentDeref } from '@/models/tournament';
+import type { EventTournament, EventTournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const tournamentStore = useTournamentStore();
@@ -12,7 +12,7 @@ const props = defineProps<{
 
 const { getTournament } = tournamentStore;
 const { tournamentsList, eventsList } = storeToRefs(tournamentStore);
-const tournament = computed<Tournament | TournamentDeref | undefined>(() => tournamentsList.value[props.id]);
+const tournament = computed<EventTournament | EventTournamentDeref | undefined>(() => tournamentsList.value[props.id]);
 const event_ongoing = computed(() => {
   if (tournament.value === undefined) {
     return false;

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { TournamentDeref } from '@/models/tournament';
+import type { EventTournamentDeref, PrivateTournament } from '@/models/tournament';
 import { useContentStore } from '@/stores/content.store';
 
 const props = defineProps<{
-  tournament: TournamentDeref;
+  tournament: EventTournamentDeref | PrivateTournament;
 }>();
 
 const { md } = useContentStore();
