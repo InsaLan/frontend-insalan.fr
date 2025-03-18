@@ -522,11 +522,17 @@ const openScoreModal = () => {
                 Règlement du tournoi
               </router-link>
             </div>
+            <img
+              :src="inscription[1].team.tournament.logo"
+              alt="image du tournoi"
+              class="size-32 max-w-full overflow-hidden"
+              style="width: 100%; object-fit: cover;"
+            />
             <div
               class="m-1 flex flex-1 flex-col justify-center"
             >
               <p class="text-xl">
-                {{ inscription[1].team.name }}
+                {{ inscription[1].team.tournament.name }}
               </p>
             </div>
           </div>

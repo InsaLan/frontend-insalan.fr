@@ -335,6 +335,7 @@ const kick_member = async (type: string, id: number) => {
           </ul>
         </div>
         <div
+          v-if="!(props.id in privateTournaments)"
           class="flex w-full flex-col justify-between border-b-2 border-black p-2"
         >
           <div
@@ -359,6 +360,7 @@ const kick_member = async (type: string, id: number) => {
           </ul>
         </div>
         <div
+          v-if="!(props.id in privateTournaments)"
           class="flex w-full flex-col justify-between border-b-2 border-black p-2"
         >
           <div
@@ -417,6 +419,7 @@ const kick_member = async (type: string, id: number) => {
                   && selected_team?.captain === (team_registration?.[1] as PlayerRegistrationDeref)?.name_in_game
                 )
               )
+                && !(props.id in privateTournaments)
             "
             type="button"
             class="center size-full rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"

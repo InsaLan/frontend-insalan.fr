@@ -200,8 +200,11 @@ export const useTournamentStore = defineStore('tournament', () => {
 
     const data = {
       team,
-      password,
     } as Record<string, unknown>;
+
+    if (password) {
+      data.password = password;
+    }
 
     if (role === 'player' || role === 'substitute') {
       data.name_in_game = name_in_game;
@@ -229,8 +232,11 @@ export const useTournamentStore = defineStore('tournament', () => {
     const data = {
       tournament: tournament_id,
       name: team,
-      password,
     } as Record<string, unknown>;
+
+    if (password) {
+      data.password = password;
+    }
 
     if (role === 'player') {
       data.players = [user_id];
@@ -308,6 +314,12 @@ export const useTournamentStore = defineStore('tournament', () => {
         (registration[1] as PlayerRegistrationDeref).name_in_game = res.data.name_in_game;
       }
     });
+    // Update the private tournament
+    inscriptions.value.private_regs.forEach((registration) => {
+      if (registration[1].id === registration_id) {
+        (registration[1] as PlayerRegistrationDeref).name_in_game = res.data.name_in_game;
+      }
+    });
   }
 
   async function patch_team(team_id: number, data: Record<string, unknown>) {
@@ -342,7 +354,10 @@ export const useTournamentStore = defineStore('tournament', () => {
     // Remove the registration from the tournament
     const team_id = inscriptions.value.ongoing.find(
       (registration) => registration[1].id === registration_id,
-    )?.[1].team.id;
+    )?.[1].team.id
+      || inscriptions.value.private_regs.find(
+        (registration) => registration[1].id === registration_id,
+      )?.[1].team.id;
     const tournament_teams = tournament.value?.teams as Team[];
     const index = tournament_teams.findIndex((team) => team.id === team_id);
 
@@ -370,6 +385,10 @@ export const useTournamentStore = defineStore('tournament', () => {
 
     // Remove the registration from the ongoing inscriptions
     inscriptions.value.ongoing = inscriptions.value.ongoing.filter(
+      (registration) => registration[1].id !== registration_id,
+    );
+    // Remove the registration from the private tournament
+    inscriptions.value.private_regs = inscriptions.value.private_regs.filter(
       (registration) => registration[1].id !== registration_id,
     );
   }
