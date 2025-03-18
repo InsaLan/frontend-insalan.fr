@@ -116,7 +116,7 @@ const admin_switch = computed(() => {
           </template>
         </div>
         <router-link
-          v-if="isConnected && user.groups.includes('Equipe Tournois')"
+          v-if="isConnected && (user.groups.includes('Equipe Tournois') || user.groups.includes('Equipe Anim'))"
           :to="{ name: admin_switch }"
           :class="{
             'bg-red-800': !admin_mode,
