@@ -148,7 +148,9 @@ const props = defineProps<{
         class="w-full max-w-md rounded-lg border-2 border-cyan-700 bg-gradient-to-br from-cyan-950 to-cyan-900 p-5 text-white shadow-lg"
       >
         <div class="mb-4 flex items-center justify-between">
-          <h3 class="text-xl font-bold md:text-2xl">
+          <h3
+            class="text-xl font-bold md:text-2xl"
+          >
             Informations du tournois
           </h3>
           <span class="rounded-full bg-cyan-800 p-2 text-center">
@@ -165,13 +167,26 @@ const props = defineProps<{
             Pour plus d'informations, veuillez demander à l'équipe Animation.
           </p>
 
-          <div class="flex items-center gap-2 text-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
-            <span>Début: {{ frenchFormatFromDate(new Date(tournament?.start)) }}</span>
+          <div
+            class="flex items-center gap-2 text-xl"
+          >
+            <fa-awesome-icon
+              icon="fa-calendar-days"
+            />
+            <span>Début:
+              <b
+                class="font-bold text-yellow-500"
+              >
+                {{ frenchFormatFromDate(new Date(tournament?.start)) }}
+              </b>
+            </span>
           </div>
         </div>
 
-        <div class="mb-3 rounded-md bg-gradient-to-r from-cyan-800/70 to-cyan-700/70 p-4 text-center">
+        <div
+          v-if="tournament?.rewards"
+          class="mb-3 rounded-md bg-gradient-to-r from-cyan-800/70 to-cyan-700/70 p-4 text-center"
+        >
           <fa-awesome-icon
             class="text-4xl text-yellow-500"
             icon="fa-gift"

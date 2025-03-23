@@ -6,6 +6,7 @@ import {
   faArrowRight,
   faArrowsRotate,
   faBolt,
+  faCalendarDays,
   faCaretRight,
   faCheck,
   faChevronDown,
@@ -76,6 +77,7 @@ library.add(
   faSave,
   faGift,
   faTrophy,
+  faCalendarDays,
 );
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
