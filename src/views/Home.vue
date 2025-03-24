@@ -19,7 +19,7 @@ await getOngoingEvents();
 <template>
   <div>
     <section class="h-min">
-      <Hero/>
+      <Hero :event="event"/>
     </section>
     <Content id="main_page" name="main_page"/>
     <section>
