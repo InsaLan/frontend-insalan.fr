@@ -23,7 +23,7 @@ await fetchAllEvents();
       :key="event.id"
     >
       <h2 class="text-center text-2xl">
-        {{ event.name }} | {{ `${String(event.month).padStart(2, '0')}/${event.year}` }}
+        {{ event.name }} | {{ `${String(event.date_start.getMonth()).padStart(2, '0')}/${event.date_start.getFullYear()}` }}
       </h2>
       <div
         class="mx-2 mb-2 flex flex-col gap-4 px-4 md:grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
