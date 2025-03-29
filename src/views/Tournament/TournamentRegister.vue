@@ -26,7 +26,7 @@ const tournamentStore = useTournamentStore();
 const {
   registerTeam, registerPlayerOrManager, getTournamentFull, addRegistrationToCart, getPrivateTournaments,
 } = tournamentStore;
-const { tournament, soloGame, privateTournaments } = storeToRefs(tournamentStore);
+const { tournament, soloGame, privateTournamentsList } = storeToRefs(tournamentStore);
 
 const register_form = reactive({
   team: '',
@@ -37,8 +37,10 @@ const register_form = reactive({
 });
 
 const selected_team = computed(() => {
-  if (props.id in privateTournaments.value) {
-    const res = (privateTournaments.value[props.id].teams as Team[]).filter((team) => team.name === register_form.team);
+  if (props.id in privateTournamentsList.value) {
+    const res = (
+      privateTournamentsList.value[props.id].teams as Team[]
+    ).filter((team) => team.name === register_form.team);
     if (res.length === 1) {
       return res[0];
     }
@@ -55,12 +57,12 @@ const rules = computed(() => ({
   team: soloGame ? {} : { required },
   name_in_game: register_form.role !== 'manager' ? { required } : {},
   password: (() => {
-    if (props.id in privateTournaments.value) {
-      return privateTournaments.value[props.id].password ? { required } : {};
+    if (props.id in privateTournamentsList.value) {
+      return privateTournamentsList.value[props.id].password ? { required } : {};
     }
     return { required, minLengthValue: minLength(8) };
   })(),
-  role: !(props.id in privateTournaments.value) ? { required } : {},
+  role: !(props.id in privateTournamentsList.value) ? { required } : {},
   accept_rules: { acceptRules },
 }));
 
@@ -127,14 +129,14 @@ const generate_password = () => {
 
 const create = ref(true);
 
-if (Object.keys(privateTournaments.value).length === 0) {
+if (Object.keys(privateTournamentsList.value).length === 0) {
   await getPrivateTournaments();
 }
 
 const router = useRouter();
 const { query } = useRoute();
-if (props.id in privateTournaments.value) {
-  tournament.value = privateTournaments.value[props.id];
+if (props.id in privateTournamentsList.value) {
+  tournament.value = privateTournamentsList.value[props.id];
 } else {
   try {
     await getTournamentFull(props.id);
@@ -284,15 +286,15 @@ const view_password = ref<boolean>(false);
           </FormField>
           <FormField
             v-if="
-              props.id in privateTournaments && privateTournaments[props.id].password
-                || !(props.id in privateTournaments)
+              props.id in privateTournamentsList && privateTournamentsList[props.id].password
+                || !(props.id in privateTournamentsList)
             "
             v-slot="context"
             :validations="v$.password"
             class="flex flex-col text-xl"
           >
             <label for="pwd">
-              {{ props.id in privateTournaments ? 'Mot de passe du tournois' : 'Mot de passe de l\'équipe' }}
+              {{ props.id in privateTournamentsList ? 'Mot de passe du tournoi' : 'Mot de passe de l\'équipe' }}
             </label>
             <div
               class="relative flex size-full items-center"
@@ -307,7 +309,7 @@ const view_password = ref<boolean>(false);
                 @blur="v$.password.$touch"
               />
               <button
-                v-if="!(props.id in privateTournaments)"
+                v-if="!(props.id in privateTournamentsList)"
                 type="button"
                 class="absolute right-8 top-1 z-10 size-8"
                 @click="generate_password"
@@ -334,7 +336,7 @@ const view_password = ref<boolean>(false);
           </FormField>
           <FormField
             v-if="
-              !(props.id in privateTournaments)
+              !(props.id in privateTournamentsList)
             "
             v-slot="context"
             :validations="v$.role"
@@ -443,7 +445,7 @@ const view_password = ref<boolean>(false);
     </template>
     <template #buttons>
       <button
-        v-if="!(props.id in privateTournaments)"
+        v-if="!(props.id in privateTournamentsList)"
         class="ml-2 inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:mt-0 sm:w-auto"
         type="button"
         @click="payment"

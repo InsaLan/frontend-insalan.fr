@@ -39,8 +39,8 @@ export function groupBy<T>(items: T[], key: keyof T): Record<string, T[]> {
 
 export const useTournamentStore = defineStore('tournament', () => {
   const eventsList = ref<Record<number, Event>>({});
-  const tournamentsList = ref<Record<number, EventTournament>>({});
-  const privateTournaments = ref<Record<number, PrivateTournament>>({});
+  const eventTournamentsList = ref<Record<number, EventTournament>>({});
+  const privateTournamentsList = ref<Record<number, PrivateTournament>>({});
   const unpaidRegistration = ref<{
     'id': number;
     'type': string;
@@ -127,7 +127,7 @@ export const useTournamentStore = defineStore('tournament', () => {
    ************** */
   async function fetchTournament(id: number) {
     const res = await axios.get<EventTournament>(`/tournament/tournament/${id}/`);
-    tournamentsList.value[id] = res.data;
+    eventTournamentsList.value[id] = res.data;
   }
 
   async function fetchTournaments(ids: number[]) {
@@ -136,7 +136,7 @@ export const useTournamentStore = defineStore('tournament', () => {
 
   async function fetchTournamentFull(id: number) {
     const res = await axios.get<EventTournament>(`/tournament/tournament/${id}/full/`);
-    tournamentsList.value[id] = res.data;
+    eventTournamentsList.value[id] = res.data;
   }
 
   async function fetchTournamentsFull(ids: number[]) {
@@ -145,11 +145,11 @@ export const useTournamentStore = defineStore('tournament', () => {
 
   async function fetchPrivateTournaments() {
     const res = await axios<PrivateTournament[]>('tournament/tournament/privates/');
-    res.data.forEach((ev) => { privateTournaments.value[ev.id] = ev; });
+    res.data.forEach((ev) => { privateTournamentsList.value[ev.id] = ev; });
   }
 
   async function getTournament(id: number) {
-    if (!(id in tournamentsList.value)) {
+    if (!(id in eventTournamentsList.value)) {
       await fetchTournament(id);
     }
   }
@@ -157,7 +157,7 @@ export const useTournamentStore = defineStore('tournament', () => {
   async function getTournaments(ids: number[]) {
     const missing: number[] = [];
     ids.forEach((id) => {
-      if (!(id in tournamentsList.value)) {
+      if (!(id in eventTournamentsList.value)) {
         missing.push(id);
       }
     });
@@ -167,16 +167,16 @@ export const useTournamentStore = defineStore('tournament', () => {
   }
 
   async function getTournamentFull(id: number) {
-    if (!(id in tournamentsList.value) || typeof tournamentsList.value[id].event === 'number') {
+    if (!(id in eventTournamentsList.value) || typeof eventTournamentsList.value[id].event === 'number') {
       await fetchTournamentFull(id);
     }
-    tournament.value = tournamentsList.value[id];
+    tournament.value = eventTournamentsList.value[id];
   }
 
   async function getTournamentsFull(ids: number[]) {
     const missing: number[] = [];
     ids.forEach((id) => {
-      if (!(id in tournamentsList.value) || typeof tournamentsList.value[id].event === 'number') {
+      if (!(id in eventTournamentsList.value) || typeof eventTournamentsList.value[id].event === 'number') {
         missing.push(id);
       }
     });
@@ -256,12 +256,12 @@ export const useTournamentStore = defineStore('tournament', () => {
         'X-CSRFToken': csrf.value,
       },
     });
-    if (tournament_id in privateTournaments.value) {
+    if (tournament_id in privateTournamentsList.value) {
       await getPrivateTournaments();
       return res.data;
     }
     await fetchTournamentFull(tournament_id).catch();
-    tournament.value = tournamentsList.value[tournament_id];
+    tournament.value = eventTournamentsList.value[tournament_id];
     return res.data;
   }
 
@@ -861,15 +861,15 @@ export const useTournamentStore = defineStore('tournament', () => {
 
   function $reset() {
     eventsList.value = {};
-    tournamentsList.value = {};
+    eventTournamentsList.value = {};
   }
 
   return {
     oldEvents,
     eventsList,
     ongoingEvents,
-    privateTournaments,
-    tournamentsList,
+    privateTournamentsList,
+    eventTournamentsList,
     unpaidRegistration,
     tourney_teams,
     tournament,

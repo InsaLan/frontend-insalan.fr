@@ -7,7 +7,7 @@ import { useTournamentStore } from '@/stores/tournament.store';
 
 const tournamentStore = useTournamentStore();
 const { getOngoingEvents, getPrivateTournaments } = tournamentStore;
-const { ongoingEvents, privateTournaments } = storeToRefs(tournamentStore);
+const { ongoingEvents, privateTournamentsList } = storeToRefs(tournamentStore);
 const event = computed(() => ongoingEvents.value.at(-1));
 const tournaments_id = computed(() => event.value?.tournaments);
 
@@ -39,13 +39,13 @@ await getPrivateTournaments();
       </router-link>
     </div>
   </div>
-  <div v-if="Object.keys(privateTournaments).length > 0">
+  <div v-if="Object.keys(privateTournamentsList).length > 0">
     <h1 class="title">
       Tournois privés
     </h1>
     <div class="mb-4 grid w-full gap-4 px-4 md:grid-cols-2 xl:grid-cols-4">
       <PrivateTournamentCard
-        v-for="tournament in privateTournaments"
+        v-for="tournament in privateTournamentsList"
         :key="tournament.id"
         :tournament="tournament"
       />

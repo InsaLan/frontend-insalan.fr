@@ -25,7 +25,7 @@ const {
   getTournamentFull, getTournamentTeams, patch_registration, patch_team, leave_team, getPrivateTournaments,
 } = tournamentStore;
 const { fetch_user_inscription_full } = userStore;
-const { tournament, soloGame, privateTournaments } = storeToRefs(tournamentStore);
+const { tournament, soloGame, privateTournamentsList } = storeToRefs(tournamentStore);
 // const { fetch_user_inscription_full, patch_user, send_score } = userStore;
 const { inscriptions } = storeToRefs(userStore);
 
@@ -58,12 +58,12 @@ const selected_team = computed(() => (
 ) as Team);
 
 try {
-  if (Object.keys(privateTournaments.value).length === 0) {
+  if (Object.keys(privateTournamentsList.value).length === 0) {
     await getPrivateTournaments();
   }
 
-  if (props.id in privateTournaments.value) {
-    tournament.value = privateTournaments.value[props.id];
+  if (props.id in privateTournamentsList.value) {
+    tournament.value = privateTournamentsList.value[props.id];
   } else {
     await getTournamentFull(props.id);
     getTournamentTeams();
@@ -335,7 +335,7 @@ const kick_member = async (type: string, id: number) => {
           </ul>
         </div>
         <div
-          v-if="!(props.id in privateTournaments)"
+          v-if="!(props.id in privateTournamentsList)"
           class="flex w-full flex-col justify-between border-b-2 border-black p-2"
         >
           <div
@@ -360,7 +360,7 @@ const kick_member = async (type: string, id: number) => {
           </ul>
         </div>
         <div
-          v-if="!(props.id in privateTournaments)"
+          v-if="!(props.id in privateTournamentsList)"
           class="flex w-full flex-col justify-between border-b-2 border-black p-2"
         >
           <div
@@ -419,7 +419,7 @@ const kick_member = async (type: string, id: number) => {
                   && selected_team?.captain === (team_registration?.[1] as PlayerRegistrationDeref)?.name_in_game
                 )
               )
-                && !(props.id in privateTournaments)
+                && !(props.id in privateTournamentsList)
             "
             type="button"
             class="center size-full rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"

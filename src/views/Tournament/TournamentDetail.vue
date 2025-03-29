@@ -12,7 +12,7 @@ const props = defineProps<{
 
 const tournamentStore = useTournamentStore();
 const { getTournamentFull, getTournamentTeams, getPrivateTournaments } = tournamentStore;
-const { tournament, privateTournaments } = storeToRefs(tournamentStore);
+const { tournament, privateTournamentsList } = storeToRefs(tournamentStore);
 
 const open_dropdown = ref(false);
 
@@ -51,12 +51,12 @@ const selected_section = computed<string>(() => {
   return sec;
 });
 
-if (Object.keys(privateTournaments.value).length === 0) {
+if (Object.keys(privateTournamentsList.value).length === 0) {
   await getPrivateTournaments();
 }
 
-if (props.id in privateTournaments.value) {
-  tournament.value = privateTournaments.value[props.id];
+if (props.id in privateTournamentsList.value) {
+  tournament.value = privateTournamentsList.value[props.id];
 } else {
   try {
     await getTournamentFull(props.id);

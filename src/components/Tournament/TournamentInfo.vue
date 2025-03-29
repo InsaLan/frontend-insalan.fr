@@ -151,7 +151,7 @@ const props = defineProps<{
           <h3
             class="text-xl font-bold md:text-2xl"
           >
-            Informations du tournois
+            Informations du tournoi
           </h3>
           <span class="rounded-full bg-cyan-800 p-2 text-center">
             <fa-awesome-icon
@@ -163,7 +163,7 @@ const props = defineProps<{
 
         <div class="mb-4 rounded-md bg-cyan-800/50 px-4 py-3 text-cyan-100">
           <p class="mb-3 text-sm font-medium">
-            Ce tournois est un tournois secondaire et n'est pas lié à une édition de l'insalan.
+            Ce tournoi est un tournoi secondaire et n'est pas lié à une édition de l'insalan.
             Pour plus d'informations, veuillez demander à l'équipe Animation.
           </p>
 
@@ -200,7 +200,7 @@ const props = defineProps<{
           class="flex items-center justify-center gap-1.5 text-xs text-cyan-200"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <span>L'inscription à ce tournois est protégé par un mot de passe</span>
+          <span>L'inscription à ce tournoi est protégée par un mot de passe</span>
         </div>
       </div>
     </div>

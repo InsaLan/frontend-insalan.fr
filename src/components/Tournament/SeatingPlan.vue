@@ -247,7 +247,7 @@ const closeModal = () => {
                 src="@/assets/images/seat-empty.png"
                 class="size-8 object-cover"
               />
-              <span>Places libres du tournois : {{ tournament.name }}</span>
+              <span>Places libres du tournoi : {{ tournament.name }}</span>
             </div>
             <div v-if="team" class="flex items-center gap-2">
               <img
@@ -263,7 +263,7 @@ const closeModal = () => {
                 src="@/assets/images/seat-taken.png"
                 class="size-8 object-cover"
               />
-              <span>Places occupées du tournois : {{ tournament.name }}</span>
+              <span>Places occupées du tournoi : {{ tournament.name }}</span>
             </div>
             <div class="flex items-center gap-2">
               <img

@@ -11,8 +11,10 @@ const props = defineProps<{
 }>();
 
 const { getTournament } = tournamentStore;
-const { tournamentsList, eventsList } = storeToRefs(tournamentStore);
-const tournament = computed<EventTournament | EventTournamentDeref | undefined>(() => tournamentsList.value[props.id]);
+const { eventTournamentsList, eventsList } = storeToRefs(tournamentStore);
+const tournament = computed<EventTournament | EventTournamentDeref | undefined>(
+  () => eventTournamentsList.value[props.id],
+);
 const event_ongoing = computed(() => {
   if (tournament.value === undefined) {
     return false;
