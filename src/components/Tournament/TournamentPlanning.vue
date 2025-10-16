@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import Planning from '@/components/Planning.vue';
-import type { TournamentDeref } from '@/models/tournament';
+import type { EventTournamentDeref } from '@/models/tournament';
 
 const props = defineProps<{
-  tournament: TournamentDeref;
+  tournament: EventTournamentDeref;
 }>();
 
 </script>

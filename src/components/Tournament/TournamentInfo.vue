@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import type { Game } from '@/models/game';
-import type { TournamentDeref } from '@/models/tournament';
+import type { EventTournamentDeref, PrivateTournament } from '@/models/tournament';
+import { useContentStore } from '@/stores/content.store';
+import { frenchFormatFromDate } from '@/utils';
+
+const { md } = useContentStore();
 
 const props = defineProps<{
-  tournament: TournamentDeref;
+  tournament: EventTournamentDeref | PrivateTournament;
 }>();
 </script>
 
@@ -17,7 +21,15 @@ const props = defineProps<{
       {{ tournament?.description }}
     </h2>
 
-    <div class="grid gap-7 lg:grid-cols-3">
+    <div
+      v-if="
+        'player_price_online' in tournament
+          && 'manager_price_online' in tournament
+          && 'cashprizes' in tournament
+          && 'casters' in tournament
+      "
+      class="grid gap-7 lg:grid-cols-3"
+    >
       <div class="flex w-full flex-col items-center md:my-24">
         <h3 class="mb-6 text-4xl">
           Format
@@ -126,6 +138,70 @@ const props = defineProps<{
             <text font-size="1" text-anchor="middle" x="4" y="4.25">&</text>
           </g>
         </svg>
+      </div>
+    </div>
+    <div
+      v-else
+      class="flex flex-col items-center justify-center p-4 md:p-6"
+    >
+      <div
+        class="w-full max-w-md rounded-lg border-2 border-cyan-700 bg-gradient-to-br from-cyan-950 to-cyan-900 p-5 text-white shadow-lg"
+      >
+        <div class="mb-4 flex items-center justify-between">
+          <h3
+            class="text-xl font-bold md:text-2xl"
+          >
+            Informations du tournoi
+          </h3>
+          <span class="rounded-full bg-cyan-800 p-2 text-center">
+            <fa-awesome-icon
+              class="text-yellow-500"
+              icon="fa-trophy"
+            />
+          </span>
+        </div>
+
+        <div class="mb-4 rounded-md bg-cyan-800/50 px-4 py-3 text-cyan-100">
+          <p class="mb-3 text-sm font-medium">
+            Ce tournoi est un tournoi secondaire et n'est pas lié à une édition de l'insalan.
+            Pour plus d'informations, veuillez demander à l'équipe Animation.
+          </p>
+
+          <div
+            class="flex items-center gap-2 text-xl"
+          >
+            <fa-awesome-icon
+              icon="fa-calendar-days"
+            />
+            <span>Début:
+              <b
+                class="font-bold text-yellow-500"
+              >
+                {{ frenchFormatFromDate(new Date(tournament?.start)) }}
+              </b>
+            </span>
+          </div>
+        </div>
+
+        <div
+          v-if="tournament?.rewards"
+          class="mb-3 rounded-md bg-gradient-to-r from-cyan-800/70 to-cyan-700/70 p-4 text-center"
+        >
+          <fa-awesome-icon
+            class="text-4xl text-yellow-500"
+            icon="fa-gift"
+          />
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <div class="text-2xl font-bold" v-html="md.render(tournament?.rewards)"/>
+        </div>
+
+        <div
+          v-if="tournament?.password"
+          class="flex items-center justify-center gap-1.5 text-xs text-cyan-200"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>L'inscription à ce tournoi est protégée par un mot de passe</span>
+        </div>
       </div>
     </div>
 

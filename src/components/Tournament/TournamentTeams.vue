@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import TeamCard from '@/components/Tournament/TeamCard.vue';
-import type { TournamentDeref } from '@/models/tournament';
+import type { EventTournamentDeref, PrivateTournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const props = defineProps<{
-  tournament: TournamentDeref;
+  tournament: EventTournamentDeref | PrivateTournament;
 }>();
 
 const tournamentStore = useTournamentStore();

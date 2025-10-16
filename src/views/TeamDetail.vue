@@ -8,7 +8,7 @@ import Modal from '@/components/Modal.vue';
 import Seating from '@/components/Tournament/SeatingPlan.vue';
 import { PaymentStatus, type PlayerRegistration, type PlayerRegistrationDeref } from '@/models/registration';
 import type { Team } from '@/models/team';
-import type { TournamentDeref } from '@/models/tournament';
+import type { EventTournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
 import { required } from '@/support/locales/errors.fr';
@@ -22,28 +22,54 @@ const tournamentStore = useTournamentStore();
 const userStore = useUserStore();
 
 const {
-  getTournamentFull, getTournamentTeams, patch_registration, patch_team, leave_team,
+  getTournamentFull, getTournamentTeams, patch_registration, patch_team, leave_team, getPrivateTournaments,
 } = tournamentStore;
 const { fetch_user_inscription_full } = userStore;
-const { tournament, soloGame } = storeToRefs(tournamentStore);
+const { tournament, soloGame, privateTournamentsList } = storeToRefs(tournamentStore);
 // const { fetch_user_inscription_full, patch_user, send_score } = userStore;
 const { inscriptions } = storeToRefs(userStore);
 
 const team_registration = computed(
-  () => inscriptions.value?.ongoing.find((inscription) => inscription[1].team.id === props.teamId),
+  () => {
+    const ongoing = inscriptions.value?.ongoing.find((inscription) => inscription[1].team.id === props.teamId);
+    if (ongoing) {
+      return ongoing;
+    }
+    const past = inscriptions.value?.past.find((inscription) => inscription[1].team.id === props.teamId);
+    if (past) {
+      return past;
+    }
+    const private_regs = inscriptions.value?.private_regs.find(
+      (inscription) => inscription[1].team.id === props.teamId,
+    );
+    if (private_regs) {
+      return private_regs;
+    }
+    return null;
+  },
 );
 
 const router = useRouter();
 
-const selected_team = computed(() => (tournament.value?.teams as Team[]).find(
+const selected_team = computed(() => (
+  tournament.value?.teams as Team[]
+).find(
   (team: Team) => team.id === props.teamId,
 ) as Team);
 
 try {
-  await getTournamentFull(props.id);
-  getTournamentTeams();
+  if (Object.keys(privateTournamentsList.value).length === 0) {
+    await getPrivateTournaments();
+  }
 
-  await fetch_user_inscription_full();
+  if (props.id in privateTournamentsList.value) {
+    tournament.value = privateTournamentsList.value[props.id];
+  } else {
+    await getTournamentFull(props.id);
+    getTournamentTeams();
+
+    await fetch_user_inscription_full();
+  }
 
   // Check if the team exists in the tournament
   if (!(tournament.value?.teams as Team[]).some((team: Team) => team.id === props.teamId)) {
@@ -238,7 +264,7 @@ const kick_member = async (type: string, id: number) => {
         <button
           v-if="
             !soloGame
-              && (tournament as TournamentDeref)?.event.ongoing
+              && (tournament && (!('event' in tournament) || (tournament as EventTournamentDeref)?.event.ongoing))
               && (
                 team_registration?.[0] === 'manager'
                 || (
@@ -309,6 +335,7 @@ const kick_member = async (type: string, id: number) => {
           </ul>
         </div>
         <div
+          v-if="!(props.id in privateTournamentsList)"
           class="flex w-full flex-col justify-between border-b-2 border-black p-2"
         >
           <div
@@ -333,6 +360,7 @@ const kick_member = async (type: string, id: number) => {
           </ul>
         </div>
         <div
+          v-if="!(props.id in privateTournamentsList)"
           class="flex w-full flex-col justify-between border-b-2 border-black p-2"
         >
           <div
@@ -376,7 +404,7 @@ const kick_member = async (type: string, id: number) => {
         </div>
       </div>
       <div
-        v-if="(tournament as TournamentDeref)?.event.ongoing"
+        v-if="tournament && (!('event' in tournament) || (tournament as EventTournamentDeref)?.event.ongoing)"
         class="flex w-full flex-col justify-between gap-2 border-t-2 border-black p-2 md:flex-row"
       >
         <div
@@ -391,6 +419,7 @@ const kick_member = async (type: string, id: number) => {
                   && selected_team?.captain === (team_registration?.[1] as PlayerRegistrationDeref)?.name_in_game
                 )
               )
+                && !(props.id in privateTournamentsList)
             "
             type="button"
             class="center size-full rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
@@ -445,7 +474,8 @@ const kick_member = async (type: string, id: number) => {
       class="mb-6 flex w-5/6 flex-col items-center justify-center overflow-hidden rounded-2xl bg-[#144B61] md:w-3/4"
     >
       <Seating
-        :tournament="tournament as TournamentDeref"
+        v-if="tournament && ('event' in tournament)"
+        :tournament="tournament as EventTournamentDeref"
         :team="selected_team"
       />
     </div>

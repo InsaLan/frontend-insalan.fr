@@ -8,7 +8,7 @@ import { useRoute, useRouter } from 'vue-router';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import type { Team } from '@/models/team';
-import type { Tournament } from '@/models/tournament';
+import type { EventTournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
 import {
@@ -24,9 +24,9 @@ const { user } = useUserStore();
 const tournamentStore = useTournamentStore();
 
 const {
-  registerTeam, registerPlayerOrManager, getTournamentFull, addRegistrationToCart,
+  registerTeam, registerPlayerOrManager, getTournamentFull, addRegistrationToCart, getPrivateTournaments,
 } = tournamentStore;
-const { tournament, soloGame } = storeToRefs(tournamentStore);
+const { tournament, soloGame, privateTournamentsList } = storeToRefs(tournamentStore);
 
 const register_form = reactive({
   team: '',
@@ -37,9 +37,18 @@ const register_form = reactive({
 });
 
 const selected_team = computed(() => {
-  const res = (tournament.value?.teams as Team[]).filter((team) => team.name === register_form.team);
-  if (res.length === 1) {
-    return res[0];
+  if (props.id in privateTournamentsList.value) {
+    const res = (
+      privateTournamentsList.value[props.id].teams as Team[]
+    ).filter((team) => team.name === register_form.team);
+    if (res.length === 1) {
+      return res[0];
+    }
+  } else {
+    const res = (tournament.value?.teams as Team[]).filter((team) => team.name === register_form.team);
+    if (res.length === 1) {
+      return res[0];
+    }
   }
   return null;
 });
@@ -47,8 +56,13 @@ const selected_team = computed(() => {
 const rules = computed(() => ({
   team: soloGame ? {} : { required },
   name_in_game: register_form.role !== 'manager' ? { required } : {},
-  password: { required, minLengthValue: minLength(8) },
-  role: { required },
+  password: (() => {
+    if (props.id in privateTournamentsList.value) {
+      return privateTournamentsList.value[props.id].password ? { required } : {};
+    }
+    return { required, minLengthValue: minLength(8) };
+  })(),
+  role: !(props.id in privateTournamentsList.value) ? { required } : {},
   accept_rules: { acceptRules },
 }));
 
@@ -101,7 +115,7 @@ const register_player = async () => {
 };
 
 const payment = async () => {
-  addRegistrationToCart(tournament.value as Tournament, register_form.role);
+  addRegistrationToCart(tournament.value as EventTournament, register_form.role);
   modal_payment.value = true;
 };
 
@@ -115,23 +129,33 @@ const generate_password = () => {
 
 const create = ref(true);
 
+if (Object.keys(privateTournamentsList.value).length === 0) {
+  await getPrivateTournaments();
+}
+
 const router = useRouter();
 const { query } = useRoute();
-try {
-  await getTournamentFull(props.id);
-} catch (err: unknown) {
-  router.go(-1);
+if (props.id in privateTournamentsList.value) {
+  tournament.value = privateTournamentsList.value[props.id];
+} else {
+  try {
+    await getTournamentFull(props.id);
+  } catch (err: unknown) {
+    router.go(-1);
+  }
+  if (tournament.value && 'registration_open' in tournament.value && Date.parse(tournament.value.registration_open ?? '') > Date.now()) {
+    router.go(-1);
+  }
 }
-if ('team' in query && 'pwd' in query) {
+if ('team' in query) {
   const res = (tournament.value?.teams as Team[]).filter((val) => val.id === Number(query.team));
   if (res.length === 1) {
     create.value = false;
     register_form.team = res[0].name;
-    register_form.password = query.pwd as string;
+    if ('pwd' in query) {
+      register_form.password = query.pwd as string;
+    }
   }
-}
-if (Date.parse(tournament.value?.registration_open ?? '') > Date.now()) {
-  router.go(-1);
 }
 
 const host = import.meta.env.VITE_WEBSITE_HOST as string;
@@ -261,12 +285,16 @@ const view_password = ref<boolean>(false);
             />
           </FormField>
           <FormField
+            v-if="
+              props.id in privateTournamentsList && privateTournamentsList[props.id].password
+                || !(props.id in privateTournamentsList)
+            "
             v-slot="context"
             :validations="v$.password"
             class="flex flex-col text-xl"
           >
             <label for="pwd">
-              Mot de passe de l'équipe
+              {{ props.id in privateTournamentsList ? 'Mot de passe du tournoi' : 'Mot de passe de l\'équipe' }}
             </label>
             <div
               class="relative flex size-full items-center"
@@ -281,6 +309,7 @@ const view_password = ref<boolean>(false);
                 @blur="v$.password.$touch"
               />
               <button
+                v-if="!(props.id in privateTournamentsList)"
                 type="button"
                 class="absolute right-8 top-1 z-10 size-8"
                 @click="generate_password"
@@ -306,6 +335,9 @@ const view_password = ref<boolean>(false);
             </div>
           </FormField>
           <FormField
+            v-if="
+              !(props.id in privateTournamentsList)
+            "
             v-slot="context"
             :validations="v$.role"
             class="flex flex-col text-xl"
@@ -334,7 +366,7 @@ const view_password = ref<boolean>(false);
         </form>
 
         <span class="my-3 text-center text-4xl">Rappel du Règlement</span>
-        <ul class="my-5 text-2xl">
+        <ul class="my-5 list-inside list-disc text-2xl">
           <li>Pas d'insulte</li>
           <li>Apporter son propre matériel <b>filaire </b></li>
         </ul>
@@ -399,10 +431,10 @@ const view_password = ref<boolean>(false);
         transmettre le lien suivant à vos coéquipiers⋅ères/managers⋅euses pour
         qu'ils puissent rejoindre votre équipe : <br>
         <a
-          :href="`${host}/tournament/${tournament?.id}/register?team=${selected_team?.id}&pwd=${register_form.password}`"
+          :href="`${host}/tournament/${tournament?.id}/register?team=${selected_team?.id}${register_form.password ? `&pwd=${register_form.password}` : ''}`"
           class="text-[#62d1ff] underline hover:text-blue-600"
         >
-          {{ `${host}/tournament/${tournament?.id}/register?team=${selected_team?.id}&pwd=${register_form.password}` }}
+          {{ `${host}/tournament/${tournament?.id}/register?team=${selected_team?.id}${register_form.password ? `&pwd=${register_form.password}` : ''}` }}
         </a> <br>
         Vous pouvez dès à présent payer votre inscription ou bien revenir le faire plus tard.
       </div>
@@ -413,6 +445,7 @@ const view_password = ref<boolean>(false);
     </template>
     <template #buttons>
       <button
+        v-if="!(props.id in privateTournamentsList)"
         class="ml-2 inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:mt-0 sm:w-auto"
         type="button"
         @click="payment"

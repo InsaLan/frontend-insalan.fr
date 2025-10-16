@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import type { TournamentDeref } from '@/models/tournament';
+import type { EventTournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
 
@@ -11,8 +11,8 @@ const props = defineProps<{
 }>();
 
 const tournamentStore = useTournamentStore();
-const { getTournamentFull, getTournamentTeams } = tournamentStore;
-const { tournament } = storeToRefs(tournamentStore);
+const { getTournamentFull, getTournamentTeams, getPrivateTournaments } = tournamentStore;
+const { tournament, privateTournamentsList } = storeToRefs(tournamentStore);
 
 const open_dropdown = ref(false);
 
@@ -27,11 +27,11 @@ const { isConnected, user } = storeToRefs(userStore);
 const sections = computed<Record<string, TournamentDetailSection>>(() => ({
   info: { title: 'Informations', is_available: true },
   teams: { title: 'Équipes', is_available: true },
-  seatings: { title: 'Placement', is_available: true },
-  groups: { title: 'Poules', is_available: (tournament.value as TournamentDeref)?.groups.length > 0 || false },
-  swiss: { title: 'Ronde Suisse', is_available: (tournament.value as TournamentDeref)?.swissRounds.length > 0 || false },
-  brackets: { title: 'Arbres', is_available: (tournament.value as TournamentDeref)?.brackets.length > 0 || false },
-  planning: { title: 'Planning', is_available: true },
+  seatings: { title: 'Placement', is_available: 'seatslots' in (tournament.value as EventTournamentDeref) },
+  groups: { title: 'Poules', is_available: (tournament.value as EventTournamentDeref)?.groups.length > 0 || false },
+  swiss: { title: 'Ronde Suisse', is_available: (tournament.value as EventTournamentDeref)?.swissRounds.length > 0 || false },
+  brackets: { title: 'Arbres', is_available: (tournament.value as EventTournamentDeref)?.brackets.length > 0 || false },
+  planning: { title: 'Planning', is_available: 'planning' in (tournament.value as EventTournamentDeref) },
   rules: { title: 'Règlement', is_available: true },
 }));
 
@@ -51,11 +51,19 @@ const selected_section = computed<string>(() => {
   return sec;
 });
 
-try {
-  await getTournamentFull(props.id);
-  getTournamentTeams();
-} catch (err: unknown) {
-  router.go(-1);
+if (Object.keys(privateTournamentsList.value).length === 0) {
+  await getPrivateTournaments();
+}
+
+if (props.id in privateTournamentsList.value) {
+  tournament.value = privateTournamentsList.value[props.id];
+} else {
+  try {
+    await getTournamentFull(props.id);
+    getTournamentTeams();
+  } catch (err: unknown) {
+    router.go(-1);
+  }
 }
 
 const admin_switch = computed(() => {
@@ -68,7 +76,10 @@ const admin_switch = computed(() => {
 </script>
 
 <template>
-  <div v-if="tournament?.is_announced" class="flex min-h-[calc(100vh_-_6rem)] flex-col">
+  <div
+    v-if="tournament && (!('is_announced' in tournament) || tournament?.is_announced)"
+    class="flex min-h-[calc(100vh_-_6rem)] flex-col"
+  >
     <div class="sticky top-24 z-50 bg-[#2c292d]">
       <div class="py-2 text-center text-6xl font-bold text-white">
         {{ tournament?.name }}
@@ -94,7 +105,7 @@ const admin_switch = computed(() => {
         >
           <template v-for="(section, key) in sections" :key="key">
             <router-link
-              v-if="section.is_available || admin_mode"
+              v-if="section.is_available || (admin_mode && !['seatings', 'planning'].includes(key))"
               :to="{ name: `tournament_${admin_mode ? 'admin_' : ''}${key}` }"
               :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': key === selected_section }"
               class="text-xl"
@@ -105,7 +116,7 @@ const admin_switch = computed(() => {
           </template>
         </div>
         <router-link
-          v-if="isConnected && user.groups.includes('Equipe Tournois')"
+          v-if="isConnected && (user.groups.includes('Equipe Tournois') || user.groups.includes('Equipe Anim'))"
           :to="{ name: admin_switch }"
           :class="{
             'bg-red-800': !admin_mode,

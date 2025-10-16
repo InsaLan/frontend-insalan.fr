@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import SwissRoundTable from '@/components/Tournament/SwissRoundTable.vue';
-import type { TournamentDeref } from '@/models/tournament';
+import type { EventTournamentDeref, PrivateTournament } from '@/models/tournament';
 
 const { tournament } = defineProps<{
-  tournament: TournamentDeref;
+  tournament: EventTournamentDeref | PrivateTournament;
 }>();
 </script>
 

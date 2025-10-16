@@ -1,5 +1,5 @@
 import type { PlayerRegistration } from '@/models/registration';
-import type { TournamentDeref } from '@/models/tournament';
+import type { EventTournamentDeref } from '@/models/tournament';
 
 interface BaseTeam {
   id: number;
@@ -14,7 +14,7 @@ interface BaseTeam {
 }
 
 export interface TeamDeref extends BaseTeam {
-  tournament: TournamentDeref;
+  tournament: EventTournamentDeref;
 }
 
 export interface Team extends BaseTeam {

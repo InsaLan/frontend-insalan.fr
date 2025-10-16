@@ -1,4 +1,4 @@
-import type { TournamentDeref } from './tournament';
+import type { EventTournamentDeref } from './tournament';
 
 interface BaseEvent {
   id: number;
@@ -18,5 +18,5 @@ export interface Event extends BaseEvent {
 }
 
 export interface EventDeref extends BaseEvent {
-  tournaments?: TournamentDeref[];
+  tournaments?: EventTournamentDeref[];
 }

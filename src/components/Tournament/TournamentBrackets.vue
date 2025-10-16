@@ -2,11 +2,11 @@
 import MatchCard from '@/components/Tournament/MatchCard.vue';
 import { BracketType } from '@/models/bracket';
 import { MatchTypeEnum } from '@/models/match';
-import type { TournamentDeref } from '@/models/tournament';
+import type { EventTournamentDeref, PrivateTournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const { tournament } = defineProps<{
-  tournament: TournamentDeref;
+  tournament: EventTournamentDeref | PrivateTournament;
 }>();
 
 const tournamentStore = useTournamentStore();

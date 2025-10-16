@@ -8,7 +8,7 @@ import {
   BestofType,
   MatchTypeEnum,
 } from '@/models/match';
-import type { TournamentDeref } from '@/models/tournament';
+import type { EventTournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { groupBy, useTournamentStore } from '@/stores/tournament.store';
 import {
@@ -19,7 +19,7 @@ import {
 } from '@/support/locales/errors.fr';
 
 const { tournament } = defineProps<{
-  tournament: TournamentDeref;
+  tournament: EventTournamentDeref;
 }>();
 
 const { addNotification } = useNotificationStore();

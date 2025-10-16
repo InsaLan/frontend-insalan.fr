@@ -108,7 +108,7 @@ const routes: RouteRecordRaw[] = [
         path: 'admin',
         beforeEnter: () => {
           const { isConnected, user } = useUserStore();
-          return (!isConnected || !user.groups.includes('Equipe Tournois')) ? { path: '/' } : true;
+          return (!isConnected || !(user.groups.includes('Equipe Tournois') || user.groups.includes('Equipe Anim'))) ? { path: '/' } : true;
         },
         children: [
           {

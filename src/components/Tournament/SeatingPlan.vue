@@ -4,7 +4,7 @@ import {
 } from 'vue';
 import Modal from '@/components/Modal.vue';
 import type { Team, TeamDeref } from '@/models/team';
-import type { TournamentDeref } from '@/models/tournament';
+import type { EventTournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const tournamentStore = useTournamentStore();
@@ -17,7 +17,7 @@ const showModal = ref(false);
 const selectedTeamSlot = ref<number | null>(null);
 
 const props = defineProps<{
-  tournament: TournamentDeref;
+  tournament: EventTournamentDeref;
   team: Team | null;
 }>();
 
@@ -247,7 +247,7 @@ const closeModal = () => {
                 src="@/assets/images/seat-empty.png"
                 class="size-8 object-cover"
               />
-              <span>Places libres du tournois : {{ tournament.name }}</span>
+              <span>Places libres du tournoi : {{ tournament.name }}</span>
             </div>
             <div v-if="team" class="flex items-center gap-2">
               <img
@@ -263,7 +263,7 @@ const closeModal = () => {
                 src="@/assets/images/seat-taken.png"
                 class="size-8 object-cover"
               />
-              <span>Places occupées du tournois : {{ tournament.name }}</span>
+              <span>Places occupées du tournoi : {{ tournament.name }}</span>
             </div>
             <div class="flex items-center gap-2">
               <img
