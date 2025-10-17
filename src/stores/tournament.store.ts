@@ -65,12 +65,20 @@ export const useTournamentStore = defineStore('tournament', () => {
 
   async function fetchAllEvents() {
     const res = await axios.get<Event[]>('/tournament/event/');
-    res.data.forEach((ev) => { eventsList.value[ev.id] = ev; });
+    res.data.forEach((ev) => {
+      ev.date_start = new Date(ev.date_start);
+      ev.date_end = new Date(ev.date_end);
+      eventsList.value[ev.id] = ev;
+    });
   }
 
   async function fetchEventsByYear(year: number) {
     const res = await axios.get<Event[]>(`tournament/event/year/${year}/`);
-    res.data.forEach((ev) => { eventsList.value[ev.id] = ev; });
+    res.data.forEach((ev) => {
+      ev.date_start = new Date(ev.date_start);
+      ev.date_end = new Date(ev.date_end);
+      eventsList.value[ev.id] = ev;
+    });
   }
 
   async function fetchEventsByYears(years: number[]) {
@@ -84,6 +92,8 @@ export const useTournamentStore = defineStore('tournament', () => {
 
   async function fetchEventById(id: number) {
     const res = await axios<Event>(`tournament/event/${id}/`);
+    res.data.date_start = new Date(res.data.date_start);
+    res.data.date_end = new Date(res.data.date_end);
     eventsList.value[id] = res.data;
   }
 
@@ -93,7 +103,11 @@ export const useTournamentStore = defineStore('tournament', () => {
 
   async function fetchOngoingEvents() {
     const res = await axios<Event[]>('tournament/event/ongoing/');
-    res.data.forEach((ev) => { eventsList.value[ev.id] = ev; });
+    res.data.forEach((ev) => {
+      ev.date_start = new Date(ev.date_start);
+      ev.date_end = new Date(ev.date_end);
+      eventsList.value[ev.id] = ev;
+    });
   }
 
   async function getEvent(id: number) {
