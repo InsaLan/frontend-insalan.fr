@@ -1,13 +1,8 @@
 FROM node:20-alpine
 
-# CMD [ "cat", "/etc/resolv.conf" ]
-
 ENV NODE_ENV=development
-
 
 COPY . /src
 WORKDIR /src
-# TODO: freeze installed pnpm version (broken because of version incompability)
-# RUN source "$HOME/.shrc" && pnpm i --frozen-lockfile && pnpm run notsc-build
 
 ENTRYPOINT [ "./entrypoint-dev.sh" ]
