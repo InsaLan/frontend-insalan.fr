@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import type { Event } from '@/models/event';
 import { useContentStore } from '@/stores/content.store';
 
@@ -11,7 +12,30 @@ interface Props {
   event?: Event;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const eventText = computed(() => {
+  if (props.event === undefined) {
+    return getConstant('message_remerciement');
+  }
+
+  const { date_start, date_end } = props.event;
+
+  if (date_start !== undefined && date_end !== undefined) {
+    if (date_start.getFullYear() === date_end.getFullYear()) {
+      if (date_start.getMonth() === date_end.getMonth()) {
+        return `${date_start.getDate()} - ${date_end.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()}`;
+      }
+      return `${date_start.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} - ${date_end.getDate()} ${date_end.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()}`;
+    }
+    return `${date_start.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()} - ${date_end.getDate()} ${date_end.toLocaleString('default', { month: 'long' })} ${date_end.getFullYear()}`;
+  } if (date_start !== undefined) {
+    return `${date_start.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()}`;
+  } if (date_end !== undefined) {
+    return `Jusqu'au ${date_end.getDate()} ${date_end.toLocaleString('default', { month: 'long' })} ${date_end.getFullYear()}`;
+  }
+  return getConstant('message_coming_soon');
+});
 
 const scrollPastHero = () => {
   window.scrollTo({
@@ -35,17 +59,7 @@ const scrollPastHero = () => {
     <div class="flex flex-col items-center">
       <img alt="logo insalan" class="w-[32rem]" src="../assets/images/logo_wide.png">
       <h1 class="text-shadow text-center text-6xl font-bold text-white">
-        <template v-if="event">
-          {{ event.date_start.getFullYear() === event.date_end.getFullYear()
-            ? event.date_start.getMonth() === event.date_end.getMonth()
-              ? `${event.date_start.getDate()} - ${event.date_end.getDate()} ${event.date_start.toLocaleString('default', { month: 'long' })} ${event.date_start.getFullYear()}`
-              : `${event.date_start.getDate()} ${event.date_start.toLocaleString('default', { month: 'long' })} - ${event.date_end.getDate()} ${event.date_end.toLocaleString('default', { month: 'long' })} ${event.date_start.getFullYear()}`
-            : `${event.date_start.getDate()} ${event.date_start.toLocaleString('default', { month: 'long' })} ${event.date_start.getFullYear()} - ${event.date_end.getDate()} ${event.date_end.toLocaleString('default', { month: 'long' })} ${event.date_end.getFullYear()}`
-          }}
-        </template>
-        <template v-else>
-          {{ getConstant('message_remerciement') }}
-        </template>
+        {{ eventText }}
       </h1>
       <div id="next" class="m-auto mt-4 size-20 cursor-pointer rounded-full bg-red-500" @click="scrollPastHero()" @keydown="scrollPastHero()">
         <svg

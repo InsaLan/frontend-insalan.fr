@@ -39,6 +39,11 @@ export function groupBy<T>(items: T[], key: keyof T): Record<string, T[]> {
 
 export const useTournamentStore = defineStore('tournament', () => {
   const eventsList = ref<Record<number, Event>>({});
+  function parseEventDates(ev: Event) {
+    ev.date_start = ev.date_start ? new Date(ev.date_start) : undefined;
+    ev.date_end = ev.date_end ? new Date(ev.date_end) : undefined;
+  }
+
   const eventTournamentsList = ref<Record<number, EventTournament>>({});
   const privateTournamentsList = ref<Record<number, PrivateTournament>>({});
   const unpaidRegistration = ref<{
@@ -66,8 +71,7 @@ export const useTournamentStore = defineStore('tournament', () => {
   async function fetchAllEvents() {
     const res = await axios.get<Event[]>('/tournament/event/');
     res.data.forEach((ev) => {
-      ev.date_start = new Date(ev.date_start);
-      ev.date_end = new Date(ev.date_end);
+      parseEventDates(ev);
       eventsList.value[ev.id] = ev;
     });
   }
@@ -75,8 +79,7 @@ export const useTournamentStore = defineStore('tournament', () => {
   async function fetchEventsByYear(year: number) {
     const res = await axios.get<Event[]>(`tournament/event/year/${year}/`);
     res.data.forEach((ev) => {
-      ev.date_start = new Date(ev.date_start);
-      ev.date_end = new Date(ev.date_end);
+      parseEventDates(ev);
       eventsList.value[ev.id] = ev;
     });
   }
@@ -92,8 +95,7 @@ export const useTournamentStore = defineStore('tournament', () => {
 
   async function fetchEventById(id: number) {
     const res = await axios<Event>(`tournament/event/${id}/`);
-    res.data.date_start = new Date(res.data.date_start);
-    res.data.date_end = new Date(res.data.date_end);
+    parseEventDates(res.data);
     eventsList.value[id] = res.data;
   }
 
@@ -104,8 +106,7 @@ export const useTournamentStore = defineStore('tournament', () => {
   async function fetchOngoingEvents() {
     const res = await axios<Event[]>('tournament/event/ongoing/');
     res.data.forEach((ev) => {
-      ev.date_start = new Date(ev.date_start);
-      ev.date_end = new Date(ev.date_end);
+      parseEventDates(ev);
       eventsList.value[ev.id] = ev;
     });
   }
