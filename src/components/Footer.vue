@@ -10,7 +10,7 @@ const buildYear = BUILD_YEAR;
         Réseaux
       </h1>
       <div class="flex w-full flex-row items-center justify-center gap-2">
-        <a class="size-14 hover:brightness-75" href="https://www.instagram.com/insalan_officiel" target="_blank" rel="noopener noreferrer">
+        <a class="w-14 hover:brightness-75" href="https://www.instagram.com/insalan_officiel" target="_blank" rel="noopener noreferrer">
           <svg
             id="instagram"
             viewBox="30 30 140 140"
@@ -106,7 +106,7 @@ const buildYear = BUILD_YEAR;
             </g>
           </svg>
         </a>
-        <a class="size-14 hover:brightness-75" href="https://twitter.com/insalan" target="_blank" rel="noopener noreferrer">
+        <a class="w-14 hover:brightness-75" href="https://twitter.com/insalan" target="_blank" rel="noopener noreferrer">
           <svg
             id="X"
             viewBox="30 30 140 140"
@@ -128,7 +128,7 @@ const buildYear = BUILD_YEAR;
             </g>
           </svg>
         </a>
-        <a class="size-14 hover:brightness-75" href="https://www.facebook.com/insalan/" target="_blank" rel="noopener noreferrer">
+        <a class="w-14 hover:brightness-75" href="https://www.facebook.com/insalan/" target="_blank" rel="noopener noreferrer">
           <svg
             id="facebook"
             viewBox="30 30 140 140"
