@@ -56,12 +56,13 @@ export const useTournamentStore = defineStore('tournament', () => {
     }
     return res;
   }, [] as Event[]));
-  const oldEvents = computed(() => Object.values(eventsList.value).reduce((res, item) => {
-    if (!item.ongoing) {
-      res.push(item);
-    }
-    return res;
-  }, [] as Event[]));
+  // Return non-ongoing events sorted newest-first (year desc, month desc)
+  const oldEvents = computed(() => Object.values(eventsList.value)
+    .filter((item) => !item.ongoing)
+    .sort((a, b) => {
+      if (b.year !== a.year) return b.year - a.year;
+      return (b.month || 0) - (a.month || 0);
+    }));
 
   async function fetchAllEvents() {
     const res = await axios.get<Event[]>('/tournament/event/');
