@@ -64,7 +64,7 @@ const openModal = () => {
     <form id="login" class="my-2" @submit.prevent="login_user">
       <FormField v-slot="context" :validations="v$.username" class="flex flex-col">
         <label for="username">
-          Nom d'utilisateur
+          Nom d'utilisateur·trice
         </label>
         <input
           id="username"

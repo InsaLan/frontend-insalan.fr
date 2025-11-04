@@ -42,16 +42,16 @@ const props = defineProps<{
           <rect fill="#d14d7b" x="0" y="3.5" width="4" height="0.5"/>
           <rect fill="#d14d7b" x="4" y="7.5" width="8" height="0.5"/>
           <text v-if="(tournament?.game as Game).players_per_team === 1" font-size="1" text-anchor="middle" x="4" y="2.25">
-            {{ tournament?.maxTeam }} joueurs
+            {{ tournament?.maxTeam }} joueur·euse·s
           </text>
           <text v-else font-size="1" text-anchor="middle" x="4" y="1.25">
             <tspan>{{ tournament?.maxTeam }} équipes</tspan>
             <tspan text-anchor="middle" x="4" y="2.75">
-              de {{ (tournament?.game as Game).players_per_team }} joueurs
+              de {{ (tournament?.game as Game).players_per_team }} joueur·euse·s
             </tspan>
           </text>
           <text font-size="1" text-anchor="middle" x="8" y="5.25">
-            {{ Number(tournament?.player_price_online) }}€ / joueur
+            {{ Number(tournament?.player_price_online) }}€ / joueur·euse
           </text>
           <text font-size="1" text-anchor="middle" x="8" y="6.75">
             {{ Number(tournament?.manager_price_online) }}€ / manager

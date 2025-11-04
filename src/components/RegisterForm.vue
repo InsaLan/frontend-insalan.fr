@@ -91,7 +91,7 @@ const register_user = async () => {
       </FormField>
       <FormField v-slot="context" :validations="v$.username" class="flex flex-col">
         <label for="username_register">
-          Nom d'utilisateur
+          Nom d'utilisateur·trice
         </label>
         <input
           id="username_register"
