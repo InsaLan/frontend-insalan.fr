@@ -278,7 +278,7 @@ const openScoreModal = () => {
             </p>
             <div class="flex place-items-center justify-items-center">
               <p class="text-xl">
-                Role :
+                Rôle :
               </p>
               <div class="text-md m-1 flex w-16 justify-around rounded bg-blue-700 p-1">
                 <svg
@@ -296,7 +296,7 @@ const openScoreModal = () => {
                     stroke-linejoin="round"
                   />
                 </svg>
-                {{ role }}
+                {{ role === 'joueur' ? 'joueur·euse' : role }}
               </div>
             </div>
           </div>
