@@ -4,8 +4,8 @@ interface BaseEvent {
   id: number;
   name: string;
   description: string;
-  date_start?: Date;
-  date_end?: Date;
+  date_start: Date;
+  date_end: Date;
   ongoing: boolean;
   logo?: string;
   poster?: string;

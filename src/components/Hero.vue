@@ -21,20 +21,13 @@ const eventText = computed(() => {
 
   const { date_start, date_end } = props.event;
 
-  if (date_start !== undefined && date_end !== undefined) {
-    if (date_start.getFullYear() === date_end.getFullYear()) {
-      if (date_start.getMonth() === date_end.getMonth()) {
-        return `${date_start.getDate()} - ${date_end.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()}`;
-      }
-      return `${date_start.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} - ${date_end.getDate()} ${date_end.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()}`;
+  if (date_start.getFullYear() === date_end.getFullYear()) {
+    if (date_start.getMonth() === date_end.getMonth()) {
+      return `${date_start.getDate()} - ${date_end.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()}`;
     }
-    return `${date_start.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()} - ${date_end.getDate()} ${date_end.toLocaleString('default', { month: 'long' })} ${date_end.getFullYear()}`;
-  } if (date_start !== undefined) {
-    return `${date_start.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()}`;
-  } if (date_end !== undefined) {
-    return `Jusqu'au ${date_end.getDate()} ${date_end.toLocaleString('default', { month: 'long' })} ${date_end.getFullYear()}`;
+    return `${date_start.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} - ${date_end.getDate()} ${date_end.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()}`;
   }
-  return getConstant('message_coming_soon');
+  return `${date_start.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()} - ${date_end.getDate()} ${date_end.toLocaleString('default', { month: 'long' })} ${date_end.getFullYear()}`;
 });
 
 const scrollPastHero = () => {

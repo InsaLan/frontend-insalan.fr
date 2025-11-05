@@ -40,8 +40,8 @@ export function groupBy<T>(items: T[], key: keyof T): Record<string, T[]> {
 export const useTournamentStore = defineStore('tournament', () => {
   const eventsList = ref<Record<number, Event>>({});
   function parseEventDates(ev: Event) {
-    ev.date_start = ev.date_start ? new Date(ev.date_start) : undefined;
-    ev.date_end = ev.date_end ? new Date(ev.date_end) : undefined;
+    ev.date_start = new Date(ev.date_start);
+    ev.date_end = new Date(ev.date_end);
   }
 
   const eventTournamentsList = ref<Record<number, EventTournament>>({});
@@ -61,12 +61,9 @@ export const useTournamentStore = defineStore('tournament', () => {
     }
     return res;
   }, [] as Event[]));
-  const oldEvents = computed(() => Object.values(eventsList.value).reduce((res, item) => {
-    if (!item.ongoing) {
-      res.push(item);
-    }
-    return res;
-  }, [] as Event[]));
+  const oldEvents = computed(() => Object.values(eventsList.value)
+    .filter((item) => !item.ongoing)
+    .sort((a, b) => b.date_start.getTime() - a.date_start.getTime()));
 
   async function fetchAllEvents() {
     const res = await axios.get<Event[]>('/tournament/event/');
