@@ -1,10 +1,34 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import type { Event } from '@/models/event';
 import { useContentStore } from '@/stores/content.store';
 
 const contentStore = useContentStore();
 const { getConstant } = contentStore;
 
 const trailer_embed = 'https://www.youtube.com/embed/Bxi-4XEANbE?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&rel=0&enablejsapi=1&playlist=Bxi-4XEANbE&end=36';
+
+interface Props {
+  event?: Event;
+}
+
+const props = defineProps<Props>();
+
+const eventText = computed(() => {
+  if (props.event === undefined) {
+    return getConstant('message_remerciement');
+  }
+
+  const { date_start, date_end } = props.event;
+
+  if (date_start.getFullYear() === date_end.getFullYear()) {
+    if (date_start.getMonth() === date_end.getMonth()) {
+      return `${date_start.getDate()} - ${date_end.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()}`;
+    }
+    return `${date_start.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} - ${date_end.getDate()} ${date_end.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()}`;
+  }
+  return `${date_start.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()} - ${date_end.getDate()} ${date_end.toLocaleString('default', { month: 'long' })} ${date_end.getFullYear()}`;
+});
 
 const scrollPastHero = () => {
   window.scrollTo({
@@ -28,7 +52,7 @@ const scrollPastHero = () => {
     <div class="flex flex-col items-center">
       <img alt="logo insalan" class="w-[32rem]" src="../assets/images/logo_wide.png">
       <h1 class="text-shadow text-center text-6xl font-bold text-white">
-        {{ getConstant('date_insalan') }}
+        {{ eventText }}
       </h1>
       <div id="next" class="m-auto mt-4 size-20 cursor-pointer rounded-full bg-red-500" @click="scrollPastHero()" @keydown="scrollPastHero()">
         <svg

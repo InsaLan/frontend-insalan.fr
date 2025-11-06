@@ -39,6 +39,11 @@ export function groupBy<T>(items: T[], key: keyof T): Record<string, T[]> {
 
 export const useTournamentStore = defineStore('tournament', () => {
   const eventsList = ref<Record<number, Event>>({});
+  function parseEventDates(ev: Event) {
+    ev.date_start = new Date(ev.date_start);
+    ev.date_end = new Date(ev.date_end);
+  }
+
   const eventTournamentsList = ref<Record<number, EventTournament>>({});
   const privateTournamentsList = ref<Record<number, PrivateTournament>>({});
   const unpaidRegistration = ref<{
@@ -56,21 +61,24 @@ export const useTournamentStore = defineStore('tournament', () => {
     }
     return res;
   }, [] as Event[]));
-  const oldEvents = computed(() => Object.values(eventsList.value).reduce((res, item) => {
-    if (!item.ongoing) {
-      res.push(item);
-    }
-    return res;
-  }, [] as Event[]));
+  const oldEvents = computed(() => Object.values(eventsList.value)
+    .filter((item) => !item.ongoing)
+    .sort((a, b) => b.date_start.getTime() - a.date_start.getTime()));
 
   async function fetchAllEvents() {
     const res = await axios.get<Event[]>('/tournament/event/');
-    res.data.forEach((ev) => { eventsList.value[ev.id] = ev; });
+    res.data.forEach((ev) => {
+      parseEventDates(ev);
+      eventsList.value[ev.id] = ev;
+    });
   }
 
   async function fetchEventsByYear(year: number) {
     const res = await axios.get<Event[]>(`tournament/event/year/${year}/`);
-    res.data.forEach((ev) => { eventsList.value[ev.id] = ev; });
+    res.data.forEach((ev) => {
+      parseEventDates(ev);
+      eventsList.value[ev.id] = ev;
+    });
   }
 
   async function fetchEventsByYears(years: number[]) {
@@ -84,6 +92,7 @@ export const useTournamentStore = defineStore('tournament', () => {
 
   async function fetchEventById(id: number) {
     const res = await axios<Event>(`tournament/event/${id}/`);
+    parseEventDates(res.data);
     eventsList.value[id] = res.data;
   }
 
@@ -93,7 +102,10 @@ export const useTournamentStore = defineStore('tournament', () => {
 
   async function fetchOngoingEvents() {
     const res = await axios<Event[]>('tournament/event/ongoing/');
-    res.data.forEach((ev) => { eventsList.value[ev.id] = ev; });
+    res.data.forEach((ev) => {
+      parseEventDates(ev);
+      eventsList.value[ev.id] = ev;
+    });
   }
 
   async function getEvent(id: number) {
