@@ -13,7 +13,8 @@ interface BaseTournament {
   name: string;
   rules: string;
   logo?: string;
-  maxTeam: number;
+  max_team_thresholds: number[];
+  current_threshold_index: number;
   validated_teams: number;
   description: string;
   description_bottom: string;

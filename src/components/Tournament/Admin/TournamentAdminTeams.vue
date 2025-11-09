@@ -87,7 +87,8 @@ const save_seeds = async () => {
     Liste des équipes et seeding
   </h4>
   <p class="mx-4 text-center">
-    Le seed d'une équipe doit être un entier compris entre 1 et {{ tournament.maxTeam }}.
+    Le seed d'une équipe doit être un entier compris entre 1 et
+    {{ tournament.max_team_thresholds[tournament?.current_threshold_index] }}.
     Chaque seed doit être unique.
     Une équipe avec un seed de 0 sera ignorer lors des calculs faisant intervenir le seeding.
     <br>
