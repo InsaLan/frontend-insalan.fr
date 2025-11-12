@@ -53,7 +53,11 @@ export const useTournamentStore = defineStore('tournament', () => {
     'team': string;
   }[]>([]);
 
-  const tourney_teams = ref({ validated_teams: [] as Team[], non_validated_teams: [] as Team[] });
+  const tourney_teams = ref({
+    validated_teams: [] as Team[],
+    non_validated_teams: [] as Team[],
+    waiting_validation_teams: [] as Team[],
+  });
   const tournament = ref<EventTournament | EventTournamentDeref | PrivateTournament>();
   const ongoingEvents = computed(() => Object.values(eventsList.value).reduce((res, item) => {
     if (item.ongoing) {
@@ -421,11 +425,13 @@ export const useTournamentStore = defineStore('tournament', () => {
     tourney_teams.value = (tournament.value?.teams as Team[]).reduce((ret, team) => {
       if (team.validated) {
         ret.validated_teams.push(team);
+      } else if (team.is_waiting_for_threshold) {
+        ret.waiting_validation_teams.push(team);
       } else {
         ret.non_validated_teams.push(team);
       }
       return ret;
-    }, { validated_teams: [] as Team[], non_validated_teams: [] as Team[] });
+    }, { validated_teams: [] as Team[], non_validated_teams: [] as Team[], waiting_validation_teams: [] as Team[] });
   }
 
   async function get_unpaid_registration() {
