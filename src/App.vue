@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import Footer from '@/components/Footer.vue';
+import NameConfirmationModal from '@/components/NameConfirmationModal.vue';
 import Navigation from '@/components/Navigation.vue';
 import Notification from '@/components/Notification.vue';
 import { useContentStore } from '@/stores/content.store';
@@ -21,6 +22,7 @@ onMounted(async () => {
 
 <template>
   <Navigation/>
+  <NameConfirmationModal/>
   <Notification/>
   <div class="flex flex-1 flex-col">
     <RouterView v-slot="{ Component }">

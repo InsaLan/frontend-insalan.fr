@@ -230,11 +230,11 @@ export const useUserStore = defineStore('user', () => {
       });
       if (res.status === 200) {
         if (data.current_password) {
-          addNotification('Vos informations ont été modifiées, vous devez vous reconnecter', 'info');
+          addNotification('Vos informations ont été mises à jour, vous devez vous reconnecter', 'info');
           await logout();
         } else {
           user.value = { ...user.value, ...data };
-          addNotification('Vos informations ont été modifiées', 'info');
+          addNotification('Vos informations ont été mises à jour', 'info');
         }
       }
     } catch (err: unknown) {
