@@ -15,8 +15,9 @@ import {
   acceptRules, minLength, required,
 } from '@/support/locales/errors.fr';
 
-const props = defineProps<{
+const { id, isPrivate } = defineProps<{
   id: number;
+  isPrivate?: boolean;
 }>();
 
 const { user } = useUserStore();
@@ -24,7 +25,7 @@ const { user } = useUserStore();
 const tournamentStore = useTournamentStore();
 
 const {
-  registerTeam, registerPlayerOrManager, getTournamentFull, addRegistrationToCart, getPrivateTournaments,
+  registerTeam, registerPlayerOrManager, getTournamentFull, addRegistrationToCart, getPrivateTournament,
 } = tournamentStore;
 const { tournament, soloGame, privateTournamentsList } = storeToRefs(tournamentStore);
 
@@ -37,9 +38,9 @@ const register_form = reactive({
 });
 
 const selected_team = computed(() => {
-  if (props.id in privateTournamentsList.value) {
+  if (isPrivate) {
     const res = (
-      privateTournamentsList.value[props.id].teams as Team[]
+      privateTournamentsList.value[id].teams as Team[]
     ).filter((team) => team.name === register_form.team);
     if (res.length === 1) {
       return res[0];
@@ -57,12 +58,12 @@ const rules = computed(() => ({
   team: soloGame ? {} : { required },
   name_in_game: register_form.role !== 'manager' ? { required } : {},
   password: (() => {
-    if (props.id in privateTournamentsList.value) {
-      return privateTournamentsList.value[props.id].password ? { required } : {};
+    if (isPrivate) {
+      return privateTournamentsList.value[id].password ? { required } : {};
     }
     return { required, minLengthValue: minLength(8) };
   })(),
-  role: !(props.id in privateTournamentsList.value) ? { required } : {},
+  role: !isPrivate ? { required } : {},
   accept_rules: { acceptRules },
 }));
 
@@ -129,24 +130,22 @@ const generate_password = () => {
 
 const create = ref(true);
 
-if (Object.keys(privateTournamentsList.value).length === 0) {
-  await getPrivateTournaments();
-}
-
 const router = useRouter();
 const { query } = useRoute();
-if (props.id in privateTournamentsList.value) {
-  tournament.value = privateTournamentsList.value[props.id];
-} else {
-  try {
-    await getTournamentFull(props.id);
-  } catch (err: unknown) {
-    router.go(-1);
+
+try {
+  if (isPrivate) {
+    await getPrivateTournament(id);
+  } else {
+    await getTournamentFull(id);
   }
   if (tournament.value && 'registration_open' in tournament.value && Date.parse(tournament.value.registration_open ?? '') > Date.now()) {
-    router.go(-1);
+    router.back();
   }
+} catch (err: unknown) {
+  router.back();
 }
+
 if ('team' in query) {
   const res = (tournament.value?.teams as Team[]).filter((val) => val.id === Number(query.team));
   if (res.length === 1) {
@@ -286,15 +285,15 @@ const view_password = ref<boolean>(false);
           </FormField>
           <FormField
             v-if="
-              props.id in privateTournamentsList && privateTournamentsList[props.id].password
-                || !(props.id in privateTournamentsList)
+              isPrivate && privateTournamentsList[id].password
+                || !(isPrivate)
             "
             v-slot="context"
             :validations="v$.password"
             class="flex flex-col text-xl"
           >
             <label for="pwd">
-              {{ props.id in privateTournamentsList ? 'Mot de passe du tournoi' : 'Mot de passe de l\'équipe' }}
+              {{ isPrivate ? 'Mot de passe du tournoi' : 'Mot de passe de l\'équipe' }}
             </label>
             <div
               class="relative flex size-full items-center"
@@ -309,7 +308,7 @@ const view_password = ref<boolean>(false);
                 @blur="v$.password.$touch"
               />
               <button
-                v-if="!(props.id in privateTournamentsList)"
+                v-if="!(isPrivate)"
                 type="button"
                 class="absolute right-8 top-1 z-10 size-8"
                 @click="generate_password"
@@ -336,7 +335,7 @@ const view_password = ref<boolean>(false);
           </FormField>
           <FormField
             v-if="
-              !(props.id in privateTournamentsList)
+              !isPrivate
             "
             v-slot="context"
             :validations="v$.role"
@@ -385,7 +384,7 @@ const view_password = ref<boolean>(false);
               type="checkbox"
               required
             />
-            <label for="check"> J'accepte les <router-link :to="`/tournament/${tournament?.id}/rules`" target="_blank" class="text-[#63d1ff]">règles du tournoi</router-link></label>
+            <label for="check"> J'accepte les <router-link :to="`/tournament/${isPrivate ? 'private/' : ''}${tournament?.id}/rules`" target="_blank" class="text-[#63d1ff]">règles du tournoi</router-link></label>
           </div>
         </FormField>
       </div>
@@ -445,7 +444,7 @@ const view_password = ref<boolean>(false);
     </template>
     <template #buttons>
       <button
-        v-if="!(props.id in privateTournamentsList)"
+        v-if="!isPrivate"
         class="ml-2 inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:mt-0 sm:w-auto"
         type="button"
         @click="payment"
@@ -453,7 +452,7 @@ const view_password = ref<boolean>(false);
         Continuer & payer
       </button>
       <router-link
-        :to="`/tournament/${tournament?.id}/teams`"
+        :to="`/tournament/${isPrivate ? 'private/' : ''}${tournament?.id}/teams`"
         class="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
       >
         Continuer

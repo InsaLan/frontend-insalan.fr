@@ -185,6 +185,13 @@ export const useTournamentStore = defineStore('tournament', () => {
     }
   }
 
+  async function getPrivateTournament(id: number) {
+    if (!(id in privateTournamentsList.value)) {
+      await fetchPrivateTournaments();
+    }
+    tournament.value = privateTournamentsList.value[id];
+  }
+
   async function getPrivateTournaments() {
     await fetchPrivateTournaments();
   }

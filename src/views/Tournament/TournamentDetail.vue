@@ -6,13 +6,14 @@ import type { EventTournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
 
-const props = defineProps<{
+const { id, isPrivate } = defineProps<{
   id: number;
+  isPrivate?: boolean;
 }>();
 
 const tournamentStore = useTournamentStore();
-const { getTournamentFull, getTournamentTeams, getPrivateTournaments } = tournamentStore;
-const { tournament, privateTournamentsList } = storeToRefs(tournamentStore);
+const { getTournamentFull, getTournamentTeams, getPrivateTournament } = tournamentStore;
+const { tournament } = storeToRefs(tournamentStore);
 
 const open_dropdown = ref(false);
 
@@ -51,19 +52,15 @@ const selected_section = computed<string>(() => {
   return sec;
 });
 
-if (Object.keys(privateTournamentsList.value).length === 0) {
-  await getPrivateTournaments();
-}
-
-if (props.id in privateTournamentsList.value) {
-  tournament.value = privateTournamentsList.value[props.id];
+try {
+  if (isPrivate) {
+    await getPrivateTournament(id);
 } else {
-  try {
-    await getTournamentFull(props.id);
+    await getTournamentFull(id);
+  }
     getTournamentTeams();
   } catch (err: unknown) {
-    router.go(-1);
-  }
+  router.back();
 }
 
 const admin_switch = computed(() => {
@@ -80,12 +77,12 @@ const admin_switch = computed(() => {
     v-if="tournament && (!('is_announced' in tournament) || tournament?.is_announced)"
     class="flex min-h-[calc(100vh_-_6rem)] flex-col"
   >
-    <div class="sticky top-24 z-50 bg-[#2c292d]">
-      <div class="py-2 text-center text-6xl font-bold text-white">
+    <div class="py-2 text-center text-5xl font-bold text-white">
         {{ tournament?.name }}
       </div>
 
-      <nav class="mt-2 flex justify-center gap-10 bg-gray-500 py-4 sm:gap-16">
+    <div class="sticky top-24 z-50">
+      <nav class="flex justify-center gap-10 bg-gray-500 py-3 sm:gap-16">
         <button
           type="button"
           class="text-xl underline decoration-[#63d1ff] decoration-4 underline-offset-8 lg:hidden"
@@ -101,14 +98,14 @@ const admin_switch = computed(() => {
         </button>
         <div
           :class="[open_dropdown ? 'flex border-y-2 border-white' : 'hidden']"
-          class="absolute z-10 max-h-[60vh] w-screen translate-y-10 flex-col items-center gap-2 overflow-scroll bg-gray-500 py-3 lg:static lg:z-0 lg:flex lg:w-auto lg:-translate-x-16 lg:translate-y-0  lg:flex-row lg:gap-4 lg:overflow-visible lg:py-0 xl:gap-10"
+          class="absolute z-10 max-h-[60vh] w-screen translate-y-10 flex-col items-center gap-2 overflow-scroll bg-gray-500 py-3 lg:static lg:z-0 lg:flex lg:w-auto lg:-translate-x-16 lg:translate-y-0 lg:flex-row lg:gap-4 lg:overflow-visible lg:py-0 xl:gap-10"
         >
           <template v-for="(section, key) in sections" :key="key">
             <router-link
               v-if="section.is_available || (admin_mode && !['seatings', 'planning'].includes(key))"
               :to="{ name: `tournament_${admin_mode ? 'admin_' : ''}${key}` }"
               :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': key === selected_section }"
-              class="text-xl"
+              class="text-xl underline-offset-8 hover:underline hover:decoration-[#63d1ff] hover:decoration-4"
               @click="open_dropdown = false"
             >
               {{ section.title }}
@@ -123,7 +120,7 @@ const admin_switch = computed(() => {
             'bg-blue-800': admin_mode,
           }"
           type="button"
-          class="-my-2 rounded p-2 text-xl font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500 sm:absolute sm:right-5 sm:-mt-2"
+          class="-my-1 rounded p-1 text-xl text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500 sm:absolute sm:right-5 sm:-mt-1"
         >
           {{ admin_mode ? 'Mode Normal' : 'Mode Admin' }}
         </router-link>
