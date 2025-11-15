@@ -55,11 +55,11 @@ const selected_section = computed<string>(() => {
 try {
   if (isPrivate) {
     await getPrivateTournament(id);
-} else {
+  } else {
     await getTournamentFull(id);
   }
-    getTournamentTeams();
-  } catch (err: unknown) {
+  getTournamentTeams();
+} catch (err: unknown) {
   router.back();
 }
 
@@ -78,8 +78,8 @@ const admin_switch = computed(() => {
     class="flex min-h-[calc(100vh_-_6rem)] flex-col"
   >
     <div class="py-2 text-center text-5xl font-bold text-white">
-        {{ tournament?.name }}
-      </div>
+      {{ tournament?.name }}
+    </div>
 
     <div class="sticky top-24 z-50">
       <nav class="flex justify-center gap-10 bg-gray-500 py-3 sm:gap-16">

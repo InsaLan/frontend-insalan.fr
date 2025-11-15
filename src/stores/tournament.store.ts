@@ -898,6 +898,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     getTournaments,
     getTournamentFull,
     getTournamentsFull,
+    getPrivateTournament,
     getPrivateTournaments,
     fetchAllEvents,
     fetchEventsByYear,
