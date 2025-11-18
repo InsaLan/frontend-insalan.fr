@@ -87,6 +87,17 @@ export const useUserStore = defineStore('user', () => {
     addNotification(`Un email de confirmation vous a été envoyé a ${email} pour confirmer votre compte`, 'info');
   }
 
+  async function fetchUser() {
+    try {
+      const user_data = await axios.get<User>('/user/me/', { withCredentials: true });
+      user.value = user_data.data;
+    } catch (err) {
+      isConnected.value = false;
+      user.value = {} as User;
+      addNotification("Une erreur est survenue lors de la récupération de l'utilisateur·rice, essayez de vous reconnecter", 'error');
+    }
+  }
+
   async function login(username: string, password: string) {
     await get_csrf();
 
@@ -99,8 +110,7 @@ export const useUserStore = defineStore('user', () => {
         withCredentials: true,
       });
 
-      const user_data = await axios.get<User>('/user/me/', { withCredentials: true });
-      user.value = user_data.data;
+      await fetchUser();
       isConnected.value = true;
       addNotification(`Bienvenue ${username}`, 'info');
       connectionTimestamp.value = Date.now();
@@ -333,6 +343,7 @@ export const useUserStore = defineStore('user', () => {
     user,
     isAdmin,
     signin,
+    fetchUser,
     login,
     logout,
     fetch_user_inscription_full,

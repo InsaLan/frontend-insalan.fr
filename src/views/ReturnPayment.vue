@@ -17,10 +17,11 @@ const props = defineProps<{
   status: { type: ReturnType; code?: string; error?: string };
 }>();
 
-onMounted(() => {
+onMounted(async () => {
   if (props.status.type === ReturnType.RETURN && props.status.code === ReturnState.SUCCEEDED) {
     clear_cart();
   }
+  await userStore.fetchUser();
 });
 
 </script>
