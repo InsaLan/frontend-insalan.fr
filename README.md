@@ -1,8 +1,8 @@
-# Insalan Frontend
+# InsaLan Frontend
 
 ## Description
 
-This is the frontend of the Insalan website. It is a Vue.js application. It is
+This is the frontend of the InsaLan website. It is a Vue.js application. It is
 served by a Nginx server. It is part of the [insalan.fr](https://insalan.fr)
 infrastructure and is deployed with the
 [infra-insalan.fr](https://github.com/InsaLan/infra-insalan.fr) repository.
