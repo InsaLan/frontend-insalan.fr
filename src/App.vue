@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
+import logoHome from '@/assets/images/logo_home.png';
 import Footer from '@/components/Footer.vue';
 import Navigation from '@/components/Navigation.vue';
 import Notification from '@/components/Notification.vue';
 import { useContentStore } from '@/stores/content.store';
 import { useUserStore } from '@/stores/user.store';
+import { setMeta } from '@/utils';
 
 const contentStore = useContentStore();
 const { fetchStatic } = contentStore;
@@ -17,6 +19,10 @@ onMounted(async () => {
   await fetchStatic();
 });
 
+onMounted(() => {
+  const fullLogoUrl = new URL(logoHome, window.location.origin).href;
+  setMeta('og:image', fullLogoUrl);
+});
 </script>
 
 <template>

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import PrivateTournamentCard from '@/components/Tournament/PrivateTournamentCard.vue';
 import TournamentCard from '@/components/Tournament/TournamentCard.vue';
 import { useTournamentStore } from '@/stores/tournament.store';
+import { setMeta } from '@/utils';
 
 const tournamentStore = useTournamentStore();
 const { getOngoingEvents, getPrivateTournaments } = tournamentStore;
@@ -13,6 +14,11 @@ const tournaments_id = computed(() => event.value?.tournaments);
 
 await getOngoingEvents();
 await getPrivateTournaments();
+
+onMounted(() => {
+  setMeta('og:title', 'Tournois - InsaLan');
+  setMeta('og:description', 'Tournois en cours et à venir de l\'InsaLan');
+});
 </script>
 
 <template>

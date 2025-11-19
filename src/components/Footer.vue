@@ -183,7 +183,7 @@ const buildYear = BUILD_YEAR;
         </div>
         <div class="grid">
           <p class="text-center">
-            Insalan 2023 - {{ buildYear }}
+            InsaLan 2023 - {{ buildYear }}
           </p>
           <p class="text-center">
             Code & design: équipe Dev

@@ -61,7 +61,7 @@ onMounted(() => {
   </div>
   <div class="m-6 flex items-center justify-center md:m-32">
     <img
-      alt="Logo Insalan XVIII"
+      alt="Logo InsaLan"
       class="image-center m-6 w-20 justify-center md:max-h-full md:w-max md:max-w-full"
       src="@/assets/images/logo_home.png"
     />
