@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { EventTournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
-import { setMeta } from '@/utils';
 
 const props = defineProps<{
   id: number;
@@ -73,15 +72,6 @@ const admin_switch = computed(() => {
   }
 
   return (route.name as string).replace('tournament_', 'tournament_admin_').split('-').at(0);
-});
-
-onMounted(() => {
-  if (tournament.value) {
-    setMeta('og:title', `Tournoi ${tournament.value.name} - InsaLan`);
-  } else {
-    setMeta('og:title', 'Tournoi - InsaLan');
-  }
-  setMeta('og:description', 'Tournoi de l\'InsaLan');
 });
 </script>
 

@@ -19,14 +19,4 @@ function frenchFormatFromDate(date: Date): string {
   return `${day} - ${hours}h${minutes}`;
 }
 
-function setMeta(property: string, content: string) {
-  let tag = document.querySelector(`meta[property="${property}"]`);
-  if (!tag) {
-    tag = document.createElement('meta');
-    tag.setAttribute('property', property);
-    document.head.appendChild(tag);
-  }
-  tag.setAttribute('content', content);
-}
-
-export { frenchDayFormatFromDate, frenchFormatFromDate, setMeta };
+export { frenchDayFormatFromDate, frenchFormatFromDate };
