@@ -16,7 +16,6 @@ onMounted(async () => {
   await handle_session_cookie_expiration();
   await fetchStatic();
 });
-
 </script>
 
 <template>
