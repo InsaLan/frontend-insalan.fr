@@ -149,7 +149,7 @@ const register_user = async () => {
             href="#"
             @click="show_modal_cgu"
             @keydown.enter="show_modal_cgu"
-          >CGU</a> de l'insalan</label>
+          >CGU</a> de l'InsaLan</label>
         </div>
       </FormField>
       <div class="flex flex-col items-center">

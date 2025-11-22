@@ -46,11 +46,11 @@ const scrollPastHero = () => {
         allowfullscreen
         class="aspect-video min-h-full grow object-cover blur-md"
         frameborder="0"
-        title="Trailer insalan"
+        title="Trailer InsaLan"
       />
     </div>
     <div class="flex flex-col items-center">
-      <img alt="logo insalan" class="w-[32rem]" src="../assets/images/logo_wide.png">
+      <img alt="logo InsaLan" class="w-[32rem]" src="../assets/images/logo_wide.png">
       <h1 class="text-shadow text-center text-6xl font-bold text-white">
         {{ eventText }}
       </h1>
