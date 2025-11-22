@@ -163,7 +163,7 @@ const props = defineProps<{
 
         <div class="mb-4 rounded-md bg-cyan-800/50 px-4 py-3 text-cyan-100">
           <p class="mb-3 text-sm font-medium">
-            Ce tournoi est un tournoi secondaire et n'est pas lié à une édition de l'insalan.
+            Ce tournoi est un tournoi secondaire et n'est pas lié à une édition de l'InsaLan.
             Pour plus d'informations, veuillez demander à l'équipe Animation.
           </p>
 
