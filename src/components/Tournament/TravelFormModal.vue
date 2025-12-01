@@ -2,7 +2,6 @@
 import useVuelidate from '@vuelidate/core';
 import { maxLength, minLength, required } from '@vuelidate/validators';
 import { reactive, ref } from 'vue';
-import type { Event } from '@/models/event';
 import { TRANSPORTATION_METHOD, TRANSPORTATION_METHOD_TO_STRING, type TransportationMethod } from '@/models/travelData';
 import { useEcologyStore } from '@/stores/ecology.store';
 
