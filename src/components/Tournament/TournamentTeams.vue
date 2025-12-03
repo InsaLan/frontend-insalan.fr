@@ -52,11 +52,13 @@ const { tourney_teams, soloGame } = storeToRefs(tournamentStore);
         <p>
           Prochain palier :
           {{
-            tourney_teams.validated_teams.length + tourney_teams.waiting_validation_teams.length
+            tourney_teams.waiting_validation_teams.length
           }}/{{ props.tournament.max_team_thresholds[
             props.tournament.current_threshold_index + 1
+          ] - props.tournament.max_team_thresholds[
+            props.tournament.current_threshold_index
           ] }}
-          équipes valides
+          équipes validées
         </p>
         <label
           class="sr-only mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
@@ -67,11 +69,27 @@ const { tourney_teams, soloGame } = storeToRefs(tournamentStore);
         <progress
           id="team-progress"
           class="progress progress-primary w-1/2 rounded-lg"
-          :value="tourney_teams.validated_teams.length + tourney_teams.waiting_validation_teams.length"
+          :value="tourney_teams.waiting_validation_teams.length"
           :max="props.tournament.max_team_thresholds[
             props.tournament.current_threshold_index + 1
+          ] - props.tournament.max_team_thresholds[
+            props.tournament.current_threshold_index
           ]"
         />
+        <div
+          v-if="
+            tourney_teams.waiting_validation_teams.length
+              >= props.tournament.max_team_thresholds[
+                props.tournament.current_threshold_index + 1
+              ] - props.tournament.max_team_thresholds[
+                props.tournament.current_threshold_index
+              ]
+          "
+        >
+          <span class="text-sm font-medium text-green-600 dark:text-green-400">
+            Le palier peut être étendu par le staff du tournoi, merci de patienter.
+          </span>
+        </div>
       </div>
     </div>
     <div v-if="tourney_teams?.waiting_validation_teams.length > 0">
