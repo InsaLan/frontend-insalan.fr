@@ -22,7 +22,7 @@ const tournamentStore = useTournamentStore();
 const userStore = useUserStore();
 
 const {
-  getTournamentFull, getTournamentTeams, patch_registration, patch_team, leave_team, getPrivateTournaments,
+  getTournamentFull, getTournamentTeams, patch_registration, patch_team, leave_team, getPrivateTournament,
 } = tournamentStore;
 const { fetch_user_inscription_full } = userStore;
 const { tournament, soloGame, privateTournamentsList } = storeToRefs(tournamentStore);
@@ -59,7 +59,7 @@ const selected_team = computed(() => (
 
 try {
   if (Object.keys(privateTournamentsList.value).length === 0) {
-    await getPrivateTournaments();
+    await getPrivateTournament(props.id);
   }
 
   if (props.id in privateTournamentsList.value) {

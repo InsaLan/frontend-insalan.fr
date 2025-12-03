@@ -199,7 +199,8 @@ export const useTournamentStore = defineStore('tournament', () => {
 
   async function getPrivateTournament(id: number) {
     if (!(id in privateTournamentsList.value)) {
-      await fetchPrivateTournaments();
+      const res = await axios<PrivateTournament>(`tournament/tournament/privates/${id}/`);
+      privateTournamentsList.value[id] = res.data;
     }
     tournament.value = privateTournamentsList.value[id];
   }
