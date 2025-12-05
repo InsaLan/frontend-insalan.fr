@@ -512,6 +512,7 @@ const handleCloseTravelFormModal = () => {
   <TravelFormModal
     v-if="openTravelFormModal"
     :event="(tournament as EventTournamentDeref).event.id"
+    :tournament-id="(tournament as EventTournamentDeref).id"
     :close-modal="handleCloseTravelFormModal"
   />
 </template>

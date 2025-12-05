@@ -13,6 +13,7 @@ export const TRANSPORTATION_METHOD = {
 export type TransportationMethod = keyof typeof TRANSPORTATION_METHOD;
 
 export type TravelData = {
+  tournament: number;
   city: string;
   transportation_method: TransportationMethod;
   event: number;

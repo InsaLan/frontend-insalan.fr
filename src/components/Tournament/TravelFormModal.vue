@@ -10,10 +10,11 @@ import Modal from '../Modal.vue';
 
 interface Props {
   event: number;
+  tournamentId: number;
   closeModal: () => void;
 }
 
-const { event, closeModal } = defineProps<Props>();
+const { event, tournamentId, closeModal } = defineProps<Props>();
 
 const { sendTravelData } = useEcologyStore();
 
@@ -43,6 +44,7 @@ const handleSubmit = async () => {
   }
 
   const success = await sendTravelData({
+    tournament: tournamentId,
     city: form_data.city,
     transportation_method: form_data.transportationMethod,
     event,
