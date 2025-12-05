@@ -2,7 +2,7 @@
 import useVuelidate from '@vuelidate/core';
 import { maxLength, minLength, required } from '@vuelidate/validators';
 import { reactive, ref } from 'vue';
-import { TRANSPORTATION_METHOD, TRANSPORTATION_METHOD_TO_STRING, type TransportationMethod } from '@/models/travelData';
+import { TRANSPORTATION_METHOD, type TransportationMethod } from '@/models/travelData';
 import { useEcologyStore } from '@/stores/ecology.store';
 
 import FormField from '../FormField.vue';
@@ -19,9 +19,12 @@ const { sendTravelData } = useEcologyStore();
 
 const submittingForm = ref(false);
 
-const form_data = reactive({
+const form_data = reactive<{
+  city: string;
+  transportationMethod: TransportationMethod;
+}>({
   city: '',
-  transportationMethod: TRANSPORTATION_METHOD.BIKE,
+  transportationMethod: 'BIKE',
 });
 
 const form_rules = {
@@ -90,11 +93,11 @@ const handleSubmit = async () => {
             @blur="v$.transportationMethod.$touch"
           >
             <option
-              v-for="transportation_method in Object.keys(TRANSPORTATION_METHOD)"
+              v-for="transportation_method in Object.keys(TRANSPORTATION_METHOD) as TransportationMethod[]"
               :key="transportation_method"
               :value="transportation_method"
             >
-              {{ TRANSPORTATION_METHOD_TO_STRING[transportation_method as TransportationMethod] }}
+              {{ TRANSPORTATION_METHOD[transportation_method] }}
             </option>
           </select>
         </FormField>
