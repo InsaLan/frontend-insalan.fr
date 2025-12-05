@@ -7,8 +7,9 @@ import {
 import { useRoute, useRouter } from 'vue-router';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
+import TravelFormModal from '@/components/Tournament/TravelFormModal.vue';
 import type { Team } from '@/models/team';
-import type { EventTournament } from '@/models/tournament';
+import type { EventTournament, EventTournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
 import {
@@ -82,6 +83,7 @@ const rules = computed(() => ({
 const v$ = useVuelidate(rules, register_form);
 
 const open_modal = ref(false);
+const openTravelFormModal = ref(false);
 const modal_payment = ref(false);
 
 const register_team = async () => {
@@ -105,7 +107,11 @@ const register_team = async () => {
     return;
   }
 
-  open_modal.value = true;
+  if (isPrivate) {
+    open_modal.value = true;
+  } else {
+    openTravelFormModal.value = true;
+  }
 };
 
 const register_player = async () => {
@@ -124,7 +130,11 @@ const register_player = async () => {
     return;
   }
 
-  open_modal.value = true;
+  if (isPrivate) {
+    open_modal.value = true;
+  } else {
+    openTravelFormModal.value = true;
+  }
 };
 
 const payment = async () => {
@@ -172,6 +182,11 @@ if ('team' in query) {
 const host = import.meta.env.VITE_WEBSITE_HOST as string;
 
 const view_password = ref<boolean>(false);
+
+const handleCloseTravelFormModal = () => {
+  openTravelFormModal.value = false;
+  open_modal.value = true;
+};
 </script>
 
 <template>
@@ -518,4 +533,11 @@ const view_password = ref<boolean>(false);
       </button>
     </template>
   </Modal>
+
+  <TravelFormModal
+    v-if="openTravelFormModal"
+    :event="(tournament as EventTournamentDeref).event.id"
+    :tournament-id="(tournament as EventTournamentDeref).id"
+    :close-modal="handleCloseTravelFormModal"
+  />
 </template>
