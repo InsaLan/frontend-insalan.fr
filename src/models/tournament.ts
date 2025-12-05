@@ -28,12 +28,13 @@ interface BaseEventTournament extends BaseTournament {
   is_announced: boolean;
   registration_open: string;
   registration_close: string;
+  enable_manager: boolean;
   player_price_online: string;
   player_price_onsite: string;
   manager_price_online: string;
   manager_price_onsite: string;
   cashprizes: number[];
-  manager_online_product: number;
+  manager_online_product?: number;
   player_online_product: number;
   substitute_online_product: number;
   casters: Caster[];

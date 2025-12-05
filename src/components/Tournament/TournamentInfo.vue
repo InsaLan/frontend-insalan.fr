@@ -50,10 +50,10 @@ const props = defineProps<{
               de {{ (tournament?.game as Game).players_per_team }} joueur·euse·s
             </tspan>
           </text>
-          <text font-size="1" text-anchor="middle" x="8" y="5.25">
+          <text font-size="1" text-anchor="middle" x="8" :y="tournament?.enable_manager ? 5.25 : 6.25">
             {{ Number(tournament?.player_price_online) }}€ / joueur·euse
           </text>
-          <text font-size="1" text-anchor="middle" x="8" y="6.75">
+          <text v-if="tournament?.enable_manager" font-size="1" text-anchor="middle" x="8" y="6.75">
             {{ Number(tournament?.manager_price_online) }}€ / manager
           </text>
         </svg>

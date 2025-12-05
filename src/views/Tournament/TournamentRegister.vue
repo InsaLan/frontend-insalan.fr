@@ -29,6 +29,15 @@ const {
 } = tournamentStore;
 const { tournament, soloGame, privateTournamentsList } = storeToRefs(tournamentStore);
 
+const enableManager = computed(() => !isPrivate && (tournament.value as EventTournament).enable_manager);
+const roles = computed(() => {
+  const rolesArray = ['player', 'substitute'];
+  if (enableManager.value) {
+    rolesArray.push('manager');
+  }
+  return rolesArray;
+});
+
 const register_form = reactive({
   team: '',
   name_in_game: '',
@@ -63,7 +72,10 @@ const rules = computed(() => ({
     }
     return { required, minLengthValue: minLength(8) };
   })(),
-  role: !isPrivate ? { required } : {},
+  role: !isPrivate ? {
+    required,
+    validateRole: (role: string) => roles.value.includes(role),
+  } : {},
   accept_rules: { acceptRules },
 }));
 
@@ -354,7 +366,7 @@ const view_password = ref<boolean>(false);
               <option value="player">
                 Joueur
               </option>
-              <option value="manager">
+              <option v-if="enableManager" value="manager">
                 Manager
               </option>
               <option value="substitute">
