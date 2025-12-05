@@ -6,7 +6,7 @@ export const TRANSPORTATION_METHOD = {
   CARPOOLING: 'Covoiturage',
   NONE: 'Aucun',
   PLANE: 'Avion',
-  PUBLIC_TRANSPORT: 'Transport en commun',
+  PUBLIC_TRANSPORT: 'Transport public urbain',
   TRAIN: 'Train',
 };
 
