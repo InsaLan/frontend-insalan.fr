@@ -8,6 +8,7 @@ interface BaseTeam {
   managers: string[] | number[];
   substitutes: PlayerRegistration[] | number[];
   validated: boolean;
+  is_waiting_for_threshold: boolean;
   captain: string;
   seat_slot: number | null;
   seed: number;

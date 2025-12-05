@@ -392,12 +392,25 @@ const view_password = ref<boolean>(false);
         <button
           v-if="create"
           class="rounded border-solid bg-green-600 p-3 text-3xl md:w-5/12"
-          :class="{ 'opacity-60': (tournament?.validated_teams ?? 0) >= (tournament?.maxTeam ?? 0) }"
+          :class="{
+            'opacity-60': (tournament?.validated_teams ?? 0) >= (
+              tournament?.max_team_thresholds[
+                tournament?.max_team_thresholds.length - 1
+              ] ?? 0
+            ),
+          }"
           type="button"
-          :disabled="(tournament?.validated_teams ?? 0) >= (tournament?.maxTeam ?? 0)"
+          :disabled="(tournament?.validated_teams ?? 0)
+            >= (tournament?.max_team_thresholds[
+              tournament?.max_team_thresholds.length - 1
+            ] ?? 0)"
           @click="register_team"
         >
-          {{ (tournament?.validated_teams ?? 0) >= (tournament?.maxTeam ?? 0) ? 'Inscriptions complètes' : 'Créer l\'équipe' }}
+          {{
+            (tournament?.validated_teams ?? 0) >= (tournament?.max_team_thresholds[
+              tournament?.max_team_thresholds.length - 1
+            ] ?? 0) ? 'Inscriptions complètes' : 'Créer l\'équipe'
+          }}
         </button>
         <button
           v-else

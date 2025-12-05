@@ -45,7 +45,8 @@ onMounted(async () => {
       class="max-w-screen aspect-video text-clip"
     />
     <p class="text-lg">
-      {{ tournament?.validated_teams }}/{{ tournament?.maxTeam }} Équipes | Cashprize:
+      {{ tournament?.validated_teams }}/{{ tournament?.max_team_thresholds[tournament?.current_threshold_index] }}
+      Équipes | Cashprize:
       {{ tournament?.cashprizes?.length !== 0 ? `${tournament?.cashprizes?.reduce((acc, val) => acc += Number(val), 0)} €` : "À venir" }}
     </p>
     <div class="mb-3 flex w-4/5 justify-center gap-3 text-center">

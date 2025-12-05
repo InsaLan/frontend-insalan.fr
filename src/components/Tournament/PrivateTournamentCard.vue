@@ -14,7 +14,8 @@ defineProps<{
       class="max-w-screen aspect-video text-clip"
     />
     <p class="text-lg">
-      {{ tournament?.validated_teams }}/{{ tournament?.maxTeam }} Équipes
+      {{ tournament?.validated_teams }}/{{ tournament?.max_team_thresholds[tournament?.current_threshold_index] }}
+      Équipes
     </p>
     <div class="mb-3 flex w-4/5 justify-center gap-3 text-center">
       <router-link :to="`tournament/private/${tournament?.id as number}/info`" class="rounded border-2 border-green-600 p-2 text-lg hover:border-green-500">
