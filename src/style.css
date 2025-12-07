@@ -1,38 +1,23 @@
+@import './theme.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@layer components {
-  .form-btn {
-    @apply rounded bg-blue-800 text-white mt-3 mx-auto p-3 hover:ring hover:ring-pink-500
-  }
-
-  .error {
-    @apply border-red-500
-  }
-
-  .success {
-    @apply bg-green-400 ring-green-900
-  }
-}
 
 html {
-  font-family: Play, serif;
-  color: #fff;
-  background-color: #2C292D;
-}
-
-.text-shadow {
-  text-shadow: black 0 0 5px;
+  font-family: Exo2, serif;
+  color: var(--color-text-1);
+  background-color: var(--color-bg-1);
 }
 
 @font-face {
-  font-family: Play;
-  src: url(./assets/fonts/play/Play-Regular.ttf);
+  font-family: Exo2;
+  src: url(./assets/fonts/exo2/Exo2-Regular.ttf);
 }
 
 @font-face {
-  font-family: Play-bold;
-  src: url(./assets/fonts/play/Play-Bold.ttf);
+  font-family: Exo2-bold;
+  src: url(./assets/fonts/exo2/Exo2-Bold.ttf);
 }
 
 @font-face {

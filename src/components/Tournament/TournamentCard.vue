@@ -38,7 +38,7 @@ onMounted(async () => {
 
 </script>
 <template>
-  <div v-if="tournament?.is_announced" class="grid place-items-center gap-2 bg-cyan-900 shadow-lg">
+  <div v-if="tournament?.is_announced" class="card-bg-2 grid">
     <img
       :alt="`Logo du ${tournament?.name}`"
       :src="tournament?.logo"
@@ -49,8 +49,8 @@ onMounted(async () => {
       Équipes | Cashprize:
       {{ tournament?.cashprizes?.length !== 0 ? `${tournament?.cashprizes?.reduce((acc, val) => acc += Number(val), 0)} €` : "À venir" }}
     </p>
-    <div class="mb-3 flex w-4/5 justify-center gap-3 text-center">
-      <router-link :to="`tournament/${tournament?.id as number}/info`" class="rounded border-2 border-green-600 p-2 text-lg hover:border-green-500">
+    <div class="flex w-4/5 justify-center gap-4 text-center">
+      <router-link :to="`tournament/${tournament?.id as number}/info`" class="btn-bg-3">
         Plus d'infos
       </router-link>
       <button v-if="Date.parse(tournament?.registration_open) > Date.now()" type="button" class="rounded bg-green-600 p-2 text-lg opacity-60" disabled>
@@ -59,7 +59,7 @@ onMounted(async () => {
       <router-link
         v-else-if="event_ongoing && Date.parse(tournament?.registration_close) > Date.now()"
         :to="`tournament/${tournament?.id as number}/register`"
-        class="rounded bg-green-600 p-2 text-lg hover:bg-green-500"
+        class="btn-secondary"
       >
         S'inscrire
       </router-link>

@@ -42,8 +42,8 @@ const logout_user = async () => {
 const burger_menu = ref(false);
 </script>
 <template>
-  <nav id="navigation" class="sticky top-0 z-[51] h-24 bg-theme-bg">
-    <div id="desktop" class="hidden h-full items-center justify-around border-b-2 border-white xl:flex">
+  <nav id="navigation" class="sticky top-4 z-[51] card-bg-2 m-4">
+    <div id="desktop" class="hidden h-full items-center justify-around xl:flex">
       <router-link to="/">
         <img alt="Logo InsaLan" class="size-[4.5rem]" src="@/assets/images/logo_home.png"/>
       </router-link>
@@ -59,7 +59,7 @@ const burger_menu = ref(false);
       </div>
       <div v-if="!isConnected">
         <router-link
-          class="block rounded bg-blue-800 p-2 text-[clamp(1rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+          class="btn-primary"
           to="/register"
         >
           Se connecter/S'inscrire
@@ -83,14 +83,14 @@ const burger_menu = ref(false);
             />
           </div>
           <div
-            class="absolute hidden min-w-48 flex-col rounded-lg border-2 border-white bg-theme-bg p-2 group-hover:flex"
+            class="absolute hidden min-w-48 flex-col card-bg-3 group-hover:flex"
           >
             <div
               v-if="user?.groups.includes('Equipe Bouffe')"
               class="flex flex-col"
             >
               <div
-                class="font-bold text-gray-400"
+                class="font-bold text-text-2"
               >
                 Team Bouffe :
               </div>
@@ -118,7 +118,7 @@ const burger_menu = ref(false);
               class="flex flex-col"
             >
               <div
-                class="font-bold text-gray-400"
+                class="font-bold text-text-2"
               >
                 Backend :
               </div>
@@ -138,7 +138,7 @@ const burger_menu = ref(false);
         </router-link>
 
         <button
-          class="rounded bg-blue-800 p-2 text-[clamp(1rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+          class="btn-primary"
           type="button"
           @click="logout_user()"
         >

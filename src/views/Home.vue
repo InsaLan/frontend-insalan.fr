@@ -39,7 +39,7 @@ await getOngoingEvents();
       <div class="mb-4 flex justify-center">
         <router-link
           to="/archives"
-          class="rounded bg-blue-800 p-2 text-[clamp(0.9rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+          class="btn-primary"
         >
           Voir les anciennes éditions
         </router-link>

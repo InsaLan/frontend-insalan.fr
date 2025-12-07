@@ -48,22 +48,3 @@ onMounted(async () => {
   </div>
   <Footer v-if="!$route.path.startsWith('/admin/')"/>
 </template>
-
-<style>
-.title {
-  font-size: 2em;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.title::after, .title::before {
-  flex-grow: 1;
-  margin-left: 1rem;
-  margin-right: 1rem;
-  height: 0.1em;
-  content: '';
-  background-color: #fff;
-}
-</style>

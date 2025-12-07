@@ -54,7 +54,7 @@ const scrollPastHero = () => {
       <h1 class="text-shadow text-center text-6xl font-bold text-white">
         {{ eventText }}
       </h1>
-      <div id="next" class="m-auto mt-4 size-20 cursor-pointer rounded-full bg-red-500" @click="scrollPastHero()" @keydown="scrollPastHero()">
+      <div id="next" class="m-auto mt-4 size-20 cursor-pointer rounded-full bg-secondary-1" @click="scrollPastHero()" @keydown="scrollPastHero()">
         <svg
           aria-hidden="true"
           fill="none"
