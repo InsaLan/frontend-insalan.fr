@@ -1,0 +1,141 @@
+:root {
+    --radius: 1.5rem;
+
+    --color-dark-bg-1: #161a2b;
+    --color-dark-bg-2: #22263c;
+    --color-dark-bg-3: #2e324c;
+    --color-dark-bg-4: #3d4460;
+    --color-dark-text-1: #ffffff;
+    --color-dark-text-2: #a1aad3;
+    --color-dark-text-3: #3d4460;
+    --color-dark-primary-1: #63d1ff;
+    --color-dark-primary-2: #194764;
+    --color-dark-secondary-1: #ff92f2;
+    --color-dark-secondary-2: #692a62;
+    
+    --color-light-bg-1: #ffffff;
+    --color-light-bg-2: #e3e7f7;
+    --color-light-bg-3: #c6ceee;
+    --color-light-bg-4: #a1aad3;
+    --color-light-text-1: #161a2b;
+    --color-light-text-2: #3d4460;
+    --color-light-text-3: #a1aad3;
+    --color-light-primary-1: #0dc9ff;
+    --color-light-primary-2: #2b6e99;
+    --color-light-secondary-1: #ff75ee;
+    --color-light-secondary-2: #923d89;
+    
+    --color-bg-1: var(--color-dark-bg-1);
+    --color-bg-2: var(--color-dark-bg-2);
+    --color-bg-3: var(--color-dark-bg-3);
+    --color-bg-4: var(--color-dark-bg-4);
+    --color-text-1: var(--color-dark-text-1);
+    --color-text-2: var(--color-dark-text-2);
+    --color-text-3: var(--color-dark-text-3);
+    --color-primary-1: var(--color-dark-primary-1);
+    --color-primary-2: var(--color-dark-primary-2);
+    --color-secondary-1: var(--color-dark-secondary-1);
+    --color-secondary-2: var(--color-dark-secondary-2);
+    
+    --color-correct-1: #63ff92;
+    --color-correct-2: #18632f;
+    --color-error-1: #fc7188;
+    --color-error-2: #66212d;
+}
+
+.light { /* Enabled by adding the 'light' class to <html> */
+    --color-bg-1: var(--color-light-bg-1);
+    --color-bg-2: var(--color-light-bg-2);
+    --color-bg-3: var(--color-light-bg-3);
+    --color-bg-4: var(--color-light-bg-4);
+    --color-text-1: var(--color-light-text-1);
+    --color-text-2: var(--color-light-text-2);
+    --color-text-3: var(--color-light-text-3);
+    --color-primary-1: var(--color-light-primary-1);
+    --color-primary-2: var(--color-light-primary-2);
+    --color-secondary-1: var(--color-light-secondary-1);
+    --color-secondary-2: var(--color-light-secondary-2);
+}
+
+/* Generic layout elements */
+.card-bg-2 {
+  background-color: var(--color-bg-2);
+  border-radius: var(--radius);
+  padding: 1rem;
+  place-items: center;
+  /* display: grid; */
+  gap: 0.8rem;
+}
+
+.card-bg-3 {
+  background-color: var(--color-bg-3);
+  border-radius: var(--radius);
+  padding: 1rem;
+  place-items: center;
+  /* display: grid; */
+  gap: 0.8rem;
+}
+
+/* Buttons */
+.btn-primary, .btn-secondary, .btn-bg-2, .btn-bg-3 {
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: var(--color-primary-1);
+  color: var(--color-light-text-1);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-2);
+  color: var(--color-dark-text-1);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary-1);
+  color: var(--color-light-text-1);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-primary-2);
+  color: var(--color-dark-text-1);
+}
+
+.btn-bg-2 {
+  background-color: var(--color-bg-2);
+}
+
+.btn-bg-2:hover {
+  background-color: var(--color-bg-3);
+}
+
+.btn-bg-3 {
+  background-color: var(--color-bg-3);
+}
+
+.btn-bg-3:hover {
+  background-color: var(--color-bg-4);
+}
+
+/* Other */
+.title {
+  font-size: 2em;
+  color: var(--color-secondary-1);
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* @layer components {
+  .btn-primary {
+    @apply rounded-custom bg-primary-1 text-light-text-1 p-3 hover:bg-primary-2;
+  }
+
+  .btn-secondary {
+    @apply rounded-custom bg-secondary-1 text-light-text-1 p-3 hover:bg-primary-2;
+  }
+} */
