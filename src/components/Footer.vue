@@ -4,7 +4,7 @@ const buildYear = BUILD_YEAR;
 </script>
 
 <template>
-  <section class="grid-row-2 grid grid-cols-2 border-t-2 border-white md:grid-cols-12 md:grid-rows-1">
+  <section class="grid-row-2 grid grid-cols-2 bg-bg-2 md:grid-cols-12 md:grid-rows-1">
     <div class="row-start-2 m-2 flex flex-col items-center justify-center justify-items-center md:col-span-3 md:row-start-1">
       <h1 class="hidden text-center text-xl md:block">
         Réseaux
