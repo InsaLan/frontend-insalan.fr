@@ -172,7 +172,12 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/tournament/:id(\\d+)/team/:teamId(\\d+)',
     component: () => import('@/views/TeamDetail.vue'),
-    props: (route) => ({ id: Number(route.params.id), teamId: Number(route.params.teamId) }),
+    props: (route) => ({ id: Number(route.params.id), teamId: Number(route.params.teamId), isPrivate: false }),
+  },
+  {
+    path: '/tournament/private/:id(\\d+)/team/:teamId(\\d+)',
+    component: () => import('@/views/TeamDetail.vue'),
+    props: (route) => ({ id: Number(route.params.id), teamId: Number(route.params.teamId), isPrivate: true }),
   },
   {
     path: '/reset-password/:idname/:idtoken',

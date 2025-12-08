@@ -14,6 +14,7 @@ import { useUserStore } from '@/stores/user.store';
 import { required } from '@/support/locales/errors.fr';
 
 const props = defineProps<{
+  isPrivate: boolean;
   id: number;
   teamId: number;
 }>();
@@ -58,12 +59,14 @@ const selected_team = computed(() => (
 ) as Team);
 
 try {
-  if (Object.keys(privateTournamentsList.value).length === 0) {
-    await getPrivateTournament(props.id);
-  }
+  if (props.isPrivate) {
+    if (Object.keys(privateTournamentsList.value).length === 0) {
+      await getPrivateTournament(props.id);
+    }
 
-  if (props.id in privateTournamentsList.value) {
-    tournament.value = privateTournamentsList.value[props.id];
+    if (props.id in privateTournamentsList.value) {
+      tournament.value = privateTournamentsList.value[props.id];
+    }
   } else {
     await getTournamentFull(props.id);
     getTournamentTeams();

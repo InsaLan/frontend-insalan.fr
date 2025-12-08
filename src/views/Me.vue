@@ -505,7 +505,7 @@ const openScoreModal = () => {
                 <div class="m-2 flex flex-row items-stretch justify-center gap-2">
                   <router-link
                     class="center flex flex-1 items-center justify-center rounded bg-green-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
-                    :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
+                    :to="`/tournament/private/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
                   >
                     <div>
                       {{ (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
