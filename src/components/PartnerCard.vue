@@ -11,10 +11,8 @@ const { partner } = toRefs(props);
 </script>
 
 <template>
-  <div :key="partner.id" class="container h-48 card-bg-2">
-    <a :href="partner.url" class="flex h-full flex-col items-center gap-2 p-2" target="_blank" rel="noopener noreferrer">
-      <img :src="partner.logo" :alt="`logo de ${partner.name}`" class="flex-1 overflow-y-hidden object-contain"/>
-      <p class="flex-none text-center">{{ partner.name }}</p>
-    </a>
-  </div>
+  <a :key="partner.id" :href="partner.url" class="container h-48 btn-bg-2 flex flex-col items-center" target="_blank" rel="noopener noreferrer">
+    <img :src="partner.logo" :alt="`logo de ${partner.name}`" class="flex-1 overflow-y-hidden object-contain"/>
+    <p class="flex-none text-center">{{ partner.name }}</p>
+  </a>
 </template>

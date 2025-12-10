@@ -38,11 +38,11 @@ onMounted(async () => {
 
 </script>
 <template>
-  <div v-if="tournament?.is_announced" class="card-bg-2 grid">
+  <div v-if="tournament?.is_announced" class="grid card-bg-2-nopad pb-4">
     <img
       :alt="`Logo du ${tournament?.name}`"
       :src="tournament?.logo"
-      class="max-w-screen aspect-video text-clip"
+      class="max-w-screen aspect-video text-clip rounded-custom"
     />
     <p class="text-lg">
       {{ tournament?.validated_teams }}/{{ tournament?.max_team_thresholds[tournament?.current_threshold_index] }}

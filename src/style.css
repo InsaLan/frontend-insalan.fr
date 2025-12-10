@@ -1,8 +1,67 @@
-@import './theme.css';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --base-margin: .5rem;
+  --radius: 1.5rem;
+
+  --color-dark-bg-1: #161a2b;
+  --color-dark-bg-2: #22263c;
+  --color-dark-bg-3: #2e324c;
+  --color-dark-bg-4: #3d4460;
+  --color-dark-text-1: #ffffff;
+  --color-dark-text-2: #a1aad3;
+  --color-dark-text-3: #3d4460;
+  --color-dark-primary-1: #63d1ff;
+  --color-dark-primary-2: #194764;
+  --color-dark-secondary-1: #ff92f2;
+  --color-dark-secondary-2: #692a62;
+
+  --color-light-bg-1: #ffffff;
+  --color-light-bg-2: #e3e7f7;
+  --color-light-bg-3: #c6ceee;
+  --color-light-bg-4: #a1aad3;
+  --color-light-text-1: #161a2b;
+  --color-light-text-2: #3d4460;
+  --color-light-text-3: #a1aad3;
+  --color-light-primary-1: #0dc9ff;
+  --color-light-primary-2: #2b6e99;
+  --color-light-secondary-1: #ff75ee;
+  --color-light-secondary-2: #923d89;
+
+  --color-bg-1: var(--color-dark-bg-1);
+  --color-bg-2: var(--color-dark-bg-2);
+  --color-bg-3: var(--color-dark-bg-3);
+  --color-bg-4: var(--color-dark-bg-4);
+  --color-text-1: var(--color-dark-text-1);
+  --color-text-2: var(--color-dark-text-2);
+  --color-text-3: var(--color-dark-text-3);
+  --color-primary-1: var(--color-dark-primary-1);
+  --color-primary-2: var(--color-dark-primary-2);
+  --color-secondary-1: var(--color-dark-secondary-1);
+  --color-secondary-2: var(--color-dark-secondary-2);
+
+  --color-correct-1: #63ff92;
+  --color-correct-2: #18632f;
+  --color-error-1: #fc7188;
+  --color-error-2: #66212d;
+}
+
+.light {
+  /* Enabled by adding the 'light' class to <html> */
+  --color-bg-1: var(--color-light-bg-1);
+  --color-bg-2: var(--color-light-bg-2);
+  --color-bg-3: var(--color-light-bg-3);
+  --color-bg-4: var(--color-light-bg-4);
+  --color-text-1: var(--color-light-text-1);
+  --color-text-2: var(--color-light-text-2);
+  --color-text-3: var(--color-light-text-3);
+  --color-primary-1: var(--color-light-primary-1);
+  --color-primary-2: var(--color-light-primary-2);
+  --color-secondary-1: var(--color-light-secondary-1);
+  --color-secondary-2: var(--color-light-secondary-2);
+}
 
 html {
   font-family: Exo2, serif;
@@ -16,8 +75,13 @@ html {
 }
 
 @font-face {
-  font-family: Exo2-bold;
+  font-family: Exo2-Bold;
   src: url(./assets/fonts/exo2/Exo2-Bold.ttf);
+}
+
+@font-face {
+  font-family: Exo2-ExtraBold;
+  src: url(./assets/fonts/exo2/Exo2-ExtraBold.ttf);
 }
 
 @font-face {
@@ -27,6 +91,448 @@ html {
 
 #app {
   display: flex;
+  flex: 1 1 0;
   flex-direction: column;
   min-height: 100vh;
+}
+
+/* Generic layout elements */
+.card-error-1, .card-bg-2, .card-bg-3, .card-error-1-nopad, .card-bg-2-nopad, .card-bg-3-nopad {
+  border-radius: var(--radius);
+  place-items: center;
+  /* display: grid; */
+  gap: 0.8rem;
+}
+
+.card-bg-2 {
+  padding: 1rem;
+  background-color: var(--color-bg-2);
+}
+
+.card-bg-3 {
+  padding: 1rem;
+  background-color: var(--color-bg-3);
+}
+
+.card-error-1 {
+  padding: 1rem;
+  background-color: var(--color-error-1);
+  color: var(--color-light-text-1);
+}
+
+.card-bg-2-nopad {
+  background-color: var(--color-bg-2);
+}
+
+.card-bg-3-nopad {
+  background-color: var(--color-bg-3);
+}
+
+.card-error-1-nopad {
+  background-color: var(--color-error-1);
+  color: var(--color-light-text-1);
+}
+
+/* Inputs */
+.btn-primary,
+.btn-secondary,
+.btn-bg-2,
+.btn-bg-3,
+.btn-error {
+  font-size: clamp(0.9rem, 2vw, 1.15rem);
+  font-weight: bold;
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: var(--color-primary-1);
+  color: var(--color-light-text-1);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-2);
+  color: var(--color-dark-text-1);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary-1);
+  color: var(--color-light-text-1);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-secondary-2);
+  color: var(--color-dark-text-1);
+}
+
+.btn-bg-2 {
+  background-color: var(--color-bg-2);
+}
+
+.btn-bg-2:hover {
+  background-color: var(--color-bg-3);
+}
+
+.btn-bg-3 {
+  background-color: var(--color-bg-3);
+}
+
+.btn-bg-3:hover {
+  background-color: var(--color-bg-4);
+}
+
+.btn-error {
+  background-color: var(--color-error-1);
+  color: var(--color-light-text-1);
+}
+
+.btn-error:hover {
+  background-color: var(--color-error-2);
+  color: var(--color-dark-text-1);
+}
+
+.text-btn-secondary, .text-btn {
+  cursor: pointer;
+  transition: color 0.1s;
+  font-size: clamp(0.9rem, 2vw, 1.15rem);
+  font-weight: bold;
+  margin: .5rem;
+}
+
+.text-btn:hover {
+  color: var(--color-text-2);
+}
+
+.text-btn-secondary:hover {
+  color: var(--color-secondary-1);
+}
+
+.image-btn:hover {
+  cursor: pointer;
+  transition: filter 0.2s;
+  filter: brightness(.75);
+}
+
+input[type="checkbox"] {
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  /* Remove most all native input styles */
+  appearance: none;
+  /* For iOS < 15 */
+  background-color: var(--form-background);
+
+  color: currentColor;
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid currentColor;
+  border-radius: 0.15em;
+  transform: translateY(-0.075em);
+
+  display: grid;
+  place-content: center;
+}
+
+input[type="checkbox"]:checked {
+  border-color: var(--color-primary-1);
+  color: var(--color-primary-1);
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+input[type="checkbox"]:focus {
+  outline: max(2px, 0.15em) solid currentColor;
+  outline-offset: max(2px, 0.15em);
+}
+
+/* Other elements */
+.text-primary-1 {
+  color: var(--color-primary-1);
+}
+
+.link {
+  color: var(--color-primary-1);
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.link:hover {
+  color: var(--color-primary-2);
+}
+
+.title {
+  font-size: 2.5em;
+  font-family: Exo2-Bold, Exo2, serif;
+  color: var(--color-secondary-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+}
+
+b, .bold {
+  font-family: Exo2-Bold, Exo2, serif;
+}
+
+.underline {
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+
+.spinner {
+  width: 3rem;
+  height: 3rem;
+  border-radius: .7rem;
+  position: relative;
+  animation: spinner-animation .6s infinite ease-in-out;
+}
+
+@keyframes spinner-animation {
+  0% {
+    transform: translateX(-1.5rem) rotate(0deg);
+    background: var(--color-primary-1);
+  }
+
+  5% {
+    transform: translateX(-1.5rem) rotate(0deg);
+    background: var(--color-primary-1);
+  }
+
+  45% {
+    transform: translateX(1.5rem) rotate(90deg);
+    background: var(--color-secondary-1);
+  }
+
+  50% {
+    transform: translateX(1.5rem) rotate(90deg);
+    background: var(--color-secondary-1);
+  }
+
+  55% {
+    transform: translateX(1.5rem) rotate(90deg);
+    background: var(--color-secondary-1);
+  }
+
+  95% {
+    transform: translateX(-1.5rem) rotate(180deg);
+    background: var(--color-primary-1);
+  }
+
+  100% {
+    transform: translateX(-1.5rem) rotate(180deg);
+    background: var(--color-primary-1);
+  }
+}
+
+/* Utils */
+.rounded-custom {
+  border-radius: var(--radius);
+}
+
+/* Margins */
+@media (min-width: 80rem) {
+  .mbody {
+    margin-left: 16rem;
+    margin-right: 16rem;
+  }
+}
+
+@media (min-width: 48rem) and (max-width: 80rem) {
+  .mbody {
+    margin-left: 8rem;
+    margin-right: 8rem;
+  }
+}
+
+@media (max-width: 48rem) {
+  .mbody {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+}
+
+.m1 {
+  margin: var(--base-margin);
+}
+
+.mx1 {
+  margin-left: var(--base-margin);
+  margin-right: var(--base-margin);
+}
+
+.my1 {
+  margin-top: var(--base-margin);
+  margin-bottom: var(--base-margin);
+}
+
+.mt1 {
+  margin-top: var(--base-margin);
+}
+
+.mb1 {
+  margin-bottom: var(--base-margin);
+}
+
+.ml1 {
+  margin-left: var(--base-margin);
+}
+
+.mr1 {
+  margin-right: var(--base-margin);
+}
+
+.m2 {
+  margin: calc(var(--base-margin) * 2);
+}
+
+.mx2 {
+  margin-left: calc(var(--base-margin) * 2);
+  margin-right: calc(var(--base-margin) * 2);
+}
+
+.my2 {
+  margin-top: calc(var(--base-margin) * 2);
+  margin-bottom: calc(var(--base-margin) * 2);
+}
+
+.mt2 {
+  margin-top: calc(var(--base-margin) * 2);
+}
+
+.mb2 {
+  margin-bottom: calc(var(--base-margin) * 2);
+}
+
+.ml2 {
+  margin-left: calc(var(--base-margin) * 2);
+}
+
+.mr2 {
+  margin-right: calc(var(--base-margin) * 2);
+}
+
+.m4 {
+  margin: calc(var(--base-margin) * 4);
+}
+
+.mx4 {
+  margin-left: calc(var(--base-margin) * 4);
+  margin-right: calc(var(--base-margin) * 4);
+}
+
+.my4 {
+  margin-top: calc(var(--base-margin) * 4);
+  margin-bottom: calc(var(--base-margin) * 4);
+}
+
+.mt4 {
+  margin-top: calc(var(--base-margin) * 4);
+}
+
+.mb4 {
+  margin-bottom: calc(var(--base-margin) * 4);
+}
+
+.ml4 {
+  margin-left: calc(var(--base-margin) * 4);
+}
+
+.mr4 {
+  margin-right: calc(var(--base-margin) * 4);
+}
+
+.p1 {
+  padding: var(--base-margin);
+}
+
+.px1 {
+  padding-left: var(--base-margin);
+  padding-right: var(--base-margin);
+}
+
+.py1 {
+  padding-top: var(--base-margin);
+  padding-bottom: var(--base-margin);
+}
+
+.pt1 {
+  padding-top: var(--base-margin);
+}
+
+.pb1 {
+  padding-bottom: var(--base-margin);
+}
+
+.pl1 {
+  padding-left: var(--base-margin);
+}
+
+.pr1 {
+  padding-right: var(--base-margin);
+}
+
+.p2 {
+  padding: calc(var(--base-margin) * 2);
+}
+
+.px2 {
+  padding-left: calc(var(--base-margin) * 2);
+  padding-right: calc(var(--base-margin) * 2);
+}
+
+.py2 {
+  padding-top: calc(var(--base-margin) * 2);
+  padding-bottom: calc(var(--base-margin) * 2);
+}
+
+.pt2 {
+  padding-top: calc(var(--base-margin) * 2);
+}
+
+.pb2 {
+  padding-bottom: calc(var(--base-margin) * 2);
+}
+
+.pl2 {
+  padding-left: calc(var(--base-margin) * 2);
+}
+
+.pr2 {
+  padding-right: calc(var(--base-margin) * 2);
+}
+
+.p4 {
+  padding: calc(var(--base-margin) * 4);
+}
+
+.px4 {
+  padding-left: calc(var(--base-margin) * 4);
+  padding-right: calc(var(--base-margin) * 4);
+}
+
+.py4 {
+  padding-top: calc(var(--base-margin) * 4);
+  padding-bottom: calc(var(--base-margin) * 4);
+}
+
+.pt4 {
+  padding-top: calc(var(--base-margin) * 4);
+}
+
+.pb4 {
+  padding-bottom: calc(var(--base-margin) * 4);
+}
+
+.pl4 {
+  padding-left: calc(var(--base-margin) * 4);
+}
+
+.pr4 {
+  padding-right: calc(var(--base-margin) * 4);
 }

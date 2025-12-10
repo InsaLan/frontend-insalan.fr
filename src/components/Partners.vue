@@ -35,7 +35,7 @@ onMounted(async () => {
     <div class="title">
       Nos partenaires
     </div>
-    <div class="mb-12 grid grid-cols-2 gap-3 px-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
+    <div class="grid grid-cols-2 gap-3 px-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
       <PartnerCard v-for="partner in partners" :key="partner.id" :partner="partner"/>
     </div>
   </section>

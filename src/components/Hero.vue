@@ -39,8 +39,8 @@ const scrollPastHero = () => {
 </script>
 
 <template>
-  <div id="hero" class="relative flex h-[calc(100vh_-_6rem)] items-center justify-center">
-    <div class="absolute -z-10 flex size-full items-center justify-center overflow-hidden">
+  <div id="hero" class="relative flex items-center justify-center h-[100vh]">
+    <div class="absolute -z-10 flex size-full items-center justify-center rounded-custom-bottom">
       <iframe
         :src="trailer_embed"
         allowfullscreen
@@ -54,17 +54,17 @@ const scrollPastHero = () => {
       <h1 class="text-shadow text-center text-6xl font-bold text-white">
         {{ eventText }}
       </h1>
-      <div id="next" class="m-auto mt-4 size-20 cursor-pointer rounded-full bg-secondary-1" @click="scrollPastHero()" @keydown="scrollPastHero()">
+      <div id="next" class="mt2 hero-btn" @click="scrollPastHero()" @keydown="scrollPastHero()">
         <svg
           aria-hidden="true"
           fill="none"
           stroke="currentColor"
-          stroke-width="1.5"
+          stroke-width="3"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            d="M9 12.75l3 3m0 0l3-3m-3 3v-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            d="M 7.4700333,13.132492 12,17.662458 m 0,0 4.529966,-4.529966 M 12,17.662458 V 6.3375415"
             stroke-linecap="round"
             stroke-linejoin="round"
           />
@@ -73,3 +73,26 @@ const scrollPastHero = () => {
     </div>
   </div>
 </template>
+
+<style scoped layer="override">
+.rounded-custom-bottom {
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  overflow: hidden;
+}
+
+.hero-btn {
+  width: 5rem;
+  height: 5rem;
+  cursor: pointer;
+  border-radius: 9999px;
+  transition: background-color 0.2s;
+  background-color: var(--color-secondary-1);
+  color: var(--color-light-text-1);
+}
+
+.hero-btn:hover {
+  background-color: var(--color-secondary-2);
+  color: var(--color-dark-text-1);
+}
+</style>
