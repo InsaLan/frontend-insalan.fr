@@ -134,7 +134,7 @@ const editField = (field: string) => {
               <img
                 :src="user.image ? user.image : placeholder"
                 alt="image de profile"
-                class="m-2 max-h-full w-16 max-w-full rounded-full hover:blur-sm"
+                class="m-2 max-h-full w-16 max-w-full rounded-full image-btn"
               />
             </a>
           </div>
@@ -199,7 +199,7 @@ const editField = (field: string) => {
         </div>
         <div
           v-if="cart.length > 0"
-          class="m-2 flex items-center justify-between gap-4 rounded-lg bg-cyan-900 p-4"
+          class="m-2 flex items-center justify-between card-bg-2"
         >
           <div>
             <h2 class="text-xl">
@@ -207,7 +207,7 @@ const editField = (field: string) => {
             </h2>
           </div>
           <router-link
-            class="rounded bg-green-600 px-4 py-2 font-bold text-white transition-colors duration-200 hover:bg-green-700"
+            class="btn-secondary"
             to="/cart"
           >
             Voir le panier
@@ -222,7 +222,6 @@ const editField = (field: string) => {
       </div>
       <TournamentMeCard v-if="ongoing_match !== null" :ongoing-match="ongoing_match"/>
     </div>
-    <div class="hidden h-auto w-[2px] bg-white sm:block"/>
     <div id="team" class="md:w-4/6">
       <h1 class="m-3 text-center text-4xl font-bold">
         Mes Équipes

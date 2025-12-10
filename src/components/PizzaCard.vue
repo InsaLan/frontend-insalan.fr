@@ -15,14 +15,15 @@ const pizza = computed<Pizza | undefined>(() => pizzaList.value[props.id]);
 
 </script>
 <template>
-  <div class="grid bg-cyan-900 shadow-lg">
+  <div class="grid card-bg-2-nopad pb-4">
+    <!-- TODO: Fix image not sticking to the top -->
     <img
       :alt="`Image de ${pizza?.name}`"
       :src="pizza?.image"
-      class="max-w-screen aspect-video h-48 w-full text-clip object-cover"
+      class="max-w-screen aspect-video h-48 w-full text-clip object-cover rounded-custom"
     />
-    <div class="flex w-full flex-col items-center p-2">
-      <div class="mb-2 w-3/4 border-b-2">
+    <div class="flex w-full flex-col items-center px-4">
+      <div class="mb-2 w-3/4">
         <p class="text-center text-2xl font-bold">
           {{ pizza?.name }}
         </p>

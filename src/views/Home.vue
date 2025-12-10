@@ -17,36 +17,74 @@ await getOngoingEvents();
 </script>
 
 <template>
-  <div>
-    <section class="h-min">
-      <Hero :event="event"/>
-    </section>
-    <Content id="main_page" name="main_page"/>
-    <section>
-      <div class="title my-2 text-white">
-        Tournois
-      </div>
-      <div v-if="!tournaments_id" class="flex justify-center">
-        Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !
-      </div>
-      <div class="mb-4 grid w-full gap-4 px-4 md:grid-cols-2 xl:grid-cols-4">
-        <TournamentCard
-          v-for="tournament in tournaments_id"
-          :id="tournament"
-          :key="tournament"
-        />
-      </div>
-      <div class="mb-4 flex justify-center">
-        <router-link
-          to="/archives"
-          class="btn-primary"
-        >
-          Voir les anciennes éditions
-        </router-link>
-      </div>
-      <Content name="Horaire"/>
-      <Content name="parti_public"/>
-    </section>
-    <Partners/>
-  </div>
+  <section class="h-min">
+    <Hero :event="event"/>
+  </section>
+  <Content id="main_page" name="main_page" class="mbody"/>
+  <section>
+    <div class="title my1">
+      Tournois
+    </div>
+    <div v-if="!tournaments_id" class="flex-justify-center">
+      Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !
+    </div>
+    <div class="px2 tournament-grid tournament-grid-amount mb2">
+      <TournamentCard
+        v-for="tournament in tournaments_id"
+        :id="tournament"
+        :key="tournament"
+      />
+    </div>
+    <div class="mb4 old-btn">
+      <router-link
+        to="/archives"
+        class="btn-primary"
+      >
+        Voir les anciennes éditions
+      </router-link>
+    </div>
+    <Content name="Horaire" class="mbody"/>
+    <Content name="parti_public" class="mbody"/>
+  </section>
+  <Partners/>
 </template>
+
+<style scoped>
+.h-min {
+  height: min-content;
+}
+
+.flex-justify-center {
+  display: flex;
+  justify-content: center;
+}
+
+.old-btn {
+  display: flex;
+  justify-content: center;
+}
+
+.tournament-grid {
+  display: grid;
+  width: 100%;
+  gap: calc(var(--base-margin) * 2);
+}
+
+@media (min-width: 768px) {
+  .tournament-grid-amount {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .tournament-grid-amount {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 2000px) {
+  .tournament-grid-amount {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+</style>

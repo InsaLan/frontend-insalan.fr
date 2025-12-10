@@ -1,9 +1,9 @@
 <template>
-  <div aria-labelledby="modal-title" aria-modal="true" class="relative z-50" role="dialog">
+  <div aria-labelledby="modal-title" aria-modal="true" class="relative z-[60]" role="dialog">
     <div class="fixed inset-0 bg-gray-900/75 transition-opacity"/>
     <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
       <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-        <div class="relative overflow-hidden rounded-lg bg-theme-bg text-left shadow-xl transition-all sm:my-8 sm:max-w-[75%]">
+        <div class="relative overflow-hidden text-left transition-all sm:my-8 sm:max-w-[75%] card-bg-2">
           <div class="bg-theme-bg px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
             <div class="sm:flex sm:items-start">
               <div class="mt-3 w-full text-center sm:mt-0 sm:text-left">
@@ -26,7 +26,7 @@
                       </svg>
                     </div>
                   </slot>
-                  <div class="ml-2 flex w-full flex-col justify-center border-b-2 border-white">
+                  <div class="ml-2 flex w-full flex-col justify-center">
                     <slot name="title">
                       <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
                         Default title

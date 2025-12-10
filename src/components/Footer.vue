@@ -4,13 +4,14 @@ const buildYear = BUILD_YEAR;
 </script>
 
 <template>
+  <div class="rounded-corners"/>
   <section class="grid-row-2 grid grid-cols-2 bg-bg-2 md:grid-cols-12 md:grid-rows-1">
     <div class="row-start-2 m-2 flex flex-col items-center justify-center justify-items-center md:col-span-3 md:row-start-1">
       <h1 class="hidden text-center text-xl md:block">
         Réseaux
       </h1>
       <div class="flex w-full flex-row items-center justify-center gap-2">
-        <a class="w-14 hover:brightness-75" href="https://www.instagram.com/insalan_officiel" target="_blank" rel="noopener noreferrer">
+        <a class="w-14 image-btn" href="https://www.instagram.com/insalan_officiel" target="_blank" rel="noopener noreferrer">
           <svg
             id="instagram"
             viewBox="30 30 140 140"
@@ -106,7 +107,7 @@ const buildYear = BUILD_YEAR;
             </g>
           </svg>
         </a>
-        <a class="w-14 hover:brightness-75" href="https://twitter.com/insalan" target="_blank" rel="noopener noreferrer">
+        <a class="w-14 image-btn" href="https://twitter.com/insalan" target="_blank" rel="noopener noreferrer">
           <svg
             id="X"
             viewBox="30 30 140 140"
@@ -128,7 +129,7 @@ const buildYear = BUILD_YEAR;
             </g>
           </svg>
         </a>
-        <a class="w-14 hover:brightness-75" href="https://www.facebook.com/insalan/" target="_blank" rel="noopener noreferrer">
+        <a class="w-14 image-btn" href="https://www.facebook.com/insalan/" target="_blank" rel="noopener noreferrer">
           <svg
             id="facebook"
             viewBox="30 30 140 140"
@@ -150,7 +151,7 @@ const buildYear = BUILD_YEAR;
             </g>
           </svg>
         </a>
-        <a class="w-14 hover:brightness-75" href="https://discord.com/invite/eWEzRpjmj4" target="_blank" rel="noopener noreferrer">
+        <a class="w-14 image-btn" href="https://discord.com/invite/eWEzRpjmj4" target="_blank" rel="noopener noreferrer">
           <svg
             id="discord"
             viewBox="100 100 50 50"
@@ -174,7 +175,7 @@ const buildYear = BUILD_YEAR;
         </a>
       </div>
     </div>
-    <div class="col-span-6 flex flex-col justify-center border-b-2 border-white md:border-b-0">
+    <div class="col-span-6 flex flex-col justify-center">
       <div class="my-2 flex flex-col justify-center">
         <div class="grid">
           <h1 class="text-center">
@@ -209,3 +210,22 @@ const buildYear = BUILD_YEAR;
     </div>
   </section>
 </template>
+
+<style scoped>
+.rounded-corners {
+  position: relative;
+  width: 100%;
+  height: var(--radius);
+  background-color: var(--color-bg-2);
+}
+
+.rounded-corners::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-bg-1);
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  box-sizing: border-box;
+}
+</style>
