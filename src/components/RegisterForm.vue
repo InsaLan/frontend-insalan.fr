@@ -68,7 +68,7 @@ const register_user = async () => {
 </script>
 
 <template>
-  <div class="flex basis-1/2 flex-col items-center rounded-lg border-2 border-solid border-theme-bg hover:border-sky-500">
+  <div class="flex basis-1/2 flex-col items-center card-bg-2">
     <h1 class="text-center text-4xl text-white">
       S'enregistrer
     </h1>

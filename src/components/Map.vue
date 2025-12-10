@@ -2,9 +2,9 @@
   <h1 class="title">
     Où nous trouver
   </h1>
-  <section class="mb-4 flex justify-center">
-    <div class="size-[512px] border-4">
-      <l-map ref="map" v-model:zoom="zoom" :center="insalan_pos" :use-global-leaflet="false" class="z-0">
+  <section class="mb2 mbody section">
+    <div class="map rounded-custom">
+      <l-map ref="map" v-model:zoom="zoom" :center="insalan_pos" :use-global-leaflet="false">
         <l-tile-layer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           layer-type="base"
@@ -32,3 +32,18 @@ import 'leaflet/dist/leaflet.css';
 const insalan_pos = [48.12229, -1.63653];
 const zoom = ref(15);
 </script>
+
+<style scoped>
+.section {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.map {
+  height: 512px;
+  width: 1500px;
+  overflow: hidden;
+  z-index: 0;
+}
+</style>
