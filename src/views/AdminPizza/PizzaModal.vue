@@ -102,22 +102,20 @@ const handleImageChange = (event: Event) => {
       </form>
     </template>
     <template #buttons>
-      <div class="flex w-full justify-center gap-4">
-        <button
-          class="rounded bg-red-600 p-2 text-sm hover:bg-red-500"
-          type="button"
-          @click="props.close"
-        >
-          Annuler
-        </button>
-        <button
-          class="rounded bg-green-600 p-2 text-sm hover:bg-green-500"
-          type="submit"
-          @click="validate"
-        >
-          Valider
-        </button>
-      </div>
+      <button
+        class="c-btn-bg-3"
+        type="button"
+        @click="props.close"
+      >
+        Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="validate"
+      >
+        Valider
+      </button>
     </template>
   </Modal>
 </template>

@@ -20,31 +20,31 @@ await getOngoingEvents();
   <section class="h-min">
     <Hero :event="event"/>
   </section>
-  <Content id="main_page" name="main_page" class="mbody"/>
+  <Content id="main_page" name="main_page" class="u-m-body"/>
   <section>
-    <div class="title my1">
+    <div class="c-title u-my-1">
       Tournois
     </div>
     <div v-if="!tournaments_id" class="flex-justify-center">
       Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !
     </div>
-    <div class="px2 tournament-grid tournament-grid-amount mb2">
+    <div class="u-px-2 tournament-grid tournament-grid-amount u-mb-2">
       <TournamentCard
         v-for="tournament in tournaments_id"
         :id="tournament"
         :key="tournament"
       />
     </div>
-    <div class="mb4 old-btn">
+    <div class="u-mb-4 old-btn">
       <router-link
         to="/archives"
-        class="btn-primary"
+        class="c-btn-primary"
       >
         Voir les anciennes éditions
       </router-link>
     </div>
-    <Content name="Horaire" class="mbody"/>
-    <Content name="parti_public" class="mbody"/>
+    <Content name="Horaire" class="u-m-body"/>
+    <Content name="parti_public" class="u-m-body"/>
   </section>
   <Partners/>
 </template>

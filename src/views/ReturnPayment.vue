@@ -37,7 +37,7 @@ onMounted(async () => {
       <h1 class="mb-6 text-3xl md:m-8 md:text-5xl">
         🎉 Votre paiement a été accepté
       </h1>
-      <RouterLink to="/me" class="rounded bg-blue-800 p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:p-6">
+      <RouterLink to="/me" class="rounded bg-blue-800 p-2 c-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:p-6">
         <p class="text-xl">
           Retour vers le profil
         </p>

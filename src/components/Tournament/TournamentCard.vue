@@ -38,11 +38,11 @@ onMounted(async () => {
 
 </script>
 <template>
-  <div v-if="tournament?.is_announced" class="grid card-bg-2-nopad pb-4">
+  <div v-if="tournament?.is_announced" class="grid c-card-bg-2-nopad pb-4">
     <img
       :alt="`Logo du ${tournament?.name}`"
       :src="tournament?.logo"
-      class="max-w-screen aspect-video text-clip rounded-custom"
+      class="max-w-screen aspect-video text-clip u-rounded"
     />
     <p class="text-lg">
       {{ tournament?.validated_teams }}/{{ tournament?.max_team_thresholds[tournament?.current_threshold_index] }}
@@ -50,7 +50,7 @@ onMounted(async () => {
       {{ tournament?.cashprizes?.length !== 0 ? `${tournament?.cashprizes?.reduce((acc, val) => acc += Number(val), 0)} €` : "À venir" }}
     </p>
     <div class="flex w-4/5 justify-center gap-4 text-center">
-      <router-link :to="`tournament/${tournament?.id as number}/info`" class="btn-bg-3">
+      <router-link :to="`tournament/${tournament?.id as number}/info`" class="c-btn-bg-3">
         Plus d'infos
       </router-link>
       <button v-if="Date.parse(tournament?.registration_open) > Date.now()" type="button" class="rounded bg-green-600 p-2 text-lg opacity-60" disabled>
@@ -59,7 +59,7 @@ onMounted(async () => {
       <router-link
         v-else-if="event_ongoing && Date.parse(tournament?.registration_close) > Date.now()"
         :to="`tournament/${tournament?.id as number}/register`"
-        class="btn-secondary"
+        class="c-btn-secondary"
       >
         S'inscrire
       </router-link>

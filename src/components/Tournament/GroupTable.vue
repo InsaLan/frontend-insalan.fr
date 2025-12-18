@@ -344,18 +344,18 @@ watchEffect(() => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-        type="button"
-        @click="delete_group(true)"
-      >
-        Valider
-      </button>
-      <button
-        class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="modal_open = false;"
       >
         Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="button"
+        @click="delete_group(true)"
+      >
+        Valider
       </button>
     </template>
   </Modal>

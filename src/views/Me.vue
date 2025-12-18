@@ -226,9 +226,9 @@ const openScoreModal = () => {
 </script>
 
 <template>
-  <div class="ml-1 flex flex-col md:flex-row">
-    <div id="profile" class="mb-3 items-center md:w-2/6">
-      <h1 class="m-3 text-center text-4xl font-bold">
+  <div class="u-mx-2 flex flex-col md:flex-row">
+    <div id="profile" class="mb-3 items-center md:w-2/6 c-card-bg-2">
+      <h1 class="m-3 text-center text-4xl c-bold">
         Mon compte
       </h1>
       <div class="myr-2 place-center flex flex-col justify-between md:place-items-center md:justify-items-center">
@@ -238,7 +238,7 @@ const openScoreModal = () => {
               <img
                 :src="user.image ? user.image : placeholder"
                 alt="image de profile"
-                class="m-2 max-h-full w-16 max-w-full rounded-full image-btn"
+                class="m-2 max-h-full w-16 max-w-full rounded-full c-image-btn"
               />
             </a>
           </div>
@@ -249,7 +249,7 @@ const openScoreModal = () => {
             <p class="text-xl">
               Prénom et Nom : <em>{{ user.first_name }} {{ user.last_name }}</em>
               <fa-awesome-icon
-                class="ml-2 hover:cursor-pointer hover:text-blue-600"
+                class="u-ml-1 c-text-btn-secondary"
                 icon="fa-solid fa-pencil"
                 size="2xs"
                 @click="editField('name')"
@@ -259,7 +259,7 @@ const openScoreModal = () => {
             <p class="text-xl">
               Email : <em>{{ user.email }}</em>
               <fa-awesome-icon
-                class="ml-2 hover:cursor-pointer hover:text-blue-600"
+                class="u-ml-1 c-text-btn-secondary"
                 icon="fa-solid fa-pencil"
                 size="2xs"
                 @click="editField('email')"
@@ -269,7 +269,7 @@ const openScoreModal = () => {
             <p class="text-xl">
               Mot de passe : <em>**********</em>
               <fa-awesome-icon
-                class="ml-2 hover:cursor-pointer hover:text-blue-600"
+                class="u-ml-1 c-text-btn-secondary"
                 icon="fa-solid fa-pencil"
                 size="2xs"
                 @click="editField('password')"
@@ -280,7 +280,7 @@ const openScoreModal = () => {
               <p class="text-xl">
                 Rôle :
               </p>
-              <div class="text-md m-1 flex w-16 justify-around rounded bg-blue-700 p-1">
+              <div class="text-md p1 m-1 flex w-16 justify-around u-rounded u-bg-bg-3">
                 <svg
                   v-if="role === 'dev'"
                   class="size-6"
@@ -303,15 +303,15 @@ const openScoreModal = () => {
         </div>
         <div
           v-if="cart.length > 0"
-          class="m-2 flex items-center justify-between card-bg-2"
+          class="m-2 flex items-center justify-between c-card-bg-3"
         >
           <div>
             <h2 class="text-xl">
-              Vous avez <span class="text-2xl font-bold text-green-600">{{ cart.length }}</span> article{{ cart.length !== 1 ? 's' : '' }} dans votre panier
+              Vous avez <span class="text-2xl c-bold text-green-600">{{ cart.length }}</span> article{{ cart.length !== 1 ? 's' : '' }} dans votre panier
             </h2>
           </div>
           <router-link
-            class="btn-secondary"
+            class="c-btn-secondary"
             to="/cart"
           >
             Voir le panier
@@ -319,19 +319,19 @@ const openScoreModal = () => {
         </div>
         <!--div class="myr-2 ml-1">
           <button
-          @click="delete_account()" class="center rounded transition duration-150 ease-in-out p-2 font-bold
+          @click="delete_account()" class="center rounded transition duration-150 ease-in-out p-2 c-bold
            text-white bg-red-600 hover:ring hover:ring-pink-500" style="display: flex; align-items: center;">
            Supprimer son compte</button>
         </div-->
       </div>
       <div v-if="ongoing_match !== null" id="ongoing_match">
-        <h1 class="m-3 text-center text-4xl font-bold">
+        <h1 class="m-3 text-center text-4xl c-bold">
           Partie en cours
         </h1>
         <div class="mx-4 flex flex-col justify-around rounded-md bg-cyan-900">
           <div class="flex w-full flex-col divide-y">
             <div v-for="team, team_id in ongoing_match?.teams" :key="team_id" class="mx-2 p-4">
-              <p class="truncate text-xl font-bold">
+              <p class="truncate text-xl c-bold">
                 {{ team }}
               </p>
             </div>
@@ -343,7 +343,7 @@ const openScoreModal = () => {
       </div>
     </div>
     <div id="team" class="md:w-4/6">
-      <h1 class="m-3 text-center text-4xl font-bold">
+      <h1 class="m-3 text-center text-4xl c-bold">
         Mes Équipes
       </h1>
       <!--div>
@@ -357,7 +357,7 @@ const openScoreModal = () => {
         </div>
       </div-->
       <div v-if="(inscriptions.ongoing as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="m-4">
-        <h1 class="text-xl">
+        <h1 class="m2 text-xl">
           Edition Actuelle
         </h1>
         <div class="m-1 grid gap-3 md:grid-cols-3">
@@ -365,51 +365,14 @@ const openScoreModal = () => {
             v-for="inscription in (inscriptions.ongoing as [string, PlayerRegistrationDeref | RegistrationDeref][])"
             :key="inscription[1].id"
             :class="{ /*[`bg-red-900`]: inscriptions.unpaid[inscription.team.id]*/ }"
-            class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
+            class="c-card-bg-3"
           >
-            <div class="block">
-              <div class="flex flex-1 flex-col justify-center">
-                <div class="m-2 flex flex-row items-stretch justify-center gap-2">
-                  <router-link
-                    class="center flex flex-1 items-center justify-center rounded bg-green-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
-                    :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
-                  >
-                    <div>
-                      {{ (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
-                    </div>
-                  </router-link>
-                  <div
-                    v-if="(inscriptions.unpaid as Record<string, boolean>)[inscription[1].id]"
-                    class="center flex flex-1 items-center justify-center rounded bg-red-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
-                    @click.prevent="
-                      (
-                        modal_payment = true,
-                        addRegistrationToCart(
-                          inscription[1].team.tournament as unknown as EventTournament, inscription[0],
-                        )
-                      )"
-                    @keydown.prevent="
-                      (
-                        modal_payment = true,
-                        addRegistrationToCart(
-                          inscription[1].team.tournament as unknown as EventTournament, inscription[0],
-                        )
-                      )"
-                  >
-                    <div>
-                      Terminer l'inscription
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="hidden flex-col md:block">
-              <router-link
-                class="mt-auto text-zinc-400"
-                :to="`/tournament/${inscription[1].team.tournament.id}/rules`"
-              >
-                Règlement du tournoi
-              </router-link>
+            <div
+              class="flex flex-1 flex-col justify-center"
+            >
+              <b class="text-xl">
+                {{ inscription[1].team.name }}
+              </b>
             </div>
             <div
               :class="{ ['hover:cursor-pointer']: inscription[1].ticket }"
@@ -419,24 +382,59 @@ const openScoreModal = () => {
               <img
                 :src="inscription[1].team.tournament.logo"
                 alt="image du tournoi"
-                class="size-32 max-w-full overflow-hidden"
+                class="size-32 max-w-full overflow-hidden u-rounded"
                 style="width: 100%; object-fit: cover;"
               />
               <div
                 v-if="inscription[1].ticket"
-                class="m-1 flex flex-1 flex-col justify-center"
+                class="flex flex-1 flex-col justify-center"
               >
                 <p class="text-xs">
                   Télecharger son billet
                 </p>
               </div>
             </div>
-            <div
-              class="m-1 flex flex-1 flex-col justify-center"
-            >
-              <p class="text-xl">
-                {{ inscription[1].team.name }}
-              </p>
+            <div class="hidden flex-col md:block">
+              <router-link
+                class="u-color-text-2"
+                :to="`/tournament/${inscription[1].team.tournament.id}/rules`"
+              >
+                Règlement du tournoi
+              </router-link>
+            </div>
+            <div class="block">
+              <div class="flex flex-1 flex-row justify-center items-stretch justify-center">
+                <router-link
+                  class="c-btn-primary"
+                  :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
+                >
+                  <div>
+                    {{ (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
+                  </div>
+                </router-link>
+                <div
+                  v-if="(inscriptions.unpaid as Record<string, boolean>)[inscription[1].id]"
+                  class="c-btn-secondary"
+                  @click.prevent="
+                    (
+                      modal_payment = true,
+                      addRegistrationToCart(
+                        inscription[1].team.tournament as unknown as EventTournament, inscription[0],
+                      )
+                    )"
+                  @keydown.prevent="
+                    (
+                      modal_payment = true,
+                      addRegistrationToCart(
+                        inscription[1].team.tournament as unknown as EventTournament, inscription[0],
+                      )
+                    )"
+                >
+                  <div>
+                    Terminer l'inscription
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -456,7 +454,7 @@ const openScoreModal = () => {
               <div class="m-1 flex h-8 flex-1 flex-col justify-center">
                 <div>
                   <router-link
-                    class="center rounded bg-green-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+                    class="center rounded bg-green-600 p-2 c-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
                     :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
                   >
                     {{ (inscription[1].team.players[0] === user.id || inscription[0] === 'manager') ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
@@ -503,7 +501,7 @@ const openScoreModal = () => {
               <div class="flex flex-1 flex-col justify-center">
                 <div class="m-2 flex flex-row items-stretch justify-center gap-2">
                   <router-link
-                    class="center flex flex-1 items-center justify-center rounded bg-green-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
+                    class="center flex flex-1 items-center justify-center rounded bg-green-600 p-2 c-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
                     :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
                   >
                     <div>
@@ -651,18 +649,18 @@ const openScoreModal = () => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="validateModal"
-      >
-        Valider
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="closeModal"
       >
         Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="validateModal"
+      >
+        Valider
       </button>
     </template>
   </Modal>
@@ -685,19 +683,19 @@ const openScoreModal = () => {
       </div>
     </template>
     <template #buttons>
-      <router-link
-        class="my-1 inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mx-4 sm:mt-0 sm:w-auto"
-        :to="`/cart`"
-      >
-        Aller au panier
-      </router-link>
       <button
-        class="my-1 inline-flex w-full justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mx-4 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="modal_payment = false"
       >
         Rester sur cette page
       </button>
+      <router-link
+        class="c-btn-secondary"
+        :to="`/cart`"
+      >
+        Aller au panier
+      </router-link>
     </template>
   </Modal>
 
@@ -745,18 +743,18 @@ const openScoreModal = () => {
     </template>
     <template #buttons>
       <button
-        class="mx-4 inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
-        type="button"
-        @click.prevent="NextModalEnterScore"
-      >
-        Suivant
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="closeModalEnterScore"
       >
         Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="button"
+        @click.prevent="NextModalEnterScore"
+      >
+        Suivant
       </button>
     </template>
   </Modal>
@@ -803,18 +801,18 @@ const openScoreModal = () => {
     </template>
     <template #buttons>
       <button
-        class="duration inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="sendScore"
-      >
-        Envoyer
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="PrevModalEnterScore"
       >
         Retour
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="sendScore"
+      >
+        Envoyer
       </button>
     </template>
   </Modal>

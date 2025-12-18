@@ -138,7 +138,7 @@ const save_seeds = async () => {
       </tbody>
     </table>
   </div>
-  <button type="submit" class="mx-auto mb-8 rounded bg-blue-800 p-2 text-xl font-bold text-white transition duration-150 ease-in-out hover:bg-blue-700" @click="save_seeds">
+  <button type="submit" class="mx-auto mb-8 rounded bg-blue-800 p-2 text-xl c-bold text-white transition duration-150 ease-in-out hover:bg-blue-700" @click="save_seeds">
     Sauvegarder
   </button>
 </template>

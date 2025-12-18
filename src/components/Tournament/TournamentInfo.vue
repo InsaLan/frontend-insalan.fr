@@ -17,7 +17,7 @@ const props = defineProps<{
     :style="{ backgroundImage: `url(${props.tournament?.logo})` }"
     class="grid grow grid-rows-[min-content_1fr] items-center bg-gray-500 bg-cover bg-center bg-blend-multiply"
   >
-    <h2 class="font mx-auto w-3/4 py-4 text-center text-3xl font-bold">
+    <h2 class="font mx-auto w-3/4 py-4 text-center text-3xl c-bold">
       {{ tournament?.description }}
     </h2>
 
@@ -149,7 +149,7 @@ const props = defineProps<{
       >
         <div class="mb-4 flex items-center justify-between">
           <h3
-            class="text-xl font-bold md:text-2xl"
+            class="text-xl c-bold md:text-2xl"
           >
             Informations du tournoi
           </h3>
@@ -175,7 +175,7 @@ const props = defineProps<{
             />
             <span>Début:
               <b
-                class="font-bold text-yellow-500"
+                class="c-bold text-yellow-500"
               >
                 {{ frenchFormatFromDate(new Date(tournament?.start)) }}
               </b>
@@ -192,7 +192,7 @@ const props = defineProps<{
             icon="fa-gift"
           />
           <!-- eslint-disable-next-line vue/no-v-html -->
-          <div class="text-2xl font-bold" v-html="md.render(tournament?.rewards)"/>
+          <div class="text-2xl c-bold" v-html="md.render(tournament?.rewards)"/>
         </div>
 
         <div

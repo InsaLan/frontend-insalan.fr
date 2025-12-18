@@ -98,7 +98,7 @@ const launch_selected_matchs = async () => {
   >
     <router-link
       :to="{ name: 'tournament_admin_groups' }"
-      class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+      class="rounded bg-blue-800 p-2 c-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
     >
       <fa-awesome-icon
         icon="fa-solid fa-arrow-left"
@@ -107,7 +107,7 @@ const launch_selected_matchs = async () => {
     </router-link>
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 p-2 c-bold transition duration-150 ease-in-out"
       :class="[!has_matchs ? '-z-10 opacity-60' : 'hover:ring hover:ring-pink-500']"
       :disabled="!has_matchs"
       @click="open_launch_round_modal"
@@ -116,7 +116,7 @@ const launch_selected_matchs = async () => {
     </button>
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 p-2 c-bold transition duration-150 ease-in-out"
       :class="[!has_matchs || selected_matchs.size === 0 ? '-z-10 opacity-60' : 'hover:ring hover:ring-pink-500']"
       :disabled="!has_matchs || selected_matchs.size === 0 "
       @click="launch_selected_matchs"
@@ -216,18 +216,18 @@ const launch_selected_matchs = async () => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-        type="button"
-        @click="launch_round_matchs"
-      >
-        Lancer le tour
-      </button>
-      <button
-        class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="modal_open = false;"
       >
         Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="button"
+        @click="launch_round_matchs"
+      >
+        Lancer le tour
       </button>
     </template>
   </Modal>
