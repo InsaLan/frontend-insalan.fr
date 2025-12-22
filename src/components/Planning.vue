@@ -191,7 +191,7 @@ watch(() => props.link, fetchEvents);
             </div>
           </div>
           <div v-for="day in visibleDays" :key="day.toISOString()" class="col-span-2 overflow-hidden rounded border border-gray-200">
-            <h2 class="bg-gray-100 p-3 text-center text-sm c-bold text-black">
+            <h2 class="bg-gray-100 p-3 text-center text-sm u-bold text-black">
               {{ frenchDayFormatFromDate(day) }}
             </h2>
             <div class="relative border-t border-gray-200" :style="{ height: `${60 * (24 - START_HOURE)}px` }">
@@ -218,7 +218,7 @@ watch(() => props.link, fetchEvents);
                 @mouseenter="focusedEvent = event.id"
                 @mouseleave="focusedEvent = null"
               >
-                <div class="c-bold">
+                <div class="u-bold">
                   {{ format(event.start, 'HH:mm') }} - {{ format(event.end, 'HH:mm') }}
                 </div>
                 <div class="mt-1">

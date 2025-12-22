@@ -98,7 +98,7 @@ const launch_selected_matchs = async () => {
   >
     <router-link
       :to="{ name: 'tournament_admin_groups' }"
-      class="rounded bg-blue-800 p-2 c-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+      class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
     >
       <fa-awesome-icon
         icon="fa-solid fa-arrow-left"
@@ -107,7 +107,7 @@ const launch_selected_matchs = async () => {
     </router-link>
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 c-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out"
       :class="[!has_matchs ? '-z-10 opacity-60' : 'hover:ring hover:ring-pink-500']"
       :disabled="!has_matchs"
       @click="open_launch_round_modal"
@@ -116,7 +116,7 @@ const launch_selected_matchs = async () => {
     </button>
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 c-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out"
       :class="[!has_matchs || selected_matchs.size === 0 ? '-z-10 opacity-60' : 'hover:ring hover:ring-pink-500']"
       :disabled="!has_matchs || selected_matchs.size === 0 "
       @click="launch_selected_matchs"

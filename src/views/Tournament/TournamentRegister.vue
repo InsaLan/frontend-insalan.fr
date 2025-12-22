@@ -196,7 +196,7 @@ const handleCloseTravelFormModal = () => {
   >
     <!-- Design 3-->
     <div class="w-11/12 md:w-9/12 2xl:w-1/2">
-      <div class="text-shadow bg-[#63d1ff] py-8 text-center text-6xl c-bold text-white">
+      <div class="text-shadow bg-[#63d1ff] py-8 text-center text-6xl u-bold text-white">
         Inscription {{ tournament?.name }}
       </div>
       <div class="flex hover:cursor-pointer">
@@ -471,7 +471,7 @@ const handleCloseTravelFormModal = () => {
         qu'ils puissent rejoindre votre équipe : <br>
         <a
           :href="`${host}/tournament/${tournament?.id}/register?team=${selected_team?.id}${register_form.password ? `&pwd=${register_form.password}` : ''}`"
-          class="text-[#62d1ff] c-underline hover:text-blue-600"
+          class="text-[#62d1ff] u-underline hover:text-blue-600"
         >
           {{ `${host}/tournament/${tournament?.id}/register?team=${selected_team?.id}${register_form.password ? `&pwd=${register_form.password}` : ''}` }}
         </a> <br>

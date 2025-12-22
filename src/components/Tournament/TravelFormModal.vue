@@ -69,7 +69,7 @@ const handleSubmit = async () => {
     <template #body>
       <p class="mt-2 max-w-2xl text-justify">
         Ce formulaire est facultatif, mais votre réponse nous serait très utile !
-        En partageant <span class="c-bold">anonymement</span> votre ville de départ et le moyen
+        En partageant <span class="u-bold">anonymement</span> votre ville de départ et le moyen
         de transport que vous comptez utiliser pour venir à la LAN, vous nous aidez à mieux
         estimer l’impact environnemental de l’évènement et à l’améliorer chaque année. Merci d’avance !
       </p>
