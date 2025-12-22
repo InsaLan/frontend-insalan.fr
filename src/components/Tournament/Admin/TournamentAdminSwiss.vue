@@ -165,7 +165,7 @@ const create_round = async () => {
   >
     <button
       type="button"
-      class="rounded p-2 c-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+      class="rounded p-2 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
       :class="[has_swiss ? 'bg-red-500' : 'bg-blue-800']"
       @click="open_modal(has_swiss ? 'delete_swiss' : 'generate_swiss')"
     >
@@ -173,7 +173,7 @@ const create_round = async () => {
     </button>
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 c-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out"
       :class="[has_swiss ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
       :disabled="!has_swiss"
       @click="open_create_round_modal"
@@ -182,7 +182,7 @@ const create_round = async () => {
     </button>
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 c-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out"
       :class="[has_matchs ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
       :disabled="!has_matchs"
       @click="open_launch_round_modal"
@@ -191,7 +191,7 @@ const create_round = async () => {
     </button>
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 c-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out"
       :class="[has_matchs && selected_matchs.size > 0 ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
       :disabled="!has_matchs || selected_matchs.size === 0"
       @click="launch_selected_matchs"

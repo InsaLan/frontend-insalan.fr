@@ -124,7 +124,7 @@ const editField = (field: string) => {
 <template>
   <div class="u-mx-2 flex flex-col md:flex-row">
     <div id="profile" class="mb-3 items-center md:w-2/6 c-card-bg-2">
-      <h1 class="m-3 text-center text-4xl c-bold">
+      <h1 class="m-3 text-center text-4xl u-bold">
         Mon compte
       </h1>
       <div class="myr-2 place-center flex flex-col justify-between md:place-items-center md:justify-items-center">
@@ -176,7 +176,7 @@ const editField = (field: string) => {
               <p class="text-xl">
                 Rôle :
               </p>
-              <div class="text-md p1 m-1 flex w-16 justify-around u-rounded u-bg-bg-3">
+              <div class="text-md u-p-1 m-1 flex w-16 justify-around u-rounded u-bg-bg-3">
                 <svg
                   v-if="role === 'dev'"
                   class="size-6"
@@ -203,7 +203,7 @@ const editField = (field: string) => {
         >
           <div>
             <h2 class="text-xl">
-              Vous avez <span class="text-2xl c-bold text-green-600">{{ cart.length }}</span> article{{ cart.length !== 1 ? 's' : '' }} dans votre panier
+              Vous avez <span class="text-2xl u-bold text-green-600">{{ cart.length }}</span> article{{ cart.length !== 1 ? 's' : '' }} dans votre panier
             </h2>
           </div>
           <router-link
@@ -215,7 +215,7 @@ const editField = (field: string) => {
         </div>
         <!--div class="myr-2 ml-1">
           <button
-          @click="delete_account()" class="center rounded transition duration-150 ease-in-out p-2 c-bold
+          @click="delete_account()" class="center rounded transition duration-150 ease-in-out p-2 u-bold
            text-white bg-red-600 hover:ring hover:ring-pink-500" style="display: flex; align-items: center;">
            Supprimer son compte</button>
         </div-->
@@ -223,7 +223,7 @@ const editField = (field: string) => {
       <TournamentMeCard v-if="ongoing_match !== null" :ongoing-match="ongoing_match"/>
     </div>
     <div id="team" class="md:w-4/6">
-      <h1 class="m-3 text-center text-4xl c-bold">
+      <h1 class="m-3 text-center text-4xl u-bold">
         Mes Équipes
       </h1>
       <!--div>
@@ -237,7 +237,7 @@ const editField = (field: string) => {
         </div>
       </div-->
       <div v-if="(inscriptions.ongoing as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="m-4">
-        <h1 class="m2 text-xl">
+        <h1 class="u-m-2 text-xl">
           Edition Actuelle
         </h1>
         <div class="m-1 grid gap-3 md:grid-cols-3">
@@ -245,7 +245,7 @@ const editField = (field: string) => {
             v-for="inscription in (inscriptions.ongoing as [string, PlayerRegistrationDeref | RegistrationDeref][])"
             :key="inscription[1].id"
             :class="{ /*[`bg-red-900`]: inscriptions.unpaid[inscription.team.id]*/ }"
-            class="c-card-bg-3"
+            class="c-card-bg-2"
           >
             <div
               class="flex flex-1 flex-col justify-center"
@@ -334,7 +334,7 @@ const editField = (field: string) => {
               <div class="m-1 flex h-8 flex-1 flex-col justify-center">
                 <div>
                   <router-link
-                    class="center rounded bg-green-600 p-2 c-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+                    class="center rounded bg-green-600 p-2 u-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
                     :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
                   >
                     {{ (inscription[1].team.players[0] === user.id || inscription[0] === 'manager') ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
@@ -381,7 +381,7 @@ const editField = (field: string) => {
               <div class="flex flex-1 flex-col justify-center">
                 <div class="m-2 flex flex-row items-stretch justify-center gap-2">
                   <router-link
-                    class="center flex flex-1 items-center justify-center rounded bg-green-600 p-2 c-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
+                    class="center flex flex-1 items-center justify-center rounded bg-green-600 p-2 u-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
                     :to="`/tournament/private/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
                   >
                     <div>

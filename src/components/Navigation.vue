@@ -53,7 +53,7 @@ const burger_menu = ref(false);
             v-for="(item, i) in items"
             :key="i"
             :to="{ path: item.url }"
-            :class="$route.path === item.url ? 'c-underline c-text-btn-secondary' : 'c-text-btn-secondary'"
+            :class="$route.path === item.url ? 'u-underline c-text-btn-secondary' : 'c-text-btn-secondary'"
           >
             {{ item.text }}
           </router-link>
@@ -91,7 +91,7 @@ const burger_menu = ref(false);
                 class="flex flex-col"
               >
                 <div
-                  class="c-bold u-color-text-2"
+                  class="u-bold u-color-text-2"
                 >
                   Team Bouffe :
                 </div>
@@ -119,7 +119,7 @@ const burger_menu = ref(false);
                 class="flex flex-col"
               >
                 <div
-                  class="c-bold u-color-text-2"
+                  class="u-bold u-color-text-2"
                 >
                   Backend :
                 </div>
@@ -136,7 +136,7 @@ const burger_menu = ref(false);
           </div>
           <router-link
             to="/me"
-            :class="$route.path === '/me' ? 'c-underline c-text-btn-secondary' : 'c-text-btn-secondary'"
+            :class="$route.path === '/me' ? 'u-underline c-text-btn-secondary' : 'c-text-btn-secondary'"
           >
             Mon compte
           </router-link>
@@ -239,7 +239,7 @@ const burger_menu = ref(false);
         </div>
       </div>
     </nav>
-    <div v-if="getContent('alert') && !$route.path.startsWith('/admin/')" class="c-card-error-1-nopad u-mt-1 flex flex-col items-center u-rounded p1">
+    <div v-if="getContent('alert') && !$route.path.startsWith('/admin/')" class="c-card-error-1-nopad u-mt-1 flex flex-col items-center u-rounded p-1">
       <Content name="alert"/>
     </div>
   </div>

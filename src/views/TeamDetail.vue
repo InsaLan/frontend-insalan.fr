@@ -277,7 +277,7 @@ const kick_member = async (type: string, id: number) => {
               )
           "
           type="button"
-          class="center rounded bg-green-600 p-2 c-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+          class="center rounded bg-green-600 p-2 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
           @click="showModalTeamName = true"
           @keydown.enter="showModalTeamName = true"
         >
@@ -291,7 +291,7 @@ const kick_member = async (type: string, id: number) => {
           class="flex w-full flex-col justify-between border-b-2 border-black p-2"
         >
           <div
-            class="c-underline"
+            class="u-underline"
           >
             Joueurs :
           </div>
@@ -342,7 +342,7 @@ const kick_member = async (type: string, id: number) => {
           class="flex w-full flex-col justify-between border-b-2 border-black p-2"
         >
           <div
-            class="c-underline"
+            class="u-underline"
           >
             Managers :
           </div>
@@ -367,7 +367,7 @@ const kick_member = async (type: string, id: number) => {
           class="flex w-full flex-col justify-between border-b-2 border-black p-2"
         >
           <div
-            class="c-underline"
+            class="u-underline"
           >
             Remplaçants :
           </div>
@@ -425,7 +425,7 @@ const kick_member = async (type: string, id: number) => {
                 && !(props.id in privateTournamentsList)
             "
             type="button"
-            class="center size-full rounded bg-red-600 p-2 c-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
+            class="center size-full rounded bg-red-600 p-2 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
             @click="showModalTeamPassword = true"
             @keydown.enter="showModalTeamPassword = true"
           >
@@ -458,7 +458,7 @@ const kick_member = async (type: string, id: number) => {
               team_registration?.[1]?.payment_status !== PaymentStatus.PAID
             "
             type="button"
-            class="center size-full rounded bg-red-600 p-2 c-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
+            class="center size-full rounded bg-red-600 p-2 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
             @click="showModalLeaveTeam = true"
           >
             Quitter l'équipe

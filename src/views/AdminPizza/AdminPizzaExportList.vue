@@ -247,7 +247,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
     </template>
     <template #body>
       <p class="mt-2 max-w-sm">
-        Voulez-vous supprimer l'export du <span class="c-underline">{{ frenchFormatFromDate(new Date(exportToDelete.created_at)) }}</span> ?
+        Voulez-vous supprimer l'export du <span class="u-underline">{{ frenchFormatFromDate(new Date(exportToDelete.created_at)) }}</span> ?
       </p>
     </template>
     <template #buttons>

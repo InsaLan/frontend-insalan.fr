@@ -20,8 +20,8 @@ const modal_cgv = ref(false);
 
 <template>
   <div class="c-card-bg-2 mx-auto max-w-2xl">
-    <div class="p2">
-      <h1 class="mb-6 text-3xl c-bold">
+    <div class="u-p-2">
+      <h1 class="mb-6 text-3xl u-bold">
         Votre panier
       </h1>
 
@@ -42,14 +42,14 @@ const modal_cgv = ref(false);
               - {{ item.name }}
             </h2>
           </div>
-          <p class="text-lg c-bold">
+          <p class="text-lg u-bold">
             {{ item.price.toFixed(2) }} €
           </p>
         </li>
       </ul>
 
       <div v-if="cart.length > 0" class="border-t border-white pt-6">
-        <div class="flex items-center justify-between text-xl c-bold">
+        <div class="flex items-center justify-between text-xl u-bold">
           <span>Total:</span>
           <span>{{ totalPrice.toFixed(2) }} €</span>
         </div>

@@ -366,11 +366,11 @@ select:focus {
   margin-bottom: 2rem;
 }
 
-b, .c-bold {
+b, .u-bold {
   font-family: Exo2-Bold, Exo2, serif;
 }
 
-.c-underline {
+.u-underline {
   text-decoration: underline;
   text-underline-offset: .2em;
 }
@@ -418,6 +418,30 @@ b, .c-bold {
     transform: translateX(-1.5rem) rotate(180deg);
     background: var(--color-primary-1);
   }
+}
+
+.l-items-main-start {
+  justify-content: flex-start;
+}
+
+.l-items-main-center {
+  justify-content: center;
+}
+
+.l-items-main-end {
+  justify-content: flex-end;
+}
+
+.l-items-cross-start {
+  align-items: flex-start;
+}
+
+.l-items-cross-center {
+  align-items: center;
+}
+
+.l-items-cross-end {
+  align-items: flex-end;
 }
 
 .u-color-text-1 {

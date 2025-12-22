@@ -149,7 +149,7 @@ const closeModal = () => {
       <div
         class="m-2 flex w-full flex-col items-center"
       >
-        <h2 class="text-center text-2xl c-bold">
+        <h2 class="text-center text-2xl u-bold">
           Placement des équipes pour : {{ tournament.event.name }}
         </h2>
         <div
@@ -281,7 +281,7 @@ const closeModal = () => {
             Pour modifier votre placement, rendez-vous sur la page de votre équipe, accessible depuis
             <router-link
               to="/me"
-              class="text-blue-500 c-underline"
+              class="text-blue-500 u-underline"
             >
               la page "Mon compte"
             </router-link>

@@ -24,7 +24,7 @@ const pizza = computed<Pizza | undefined>(() => pizzaList.value[props.id]);
     />
     <div class="flex w-full flex-col items-center px-4">
       <div class="mb-2 w-3/4">
-        <p class="text-center text-2xl c-bold">
+        <p class="text-center text-2xl u-bold">
           {{ pizza?.name }}
         </p>
       </div>

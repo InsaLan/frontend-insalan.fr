@@ -129,7 +129,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
   >
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 text-xl c-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+      class="rounded bg-blue-800 p-2 text-xl u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
       @click="open_modal('create_bracket')"
     >
       Créer un arbre
@@ -140,7 +140,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
 
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 c-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out"
       :class="[has_matchs && selected_matchs.size > 0 ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
       :disabled="!has_matchs || selected_matchs.size === 0"
       @click="launch_selected_matchs"
