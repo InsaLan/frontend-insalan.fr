@@ -60,14 +60,11 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         component: () => import('@/components/Tournament/TournamentInfo.vue'),
-        // redirect: (to) => `${to.fullPath}/info`,
         name: 'tournament_info',
       },
       {
         path: 'info',
         redirect: { name: 'tournament_info' },
-        // component: () => import('@/components/TournamentInfo.vue'),
-        // name: 'tournament_info',
       },
       {
         path: 'teams',
@@ -80,19 +77,9 @@ const routes: RouteRecordRaw[] = [
         name: 'tournament_seatings',
       },
       {
-        path: 'groups',
-        component: () => import('@/components/Tournament/TournamentGroups.vue'),
-        name: 'tournament_groups',
-      },
-      {
-        path: 'swiss',
-        component: () => import('@/components/Tournament/TournamentSwiss.vue'),
-        name: 'tournament_swiss',
-      },
-      {
-        path: 'brackets',
-        component: () => import('@/components/Tournament/TournamentBrackets.vue'),
-        name: 'tournament_brackets',
+        path: 'stages',
+        component: () => import('@/components/Tournament/TournamentStages.vue'),
+        name: 'tournament_stages',
       },
       {
         path: 'planning',
