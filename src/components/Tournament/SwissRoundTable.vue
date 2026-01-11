@@ -5,9 +5,8 @@ import { MatchTypeEnum } from '@/models/match';
 import type { SwissRound } from '@/models/swiss';
 import { groupBy } from '@/stores/tournament.store';
 
-const { swiss, teamPerMatch } = defineProps<{
+const { swiss } = defineProps<{
   swiss: SwissRound;
-  teamPerMatch: number;
 }>();
 
 const roundCount = computed(() => 2 * swiss.min_score - 1);
@@ -57,7 +56,6 @@ const roundCount = computed(() => 2 * swiss.min_score - 1);
             <MatchCard
               :match="match"
               :match-type="{ type: MatchTypeEnum.SWISS, id: match.swiss }"
-              :team-per-match="teamPerMatch"
             />
           </div>
         </div>

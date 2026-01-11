@@ -15,6 +15,7 @@ import {
   type MatchType,
 } from '@/models/match';
 import type { SwissMatch } from '@/models/swiss';
+import type { Team } from '@/models/team';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
@@ -28,13 +29,11 @@ import {
 const {
   match,
   matchType,
-  teamPerMatch,
   editable = false,
   selectable = false,
 } = defineProps<{
   match: GroupMatch | KnockoutMatch | SwissMatch;
   matchType: MatchType;
-  teamPerMatch: number;
   editable?: boolean;
   selectable?: boolean;
 }>();
@@ -45,7 +44,8 @@ const selected = computed(() => selected_matchs.value?.has(match.id));
 const { addNotification } = useNotificationStore();
 
 const { get_validated_team_by_id, is_winning_team, patchMatch } = useTournamentStore();
-const { validated_teams } = storeToRefs(useTournamentStore()).tourney_teams.value;
+const { tourney_teams, team_per_match } = storeToRefs(useTournamentStore());
+const { validated_teams } = tourney_teams.value;
 
 const { isAdmin } = storeToRefs(useUserStore());
 
@@ -61,7 +61,7 @@ const max_score = computed(() => {
 
 const match_info = reactive({
   bo_type: match.bo_type,
-  teams: match.teams.concat(Array(teamPerMatch - match.teams.length).fill(0)),
+  teams: match.teams.concat(Array(team_per_match.value - match.teams.length).fill(0)),
   status: match.status,
   score: validated_teams.reduce((acc, team) => {
     if (Object.keys(match.score).includes(team.id.toString())) {
@@ -74,7 +74,7 @@ const match_info = reactive({
 });
 const match_info_rules = computed(() => ({
   bo_type: { required },
-  teams: { required, minLength: minLength(0), maxLength: maxLength(teamPerMatch) },
+  teams: { required, minLength: minLength(0), maxLength: maxLength(team_per_match) },
   status: { required },
   score: Object.entries(match_info.score).reduce((res, team) => {
     res[Number(team[0])] = {
@@ -87,7 +87,7 @@ const match_info_rules = computed(() => ({
 
 const reset = () => {
   match_info.bo_type = match.bo_type;
-  match_info.teams = match.teams.concat(Array(teamPerMatch - match.teams.length).fill(0));
+  match_info.teams = match.teams.concat(Array(team_per_match.value - match.teams.length).fill(0));
   match_info.status = match.status;
   match_info.score = validated_teams.reduce((acc, team) => {
     if (Object.keys(match.score).includes(team.id.toString())) {
@@ -179,7 +179,7 @@ const open_edition = () => {
           id="bo_type"
           v-model="match_info.bo_type"
           name="bo_type"
-          class="bg-inherit py-1 pl-1"
+          class="bg-cyan-900 py-1 pl-1"
           @click.stop
         >
           <option
@@ -223,7 +223,7 @@ const open_edition = () => {
           id="match_status"
           v-model="match_info.status"
           name="match_status"
-          class="bg-inherit py-1 pl-1"
+          class="bg-cyan-900 py-1 pl-1"
         >
           <option
             v-for="match_status in MatchStatus"
@@ -277,7 +277,7 @@ const open_edition = () => {
     </div>
     <div v-if="!edit_mode">
       <div
-        v-for="idx in (match.status !== MatchStatus.SCHEDULED ? match.teams.length : teamPerMatch)"
+        v-for="idx in (match.status !== MatchStatus.SCHEDULED ? match.teams.length : team_per_match)"
         :key="idx"
         class="flex justify-between gap-3"
         :class="{ 'text-green-500': is_winning_team(match, match.teams[idx - 1]) }"
@@ -296,7 +296,7 @@ const open_edition = () => {
     </div>
     <div v-else>
       <FormField
-        v-for="idx in teamPerMatch"
+        v-for="idx in team_per_match"
         :key="idx"
         v-slot="context"
         :validations="v$.score[match_info.teams[idx - 1]]"
@@ -309,12 +309,12 @@ const open_edition = () => {
             id="select_team"
             v-model="match_info.teams[idx - 1]"
             name="select_team"
-            class="grow truncate bg-inherit py-1 pl-1"
+            class="grow truncate bg-cyan-900 py-1 pl-1"
             @click.stop
           >
             <option
               v-for="team in validated_teams.filter(
-                (t) => t.id === match_info.teams[idx - 1] || !match_info.teams.includes(t.id),
+                (t: Team) => t.id === match_info.teams[idx - 1] || !match_info.teams.includes(t.id),
               )"
               :key="team.id"
               :value="team.id"
