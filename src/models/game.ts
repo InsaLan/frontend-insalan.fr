@@ -4,4 +4,5 @@ export interface Game {
   short_name?: string;
   players_per_team: number;
   team_per_match: number;
+  game_processor: string;
 }
