@@ -1,3 +1,4 @@
+import type { Game } from '@/models/game';
 import type { Team } from '@/models/team';
 
 export enum MatchStatus {
@@ -44,6 +45,8 @@ export interface ScorePatch {
 export interface OngoingMatch extends BaseMatch {
   teams: { [id: string]: [name: string] };
   match_type: MatchType;
+  game: Game;
+  api_data: Record<string, unknown>;
 }
 export interface Score {
   team: Team;
