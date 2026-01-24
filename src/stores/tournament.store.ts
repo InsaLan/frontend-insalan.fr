@@ -14,6 +14,7 @@ import {
   MatchTypeEnum,
 } from '@/models/match';
 import type { PlayerRegistration, PlayerRegistrationDeref } from '@/models/registration';
+import type { Stage } from '@/models/stage';
 import type { SwissMatch, SwissRound } from '@/models/swiss';
 import type { Team } from '@/models/team';
 import type { EventTournament, EventTournamentDeref, PrivateTournament } from '@/models/tournament';
@@ -59,6 +60,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     waiting_validation_teams: [] as Team[],
   });
   const tournament = ref<EventTournament | EventTournamentDeref | PrivateTournament>();
+  const team_per_match = computed(() => tournament.value?.game.team_per_match || 0);
   const ongoingEvents = computed(() => Object.values(eventsList.value).reduce((res, item) => {
     if (item.ongoing) {
       res.push(item);
@@ -573,17 +575,20 @@ export const useTournamentStore = defineStore('tournament', () => {
     );
   }
 
-  async function createGroups(data: {
-    tournament: number;
-    count: number;
-    team_per_group: number;
-    names: string[];
-    use_seeding: boolean;
-  }): Promise<void> {
+  async function createGroups(
+    stage_id: number,
+    data: {
+      count: number;
+      team_per_group: number;
+      names: string[];
+      use_seeding: boolean;
+      auto_fill: boolean;
+    },
+  ): Promise<boolean> {
     await get_csrf();
 
     const res = await axios.post<Group[]>(
-      `/tournament/tournament/${data.tournament}/group/generate/`,
+      `/tournament/stage/${stage_id}/add/groups/`,
       data,
       {
         withCredentials: true,
@@ -593,14 +598,19 @@ export const useTournamentStore = defineStore('tournament', () => {
       },
     );
 
+    if (res.status !== 201) return false;
+
     (tournament.value as EventTournamentDeref).groups = res.data;
+
+    return true;
   }
 
-  async function deleteGroups(tournament_id: number): Promise<boolean> {
+  async function deleteGroups(groups: number[]): Promise<boolean> {
     await get_csrf();
 
-    const res = await axios.delete(
-      `/tournament/tournament/${tournament_id}/group/delete/`,
+    const res = await axios.post(
+      '/tournament/groups/delete/',
+      groups,
       {
         withCredentials: true,
         headers: {
@@ -638,15 +648,14 @@ export const useTournamentStore = defineStore('tournament', () => {
     return true;
   }
 
-  async function createGroupMatchs(tournament_id: number, groups: number[], bo_type: BestofType) {
+  async function createGroupMatchs(groups: number[], bo_type: BestofType) {
     await get_csrf();
 
     // groups.push(15);
 
     const res = await axios.post<Group[]>(
-      `/tournament/tournament/${tournament_id}/group/matchs/generate/`,
+      '/tournament/groups/matchs/create/',
       {
-        tournament: tournament_id,
         groups,
         bo_type,
       },
@@ -661,11 +670,12 @@ export const useTournamentStore = defineStore('tournament', () => {
     (tournament.value as EventTournamentDeref).groups = res.data;
   }
 
-  async function deleteGroupMatchs(tournament_id: number) {
+  async function deleteGroupMatchs(groups: number[]) {
     await get_csrf();
 
-    const res = await axios.delete(
-      `/tournament/tournament/${tournament_id}/group/matchs/delete/`,
+    const res = await axios.post(
+      '/tournament/groups/matchs/delete/',
+      groups,
       {
         withCredentials: true,
         headers: {
@@ -676,22 +686,24 @@ export const useTournamentStore = defineStore('tournament', () => {
 
     if (res.status !== 204) return false;
 
-    (tournament.value as EventTournamentDeref).groups.forEach((group) => {
-      group.matchs = [];
-    });
+    (tournament.value as EventTournamentDeref)
+      .groups.filter((g) => groups.includes((g.id)))
+      .forEach((group) => { group.matchs = []; });
 
     return true;
   }
 
-  async function launchMatchs(data: {
-    tournament: number;
+  interface LaunchMatchData {
+    id: number;
     round?: number;
     matchs?: number[];
-  }, type: 'group' | 'swiss' | 'bracket') {
+  }
+
+  async function launchMatchs(data: LaunchMatchData[], type: 'groups' | 'swiss' | 'brackets') {
     await get_csrf();
 
     const res = await axios.patch<{ matchs: number[]; warning: boolean }>(
-      `/tournament/tournament/${data.tournament}/${type}/matchs/launch/`,
+      `/tournament/${type}/matchs/launch/`,
       data,
       {
         withCredentials: true,
@@ -703,15 +715,15 @@ export const useTournamentStore = defineStore('tournament', () => {
 
     let match_list;
 
-    if (type === 'group') {
+    if (type === 'groups') {
       match_list = (tournament.value as EventTournamentDeref).groups;
     } else if (type === 'swiss') {
       match_list = (tournament.value as EventTournamentDeref).swissRounds;
-    } else if (type === 'bracket') {
+    } else if (type === 'brackets') {
       match_list = (tournament.value as EventTournamentDeref).brackets;
     }
 
-    match_list?.forEach((group) => group.matchs.forEach((match) => {
+    match_list?.forEach((e) => e.matchs.forEach((match) => {
       if (res.data.matchs.includes(match.id)) {
         match.status = MatchStatus.ONGOING;
       }
@@ -722,14 +734,20 @@ export const useTournamentStore = defineStore('tournament', () => {
     }
   }
 
-  async function createSwiss(tournament_id: number, data: {
-    min_score: number;
-    use_seeding: boolean;
-  }) {
+  async function createSwiss(
+    stage_id: number,
+    data: {
+      name: string;
+      min_score: number;
+      use_seeding: boolean;
+      auto_fill: boolean;
+      team_count: number;
+    },
+  ) {
     await get_csrf();
 
     const res = await axios.post<SwissRound[]>(
-      `/tournament/tournament/${tournament_id}/swiss/create/`,
+      `/tournament/stage/${stage_id}/add/swiss/`,
       data,
       {
         withCredentials: true,
@@ -739,14 +757,18 @@ export const useTournamentStore = defineStore('tournament', () => {
       },
     );
 
+    if (res.status !== 201) return false;
+
     (tournament.value as EventTournamentDeref).swissRounds = res.data;
+
+    return true;
   }
 
-  async function deleteSwiss(tournament_id: number): Promise<boolean> {
+  async function deleteSwiss(swiss_id: number): Promise<boolean> {
     await get_csrf();
 
     const res = await axios.delete(
-      `/tournament/tournament/${tournament_id}/swiss/delete/`,
+      `/tournament/swiss/${swiss_id}/`,
       {
         withCredentials: true,
         headers: {
@@ -762,12 +784,12 @@ export const useTournamentStore = defineStore('tournament', () => {
     return true;
   }
 
-  async function createSwissRound(tournament_id: number, swiss: number, round: number) {
+  async function SwissFillRound(swiss_id: number, round: number) {
     await get_csrf();
 
     const res = await axios.patch<Record<string, SwissMatch>>(
-      `/tournament/tournament/${tournament_id}/swiss/round/generate/`,
-      { swiss, round },
+      `/tournament/swiss/${swiss_id}/fill_round/`,
+      { round },
       {
         withCredentials: true,
         headers: {
@@ -776,12 +798,14 @@ export const useTournamentStore = defineStore('tournament', () => {
       },
     );
 
-    (tournament.value as EventTournamentDeref).swissRounds[0].matchs.forEach(
-      (match, index, matchs) => {
-        if (Object.keys(res.data).includes(match.id.toString())) {
-          matchs[index] = res.data[match.id.toString()];
-        }
-      },
+    (tournament.value as EventTournamentDeref).swissRounds.forEach(
+      (swiss) => swiss.matchs.forEach(
+        (match, index, matchs) => {
+          if (Object.keys(res.data).includes(match.id.toString())) {
+            matchs[index] = res.data[match.id.toString()];
+          }
+        },
+      ),
     );
   }
 
@@ -840,7 +864,7 @@ export const useTournamentStore = defineStore('tournament', () => {
   }
 
   async function createBracket(
-    tournament_id: number,
+    stage_id: number,
     data: {
       name: string;
       team_count: number;
@@ -850,7 +874,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     await get_csrf();
 
     const res = await axios.post<Bracket>(
-      `/tournament/tournament/${tournament_id}/bracket/create/`,
+      `/tournament/stage/${stage_id}/add/bracket/`,
       data,
       {
         withCredentials: true,
@@ -860,7 +884,11 @@ export const useTournamentStore = defineStore('tournament', () => {
       },
     );
 
+    if (res.status !== 201) return false;
+
     (tournament.value as EventTournamentDeref).brackets.push(res.data);
+
+    return true;
   }
 
   async function deleteBracket(bracket_id: number) {
@@ -885,6 +913,77 @@ export const useTournamentStore = defineStore('tournament', () => {
     return true;
   }
 
+  async function createStage(stage: { tournament: number; name: string; index: number }) {
+    await get_csrf();
+
+    const res = await axios.post<Stage>(
+      'tournament/stage/create/',
+      stage,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    if (res.status !== 201) return false;
+
+    tournament.value?.stages.push(res.data);
+
+    return true;
+  }
+
+  async function updateStage(stage: Stage) {
+    await get_csrf();
+
+    const res = await axios.patch(
+      `tournament/stage/${stage.id}/update/`,
+      stage,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    if (res.status !== 200) return false;
+
+    // console.log(stage);
+
+    (tournament.value as EventTournament).stages.forEach(
+      (s: Stage, idx: number, stages: Stage[]) => {
+        if (s.id === stage.id) {
+          stages[idx] = stage;
+        }
+      },
+    );
+
+    return true;
+  }
+
+  async function deleteStage(stage_id: number) {
+    await get_csrf();
+
+    const res = await axios.delete(
+      `tournament/stage/${stage_id}/delete/`,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf.value,
+        },
+      },
+    );
+
+    if (res.status !== 204) return false;
+
+    (tournament.value as EventTournament).stages = (tournament.value as EventTournament)
+      .stages.filter((s: Stage) => s.id !== stage_id);
+
+    return true;
+  }
+
   function $reset() {
     eventsList.value = {};
     eventTournamentsList.value = {};
@@ -899,6 +998,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     unpaidRegistration,
     tourney_teams,
     tournament,
+    team_per_match,
     is_winning_team,
     get_validated_team_by_id,
     get_winner_matchs_per_round,
@@ -951,10 +1051,13 @@ export const useTournamentStore = defineStore('tournament', () => {
     launchMatchs,
     createSwiss,
     deleteSwiss,
-    createSwissRound,
+    SwissFillRound,
     patchMatch,
     createBracket,
     deleteBracket,
+    createStage,
+    updateStage,
+    deleteStage,
     soloGame,
   };
 });

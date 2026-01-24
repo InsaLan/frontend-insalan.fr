@@ -299,7 +299,7 @@ watchEffect(() => {
               id="select_team"
               v-model="group_data.teams[idx - 1]"
               name="select_team"
-              class="w-full truncate bg-inherit py-1 pl-1"
+              class="w-full truncate bg-cyan-900 py-1 pl-1"
               @blur="v$.teams.$touch"
             >
               <option :value="0">
