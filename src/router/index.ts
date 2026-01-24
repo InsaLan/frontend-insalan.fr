@@ -118,29 +118,9 @@ const routes: RouteRecordRaw[] = [
             name: 'tournament_admin_seatings',
           },
           {
-            path: 'groups',
-            children: [
-              {
-                path: '',
-                component: () => import('@/components/Tournament/Admin/TournamentAdminGroups.vue'),
-                name: 'tournament_admin_groups',
-              },
-              {
-                path: 'matchs',
-                component: () => import('@/components/Tournament/Admin/TournamentAdminGroupsMatchs.vue'),
-                name: 'tournament_admin_groups-matchs',
-              },
-            ],
-          },
-          {
-            path: 'swiss',
-            component: () => import('@/components/Tournament/Admin/TournamentAdminSwiss.vue'),
-            name: 'tournament_admin_swiss',
-          },
-          {
-            path: 'brackets',
-            component: () => import('@/components/Tournament/Admin/TournamentAdminBrackets.vue'),
-            name: 'tournament_admin_brackets',
+            path: 'stages',
+            component: () => import('@/components/Tournament/Admin/TournamentAdminStages.vue'),
+            name: 'tournament_admin_stages',
           },
           {
             path: 'planning',
