@@ -91,7 +91,6 @@ const group_detail = ref<Group | undefined>(undefined);
       <section
         v-if="swiss_rounds.length !== 0"
         id="swiss_rounds"
-        class="mx-4 flex flex-col gap-8 overflow-auto py-4"
       >
         <SwissRoundTable
           v-for="swiss in swiss_rounds"
