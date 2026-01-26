@@ -322,7 +322,6 @@ const add_format = async () => {
     <section
       v-if="swiss_rounds.length !== 0"
       id="swiss_rounds"
-      class="mx-4 flex flex-col gap-4 overflow-auto"
     >
       <AdminSwiss
         v-for="swiss in swiss_rounds"

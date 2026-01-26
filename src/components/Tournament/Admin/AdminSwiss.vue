@@ -172,58 +172,62 @@ const swiss_fill_round = async () => {
   </div>
 
   <div
-    class="mx-2 flex flex-col items-center md:mx-4 lg:mx-8"
+    class="mx-4 flex flex-col gap-4 overflow-auto"
   >
     <div
-      class="grid size-full gap-x-10 gap-y-5"
-      :style="{ 'grid-template-columns': `repeat(${roundCounts}, minmax(18rem,1fr))` }"
+      class="mx-2 flex flex-col items-center md:mx-4 lg:mx-8"
     >
-      <h1
-        v-for="round_idx in roundCounts"
-        :key="round_idx"
-        class="text-center text-3xl"
-      >
-        Tour {{ round_idx }}
-      </h1>
       <div
-        v-for="(round_matchs, round_idx) in groupBy(swiss.matchs, 'round_number')"
-        :key="round_idx"
-        class="flex flex-col gap-6"
+        class="grid size-full gap-x-10 gap-y-5"
+        :style="{ 'grid-template-columns': `repeat(${roundCounts}, minmax(18rem,1fr))` }"
       >
+        <h1
+          v-for="round_idx in roundCounts"
+          :key="round_idx"
+          class="text-center text-3xl"
+        >
+          Tour {{ round_idx }}
+        </h1>
         <div
-          v-for="(matchs, score_group) in groupBy(round_matchs, 'score_group')"
-          :key="score_group"
-          class="border-2 border-gray-500"
+          v-for="(round_matchs, round_idx) in groupBy(swiss.matchs, 'round_number')"
+          :key="round_idx"
+          class="flex flex-col gap-6"
         >
           <div
-            class="bg-gray-500 text-center"
+            v-for="(matchs, score_group) in groupBy(round_matchs, 'score_group')"
+            :key="score_group"
+            class="border-2 border-gray-500"
           >
             <div
-              v-if="Number(round_idx) <= swiss.min_score"
+              class="bg-gray-500 text-center"
             >
-              {{ Number(round_idx) - 1 - Number(score_group) }} - {{ score_group }}
+              <div
+                v-if="Number(round_idx) <= swiss.min_score"
+              >
+                {{ Number(round_idx) - 1 - Number(score_group) }} - {{ score_group }}
+              </div>
+              <div v-else>
+                {{ swiss.min_score - 1 - Number(score_group) }} -
+                {{ Number(round_idx) - swiss.min_score + Number(score_group) }}
+              </div>
             </div>
-            <div v-else>
-              {{ swiss.min_score - 1 - Number(score_group) }} -
-              {{ Number(round_idx) - swiss.min_score + Number(score_group) }}
-            </div>
-          </div>
 
-          <div
-            class="flex flex-col items-center"
-          >
             <div
-              v-for="match in matchs"
-              :key="match.id"
-              class="w-full"
+              class="flex flex-col items-center"
             >
-              <MatchCard
-                v-model="selected_matchs"
-                :match="match"
-                :match-type="{ type: MatchTypeEnum.SWISS, id: match.swiss }"
-                :editable="true"
-                :selectable="true"
-              />
+              <div
+                v-for="match in matchs"
+                :key="match.id"
+                class="w-full"
+              >
+                <MatchCard
+                  v-model="selected_matchs"
+                  :match="match"
+                  :match-type="{ type: MatchTypeEnum.SWISS, id: match.swiss }"
+                  :editable="true"
+                  :selectable="true"
+                />
+              </div>
             </div>
           </div>
         </div>
