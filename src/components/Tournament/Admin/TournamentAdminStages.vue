@@ -233,51 +233,39 @@ const selected_format = ref('group');
   <section
     id="stages"
     class="my-3"
-    :class="{ 'flex flex-1 items-center justify-center': !has_formats }"
   >
     <template
-      v-if="tournament.stages.length === 0"
+      v-if="tournament.stages.length === 0 && has_formats"
     >
-      <h1
-        v-if="!has_formats"
-        class="text-2xl"
-      >
-        Les phases du tournoi ne sont pas encore disponibles.
-      </h1>
+      <div class="mb-3 flex flex-wrap justify-center gap-x-8 gap-y-2">
+        <button
+          v-for="(format_name, format) in { group: 'Poules', swiss: 'Ronde Suisse', bracket: 'Arbres' }"
+          :key="format"
+          type="button"
+          class="rounded-lg bg-cyan-900 p-2 transition duration-150 ease-in-out hover:ring-2 hover:ring-[#63d1ff]"
+          :class="{ 'ring-2 ring-[#63d1ff]': format === selected_format }"
+          @click="selected_format = format"
+        >
+          {{ format_name }}
+        </button>
+      </div>
 
-      <template
-        v-else
-      >
-        <div class="mb-3 flex flex-wrap justify-center gap-x-8 gap-y-2">
-          <button
-            v-for="(format_name, format) in { group: 'Poules', swiss: 'Ronde Suisse', bracket: 'Arbres' }"
-            :key="format"
-            type="button"
-            class="rounded-lg bg-cyan-900 p-2 transition duration-150 ease-in-out hover:ring-2 hover:ring-[#63d1ff]"
-            :class="{ 'ring-2 ring-[#63d1ff]': format === selected_format }"
-            @click="selected_format = format"
-          >
-            {{ format_name }}
-          </button>
-        </div>
+      <hr class="m-auto w-4/5">
 
-        <hr class="m-auto w-4/5">
+      <TournamentBrackets
+        v-if="selected_format === 'bracket'"
+        :tournament="tournament"
+      />
 
-        <TournamentBrackets
-          v-if="selected_format === 'bracket'"
-          :tournament="tournament"
-        />
+      <TournamentGroups
+        v-if="selected_format === 'group'"
+        :tournament="tournament"
+      />
 
-        <TournamentGroups
-          v-if="selected_format === 'group'"
-          :tournament="tournament"
-        />
-
-        <TournamentSwiss
-          v-if="selected_format === 'swiss'"
-          :tournament="tournament"
-        />
-      </template>
+      <TournamentSwiss
+        v-if="selected_format === 'swiss'"
+        :tournament="tournament"
+      />
     </template>
 
     <template
