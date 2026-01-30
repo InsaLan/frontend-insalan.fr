@@ -8,7 +8,7 @@ export interface SwissRound {
   min_score: number;
   teams: Team[];
   matchs: SwissMatch[];
-  stage: number;
+  stage?: number;
 }
 
 export interface SwissSeeding {

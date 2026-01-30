@@ -11,7 +11,7 @@ export interface Group {
   scores: { [id:string]: number };
   tiebreak_scores: { [id:string]: number };
   seeding?: { [id:string]: number };
-  stage: number;
+  stage?: number;
 }
 
 export interface GroupMatch extends Match {
