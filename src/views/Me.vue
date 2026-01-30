@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useVuelidate, type ValidationRule } from '@vuelidate/core';
+import { useVuelidate } from '@vuelidate/core';
 import { storeToRefs } from 'pinia';
 import {
   computed, reactive, ref,
@@ -8,13 +8,13 @@ import placeholder from '@/assets/images/logo_home.png';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
-import { BestofType, type ScorePatch } from '@/models/match';
+import TournamentMeCard from '@/components/TournamentMeCard.vue';
 import type { PlayerRegistrationDeref, RegistrationDeref } from '@/models/registration';
 import type { EventTournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
 import {
-  between, email,
+  email,
   minLength,
   required, sameAs,
 } from '@/support/locales/errors.fr';
@@ -24,7 +24,7 @@ const tournamentStore = useTournamentStore();
 const {
   user, role, inscriptions, ongoing_match, cart,
 } = storeToRefs(userStore);
-const { fetch_user_inscription_full, patch_user, send_score } = userStore;
+const { fetch_user_inscription_full, patch_user } = userStore;
 const { addRegistrationToCart, get_ticket_pdf } = tournamentStore;
 
 await fetch_user_inscription_full();
@@ -65,85 +65,6 @@ const focus = ref('');
 const title = ref('Test title');
 
 const modal_payment = ref(false);
-const modal_enter_score = ref(false);
-const modal_enter_times = ref(false);
-const invalid_score = ref('');
-
-const max_score = computed(() => {
-  if (ongoing_match.value === null) return 0;
-
-  if (ongoing_match.value.bo_type === BestofType.RANKING) {
-    return Object.keys(ongoing_match.value.teams).length;
-  }
-
-  return ongoing_match.value.bo_type as number;
-});
-
-const data_score: { score: { [id: number]: number }; times: number[] } = reactive({
-  score: Object.keys(ongoing_match.value?.teams ?? {}).reduce((res, team) => {
-    res[Number(team)] = 0;
-    return res;
-  }, {} as Record<number, number>),
-  times: [],
-});
-
-const game_number = computed(() => {
-  if (ongoing_match.value === null) return 0;
-
-  if (ongoing_match.value.bo_type === BestofType.RANKING) {
-    return 1;
-  }
-  return Object.values(data_score.score).reduce((a, b) => a + b, 0);
-});
-
-const rules_score = computed(() => ({
-  score: Object.entries(data_score.score).reduce((res, team) => {
-    res[Number(team[0])] = {
-      between: between(0, max_score.value),
-    };
-    return res;
-  }, {} as Record<number, { between: ValidationRule }>),
-  times: { required },
-}));
-
-const NextModalEnterScore = () => {
-  if (ongoing_match.value === null) return;
-
-  if (ongoing_match.value.bo_type !== BestofType.RANKING) {
-    const score_total = Object.values(data_score.score).reduce((a, b) => a + b, 0);
-    if (score_total > (ongoing_match.value.bo_type as number)
-        || Object.keys(data_score.score).length === 0) {
-      invalid_score.value = 'Les scores que vous avez rentrés ne sont pas valide !';
-    } else {
-      invalid_score.value = '';
-      modal_enter_times.value = true;
-      modal_enter_score.value = false;
-    }
-  } else { // we are in ranking
-    const ranks = Object.values(data_score.score).reduce((a, b) => a + b, 0);
-    const n = Object.keys(ongoing_match.value.teams).length;
-    if (ranks !== (n * (n + 1)) / 2) {
-      invalid_score.value = 'Les scores que vous avez rentrés ne sont pas valide !';
-    } else {
-      invalid_score.value = '';
-      modal_enter_times.value = true;
-      modal_enter_score.value = false;
-    }
-  }
-};
-
-const PrevModalEnterScore = () => {
-  modal_enter_times.value = false;
-  modal_enter_score.value = true;
-  invalid_score.value = '';
-};
-
-const v$_time_game = useVuelidate(rules_score, data_score);
-
-const closeModalEnterScore = () => {
-  invalid_score.value = '';
-  modal_enter_score.value = false;
-};
 
 const showModal = ref(false);
 const openModal = () => {
@@ -152,23 +73,6 @@ const openModal = () => {
 
 const closeModal = () => {
   showModal.value = false;
-};
-const sendScore = async () => {
-  if (ongoing_match.value === null) return;
-
-  const scores = ({} as ScorePatch);
-  const times = data_score.times.filter((time) => time !== null);
-  if (times.length !== game_number.value) {
-    invalid_score.value = 'Les temps ne peuvent pas être nuls';
-    return;
-  }
-  scores.times = times;
-  scores.score = data_score.score;
-  await send_score(ongoing_match.value, scores);
-  data_score.score = {};
-  data_score.times = [];
-  modal_enter_times.value = false;
-  modal_enter_score.value = false;
 };
 const validateModal = async () => {
   let data = {};
@@ -214,14 +118,6 @@ const editField = (field: string) => {
       return;
   }
   openModal();
-};
-const openScoreModal = () => {
-  if (ongoing_match.value === null) return;
-
-  Object.keys(ongoing_match.value.teams).forEach((id) => {
-    data_score.score[parseInt(id, 10)] = 0;
-  });
-  modal_enter_score.value = true;
 };
 </script>
 
@@ -324,23 +220,7 @@ const openScoreModal = () => {
            Supprimer son compte</button>
         </div-->
       </div>
-      <div v-if="ongoing_match !== null" id="ongoing_match">
-        <h1 class="m-3 text-center text-4xl font-bold">
-          Partie en cours
-        </h1>
-        <div class="mx-4 flex flex-col justify-around rounded-md bg-cyan-900">
-          <div class="flex w-full flex-col divide-y">
-            <div v-for="team, team_id in ongoing_match?.teams" :key="team_id" class="mx-2 p-4">
-              <p class="truncate text-xl font-bold">
-                {{ team }}
-              </p>
-            </div>
-          </div>
-          <button type="button" class="w-full rounded-b-md bg-red-400 p-2 duration-100 hover:bg-red-700" @click="openScoreModal()">
-            Terminer la partie
-          </button>
-        </div>
-      </div>
+      <TournamentMeCard v-if="ongoing_match !== null" :ongoing-match="ongoing_match"/>
     </div>
     <div class="hidden h-auto w-[2px] bg-white sm:block"/>
     <div id="team" class="md:w-4/6">
@@ -698,124 +578,6 @@ const openScoreModal = () => {
         @click="modal_payment = false"
       >
         Rester sur cette page
-      </button>
-    </template>
-  </Modal>
-
-  <Modal v-if="modal_enter_score" :close-on-click="false">
-    <template #icon>
-      <div/>
-    </template>
-    <template #title>
-      <h3 id="open_modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Enregistrer le {{ ongoing_match?.bo_type === BestofType.RANKING ? 'classement' : 'score' }}
-      </h3>
-    </template>
-    <template #body>
-      <form id="patch-user" class="mt-2" @submit.prevent="">
-        <FormField
-          v-for="(name, id) in ongoing_match?.teams"
-          :key="id"
-          v-slot="context"
-          :validations="v$_time_game.score[id]"
-          label="{{id}}"
-        >
-          <div
-            class="flex items-center justify-between"
-          >
-            <label :for="`input${id}`">{{ name }}</label>
-            <input
-              :id="`input${id}`"
-              v-model="data_score.score[Number(id)]"
-              :class="{ error: context.invalid }"
-              aria-label="score"
-              class="w-24 border-2 bg-theme-bg"
-              placeholder="score"
-              required
-              type="number"
-              @blur="v$_time_game.score[id].$touch"
-            />
-          </div>
-        </FormField>
-        <!-- hidden submit button with tailwind-->
-        <button class="hidden" type="submit"/>
-      </form>
-      <p v-if="invalid_score.length > 0" class="bg-red-400">
-        {{ invalid_score }}
-      </p>
-    </template>
-    <template #buttons>
-      <button
-        class="mx-4 inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
-        type="button"
-        @click.prevent="NextModalEnterScore"
-      >
-        Suivant
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
-        type="button"
-        @click="closeModalEnterScore"
-      >
-        Annuler
-      </button>
-    </template>
-  </Modal>
-
-  <Modal v-if="modal_enter_times" :close-on-click="false">
-    <template #icon>
-      <div/>
-    </template>
-    <template #title>
-      <h3 id="open_modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Enregistrer les durées de match (en minute)
-      </h3>
-    </template>
-    <template #body>
-      <form id="patch-user" class="mt-2" @submit.prevent="">
-        <FormField
-          v-for="n in game_number"
-          :key="n"
-          v-slot="context"
-          class="flex items-center justify-between"
-          :validations="v$_time_game.times"
-          label="times"
-          @blur="v$_time_game.$touch"
-        >
-          <label :for="`input${n}`">Partie {{ n }} </label>
-          <input
-            :id="`input${n}`"
-            v-model="data_score.times[n]"
-            :class="{ error: context.invalid }"
-            aria-label="duration (minutes)"
-            class="w-24 border-2 bg-theme-bg"
-            placeholder="5"
-            required
-            type="number"
-            min="1"
-          />
-        </FormField>
-        <p v-if="invalid_score.length > 0" class="bg-red-400">
-          {{ invalid_score }}
-        </p>
-        <!-- hidden submit button with tailwind-->
-        <button class="hidden" type="submit"/>
-      </form>
-    </template>
-    <template #buttons>
-      <button
-        class="duration inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="sendScore"
-      >
-        Envoyer
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
-        type="button"
-        @click="PrevModalEnterScore"
-      >
-        Retour
       </button>
     </template>
   </Modal>
