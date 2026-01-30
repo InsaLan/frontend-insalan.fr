@@ -23,7 +23,7 @@ const { addNotification } = useNotificationStore();
 const {
   launchMatchs,
   deleteSwiss,
-  SwissFillRound,
+  swissFillRound,
 } = useTournamentStore();
 
 const roundCounts = computed(() => 2 * swiss.min_score - 1);
@@ -121,7 +121,7 @@ const swiss_fill_round = async () => {
 
   if (!is_valid) return;
 
-  await SwissFillRound(swiss.id, round_to_create.value);
+  await swissFillRound(swiss.id, round_to_create.value);
 
   modal_open.value = false;
   addNotification(`Les matchs du tour ${round_to_create.value} ont bien été générés.`, 'info');
