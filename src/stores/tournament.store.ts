@@ -784,7 +784,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     return true;
   }
 
-  async function SwissFillRound(swiss_id: number, round: number) {
+  async function swissFillRound(swiss_id: number, round: number) {
     await get_csrf();
 
     const res = await axios.patch<Record<string, SwissMatch>>(
@@ -1051,7 +1051,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     launchMatchs,
     createSwiss,
     deleteSwiss,
-    SwissFillRound,
+    swissFillRound,
     patchMatch,
     createBracket,
     deleteBracket,
