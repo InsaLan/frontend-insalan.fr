@@ -8,6 +8,9 @@ import AdminBracket from '@/components/Tournament/Admin/AdminBracket.vue';
 import AdminGroups from '@/components/Tournament/Admin/AdminGroups.vue';
 import AdminGroupsMatchs from '@/components/Tournament/Admin/AdminGroupsMatchs.vue';
 import AdminSwiss from '@/components/Tournament/Admin/AdminSwiss.vue';
+import TournamentBrackets from '@/components/Tournament/TournamentBrackets.vue';
+import TournamentGroups from '@/components/Tournament/TournamentGroups.vue';
+import TournamentSwiss from '@/components/Tournament/TournamentSwiss.vue';
 import { BracketType } from '@/models/bracket';
 import { BestofType } from '@/models/match';
 import type { Stage } from '@/models/stage';
@@ -41,11 +44,12 @@ const {
 const { tourney_teams } = storeToRefs(useTournamentStore());
 const validated_teams_count = tourney_teams.value.validated_teams.length;
 
-const selected_stage = ref(tournament.stages[0]);
+const selected_stage = ref(tournament.stages.at(0)?.id ?? 0);
+const selected_stage_name = computed(() => tournament.stages.filter((s) => s.id === selected_stage.value).at(0)?.name ?? '');
 
-const brackets = computed(() => tournament.brackets.filter((b) => b.stage === selected_stage.value.id));
-const groups = computed(() => tournament.groups.filter((b) => b.stage === selected_stage.value.id));
-const swiss_rounds = computed(() => tournament.swissRounds.filter((b) => b.stage === selected_stage.value.id));
+const brackets = computed(() => tournament.brackets.filter((b) => b.stage === selected_stage.value));
+const groups = computed(() => tournament.groups.filter((b) => b.stage === selected_stage.value));
+const swiss_rounds = computed(() => tournament.swissRounds.filter((b) => b.stage === selected_stage.value));
 
 const show_groups_matchs = ref(false);
 
@@ -95,7 +99,7 @@ const delete_stage = async (stage_id: number) => {
 
   delete_stage_id.value = 0;
   // eslint-disable-next-line prefer-destructuring
-  selected_stage.value = tournament.stages[0];
+  selected_stage.value = tournament.stages.at(0)?.id ?? 0;
 };
 
 const add_format_modal = ref(false);
@@ -121,7 +125,7 @@ const add_bracket = async () => {
 
   if (!is_valid) return;
 
-  const res = await createBracket(selected_stage.value.id, bracket_data);
+  const res = await createBracket(selected_stage.value, bracket_data);
 
   if (res) addNotification(`L'arbre ${bracket_data.name} a bien été créé.`, 'info');
 
@@ -165,7 +169,7 @@ const add_groups = async () => {
 
   if (!is_valid) return;
 
-  const res = await createGroups(selected_stage.value.id, group_data);
+  const res = await createGroups(selected_stage.value, group_data);
 
   if (res) addNotification('Les poules ont bien été créées.', 'info');
 
@@ -196,7 +200,7 @@ const add_swiss = async () => {
 
   if (!is_valid) return;
 
-  const res = await createSwiss(selected_stage.value.id, swiss_data);
+  const res = await createSwiss(selected_stage.value, swiss_data);
 
   if (res) addNotification('La ronde suisse a bien été créées.', 'info');
 
@@ -217,129 +221,187 @@ const add_format = async () => {
     default:
   }
 };
+
+const has_formats = computed(() => !(
+  tournament.groups.length === 0
+  && tournament.swissRounds.length === 0
+  && tournament.brackets.length === 0));
+const selected_format = ref('group');
 </script>
 
 <template>
   <section
     id="stages"
     class="my-3"
+    :class="{ 'flex flex-1 items-center justify-center': !has_formats }"
   >
-    <div class="mb-3 flex flex-wrap justify-center gap-x-8 gap-y-4">
-      <button
-        v-for="stage in tournament.stages"
-        :key="stage.id"
-        type="button"
-        class="rounded-lg bg-cyan-900 p-2 transition duration-150 ease-in-out hover:ring-2 hover:ring-[#63d1ff]"
-        :class="{ 'ring-2 ring-[#63d1ff]': stage.id === selected_stage.id }"
-        @click="selected_stage = stage"
-      >
-        <div
-          v-if="edit_stage === stage.id"
-          class="flex items-center justify-between gap-1.5"
-        >
-          <input
-            id="stage_name"
-            v-model="stage_data.name"
-            name="stage_name"
-            type="text"
-            class="bg-inherit p-0 text-center"
-            :size="stage_data.name.length"
-            @click.stop
-          >
-          <fa-awesome-icon
-            class="text-green-700 hover:cursor-pointer hover:text-green-900"
-            icon="fa-solid fa-save"
-            size="sm"
-            title="Sauvegarder la phase"
-            @click.stop="update_stage(stage.id)"
-          />
-          <fa-awesome-icon
-            class="text-red-500 hover:cursor-pointer hover:text-red-700"
-            icon="fa-solid fa-xmark"
-            size="md"
-            title="Annuler"
-            @click.stop="edit_stage = 0"
-          />
-        </div>
-        <div
-          v-else
-          class="flex items-center justify-between gap-1.5"
-        >
-          {{ stage.name }}
-          <fa-awesome-icon
-            class="hover:cursor-pointer hover:text-gray-500"
-            icon="fa-solid fa-pencil"
-            size="2xs"
-            title="Éditer la phase"
-            @click.stop="edit_stage = stage.id; stage_data.name = stage.name"
-          />
-          <fa-awesome-icon
-            class="text-red-500 hover:cursor-pointer hover:text-red-700"
-            icon="fa-solid fa-trash-can"
-            size="sm"
-            title="Supprimer la phase"
-            @click.stop="delete_stage_id = stage.id"
-          />
-        </div>
-      </button>
-    </div>
-    <div class="mb-3 flex flex-wrap justify-center gap-x-8 gap-y-4">
-      <button
-        type="button"
-        class="rounded bg-blue-800 p-2 text-xl transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-        @click="create_stage_modal = true"
-      >
-        Nouvelle Phase
-      </button>
-      <button
-        type="button"
-        class="rounded bg-blue-800 p-2 text-xl transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-        @click="add_format_modal = true"
-      >
-        Ajouter un format
-      </button>
-    </div>
-
-    <hr class="m-auto w-4/5">
-
-    <section
-      v-if="groups.length !== 0"
-      id="groups"
-      class="m-4 flex flex-col justify-center gap-2"
+    <template
+      v-if="tournament.stages.length === 0"
     >
-      <AdminGroupsMatchs
-        v-if="show_groups_matchs"
-        v-model="show_groups_matchs"
-        :groups="groups"
-      />
-      <AdminGroups
+      <h1
+        v-if="!has_formats"
+        class="text-2xl"
+      >
+        Les phases du tournoi ne sont pas encore disponibles.
+      </h1>
+
+      <template
         v-else
-        v-model="show_groups_matchs"
-        :groups="groups"
-      />
-    </section>
+      >
+        <div class="mb-3 flex flex-wrap justify-center gap-x-8 gap-y-2">
+          <button
+            v-for="(format_name, format) in { group: 'Poules', swiss: 'Ronde Suisse', bracket: 'Arbres' }"
+            :key="format"
+            type="button"
+            class="rounded-lg bg-cyan-900 p-2 transition duration-150 ease-in-out hover:ring-2 hover:ring-[#63d1ff]"
+            :class="{ 'ring-2 ring-[#63d1ff]': format === selected_format }"
+            @click="selected_format = format"
+          >
+            {{ format_name }}
+          </button>
+        </div>
 
-    <section
-      v-if="swiss_rounds.length !== 0"
-      id="swiss_rounds"
-    >
-      <AdminSwiss
-        v-for="swiss in swiss_rounds"
-        :key="swiss.id"
-        :swiss="swiss"
-      />
-    </section>
+        <hr class="m-auto w-4/5">
 
-    <section
-      v-if="brackets.length !== 0"
-      id="brackets"
+        <TournamentBrackets
+          v-if="selected_format === 'bracket'"
+          :tournament="tournament"
+        />
+
+        <TournamentGroups
+          v-if="selected_format === 'group'"
+          :tournament="tournament"
+        />
+
+        <TournamentSwiss
+          v-if="selected_format === 'swiss'"
+          :tournament="tournament"
+        />
+      </template>
+    </template>
+
+    <template
+      v-else
     >
-      <AdminBracket
-        v-for="bracket in brackets"
-        :key="bracket.id"
-        :bracket="bracket"
-      />
-    </section>
+      <div
+        class="mb-3 flex flex-wrap justify-center gap-x-8 gap-y-4"
+      >
+        <button
+          v-for="stage in tournament.stages"
+          :key="stage.id"
+          type="button"
+          class="rounded-lg bg-cyan-900 p-2 transition duration-150 ease-in-out hover:ring-2 hover:ring-[#63d1ff]"
+          :class="{ 'ring-2 ring-[#63d1ff]': stage.id === selected_stage }"
+          @click="selected_stage = stage.id"
+        >
+          <div
+            v-if="edit_stage === stage.id"
+            class="flex items-center justify-between gap-1.5"
+          >
+            <input
+              id="stage_name"
+              v-model="stage_data.name"
+              name="stage_name"
+              type="text"
+              class="bg-inherit p-0 text-center"
+              :size="stage_data.name.length"
+              @click.stop
+            >
+            <fa-awesome-icon
+              class="text-green-700 hover:cursor-pointer hover:text-green-900"
+              icon="fa-solid fa-save"
+              size="sm"
+              title="Sauvegarder la phase"
+              @click.stop="update_stage(stage.id)"
+            />
+            <fa-awesome-icon
+              class="text-red-500 hover:cursor-pointer hover:text-red-700"
+              icon="fa-solid fa-xmark"
+              size="md"
+              title="Annuler"
+              @click.stop="edit_stage = 0"
+            />
+          </div>
+          <div
+            v-else
+            class="flex items-center justify-between gap-1.5"
+          >
+            {{ stage.name }}
+            <fa-awesome-icon
+              class="hover:cursor-pointer hover:text-gray-500"
+              icon="fa-solid fa-pencil"
+              size="2xs"
+              title="Éditer la phase"
+              @click.stop="edit_stage = stage.id; stage_data.name = stage.name"
+            />
+            <fa-awesome-icon
+              class="text-red-500 hover:cursor-pointer hover:text-red-700"
+              icon="fa-solid fa-trash-can"
+              size="sm"
+              title="Supprimer la phase"
+              @click.stop="delete_stage_id = stage.id"
+            />
+          </div>
+        </button>
+      </div>
+      <div class="mb-3 flex flex-wrap justify-center gap-x-8 gap-y-4">
+        <button
+          type="button"
+          class="rounded bg-blue-800 p-2 text-xl transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+          @click="create_stage_modal = true"
+        >
+          Nouvelle Phase
+        </button>
+        <button
+          type="button"
+          class="rounded bg-blue-800 p-2 text-xl transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+          @click="add_format_modal = true"
+        >
+          Ajouter un format
+        </button>
+      </div>
+
+      <hr class="m-auto w-4/5">
+
+      <section
+        v-if="groups.length !== 0"
+        id="groups"
+        class="m-4 flex flex-col justify-center gap-2"
+      >
+        <AdminGroupsMatchs
+          v-if="show_groups_matchs"
+          v-model="show_groups_matchs"
+          :groups="groups"
+        />
+        <AdminGroups
+          v-else
+          v-model="show_groups_matchs"
+          :groups="groups"
+        />
+      </section>
+
+      <section
+        v-if="swiss_rounds.length !== 0"
+        id="swiss_rounds"
+      >
+        <AdminSwiss
+          v-for="swiss in swiss_rounds"
+          :key="swiss.id"
+          :swiss="swiss"
+        />
+      </section>
+
+      <section
+        v-if="brackets.length !== 0"
+        id="brackets"
+      >
+        <AdminBracket
+          v-for="bracket in brackets"
+          :key="bracket.id"
+          :bracket="bracket"
+        />
+      </section>
+    </template>
   </section>
 
   <Modal
@@ -433,7 +495,7 @@ const add_format = async () => {
     </template>
     <template #title>
       <h3 class="text-white-900 text-base font-semibold leading-6">
-        Ajouter un format à {{ selected_stage.name }}
+        Ajouter un format à {{ selected_stage_name }}
       </h3>
     </template>
     <template #body>

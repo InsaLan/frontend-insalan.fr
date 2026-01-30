@@ -4,6 +4,9 @@ import Bracket from '@/components/Tournament/Bracket.vue';
 import GroupDetail from '@/components/Tournament/GroupDetail.vue';
 import GroupTable from '@/components/Tournament/GroupTable.vue';
 import SwissRoundTable from '@/components/Tournament/SwissRoundTable.vue';
+import TournamentBrackets from '@/components/Tournament/TournamentBrackets.vue';
+import TournamentGroups from '@/components/Tournament/TournamentGroups.vue';
+import TournamentSwiss from '@/components/Tournament/TournamentSwiss.vue';
 import type { Group } from '@/models/group';
 import type { EventTournamentDeref, PrivateTournament } from '@/models/tournament';
 
@@ -18,22 +21,66 @@ const groups = computed(() => tournament.groups.filter((b) => b.stage === select
 const swiss_rounds = computed(() => tournament.swissRounds.filter((b) => b.stage === selected_stage.value));
 
 const group_detail = ref<Group | undefined>(undefined);
+
+const has_formats = computed(() => !(
+  tournament.groups.length === 0
+  && tournament.swissRounds.length === 0
+  && tournament.brackets.length === 0));
+const selected_format = ref('group');
 </script>
 
 <template>
   <section
     id="stages"
     class="my-3"
-    :class="{ 'flex flex-1 items-center justify-center': tournament.stages.length === 0 }"
+    :class="{ 'flex flex-1 items-center justify-center': !has_formats }"
   >
-    <h1
+    <template
       v-if="tournament.stages.length === 0"
-      class="text-2xl"
     >
-      Les phases du tournoi ne sont pas encore disponibles.
-    </h1>
+      <h1
+        v-if="!has_formats"
+        class="text-2xl"
+      >
+        Les phases du tournoi ne sont pas encore disponibles.
+      </h1>
 
-    <div v-else>
+      <template
+        v-else
+      >
+        <div class="mb-3 flex flex-wrap justify-center gap-x-8 gap-y-2">
+          <button
+            v-for="(format_name, format) in { group: 'Poules', swiss: 'Ronde Suisse', bracket: 'Arbres' }"
+            :key="format"
+            type="button"
+            class="rounded-lg bg-cyan-900 p-2 transition duration-150 ease-in-out hover:ring-2 hover:ring-[#63d1ff]"
+            :class="{ 'ring-2 ring-[#63d1ff]': format === selected_format }"
+            @click="selected_format = format"
+          >
+            {{ format_name }}
+          </button>
+        </div>
+
+        <hr class="m-auto w-4/5">
+
+        <TournamentBrackets
+          v-if="selected_format === 'bracket'"
+          :tournament="tournament"
+        />
+
+        <TournamentGroups
+          v-if="selected_format === 'group'"
+          :tournament="tournament"
+        />
+
+        <TournamentSwiss
+          v-if="selected_format === 'swiss'"
+          :tournament="tournament"
+        />
+      </template>
+    </template>
+
+    <template v-else>
       <div class="mb-3 flex flex-wrap justify-center gap-x-8 gap-y-2">
         <button
           v-for="stage in tournament.stages"
@@ -109,6 +156,6 @@ const group_detail = ref<Group | undefined>(undefined);
           :bracket="bracket"
         />
       </section>
-    </div>
+    </template>
   </section>
 </template>
