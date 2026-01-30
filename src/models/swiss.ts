@@ -3,10 +3,12 @@ import type { Team } from '@/models/team';
 
 export interface SwissRound {
   id: number;
+  name: string;
   tournament: number;
   min_score: number;
   teams: Team[];
   matchs: SwissMatch[];
+  stage?: number;
 }
 
 export interface SwissSeeding {

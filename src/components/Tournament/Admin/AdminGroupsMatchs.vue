@@ -4,8 +4,8 @@ import { computed, ref } from 'vue';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import MatchCard from '@/components/Tournament/MatchCard.vue';
+import type { Group } from '@/models/group';
 import { MatchTypeEnum } from '@/models/match';
-import type { EventTournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
 import {
@@ -14,9 +14,11 @@ import {
   required,
 } from '@/support/locales/errors.fr';
 
-const { tournament } = defineProps<{
-  tournament: EventTournamentDeref;
+const { groups } = defineProps<{
+  groups: Group[];
 }>();
+
+const show_groups_matchs = defineModel<boolean>();
 
 const NotificationStore = useNotificationStore();
 const { addNotification } = NotificationStore;
@@ -27,8 +29,7 @@ const {
   launchMatchs,
 } = tournamentStore;
 
-const has_groups = computed(() => (tournament.groups.length ?? 0) > 0);
-const has_matchs = computed(() => has_groups.value && (tournament.groups[0].matchs.length ?? 0) > 0);
+const has_matchs = computed(() => groups.some((g) => (g.matchs.length ?? 0) > 0));
 
 const modal_open = ref(false);
 const modal_type = ref('');
@@ -42,7 +43,7 @@ const round_rule = computed(() => ({
   round_to_launch: {
     required,
     integer,
-    between: between(1, Math.max(...tournament.groups.map((group) => group.round_count))),
+    between: between(1, Math.max(...groups.map((group) => group.round_count))),
   },
 }));
 
@@ -62,14 +63,14 @@ const launch_round_matchs = async () => {
 
   if (!is_valid) return;
 
-  await launchMatchs({ tournament: tournament.id, round: round_to_launch.value }, 'group');
+  await launchMatchs(groups.map((g) => ({ id: g.id, round: round_to_launch.value })), 'groups');
 
   addNotification(`Les matchs du round ${round_to_launch.value} ont bien été lancés.`, 'info');
 
   modal_open.value = false;
 };
 
-const max_round = computed(() => Math.max(...tournament.groups.map((group) => group.round_count)));
+const max_round = computed(() => Math.max(0, ...groups.map((group) => group.round_count)));
 
 const selected_matchs = ref(new Set<number>());
 
@@ -84,7 +85,13 @@ const launch_selected_matchs = async () => {
     return;
   }
 
-  await launchMatchs({ tournament: tournament.id, matchs: Array.from(selected_matchs.value) }, 'group');
+  await launchMatchs(
+    groups.map((g) => ({
+      id: g.id,
+      matchs: Array.from(selected_matchs.value).filter((m_id) => g.matchs.map((m) => m.id).includes(m_id)),
+    })),
+    'groups',
+  );
 
   selected_matchs.value.clear();
 
@@ -96,15 +103,16 @@ const launch_selected_matchs = async () => {
   <div
     class="m-4 flex flex-wrap justify-center gap-4 lg:mb-0 lg:gap-8"
   >
-    <router-link
-      :to="{ name: 'tournament_admin_groups' }"
+    <button
+      type="button"
       class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+      @click="show_groups_matchs = false"
     >
       <fa-awesome-icon
         icon="fa-solid fa-arrow-left"
       />
       Gérer les poules
-    </router-link>
+    </button>
     <button
       type="button"
       class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
@@ -126,7 +134,6 @@ const launch_selected_matchs = async () => {
   </div>
 
   <div
-    v-if="has_groups"
     class="m-2 flex justify-center md:m-4 xl:m-8"
   >
     <div
@@ -147,7 +154,7 @@ const launch_selected_matchs = async () => {
           Tour {{ round }}
         </div>
         <template
-          v-for="group in tournament.groups"
+          v-for="group in groups"
           :key="group.id"
         >
           <div
@@ -167,7 +174,6 @@ const launch_selected_matchs = async () => {
                 v-model="selected_matchs"
                 :match="match"
                 :match-type="{ type: MatchTypeEnum.GROUP, id: match.group }"
-                :team-per-match="tournament.game.team_per_match"
                 :editable="true"
                 :selectable="true"
                 class="grow"

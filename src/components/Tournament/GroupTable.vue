@@ -9,6 +9,7 @@ import {
 } from 'vue';
 import Modal from '@/components/Modal.vue';
 import type { Group } from '@/models/group';
+import type { Team } from '@/models/team';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
@@ -298,7 +299,7 @@ watchEffect(() => {
               id="select_team"
               v-model="group_data.teams[idx - 1]"
               name="select_team"
-              class="w-full truncate bg-inherit py-1 pl-1"
+              class="w-full truncate bg-cyan-900 py-1 pl-1"
               @blur="v$.teams.$touch"
             >
               <option :value="0">
@@ -306,7 +307,7 @@ watchEffect(() => {
               </option>
               <option
                 v-for="team in validated_teams.filter(
-                  (team) => !group_data.teams.includes(team.id) || team.id === group_data.teams[idx - 1],
+                  (team: Team) => !group_data.teams.includes(team.id) || team.id === group_data.teams[idx - 1],
                 )"
                 :key="team.id"
                 :value="team.id"

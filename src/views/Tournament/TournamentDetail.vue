@@ -29,9 +29,7 @@ const sections = computed<Record<string, TournamentDetailSection>>(() => ({
   info: { title: 'Informations', is_available: true },
   teams: { title: 'Équipes', is_available: true },
   seatings: { title: 'Placement', is_available: 'seatslots' in (tournament.value as EventTournamentDeref) },
-  groups: { title: 'Poules', is_available: (tournament.value as EventTournamentDeref)?.groups.length > 0 || false },
-  swiss: { title: 'Ronde Suisse', is_available: (tournament.value as EventTournamentDeref)?.swissRounds.length > 0 || false },
-  brackets: { title: 'Arbres', is_available: (tournament.value as EventTournamentDeref)?.brackets.length > 0 || false },
+  stages: { title: 'Phases', is_available: true },
   planning: { title: 'Planning', is_available: 'planning' in (tournament.value as EventTournamentDeref) },
   rules: { title: 'Règlement', is_available: true },
 }));
