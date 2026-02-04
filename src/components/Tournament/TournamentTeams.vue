@@ -22,7 +22,7 @@ const { tourney_teams, soloGame } = storeToRefs(tournamentStore);
       Aucune équipe inscrite
     </h1>
     <div v-if="tourney_teams?.validated_teams.length > 0">
-      <h1 class="title">
+      <h1 class="c-title">
         Équipes validées (
         {{ tourney_teams.validated_teams.length }}/{{ props.tournament.max_team_thresholds[
           props.tournament.current_threshold_index
@@ -93,7 +93,7 @@ const { tourney_teams, soloGame } = storeToRefs(tournamentStore);
       </div>
     </div>
     <div v-if="tourney_teams?.waiting_validation_teams.length > 0">
-      <h1 class="title">
+      <h1 class="c-title">
         Équipes en attente du palier ({{ tourney_teams.waiting_validation_teams.length }})
       </h1>
       <span class="mb-4 block text-center text-sm text-gray-600 dark:text-gray-400">
@@ -109,7 +109,7 @@ const { tourney_teams, soloGame } = storeToRefs(tournamentStore);
       </div>
     </div>
     <div v-if="tourney_teams?.non_validated_teams.length > 0">
-      <h1 class="title">
+      <h1 class="c-title">
         Équipes en cours de validation ({{ tourney_teams.non_validated_teams.length }})
       </h1>
       <span class="mb-4 block text-center text-sm text-gray-600 dark:text-gray-400">

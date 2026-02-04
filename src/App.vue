@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import Footer from '@/components/Footer.vue';
 import NameConfirmationModal from '@/components/NameConfirmationModal.vue';
 import Navigation from '@/components/Navigation.vue';
@@ -13,9 +13,27 @@ const { fetchStatic } = contentStore;
 const userStore = useUserStore();
 const { handle_session_cookie_expiration } = userStore;
 
+const topOffset = ref(0);
+
+const updateTopOffset = () => {
+  const navContainer = document.getElementById('navcontainer');
+  if (navContainer) {
+    const style = getComputedStyle(navContainer);
+    const marginTop = parseFloat(style.marginTop);
+    const marginBottom = parseFloat(style.marginBottom);
+    topOffset.value = -(navContainer.offsetHeight + marginTop + marginBottom);
+  }
+};
+
 onMounted(async () => {
   await handle_session_cookie_expiration();
   await fetchStatic();
+  updateTopOffset();
+  window.addEventListener('resize', updateTopOffset);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateTopOffset);
 });
 </script>
 
@@ -23,7 +41,7 @@ onMounted(async () => {
   <Navigation/>
   <NameConfirmationModal/>
   <Notification/>
-  <div class="flex-1" :class="{ '-mt-[11.5rem]': $route.path === '/' }"> <!-- gross, TODO fix ts -->
+  <div class="flex-1" :style="$route.path === '/' ? { marginTop: `${topOffset}px` } : {}">
     <RouterView v-slot="{ Component }">
       <template v-if="Component">
         <Suspense timeout="0">
@@ -33,7 +51,7 @@ onMounted(async () => {
               <div class="text-big">
                 Chargement...
               </div>
-              <div role="status" aria-hidden="true" class="spinner"/>
+              <div role="status" aria-hidden="true" class="c-spinner"/>
             </div>
           </template>
         </Suspense>

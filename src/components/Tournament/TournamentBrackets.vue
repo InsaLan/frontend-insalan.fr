@@ -51,7 +51,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
       :key="bracket.id"
       class="mb-5"
     >
-      <h1 class="title">
+      <h1 class="c-title">
         Arbre {{ bracket.name }}
       </h1>
       <div

@@ -3,7 +3,7 @@
     <div class="fixed inset-0 bg-gray-900/75 transition-opacity"/>
     <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
       <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-        <div class="relative overflow-hidden text-left transition-all sm:my-8 sm:max-w-[75%] card-bg-2">
+        <div class="relative overflow-hidden text-left transition-all sm:my-8 sm:max-w-[75%] c-card-bg-2">
           <div class="bg-theme-bg px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
             <div class="sm:flex sm:items-start">
               <div class="mt-3 w-full text-center sm:mt-0 sm:text-left">
@@ -46,19 +46,19 @@
               </div>
             </div>
           </div>
-          <div class="items-center justify-center px-4 pb-4 sm:flex sm:flex-row-reverse sm:px-6">
+          <div class="flex w-full items-center justify-center gap-4">
             <slot name="buttons">
               <button
-                class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                type="button"
-              >
-                Continue
-              </button>
-              <button
-                class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+                class="c-btn-bg-3"
                 type="button"
               >
                 Cancel
+              </button>
+              <button
+                class="c-btn-secondary"
+                type="button"
+              >
+                Continue
               </button>
             </slot>
           </div>
