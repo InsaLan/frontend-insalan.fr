@@ -243,7 +243,7 @@ const open_edition = () => {
 
       <div
         v-if="isAdmin && editable"
-        class="flex items-center justify-end"
+        class="flex l-items-cross-center justify-end"
       >
         <fa-awesome-icon
           v-if="!edit_mode"
@@ -256,7 +256,7 @@ const open_edition = () => {
 
         <div
           v-else
-          class="flex items-center gap-2"
+          class="flex l-items-cross-center gap-2"
         >
           <fa-awesome-icon
             class="text-green-500 hover:cursor-pointer hover:text-green-700"
@@ -300,7 +300,7 @@ const open_edition = () => {
         :key="idx"
         v-slot="context"
         :validations="v$.score[match_info.teams[idx - 1]]"
-        class="flex flex-col"
+        class="l-flex-column"
       >
         <div
           class="flex justify-between"

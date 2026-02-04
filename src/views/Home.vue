@@ -25,17 +25,17 @@ await getOngoingEvents();
     <div class="c-title u-my-1">
       Tournois
     </div>
-    <div v-if="!tournaments_id" class="flex-justify-center">
+    <div v-if="!tournaments_id" class="l-flex-column l-items-main-center">
       Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !
     </div>
-    <div class="u-px-2 tournament-grid tournament-grid-amount u-mb-2">
+    <div class="u-px-2 l-grid-4 u-mb-2">
       <TournamentCard
         v-for="tournament in tournaments_id"
         :id="tournament"
         :key="tournament"
       />
     </div>
-    <div class="u-mb-4 old-btn">
+    <div class="u-mb-4 l-flex-column l-items-main-center">
       <router-link
         to="/archives"
         class="c-btn-primary"
@@ -43,48 +43,16 @@ await getOngoingEvents();
         Voir les anciennes éditions
       </router-link>
     </div>
-    <Content name="Horaire" class="u-m-body"/>
-    <Content name="parti_public" class="u-m-body"/>
+    <div class="l-grid-2 u-m-double-body l-gap-4">
+      <Content name="Horaire"/>
+      <Content name="parti_public"/>
+    </div>
   </section>
   <Partners/>
 </template>
 
-<style scoped>
+<style scoped layer="override">
 .h-min {
   height: min-content;
-}
-
-.flex-justify-center {
-  display: flex;
-  justify-content: center;
-}
-
-.old-btn {
-  display: flex;
-  justify-content: center;
-}
-
-.tournament-grid {
-  display: grid;
-  width: 100%;
-  gap: calc(var(--base-margin) * 2);
-}
-
-@media (min-width: 768px) {
-  .tournament-grid-amount {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1280px) {
-  .tournament-grid-amount {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 2000px) {
-  .tournament-grid-amount {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
 }
 </style>

@@ -5,17 +5,18 @@ import Map from '@/components/Map.vue';
 </script>
 
 <template>
-  <Content
-    name="joueur_checklist"
-    class="u-m-body"
-  />
-  <Content
-    name="Discord"
-    class="u-m-body"
-  />
-  <Content
-    name="Contact"
-    class="u-m-body"
-  />
+  <div class="l-grid-2 l-gap-4 u-m-double-body">
+    <Content
+      name="joueur_checklist"
+    />
+    <div>
+      <Content
+        name="Discord"
+      />
+      <Content
+        name="Contact"
+      />
+    </div>
+  </div>
   <Map/>
 </template>

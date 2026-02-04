@@ -60,7 +60,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         class="mx-4 overflow-x-auto"
       >
         <div
-          class="grid items-center gap-x-10 gap-y-2"
+          class="grid l-items-cross-center gap-x-10 gap-y-2"
           :style="get_col_style(bracket)"
         >
           <div
@@ -73,7 +73,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
           <div
             v-for="(games, round_idx) in get_matchs_per_round(bracket.matchs)"
             :key="round_idx"
-            class="flex h-full flex-col justify-around gap-4"
+            class="l-flex-column h-full justify-around gap-4"
           >
             <div
               v-for="game in games"
@@ -115,7 +115,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
           Arbre principal
         </h2>
         <div
-          class="grid h-full items-center gap-x-10 gap-y-2"
+          class="grid h-full l-items-cross-center gap-x-10 gap-y-2"
           :style="get_col_style(bracket)"
         >
           <div
@@ -134,7 +134,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
             }}
           </div>
           <div
-            class="flex h-full flex-col justify-around gap-4"
+            class="l-flex-column h-full justify-around gap-4"
           >
             <div
               v-for="game in get_winner_matchs_per_round(bracket.matchs, bracket.depth)"
@@ -151,11 +151,11 @@ const bracket_round_title = (depth: number, round_idx: number) => {
           <div
             v-for="col_idx in get_bracket_cols_count(bracket) - 2"
             :key="col_idx"
-            class="flex h-full flex-col"
+            class="l-flex-column h-full"
           >
             <div
               v-if="col_idx % 2"
-              class="flex h-full flex-col justify-around gap-4"
+              class="l-flex-column h-full justify-around gap-4"
             >
               <div
                 v-for="game in get_winner_matchs_per_round(bracket.matchs, bracket.depth - (col_idx - 1) / 2 - 1)"
@@ -194,7 +194,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         </h2>
 
         <div
-          class="grid items-center gap-x-10 gap-y-2"
+          class="grid l-items-cross-center gap-x-10 gap-y-2"
           :style="get_col_style(bracket)"
         >
           <div
@@ -214,7 +214,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
           <div
             v-for="(games, round_idx) in get_looser_matchs(bracket.matchs)"
             :key="round_idx"
-            class="flex h-full flex-col justify-around gap-4"
+            class="l-flex-column h-full justify-around gap-4"
           >
             <div
               v-for="game in games"

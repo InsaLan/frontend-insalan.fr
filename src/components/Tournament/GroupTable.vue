@@ -159,7 +159,7 @@ watchEffect(() => {
     style="text-shadow: black 0 0 2px;"
   >
     <div
-      class="grid grid-cols-[1fr,3fr,1fr] items-center rounded-t bg-cyan-500 py-2 text-center text-3xl"
+      class="grid grid-cols-[1fr,3fr,1fr] l-items-cross-center rounded-t bg-cyan-500 py-2 text-center text-3xl"
     >
       <div/>
       <template v-if="!edit_mode">
@@ -220,17 +220,17 @@ watchEffect(() => {
     </div>
 
     <div
-      class="grid items-center justify-center gap-y-2 p-2 text-center text-xl"
+      class="grid l-items-cross-center l-items-main-center gap-y-2 p-2 text-center text-xl"
       :class="[editable && isAdmin ? 'grid-cols-[1fr,3fr,1fr]' : 'grid-cols-[4fr,1fr]']"
     >
       <div
         v-if="editable && isAdmin"
-        class="flex h-full items-center justify-center border-b-2 text-2xl"
+        class="flex h-full l-items-cross-center l-items-main-center border-b-2 text-2xl"
       >
         Seed
       </div>
       <div
-        class="flex h-full items-center justify-center border-b-2 text-2xl"
+        class="flex h-full l-items-cross-center l-items-main-center border-b-2 text-2xl"
       >
         Équipes
       </div>

@@ -91,7 +91,7 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
 </script>
 
 <template>
-  <section class="mx-4 flex flex-col items-center gap-4">
+  <section class="mx-4 l-flex-column l-items-cross-center gap-4">
     <qrcode-stream
       :paused="paused"
       :torch="torchActive"
@@ -138,9 +138,9 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
         </button>
       </div>
     </div>
-    <div v-else class="mb-4 flex max-h-[100px] w-full flex-col gap-1">
+    <div v-else class="mb-4 l-flex-column max-h-[100px] w-full gap-1">
       <div class="flex gap-2 rounded-2xl bg-gray-500 p-1 text-center text-black">
-        <div class="flex flex-col">
+        <div class="l-flex-column">
           <fa-awesome-icon
             class="ml-2 flex-1"
             icon="fa-magnifying-glass"
@@ -156,7 +156,7 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
           {{ unpaidRegistration.filter((registration) => registration.user.includes(search))[0]?.user }} :
           {{ unpaidRegistration.filter((registration) => registration.user.includes(search))[0]?.team }}
         </div>
-        <div class="flex justify-center">
+        <div class="flex l-items-main-center">
           <button
             type="button"
             class="form-btn"

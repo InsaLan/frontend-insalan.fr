@@ -145,9 +145,9 @@ const closeModal = () => {
 
 <template>
   <section id="seating" class="w-full">
-    <div v-if="tournament?.event.seats.length !== 0" class="flex flex-col items-center justify-center">
+    <div v-if="tournament?.event.seats.length !== 0" class="l-flex-column l-items-cross-center l-items-main-center">
       <div
-        class="m-2 flex w-full flex-col items-center"
+        class="m-2 l-flex-column w-full l-items-cross-center"
       >
         <h2 class="text-center text-2xl u-bold">
           Placement des équipes pour : {{ tournament.event.name }}
@@ -160,7 +160,7 @@ const closeModal = () => {
         >
           <div
             id="tooltip"
-            class="z-1 fixed hidden max-w-60 items-center justify-center overflow-hidden rounded-lg border border-black bg-gray-600 p-2 text-white"
+            class="z-1 fixed hidden max-w-60 l-items-cross-center l-items-main-center overflow-hidden rounded-lg border border-black bg-gray-600 p-2 text-white"
           >
             <div v-if="hoveredTeamSlotName" class="truncate">
               Équipe : <strong class="text-blue-500">
@@ -186,7 +186,7 @@ const closeModal = () => {
               v-for="(_, index) in (maxY + 1) * (maxX + 1)"
               :key="index"
               :class="[
-                'flex size-8 items-center justify-center text-xs',
+                'flex size-8 l-items-cross-center l-items-main-center text-xs',
               ]"
               @click="team ? handleClick(index) : handleHover(index, $event)"
               @keydown.enter="team ? handleClick(index) : handleHover(index, $event)"
@@ -233,15 +233,15 @@ const closeModal = () => {
             </div>
           </div>
         </div>
-        <div class="m-4 flex flex-col items-center text-sm">
+        <div class="m-4 l-flex-column l-items-cross-center text-sm">
           <div
-            class="grid grid-cols-1 items-center gap-4"
+            class="grid grid-cols-1 l-items-cross-center gap-4"
             :class="{
               'sm:grid-cols-4': team,
               'sm:grid-cols-3': !team,
             }"
           >
-            <div class="flex items-center gap-2">
+            <div class="flex l-items-cross-center gap-2">
               <img
                 alt="Event Seat"
                 src="@/assets/images/seat-empty.png"
@@ -249,7 +249,7 @@ const closeModal = () => {
               />
               <span>Places libres du tournoi : {{ tournament.name }}</span>
             </div>
-            <div v-if="team" class="flex items-center gap-2">
+            <div v-if="team" class="flex l-items-cross-center gap-2">
               <img
                 alt="Event Seat"
                 src="@/assets/images/seat-selected.png"
@@ -257,7 +257,7 @@ const closeModal = () => {
               />
               <span>Place actuelle de l'équipe</span>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex l-items-cross-center gap-2">
               <img
                 alt="Event Seat"
                 src="@/assets/images/seat-taken.png"
@@ -265,7 +265,7 @@ const closeModal = () => {
               />
               <span>Places occupées du tournoi : {{ tournament.name }}</span>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex l-items-cross-center gap-2">
               <img
                 alt="Event Seat"
                 src="@/assets/images/seat-event.png"
@@ -289,7 +289,7 @@ const closeModal = () => {
         </div>
       </div>
     </div>
-    <div v-else class="flex justify-center">
+    <div v-else class="flex l-items-main-center">
       Le plan de la salle n'est pas encore disponible, revenez plus tard !
     </div>
   </section>

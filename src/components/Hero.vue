@@ -51,8 +51,8 @@ const scrollPastHero = () => {
 </script>
 
 <template>
-  <div id="hero" class="relative flex items-center justify-center h-screen">
-    <div class="absolute flex size-full items-center justify-center rounded-bottom">
+  <div id="hero" class="l-relative-position l-flex-column l-items-cross-center l-items-main-center h-screen">
+    <div class="l-absolute-position l-flex-row size-full l-items-cross-center l-items-main-center rounded-bottom">
       <iframe
         :src="trailer_embed"
         allowfullscreen
@@ -63,10 +63,10 @@ const scrollPastHero = () => {
       />
     </div>
     <div
-      class="u-mx-2 relative flex flex-col items-center"
+      class="u-mx-2 l-relative-position l-flex-column l-items-cross-center"
       :style="{ top: `${topOffset * 0.35}px` }"
     >
-      <img alt="logo InsaLan" class="w-[32rem]" src="../assets/images/logo_wide.png">
+      <img alt="logo InsaLan" class="logo" src="../assets/images/logo_wide.png">
       <h1 class="text-shadow u-bold text-center text-6xl">
         {{ eventText }}
       </h1>
@@ -95,6 +95,10 @@ const scrollPastHero = () => {
   border-bottom-left-radius: var(--radius);
   border-bottom-right-radius: var(--radius);
   overflow: hidden;
+}
+
+.logo {
+  width: 42rem;
 }
 
 .hero-btn {

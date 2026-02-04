@@ -1,15 +1,15 @@
 <template>
-  <div aria-labelledby="modal-title" aria-modal="true" class="relative z-[60]" role="dialog">
+  <div aria-labelledby="modal-title" aria-modal="true" class="l-relative-position z-[60]" role="dialog">
     <div class="fixed inset-0 bg-gray-900/75 transition-opacity"/>
     <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-        <div class="relative overflow-hidden text-left transition-all sm:my-8 sm:max-w-[75%] c-card-bg-2">
+      <div class="flex min-h-full items-end l-items-main-center p-4 text-center sm:items-center sm:p-0">
+        <div class="l-relative-position overflow-hidden text-left transition-all sm:my-8 sm:max-w-[75%] c-card-bg-2">
           <div class="bg-theme-bg px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
             <div class="sm:flex sm:items-start">
               <div class="mt-3 w-full text-center sm:mt-0 sm:text-left">
-                <div class="flex flex-row">
+                <div class="l-flex-row">
                   <slot name="icon">
-                    <div class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-red-300 sm:mx-0 sm:size-10">
+                    <div class="mx-auto flex size-12 shrink-0 l-items-cross-center l-items-main-center rounded-full bg-red-300 sm:mx-0 sm:size-10">
                       <svg
                         aria-hidden="true"
                         class="size-6 text-red-600"
@@ -26,7 +26,7 @@
                       </svg>
                     </div>
                   </slot>
-                  <div class="ml-2 flex w-full flex-col justify-center">
+                  <div class="ml-2 l-flex-column w-full l-items-main-center">
                     <slot name="title">
                       <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
                         Default title
@@ -46,7 +46,7 @@
               </div>
             </div>
           </div>
-          <div class="flex w-full items-center justify-center gap-4">
+          <div class="flex w-full l-items-cross-center l-items-main-center gap-4">
             <slot name="buttons">
               <button
                 class="c-btn-bg-3"

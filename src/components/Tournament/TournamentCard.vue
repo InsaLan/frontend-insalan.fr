@@ -49,11 +49,11 @@ onMounted(async () => {
       Équipes | Cashprize:
       {{ tournament?.cashprizes?.length !== 0 ? `${tournament?.cashprizes?.reduce((acc, val) => acc += Number(val), 0)} €` : "À venir" }}
     </p>
-    <div class="flex w-4/5 justify-center gap-4 text-center">
+    <div class="flex w-4/5 l-items-main-center gap-4 text-center">
       <router-link :to="`tournament/${tournament?.id as number}/info`" class="c-btn-bg-3">
         Plus d'infos
       </router-link>
-      <button v-if="Date.parse(tournament?.registration_open) > Date.now()" type="button" class="rounded bg-green-600 p-2 text-lg opacity-60" disabled>
+      <button v-if="Date.parse(tournament?.registration_open) > Date.now()" type="button" class="c-btn-secondary" disabled>
         Inscriptions à venir
       </button>
       <router-link
@@ -63,7 +63,7 @@ onMounted(async () => {
       >
         S'inscrire
       </router-link>
-      <button v-else type="button" class="rounded bg-green-600 p-2 text-lg opacity-60" disabled>
+      <button v-else type="button" class="c-btn-secondary" disabled>
         Inscriptions fermées
       </button>
     </div>

@@ -32,7 +32,7 @@ const onClick = (): void => {
 <template>
   <div
     :class="{ error }"
-    class="flex border-2 border-gray-500 focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
+    class="l-flex-row"
   >
     <input
       :id="id"
@@ -45,7 +45,7 @@ const onClick = (): void => {
       @input="onInput"
       @blur="onBlur"
     />
-    <button type="button" class="mx-3 w-6" @click="onClick">
+    <button type="button" class="mx-3 w-6 c-image-btn" @click="onClick">
       <fa-awesome-icon
         :icon="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
         title="Afficher le mot de passe"

@@ -68,13 +68,13 @@ const register_user = async () => {
 </script>
 
 <template>
-  <div class="flex basis-1/2 flex-col items-center c-card-bg-2">
-    <h1 class="text-center text-4xl text-white">
+  <div class="l-flex-column basis-1/2 l-items-cross-center c-card-bg-2">
+    <h1 class="c-title">
       S'enregistrer
     </h1>
 
     <form class="my-5" @submit.prevent="register_user">
-      <FormField v-slot="context" :validations="v$.email" class="flex flex-col">
+      <FormField v-slot="context" :validations="v$.email" class="l-flex-column">
         <label for="email">
           Email
         </label>
@@ -89,7 +89,7 @@ const register_user = async () => {
           @blur="v$.email.$touch()"
         />
       </FormField>
-      <FormField v-slot="context" :validations="v$.username" class="flex flex-col">
+      <FormField v-slot="context" :validations="v$.username" class="l-flex-column">
         <label for="username_register">
           Nom d'utilisateur·rice
         </label>
@@ -112,7 +112,7 @@ const register_user = async () => {
           type="text"
         />
       </div>
-      <FormField v-slot="context" :validations="v$.password" class="flex flex-col" required>
+      <FormField v-slot="context" :validations="v$.password" class="l-flex-column" required>
         <label for="password_register">
           Mot de passe
         </label>
@@ -123,7 +123,7 @@ const register_user = async () => {
           :on-blur="v$.password.$touch"
         />
       </FormField>
-      <FormField v-slot="context" :validations="v$.password_confirm" class="flex flex-col">
+      <FormField v-slot="context" :validations="v$.password_confirm" class="l-flex-column">
         <label for="repeat">
           Répéter mot de passe
         </label>
@@ -135,8 +135,8 @@ const register_user = async () => {
           :on-blur="v$.password_confirm.$touch"
         />
       </FormField>
-      <FormField v-slot="context" :validations="v$.accept_cgu" class="flex flex-col" required>
-        <div class="flex flex-row">
+      <FormField v-slot="context" :validations="v$.accept_cgu" class="l-flex-column" required>
+        <div class="l-flex-row">
           <input
             id="accept"
             v-model="register_form.accept_cgu"
@@ -152,8 +152,8 @@ const register_user = async () => {
           >CGU</a> de l'InsaLan</label>
         </div>
       </FormField>
-      <div class="flex flex-col items-center">
-        <button class="form-btn" type="submit">
+      <div class="l-flex-column l-items-cross-center">
+        <button class="c-btn-primary" type="submit">
           Créer un compte
         </button>
       </div>

@@ -74,7 +74,7 @@ const handleSubmit = async () => {
         estimer l’impact environnemental de l’évènement et à l’améliorer chaque année. Merci d’avance !
       </p>
       <form @submit.prevent="handleSubmit">
-        <FormField v-slot="context" :validations="v$.city" class="mt-2 flex flex-col">
+        <FormField v-slot="context" :validations="v$.city" class="mt-2 l-flex-column">
           <label for="city">Ville</label>
           <input
             id="city"
@@ -87,7 +87,7 @@ const handleSubmit = async () => {
             :class="{ error: context.invalid }"
           />
         </FormField>
-        <FormField v-slot="context" :validations="v$.transportationMethod" class="mt-2 flex flex-col">
+        <FormField v-slot="context" :validations="v$.transportationMethod" class="mt-2 l-flex-column">
           <label for="transportation_method">Méthode de transport</label>
           <select
             id="transportation_method"

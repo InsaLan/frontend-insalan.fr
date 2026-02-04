@@ -94,7 +94,7 @@ const launch_selected_matchs = async () => {
 
 <template>
   <div
-    class="m-4 flex flex-wrap justify-center gap-4 lg:mb-0 lg:gap-8"
+    class="m-4 flex flex-wrap l-items-main-center gap-4 lg:mb-0 lg:gap-8"
   >
     <router-link
       :to="{ name: 'tournament_admin_groups' }"
@@ -127,7 +127,7 @@ const launch_selected_matchs = async () => {
 
   <div
     v-if="has_groups"
-    class="m-2 flex justify-center md:m-4 xl:m-8"
+    class="m-2 flex l-items-main-center md:m-4 xl:m-8"
   >
     <div
       class="overflow-x-auto"
@@ -151,7 +151,7 @@ const launch_selected_matchs = async () => {
           :key="group.id"
         >
           <div
-            class="flex items-center justify-center text-wrap border-b border-r-2 text-xl"
+            class="flex l-items-cross-center l-items-main-center text-wrap border-b border-r-2 text-xl"
           >
             {{ group.name }}
           </div>
@@ -191,7 +191,7 @@ const launch_selected_matchs = async () => {
     <template #body>
       <form
         id="create_groups_form"
-        class="m-4 flex flex-col gap-4"
+        class="m-4 l-flex-column gap-4"
         @submit.prevent="launch_round_matchs"
       >
         <FormField

@@ -15,7 +15,7 @@ await fetchAllEvents();
     <h1 class="c-title">
       Archives
     </h1>
-    <div v-if="oldEvents?.length === 0" class="flex justify-center">
+    <div v-if="oldEvents?.length === 0" class="flex l-items-main-center">
       Aucune archive n'est disponible pour le moment, revenez plus tard !
     </div>
     <div
@@ -26,7 +26,7 @@ await fetchAllEvents();
         {{ event.name }} | {{ event.date_start.toLocaleDateString() }}
       </h2>
       <div
-        class="mx-2 mb-2 flex flex-col gap-4 px-4 md:grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+        class="mx-2 mb-2 l-flex-column gap-4 px-4 md:grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
       >
         <img
           v-if="event.poster"

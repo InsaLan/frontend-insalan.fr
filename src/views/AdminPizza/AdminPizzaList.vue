@@ -97,24 +97,24 @@ await fetchAllPizzas();
       >
     </form>
   </div>
-  <div class="mb-6 flex flex-col gap-2 px-4">
+  <div class="mb-6 l-flex-column gap-2 px-4">
     <div class="grid-layout grid gap-2 rounded bg-cyan-900 p-2">
-      <div class="flex w-20 items-center overflow-x-hidden border-r border-white pr-2">
+      <div class="flex w-20 l-items-cross-center overflow-x-hidden border-r border-white pr-2">
         <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
           Image
         </p>
       </div>
-      <div class="flex items-center overflow-x-hidden border-r border-white pr-2">
+      <div class="flex l-items-cross-center overflow-x-hidden border-r border-white pr-2">
         <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
           Nom
         </p>
       </div>
-      <div class="hidden items-center overflow-x-hidden border-r border-white pr-2 sm:flex">
+      <div class="hidden l-items-cross-center overflow-x-hidden border-r border-white pr-2 sm:flex">
         <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
           Ingrédients
         </p>
       </div>
-      <div class="hidden items-center overflow-x-hidden border-r border-white pr-2 lg:flex">
+      <div class="hidden l-items-cross-center overflow-x-hidden border-r border-white pr-2 lg:flex">
         <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
           Allergènes
         </p>

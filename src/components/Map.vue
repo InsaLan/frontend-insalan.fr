@@ -2,7 +2,7 @@
   <h1 class="c-title">
     Où nous trouver
   </h1>
-  <section class="u-mb-2 u-m-body section">
+  <section class="u-mb-2 u-m-double-body l-flex-column l-items-main-center l-items-cross-center">
     <div class="map u-rounded">
       <l-map ref="map" v-model:zoom="zoom" :center="insalan_pos" :use-global-leaflet="false">
         <l-tile-layer
@@ -34,15 +34,9 @@ const zoom = ref(15);
 </script>
 
 <style scoped>
-.section {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-}
-
 .map {
-  height: 512px;
-  width: 1500px;
+  height: 500px;
+  width: min(100%,1500px);
   overflow: hidden;
   z-index: 0;
 }

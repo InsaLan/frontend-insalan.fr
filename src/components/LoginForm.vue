@@ -57,12 +57,12 @@ const openModal = () => {
 </script>
 
 <template>
-  <div class="flex basis-1/2 flex-col items-center c-card-bg-2">
-    <h1 class="text-center text-4xl text-white">
+  <div class="l-flex-column basis-1/2 l-items-cross-center c-card-bg-2">
+    <h1 class="c-title">
       Se connecter
     </h1>
     <form id="login" class="my-2" @submit.prevent="login_user">
-      <FormField v-slot="context" :validations="v$.username" class="flex flex-col">
+      <FormField v-slot="context" :validations="v$.username" class="l-flex-column">
         <label for="username">
           Nom d'utilisateur·rice
         </label>
@@ -76,7 +76,7 @@ const openModal = () => {
           @blur="v$.username.$touch"
         />
       </FormField>
-      <FormField v-slot="context" :validations="v$.password" class="flex flex-col">
+      <FormField v-slot="context" :validations="v$.password" class="l-flex-column">
         <label for="password">
           Mot de passe
         </label>
@@ -87,13 +87,13 @@ const openModal = () => {
           :on-blur="v$.password.$touch"
         />
       </FormField>
-      <div class="flex flex-col items-center">
-        <button class="form-btn" type="submit">
+      <div class="flex-column l-items-cross-center">
+        <button class="c-btn-primary" type="submit">
           Se connecter
         </button>
       </div>
     </form>
-    <button class="p-1 hover:cursor-pointer hover:text-blue-800" type="button" @click="openModal()">
+    <button class="c-text-btn" type="button" @click="openModal()">
       Mot de passe oublié ?
     </button>
   </div>
@@ -109,7 +109,7 @@ const openModal = () => {
     </template>
     <template #body>
       <form id="password-reset" class="mt-2" @submit.prevent="validateModal">
-        <FormField v-slot="context" :validations="v$_modal.email" class="m-2 flex flex-col">
+        <FormField v-slot="context" :validations="v$_modal.email" class="m-2 l-flex-column">
           <label for="email">
             Email
           </label>

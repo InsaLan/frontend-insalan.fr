@@ -7,12 +7,12 @@
       Page Invalide
     </h2>
     <div>
-      <p class="m1">
+      <p class="u-m-1">
         La page que vous cherchez n'existe pas ou a été supprimée. Si vous pensez que ce message est une erreur,
         n'hésitez pas à nous contacter.
       </p>
     </div>
-    <div class="u-my-4 center-btn">
+    <div class="u-my-4 l-flex-column l-items-main-center">
       <router-link
         to="/"
         class="c-btn-primary"
@@ -27,10 +27,5 @@
 .invalid {
   text-align: center;
   font-size: 1.5em;
-}
-
-.center-btn {
-  display: flex;
-  justify-content: center;
 }
 </style>

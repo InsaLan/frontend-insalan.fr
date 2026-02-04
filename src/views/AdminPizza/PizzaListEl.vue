@@ -21,26 +21,26 @@ defineProps<{
     >
     <div
       v-if="!pizza.image"
-      class="flex aspect-video w-20 items-center justify-center border-r border-white pr-2"
+      class="flex aspect-video w-20 l-items-cross-center l-items-main-center border-r border-white pr-2"
     >
       <fa-awesome-icon icon="fa-pizza-slice" class="size-8"/>
     </div>
-    <div class="flex items-center overflow-x-hidden border-r border-white pr-2">
+    <div class="flex l-items-cross-center overflow-x-hidden border-r border-white pr-2">
       <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
         {{ pizza.name }}
       </p>
     </div>
-    <div class="hidden items-center overflow-x-hidden border-r border-white pr-2 sm:flex">
+    <div class="hidden l-items-cross-center overflow-x-hidden border-r border-white pr-2 sm:flex">
       <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
         {{ pizza.ingredients.join(', ') }}
       </p>
     </div>
-    <div class="hidden items-center overflow-x-hidden border-r border-white pr-2 lg:flex">
+    <div class="hidden l-items-cross-center overflow-x-hidden border-r border-white pr-2 lg:flex">
       <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
         {{ pizza.allergens.join(', ') }}
       </p>
     </div>
-    <div class="flex items-center gap-2">
+    <div class="flex l-items-cross-center gap-2">
       <button
         type="button"
         class="size-8 rounded bg-green-600 hover:bg-green-500"

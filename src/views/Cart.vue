@@ -31,11 +31,11 @@ const modal_cgv = ref(false);
         </p>
       </div>
 
-      <ul v-else class="flex flex-col gap-2 border-t border-white p-2">
+      <ul v-else class="l-flex-column gap-2 border-t border-white p-2">
         <li
           v-for="item in cart"
           :key="item.product"
-          class="flex items-center justify-between"
+          class="flex l-items-cross-center justify-between"
         >
           <div>
             <h2 class="text-lg font-semibold">
@@ -49,7 +49,7 @@ const modal_cgv = ref(false);
       </ul>
 
       <div v-if="cart.length > 0" class="border-t border-white pt-6">
-        <div class="flex items-center justify-between text-xl u-bold">
+        <div class="flex l-items-cross-center justify-between text-xl u-bold">
           <span>Total:</span>
           <span>{{ totalPrice.toFixed(2) }} €</span>
         </div>
@@ -58,7 +58,7 @@ const modal_cgv = ref(false);
       <!-- Terms and conditions of sale -->
       <div
         v-if="cart.length > 0"
-        class="u-mt-4 c-card-bg-3-custom-gap-1 flex items-center"
+        class="u-mt-4 c-card-bg-3 custom-gap flex l-items-cross-center"
       >
         <input
           id="terms"
@@ -149,11 +149,8 @@ const modal_cgv = ref(false);
 </template>
 
 <style scoped>
-.c-card-bg-3-custom-gap-1 {
-  border-radius: var(--radius);
-  place-items: center;
+.custom-gap {
   gap: 0.25rem;
   padding: 1rem 1.5rem 1rem 1.5rem;
-  background-color: var(--color-bg-3);
 }
 </style>

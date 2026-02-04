@@ -94,7 +94,7 @@ const save_seeds = async () => {
     <br>
     Toutes les équipes sans seed seront placées aléatoirement après toutes les équipes seedées.
   </p>
-  <div class="flex justify-center">
+  <div class="flex l-items-main-center">
     <table class="m-4 w-full border-2 lg:w-3/5">
       <colgroup>
         <col class="w-4/5"/>
@@ -122,7 +122,7 @@ const save_seeds = async () => {
             <FormField
               v-slot="context"
               :validations="v$[team.id]"
-              class="flex flex-col"
+              class="l-flex-column"
             >
               <input
                 id="seed"

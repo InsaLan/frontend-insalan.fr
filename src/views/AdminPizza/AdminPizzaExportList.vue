@@ -101,20 +101,20 @@ Object.values(timeslotList.value).forEach((timeslot) => {
   <h1 class="c-title">
     Liste des exports
   </h1>
-  <div class="mb-6 mt-2 flex flex-col px-4">
-    <div v-if="timeslots_id.length === 0" class="flex justify-center text-2xl">
+  <div class="mb-6 mt-2 l-flex-column px-4">
+    <div v-if="timeslots_id.length === 0" class="flex l-items-main-center text-2xl">
       Il n'y a pas de créneau de commande.
     </div>
     <div
       v-else
-      class="flex flex-col gap-2"
+      class="l-flex-column gap-2"
     >
       <!-- Loading spinner -->
       <div
         v-if="loading"
-        class="flex justify-center"
+        class="flex l-items-main-center"
       >
-        <div class="flex w-full flex-1 flex-col items-center justify-center gap-5">
+        <div class="l-flex-column w-full flex-1 l-items-cross-center l-items-main-center gap-5">
           <div class="text-2xl">
             Chargement...
           </div>
@@ -125,14 +125,14 @@ Object.values(timeslotList.value).forEach((timeslot) => {
         v-for="timeslot in Object.values(timeslotList).filter((timeslot) => timeslots_id.includes(timeslot.id))"
         v-else
         :key="timeslot.id"
-        class="flex flex-col overflow-hidden rounded hover:cursor-pointer"
+        class="l-flex-column overflow-hidden rounded hover:cursor-pointer"
         :class="{
           'bg-cyan-900': timeslotExportList[timeslot.id].length > 0,
           'bg-gray-500': timeslotExportList[timeslot.id].length === 0,
         }"
       >
         <div
-          class="flex select-none items-center gap-2 p-2"
+          class="flex select-none l-items-cross-center gap-2 p-2"
           :class="{
             'hover:bg-cyan-800': timeslotExportList[timeslot.id].length > 0,
             'hover:bg-gray-400': timeslotExportList[timeslot.id].length === 0,
@@ -140,12 +140,12 @@ Object.values(timeslotList.value).forEach((timeslot) => {
           @click="timeslotsExpand[timeslot.id] = !timeslotsExpand[timeslot.id]"
           @keydown.enter="timeslotsExpand[timeslot.id] = !timeslotsExpand[timeslot.id]"
         >
-          <div class="flex size-8 items-center justify-center text-2xl">
+          <div class="flex size-8 l-items-cross-center l-items-main-center text-2xl">
             <fa-awesome-icon icon="fa-caret-right" :class="{ 'rotate-90': timeslotsExpand[timeslot.id] }"/>
           </div>
           <div
             v-if="timeslotExportList[timeslot.id].length > 0"
-            class="flex size-8 items-center justify-center text-2xl"
+            class="flex size-8 l-items-cross-center l-items-main-center text-2xl"
             @click.stop="exportOrders(timeslot.id)"
             @keydown.enter="exportOrders(timeslot.id)"
           >
@@ -160,7 +160,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
         </div>
         <div
           v-if="timeslotExportList[timeslot.id].length === 0"
-          class="flex items-center justify-center p-3"
+          class="flex l-items-cross-center l-items-main-center p-3"
           :class="{ hidden: !timeslotsExpand[timeslot.id] }"
         >
           Aucun export n'a été effectué pour ce créneau.
@@ -173,8 +173,8 @@ Object.values(timeslotList.value).forEach((timeslot) => {
           @click="downloadTimeslotDetails(timeslotExport.id)"
           @keydown.enter="downloadTimeslotDetails(timeslotExport.id)"
         >
-          <div class="flex select-none items-center gap-2 p-2">
-            <div class="flex size-8 items-center px-3">
+          <div class="flex select-none l-items-cross-center gap-2 p-2">
+            <div class="flex size-8 l-items-cross-center px-3">
               <fa-awesome-icon icon="fa-file"/>
             </div>
             <div class="m-0">
@@ -194,7 +194,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
           </div>
         </div>
       </div>
-      <div class="flex items-center justify-center space-x-2">
+      <div class="flex l-items-cross-center l-items-main-center space-x-2">
         <button
           type="button"
           class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
