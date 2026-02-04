@@ -241,7 +241,7 @@ const kick_member = async (type: string, id: number) => {
 <template>
   <div
     :style="{ backgroundImage: `url(${tournament?.logo})` }"
-    class="flex flex-1 flex-col items-center border-2 border-black bg-cover bg-center text-center text-white bg-blend-multiply"
+    class="l-flex-column flex-1 l-items-cross-center border-2 border-black bg-cover bg-center text-center text-white bg-blend-multiply"
   >
     <h1
       class="c-title w-full"
@@ -250,12 +250,12 @@ const kick_member = async (type: string, id: number) => {
     </h1>
 
     <div
-      class="my-5 mb-6 flex w-5/6 flex-col items-center justify-center rounded-2xl bg-[#144B61] md:w-3/4"
+      class="my-5 mb-6 l-flex-column w-5/6 l-items-cross-center l-items-main-center rounded-2xl bg-[#144B61] md:w-3/4"
     >
       <div
-        class="flex w-full flex-col justify-between border-b-2 border-black p-2 md:flex-row"
+        class="l-flex-column w-full justify-between border-b-2 border-black p-2 md:flex-row"
       >
-        <div class="flex items-center overflow-hidden">
+        <div class="flex l-items-cross-center overflow-hidden">
           <div
             class=" truncate text-3xl"
           >
@@ -285,10 +285,10 @@ const kick_member = async (type: string, id: number) => {
         </button>
       </div>
       <div
-        class="flex w-full flex-col bg-[#116B8E]"
+        class="l-flex-column w-full bg-[#116B8E]"
       >
         <div
-          class="flex w-full flex-col justify-between border-b-2 border-black p-2"
+          class="l-flex-column w-full justify-between border-b-2 border-black p-2"
         >
           <div
             class="u-underline"
@@ -303,7 +303,7 @@ const kick_member = async (type: string, id: number) => {
               :key="player.id"
               class="mx-2 overflow-hidden text-justify"
             >
-              <div class="flex items-center">
+              <div class="flex l-items-cross-center">
                 <fa-awesome-icon
                   v-if="selected_team.captain === player.name_in_game"
                   class="m-1 size-4"
@@ -339,7 +339,7 @@ const kick_member = async (type: string, id: number) => {
         </div>
         <div
           v-if="!(props.id in privateTournamentsList)"
-          class="flex w-full flex-col justify-between border-b-2 border-black p-2"
+          class="l-flex-column w-full justify-between border-b-2 border-black p-2"
         >
           <div
             class="u-underline"
@@ -354,7 +354,7 @@ const kick_member = async (type: string, id: number) => {
               :key="manager as string"
               class="mx-2 overflow-hidden text-justify"
             >
-              <div class="flex items-center">
+              <div class="flex l-items-cross-center">
                 <div class="truncate">
                   {{ manager }}
                 </div>
@@ -364,7 +364,7 @@ const kick_member = async (type: string, id: number) => {
         </div>
         <div
           v-if="!(props.id in privateTournamentsList)"
-          class="flex w-full flex-col justify-between border-b-2 border-black p-2"
+          class="l-flex-column w-full justify-between border-b-2 border-black p-2"
         >
           <div
             class="u-underline"
@@ -379,7 +379,7 @@ const kick_member = async (type: string, id: number) => {
               :key="substitute.id"
               class="mx-2 overflow-hidden text-justify"
             >
-              <div class="flex items-center">
+              <div class="flex l-items-cross-center">
                 <div class="truncate">
                   {{ substitute.name_in_game }}
                 </div>
@@ -408,10 +408,10 @@ const kick_member = async (type: string, id: number) => {
       </div>
       <div
         v-if="tournament && (!('event' in tournament) || (tournament as EventTournamentDeref)?.event.ongoing)"
-        class="flex w-full flex-col justify-between gap-2 border-t-2 border-black p-2 md:flex-row"
+        class="l-flex-column w-full justify-between gap-2 border-t-2 border-black p-2 md:flex-row"
       >
         <div
-          class="flex w-full flex-col items-start"
+          class="l-flex-column w-full items-start"
         >
           <button
             v-if="
@@ -433,11 +433,11 @@ const kick_member = async (type: string, id: number) => {
           </button>
         </div>
         <div
-          class="flex w-full flex-col items-center md:max-w-[33%]"
+          class="l-flex-column w-full l-items-cross-center md:max-w-[33%]"
         >
           <div
             v-if="team_registration?.[0] === 'player' || team_registration?.[0] === 'substitute'"
-            class="flex w-full max-w-full items-center justify-center rounded bg-blue-700 transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500 md:w-auto"
+            class="flex w-full max-w-full l-items-cross-center l-items-main-center rounded bg-blue-700 transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500 md:w-auto"
             @click.prevent="showModalNameInGame = true"
             @keydown.prevent="showModalNameInGame = true"
           >
@@ -451,7 +451,7 @@ const kick_member = async (type: string, id: number) => {
           </div>
         </div>
         <div
-          class="flex w-full flex-col items-end"
+          class="l-flex-column w-full items-end"
         >
           <button
             v-if="
@@ -474,7 +474,7 @@ const kick_member = async (type: string, id: number) => {
     </div>
 
     <div
-      class="mb-6 flex w-5/6 flex-col items-center justify-center overflow-hidden rounded-2xl bg-[#144B61] md:w-3/4"
+      class="mb-6 l-flex-column w-5/6 l-items-cross-center l-items-main-center overflow-hidden rounded-2xl bg-[#144B61] md:w-3/4"
     >
       <Seating
         v-if="tournament && ('event' in tournament)"
@@ -498,7 +498,7 @@ const kick_member = async (type: string, id: number) => {
         <FormField
           v-slot="context"
           :validations="v$_name_in_game.name_in_game"
-          class="m-2 flex flex-col"
+          class="m-2 l-flex-column"
           label="Nouveau Pseudo"
         >
           <input
@@ -547,7 +547,7 @@ const kick_member = async (type: string, id: number) => {
         <FormField
           v-slot="context"
           :validations="v$_team_name.name"
-          class="m-2 flex flex-col"
+          class="m-2 l-flex-column"
           label="Nouveau nom"
         >
           <input
@@ -596,7 +596,7 @@ const kick_member = async (type: string, id: number) => {
         <FormField
           v-slot="context"
           :validations="v$_team_password.password"
-          class="m-2 flex flex-col"
+          class="m-2 l-flex-column"
           label="Nouveau mot de passe"
         >
           <input

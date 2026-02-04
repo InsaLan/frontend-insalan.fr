@@ -8,7 +8,7 @@ import Content from '@/components/Content.vue';
     L'association InsaLan
   </h1>
   <Content
-    class="u-m-body flex flex-col gap-8 [&_p]:indent-12"
+    class="u-m-body l-flex-column gap-8 [&_p]:indent-12"
     name="Association"
   />
 </template>

@@ -162,7 +162,7 @@ const swiss_fill_round = async () => {
   </h1>
 
   <div
-    class="mx-4 flex flex-wrap justify-center gap-4 lg:mx-8 lg:gap-8"
+    class="mx-4 flex flex-wrap l-items-main-center gap-4 lg:mx-8 lg:gap-8"
   >
     <button
       type="button"
@@ -192,7 +192,7 @@ const swiss_fill_round = async () => {
   </div>
 
   <div
-    class="mx-4 flex flex-col gap-4 overflow-auto"
+    class="mx-4 l-flex-column l-items-cross-center gap-4 overflow-auto"
   >
     <div
       class="mx-2 flex flex-col items-center md:mx-4 lg:mx-8"
@@ -211,7 +211,7 @@ const swiss_fill_round = async () => {
         <div
           v-for="(round_matchs, round_idx) in groupBy(swiss.matchs, 'round_number')"
           :key="round_idx"
-          class="flex flex-col gap-6"
+          class="l-flex-column gap-6"
         >
           <div
             v-for="(matchs, score_group) in groupBy(round_matchs, 'score_group')"
@@ -233,7 +233,7 @@ const swiss_fill_round = async () => {
             </div>
 
             <div
-              class="flex flex-col items-center"
+              class="l-flex-column l-items-cross-center"
             >
               <div
                 v-for="match in matchs"
@@ -298,7 +298,7 @@ const swiss_fill_round = async () => {
     <template #body>
       <form
         id="create_groups_form"
-        class="m-4 flex flex-col gap-4"
+        class="m-4 l-flex-column gap-4"
         @submit.prevent="launch_round_matchs"
       >
         <FormField
@@ -355,7 +355,7 @@ const swiss_fill_round = async () => {
     <template #body>
       <form
         id="create_groups_form"
-        class="m-4 flex flex-col gap-4"
+        class="m-4 l-flex-column gap-4"
         @submit.prevent="swiss_fill_round"
       >
         <FormField

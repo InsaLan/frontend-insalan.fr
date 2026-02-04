@@ -122,13 +122,13 @@ const editField = (field: string) => {
 </script>
 
 <template>
-  <div class="u-mx-2 flex flex-col md:flex-row">
-    <div id="profile" class="mb-3 items-center md:w-2/6 c-card-bg-2">
+  <div class="u-mx-2 l-flex-column md:flex-row">
+    <div id="profile" class="mb-3 l-items-cross-center md:w-2/6 c-card-bg-2">
       <h1 class="m-3 text-center text-4xl u-bold">
         Mon compte
       </h1>
-      <div class="myr-2 place-center flex flex-col justify-between md:place-items-center md:justify-items-center">
-        <div class="my-2 flex flex-col place-items-center justify-items-center md:flex-row">
+      <div class="myr-2 place-center l-flex-column justify-between md:place-items-center md:justify-items-center">
+        <div class="my-2 l-flex-column place-items-center justify-items-center md:flex-row">
           <div class="m-2 flex place-items-center justify-items-center">
             <a>
               <img
@@ -199,7 +199,7 @@ const editField = (field: string) => {
         </div>
         <div
           v-if="cart.length > 0"
-          class="m-2 flex items-center justify-between c-card-bg-3"
+          class="m-2 flex l-items-cross-center justify-between c-card-bg-3"
         >
           <div>
             <h2 class="text-xl">
@@ -248,7 +248,7 @@ const editField = (field: string) => {
             class="c-card-bg-2"
           >
             <div
-              class="flex flex-1 flex-col justify-center"
+              class="l-flex-column flex-1 l-items-main-center"
             >
               <b class="text-xl">
                 {{ inscription[1].team.name }}
@@ -267,7 +267,7 @@ const editField = (field: string) => {
               />
               <div
                 v-if="inscription[1].ticket"
-                class="flex flex-1 flex-col justify-center"
+                class="l-flex-column flex-1 l-items-main-center"
               >
                 <p class="text-xs">
                   Télecharger son billet
@@ -283,7 +283,7 @@ const editField = (field: string) => {
               </router-link>
             </div>
             <div class="block">
-              <div class="flex flex-1 flex-row justify-center items-stretch justify-center">
+              <div class="l-flex-row flex-1 l-items-main-center items-stretch l-items-main-center">
                 <router-link
                   class="c-btn-primary"
                   :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
@@ -331,7 +331,7 @@ const editField = (field: string) => {
             class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
           >
             <div class="my-1 hidden md:block">
-              <div class="m-1 flex h-8 flex-1 flex-col justify-center">
+              <div class="m-1 l-flex-column h-8 flex-1 l-items-main-center">
                 <div>
                   <router-link
                     class="center rounded bg-green-600 p-2 u-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
@@ -356,7 +356,7 @@ const editField = (field: string) => {
               class="size-32 max-w-full overflow-hidden"
               style="width: 100%; object-fit: cover;"
             />
-            <div class="m-1 flex flex-1 flex-col justify-center">
+            <div class="m-1 l-flex-column flex-1 l-items-main-center">
               <p class="text-xl">
                 {{ inscription[1].team.name }}
               </p>
@@ -378,10 +378,10 @@ const editField = (field: string) => {
             class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
           >
             <div class="block">
-              <div class="flex flex-1 flex-col justify-center">
-                <div class="m-2 flex flex-row items-stretch justify-center gap-2">
+              <div class="l-flex-column flex-1 l-items-main-center">
+                <div class="m-2 l-flex-row items-stretch l-items-main-center gap-2">
                   <router-link
-                    class="center flex flex-1 items-center justify-center rounded bg-green-600 p-2 u-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
+                    class="center flex flex-1 l-items-cross-center l-items-main-center rounded bg-green-600 p-2 u-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
                     :to="`/tournament/private/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
                   >
                     <div>
@@ -406,7 +406,7 @@ const editField = (field: string) => {
               style="width: 100%; object-fit: cover;"
             />
             <div
-              class="m-1 flex flex-1 flex-col justify-center"
+              class="m-1 l-flex-column flex-1 l-items-main-center"
             >
               <p class="text-xl">
                 {{ inscription[1].team.tournament.name }}
@@ -433,7 +433,7 @@ const editField = (field: string) => {
           <FormField
             v-slot="context"
             :validations="v$_name.first_name"
-            class="m-2 flex flex-col"
+            class="m-2 l-flex-column"
             label="Nouveau Prénom"
           >
             <input
@@ -447,7 +447,7 @@ const editField = (field: string) => {
               @blur="v$_name.first_name.$touch"
             />
           </FormField>
-          <FormField v-slot="context" :validations="v$_name.last_name" class="m-2 flex flex-col" label="Nouveau Nom">
+          <FormField v-slot="context" :validations="v$_name.last_name" class="m-2 l-flex-column" label="Nouveau Nom">
             <input
               v-model="data_name.last_name"
               :class="{ error: context.invalid }"
@@ -462,7 +462,7 @@ const editField = (field: string) => {
         </div>
 
         <div v-if="focus === 'email'" id="email">
-          <FormField v-slot="context" :validations="v$_email.email" class="m-2 flex flex-col" label="Email">
+          <FormField v-slot="context" :validations="v$_email.email" class="m-2 l-flex-column" label="Email">
             <input
               v-model="data_email.email"
               :class="{ error: context.invalid }"
@@ -480,7 +480,7 @@ const editField = (field: string) => {
           <FormField
             v-slot="context"
             :validations="v$_password.new_password"
-            class="m-2 flex flex-col"
+            class="m-2 l-flex-column"
             label="Nouveau mot de passe"
           >
             <PasswordInput
@@ -495,7 +495,7 @@ const editField = (field: string) => {
           <FormField
             v-slot="context"
             :validations="v$_password.password_validation"
-            class="m-2 flex flex-col"
+            class="m-2 l-flex-column"
             label="Confirmer le mot de passe"
           >
             <PasswordInput
@@ -510,7 +510,7 @@ const editField = (field: string) => {
           <FormField
             v-slot="context"
             :validations="v$_password.current_password"
-            class="m-2 flex flex-col"
+            class="m-2 l-flex-column"
             label="Mot de passe actuel"
           >
             <PasswordInput

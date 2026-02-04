@@ -44,7 +44,7 @@ const burger_menu = ref(false);
 <template>
   <div id="navcontainer" class="sticky top-4 z-[51] m-4 xl:mx-12">
     <nav id="navigation" class="c-card-bg-2">
-      <div id="desktop" class="hidden h-full items-center justify-around xl:flex">
+      <div id="desktop" class="hidden h-full l-items-cross-center justify-around xl:flex">
         <router-link to="/">
           <img alt="Logo InsaLan" class="size-[4.5rem] c-image-btn" src="@/assets/images/logo_home.png"/>
         </router-link>
@@ -68,11 +68,11 @@ const burger_menu = ref(false);
         </div>
         <div
           v-else
-          class="flex items-center gap-4"
+          class="flex l-items-cross-center gap-4"
         >
           <div
             v-if="role === 'dev' || role === 'staff'"
-            class="group relative mx-4 transition duration-150 ease-in-out"
+            class="group l-relative-position mx-4 transition duration-150 ease-in-out"
           >
             <div
               class="c-text-btn-secondary"
@@ -84,11 +84,11 @@ const burger_menu = ref(false);
               />
             </div>
             <div
-              class="c-card-bg-3 absolute hidden min-w-48 flex-col group-hover:flex"
+              class="c-card-bg-3 l-absolute-position hidden min-w-48 flex-col group-hover:flex"
             >
               <div
                 v-if="user?.groups.includes('Equipe Bouffe')"
-                class="flex flex-col"
+                class="l-flex-column"
               >
                 <div
                   class="u-bold u-color-text-2"
@@ -116,7 +116,7 @@ const burger_menu = ref(false);
               </div>
               <div
                 v-if="role === 'dev' || role === 'staff'"
-                class="flex flex-col"
+                class="l-flex-column"
               >
                 <div
                   class="u-bold u-color-text-2"
@@ -151,11 +151,11 @@ const burger_menu = ref(false);
         </div>
       </div>
       <div class="min-h-full xl:hidden">
-        <div id="top" class="flex h-[calc(6rem_-_2px)] items-center justify-between">
+        <div id="top" class="flex h-[calc(5rem_-_2px)] l-items-cross-center justify-between">
           <router-link to="/">
-            <img alt="Logo InsaLan" class="size-[4.5rem] c-image-btn" src="@/assets/images/logo_home.png"/>
+            <img alt="Logo InsaLan" class="size-[4.5rem] c-image-btn u-mx-1" src="@/assets/images/logo_home.png"/>
           </router-link>
-          <div class="center flex items-center gap-4 p-5">
+          <div class="center flex l-items-cross-center l-gap-2 u-p-1">
             <div v-if="!isConnected">
               <router-link
                 class="c-btn-primary"
@@ -164,7 +164,7 @@ const burger_menu = ref(false);
                 Se connecter/S'inscrire
               </router-link>
             </div>
-            <div v-else class="flex items-center gap-2">
+            <div v-else class="flex l-items-cross-center gap-2">
               <router-link
                 class="c-text-btn-secondary"
                 to="/me"
@@ -209,7 +209,7 @@ const burger_menu = ref(false);
             </button>
           </div>
         </div>
-        <div v-if="burger_menu" class="flex max-h-[calc(100vh_-_6rem)] flex-col overflow-scroll u-bg-bg-2">
+        <div v-if="burger_menu" class="max-h-[calc(100vh_-_6rem)] l-flex-column overflow-scroll u-bg-bg-2">
           <a
             v-if="role === 'dev' || role === 'staff'"
             class="u-mx-1 u-py-2 c-text-btn-secondary text-center"
@@ -231,7 +231,7 @@ const burger_menu = ref(false);
             v-for="(item, i) in mobile_items"
             :key="i"
             :to="{ path: item.url }"
-            class="u-mx-1 u-py-2 c-text-btn-secondary text-center"
+            class="u-mx-1 u-py-2 c-text-btn-secondary u-text-center"
             @click="burger_menu = !burger_menu"
           >
             {{ item.text }}
@@ -239,7 +239,7 @@ const burger_menu = ref(false);
         </div>
       </div>
     </nav>
-    <div v-if="getContent('alert') && !$route.path.startsWith('/admin/')" class="c-card-error-1-nopad u-mt-1 flex flex-col items-center u-rounded p-1">
+    <div v-if="getContent('alert') && !$route.path.startsWith('/admin/')" class="c-card-error-1-nopad u-mt-1 l-flex-column l-items-cross-center u-px-2 u-py-1">
       <Content name="alert"/>
     </div>
   </div>

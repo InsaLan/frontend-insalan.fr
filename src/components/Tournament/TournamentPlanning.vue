@@ -10,7 +10,7 @@ const props = defineProps<{
 
 <template>
   <section id="planning">
-    <div class="m-1 flex justify-center rounded bg-cyan-900 p-2">
+    <div class="m-1 flex l-items-main-center rounded bg-cyan-900 p-2">
       Les plannings peuvent varier en fonction de l'avancement des tournois et sont donnés à titre indicatif.
     </div>
     <div

@@ -22,7 +22,7 @@ const pizza = computed<Pizza | undefined>(() => pizzaList.value[props.id]);
       :src="pizza?.image"
       class="max-w-screen aspect-video h-48 w-full text-clip object-cover u-rounded"
     />
-    <div class="flex w-full flex-col items-center px-4">
+    <div class="l-flex-column w-full l-items-cross-center px-4">
       <div class="mb-2 w-3/4">
         <p class="text-center text-2xl u-bold">
           {{ pizza?.name }}

@@ -46,7 +46,7 @@ const qualifying_round_idx = computed(() => {
       <div
         v-for="(round_matchs, round_idx) in groupBy(swiss.matchs, 'round_number')"
         :key="round_idx"
-        class="flex flex-col gap-6"
+        class="l-flex-column gap-6"
       >
         <div
           v-for="(matchs, score_group) in groupBy(round_matchs, 'score_group')"
@@ -68,12 +68,12 @@ const qualifying_round_idx = computed(() => {
           </div>
 
           <div
-            class="flex flex-col items-center"
+            class="l-flex-column l-items-cross-center"
           >
             <div
               v-for="match in matchs"
               :key="match.id"
-              class="w-full"
+              class="u-full-width"
             >
               <MatchCard
                 :match="match"

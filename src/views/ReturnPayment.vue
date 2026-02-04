@@ -60,10 +60,10 @@ onMounted(async () => {
       🛸 Erreur inconnue
     </h1>
   </div>
-  <div class="m-6 flex items-center justify-center md:m-32">
+  <div class="m-6 flex l-items-cross-center l-items-main-center md:m-32">
     <img
       alt="Logo InsaLan"
-      class="image-center m-6 w-20 justify-center md:max-h-full md:w-max md:max-w-full"
+      class="image-center m-6 w-20 l-items-main-center md:max-h-full md:w-max md:max-w-full"
       src="@/assets/images/logo_home.png"
     />
   </div>

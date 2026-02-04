@@ -192,7 +192,7 @@ const handleCloseTravelFormModal = () => {
 <template>
   <div
     :style="{ backgroundImage: `url(${tournament?.logo})` }"
-    class="flex h-min items-center justify-center bg-cover bg-center py-10 2xl:min-h-[calc(100vh_-_6rem)] 2xl:py-4"
+    class="flex h-min l-items-cross-center l-items-main-center bg-cover bg-center py-10 2xl:min-h-[calc(100vh_-_6rem)] 2xl:py-4"
   >
     <!-- Design 3-->
     <div class="w-11/12 md:w-9/12 2xl:w-1/2">
@@ -217,7 +217,7 @@ const handleCloseTravelFormModal = () => {
           Rejoindre une équipe
         </button>
       </div>
-      <div class="flex flex-col bg-[#2c292d] p-8">
+      <div class="l-flex-column bg-[#2c292d] p-8">
         <form
           id="register_form"
           class="grid gap-x-14 gap-y-2 sm:grid-cols-2"
@@ -227,7 +227,7 @@ const handleCloseTravelFormModal = () => {
             v-if="create && !soloGame"
             v-slot="context"
             :validations="v$.team"
-            class="flex flex-col text-xl"
+            class="l-flex-column text-xl"
           >
             <label for="team">
               Nom de l'équipe
@@ -247,7 +247,7 @@ const handleCloseTravelFormModal = () => {
             v-else-if="create && soloGame"
             v-slot="context"
             :validations="v$.name_in_game"
-            class="flex flex-col text-xl"
+            class="l-flex-column text-xl"
           >
             <label for="name_in_game">
               Pseudo en jeu
@@ -268,7 +268,7 @@ const handleCloseTravelFormModal = () => {
             v-else
             v-slot="context"
             :validations="v$.team"
-            class="flex flex-col text-xl"
+            class="l-flex-column text-xl"
           >
             <label for="teams">
               Équipe
@@ -293,7 +293,7 @@ const handleCloseTravelFormModal = () => {
             v-else
             v-slot="context"
             :validations="v$.name_in_game"
-            class="flex flex-col text-xl"
+            class="l-flex-column text-xl"
           >
             <label for="name_in_game">
               Pseudo en jeu
@@ -317,13 +317,13 @@ const handleCloseTravelFormModal = () => {
             "
             v-slot="context"
             :validations="v$.password"
-            class="flex flex-col text-xl"
+            class="l-flex-column text-xl"
           >
             <label for="pwd">
               {{ isPrivate ? 'Mot de passe du tournoi' : 'Mot de passe de l\'équipe' }}
             </label>
             <div
-              class="relative flex size-full items-center"
+              class="l-relative-position flex size-full l-items-cross-center"
             >
               <input
                 id="pwd"
@@ -337,7 +337,7 @@ const handleCloseTravelFormModal = () => {
               <button
                 v-if="!(isPrivate)"
                 type="button"
-                class="absolute right-8 top-1 z-10 size-8"
+                class="l-absolute-position right-8 top-1 z-10 size-8"
                 @click="generate_password"
               >
                 <fa-awesome-icon
@@ -349,7 +349,7 @@ const handleCloseTravelFormModal = () => {
               </button>
               <button
                 type="button"
-                class="absolute right-1 top-1 z-10 size-8"
+                class="l-absolute-position right-1 top-1 z-10 size-8"
                 @click="view_password = !view_password"
               >
                 <fa-awesome-icon
@@ -366,7 +366,7 @@ const handleCloseTravelFormModal = () => {
             "
             v-slot="context"
             :validations="v$.role"
-            class="flex flex-col text-xl"
+            class="l-flex-column text-xl"
           >
             <label for="role">
               Rôle dans l'équipe
@@ -399,10 +399,10 @@ const handleCloseTravelFormModal = () => {
         <FormField
           v-slot="context"
           :validations="v$.accept_rules"
-          class="flex flex-col self-center text-3xl"
+          class="l-flex-column self-center text-3xl"
         >
           <div
-            class="flex w-full items-center justify-center gap-2"
+            class="flex w-full l-items-cross-center l-items-main-center gap-2"
           >
             <input
               id="check"
@@ -415,7 +415,7 @@ const handleCloseTravelFormModal = () => {
           </div>
         </FormField>
       </div>
-      <div class="flex justify-center bg-[#63d1ff] p-5">
+      <div class="flex l-items-main-center bg-[#63d1ff] p-5">
         <button
           v-if="create"
           class="rounded border-solid bg-green-600 p-3 text-3xl md:w-5/12"

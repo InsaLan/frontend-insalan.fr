@@ -115,7 +115,7 @@ const delete_groups_matchs = async () => {
     class="m-4 flex gap-16"
   >
     <div
-      class="flex w-1/2 flex-col justify-end gap-8 md:flex-row"
+      class="l-flex-column w-1/2 justify-end gap-8 md:flex-row"
     >
       <button
         type="button"
@@ -135,7 +135,7 @@ const delete_groups_matchs = async () => {
       </button>
     </div>
     <div
-      class="flex w-1/2 flex-col gap-8 md:flex-row"
+      class="l-flex-column w-1/2 gap-8 md:flex-row"
     >
       <button
         type="button"
@@ -162,7 +162,7 @@ const delete_groups_matchs = async () => {
   </div>
 
   <div
-    class="m-4 mt-0 flex flex-wrap justify-center gap-6 md:m-6 md:mt-0 lg:m-8 lg:mt-0 lg:gap-8 2xl:m-9 2xl:mt-0 2xl:gap-10"
+    class="m-4 mt-0 flex flex-wrap l-items-main-center gap-6 md:m-6 md:mt-0 lg:m-8 lg:mt-0 lg:gap-8 2xl:m-9 2xl:mt-0 2xl:gap-10"
   >
     <GroupTable
       v-for="group in groups"
@@ -213,10 +213,10 @@ const delete_groups_matchs = async () => {
       Les matchs des poules vont être créés.
 
       <div
-        class="flex flex-col gap-4"
+        class="flex l-flex-column gap-4"
       >
         <div
-          class="flex items-center gap-4 pt-2"
+          class="flex l-items-cross-center gap-4 pt-2"
         >
           <label for="bo_type">
             Type de BO
@@ -315,7 +315,7 @@ const delete_groups_matchs = async () => {
     <template #body>
       <form
         id="create_groups_form"
-        class="m-4 flex flex-col gap-4"
+        class="m-4 l-flex-column gap-4"
         @submit.prevent="launch_round_matchs"
       >
         <FormField

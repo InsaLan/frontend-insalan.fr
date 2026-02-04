@@ -57,7 +57,7 @@ const handleImageChange = (event: Event) => {
     </template>
     <template #body>
       <form class="mt-2 w-80 sm:w-96" @submit.prevent="validate">
-        <FormField v-slot="context" :validations="v$_pizza.name" class="flex flex-col">
+        <FormField v-slot="context" :validations="v$_pizza.name" class="l-flex-column">
           <label for="pizza-name">Nom</label>
           <input
             id="pizza-name"
@@ -89,7 +89,7 @@ const handleImageChange = (event: Event) => {
             :error="context.invalid"
           />
         </FormField>
-        <div class="mt-2 flex flex-col">
+        <div class="mt-2 l-flex-column">
           <label for="pizza-image">Image</label>
           <input
             id="pizza-image"

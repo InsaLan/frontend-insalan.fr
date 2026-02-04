@@ -17,7 +17,7 @@ await getPrivateTournaments();
 
 <template>
   <div>
-    <div v-if="!tournaments_id" class="flex justify-center">
+    <div v-if="!tournaments_id" class="flex l-items-main-center">
       Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !
     </div>
     <div class="mb-4 grid w-full gap-4 px-4 md:grid-cols-2 xl:grid-cols-3">
@@ -27,7 +27,7 @@ await getPrivateTournaments();
         :key="tournament"
       />
     </div>
-    <div class="mb-4 flex justify-center">
+    <div class="mb-4 flex l-items-main-center">
       <router-link
         to="/archives"
         class="c-btn-primary"

@@ -194,18 +194,18 @@ watch(() => props.link, fetchEvents);
             <h2 class="bg-gray-100 p-3 text-center text-sm u-bold text-black">
               {{ frenchDayFormatFromDate(day) }}
             </h2>
-            <div class="relative border-t border-gray-200" :style="{ height: `${60 * (24 - START_HOURE)}px` }">
+            <div class="l-relative-position border-t border-gray-200" :style="{ height: `${60 * (24 - START_HOURE)}px` }">
               <div
                 v-for="hour in timeSlots"
                 :key="hour"
-                class="absolute inset-x-0 border-t border-gray-500"
+                class="l-absolute-position inset-x-0 border-t border-gray-500"
                 :style="{ top: `${((hour - START_HOURE) / (24 - START_HOURE)) * 100 - 0.04}%` }"
               />
               <button
                 v-for="event in getEventsForDay(day)"
                 :key="event.start.toISOString()"
                 :class="[
-                  'absolute flex cursor-pointer flex-col overflow-hidden rounded border border-black p-1 text-center text-xs text-white shadow-lg transition-transform duration-200 hover:z-10 hover:shadow-xl hover:ring hover:ring-blue-500 focus:z-10 focus:ring focus:ring-blue-500',
+                  'absolute l-flex-column cursor-pointer overflow-hidden rounded border border-black p-1 text-center text-xs text-white shadow-lg transition-transform duration-200 hover:z-10 hover:shadow-xl hover:ring hover:ring-blue-500 focus:z-10 focus:ring focus:ring-blue-500',
                   colors[
                     event.id.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0)
                     % colors.length

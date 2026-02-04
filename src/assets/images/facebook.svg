@@ -1,0 +1,20 @@
+<svg
+id="facebook"
+viewBox="30 30 140 140"
+xml:space="preserve"
+xmlns="http://www.w3.org/2000/svg"
+>
+<title>
+  Facebook
+</title>
+<g>
+  <g transform="matrix(2.0 0 0 2.0 100 100)">
+    <path
+    d="M 209.65 211.48 c 1.37 0 2.79 0 4.11 0 h 0.56 v -7.12 c -0.73 0 -1.48 -0.17 -2.26 -0.22 c -1.4 0 -2.79 0 -4.19 0 c -2.12 -0.01 -4.18 0.64 -5.92 1.84 c -1.93 1.42 -3.21 3.55 -3.55 5.92 c -0.16 0.94 -0.25 1.89 -0.28 2.85 c 0 1.59 0 3.18 0 4.78 v 0.81 h -6.79 v 7.93 h 6.73 v 19.92 h 8.38 v -20 h 6.73 l 0.81 -7.85 h -7.82 c 0 0 0 -3.94 0 -5.59 C 206.38 212.23 207.78 211.53 209.65 211.48 z"
+    stroke-linecap="round"
+    style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(70,145,252); fill-rule: evenodd; opacity: 1;"
+    transform=" translate(-202.825, -226.1649)"
+    />
+  </g>
+</g>
+</svg>
