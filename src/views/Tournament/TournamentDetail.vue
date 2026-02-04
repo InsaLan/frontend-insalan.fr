@@ -32,7 +32,7 @@ const sections = computed<Record<string, TournamentDetailSection>>(() => ({
   groups: { title: 'Poules', is_available: (tournament.value as EventTournamentDeref)?.groups.length > 0 || false },
   swiss: { title: 'Ronde Suisse', is_available: (tournament.value as EventTournamentDeref)?.swissRounds.length > 0 || false },
   brackets: { title: 'Arbres', is_available: (tournament.value as EventTournamentDeref)?.brackets.length > 0 || false },
-  planning: { title: 'Planning', is_available: 'planning' in (tournament.value as EventTournamentDeref) },
+  planning: { title: 'Planning', is_available: 'planning_file' in (tournament.value as EventTournamentDeref) },
   rules: { title: 'Règlement', is_available: true },
 }));
 
