@@ -67,7 +67,7 @@ const scrollPastHero = () => {
       :style="{ top: `${topOffset * 0.35}px` }"
     >
       <img alt="logo InsaLan" class="logo" src="../assets/images/logo_wide.png">
-      <h1 class="text-shadow u-bold text-center text-6xl">
+      <h1 class="text-shadow u-bold u-text-center text-6xl">
         {{ eventText }}
       </h1>
       <div id="next" class="u-mt-2 hero-btn" @click="scrollPastHero()" @keydown="scrollPastHero()">
@@ -99,6 +99,12 @@ const scrollPastHero = () => {
 
 .logo {
   width: 42rem;
+  transition: width 0.6s;
+}
+
+.logo:hover {
+  width: 46rem;
+  transition: width 0.6s;
 }
 
 .hero-btn {

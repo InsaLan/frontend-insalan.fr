@@ -5,7 +5,7 @@ import Map from '@/components/Map.vue';
 </script>
 
 <template>
-  <div class="l-grid-2 l-gap-4 u-m-double-body">
+  <div class="l-grid-2 l-horizontal-gap-4 u-m-double-body">
     <Content
       name="joueur_checklist"
     />

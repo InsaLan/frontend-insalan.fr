@@ -144,23 +144,23 @@ const closeModal = () => {
 </script>
 
 <template>
-  <section id="seating" class="w-full">
+  <section id="seating" class="u-full-width">
     <div v-if="tournament?.event.seats.length !== 0" class="l-flex-column l-items-cross-center l-items-main-center">
       <div
-        class="m-2 l-flex-column w-full l-items-cross-center"
+        class="u-m-1 l-flex-column u-full-width l-items-cross-center"
       >
-        <h2 class="text-center text-2xl u-bold">
+        <h2 class="u-text-center text-2xl u-bold">
           Placement des équipes pour : {{ tournament.event.name }}
         </h2>
         <div
-          class="w-full overflow-x-auto"
+          class="u-full-width overflow-x-auto"
           :style="{
             maxWidth: `${(maxX + 1) * 32}px`,
           }"
         >
           <div
             id="tooltip"
-            class="z-1 fixed hidden max-w-60 l-items-cross-center l-items-main-center overflow-hidden rounded-lg border border-black bg-gray-600 p-2 text-white"
+            class="z-1 fixed hidden max-w-60 l-items-cross-center l-items-main-center overflow-hidden rounded-lg border border-black bg-gray-600 u-p-1 text-white"
           >
             <div v-if="hoveredTeamSlotName" class="truncate">
               Équipe : <strong class="text-blue-500">
@@ -233,15 +233,15 @@ const closeModal = () => {
             </div>
           </div>
         </div>
-        <div class="m-4 l-flex-column l-items-cross-center text-sm">
+        <div class="u-m-2 l-flex-column l-items-cross-center text-sm">
           <div
-            class="grid grid-cols-1 l-items-cross-center gap-4"
+            class="grid grid-cols-1 l-items-cross-center l-gap-2"
             :class="{
               'sm:grid-cols-4': team,
               'sm:grid-cols-3': !team,
             }"
           >
-            <div class="flex l-items-cross-center gap-2">
+            <div class="flex l-items-cross-center l-gap-1">
               <img
                 alt="Event Seat"
                 src="@/assets/images/seat-empty.png"
@@ -249,7 +249,7 @@ const closeModal = () => {
               />
               <span>Places libres du tournoi : {{ tournament.name }}</span>
             </div>
-            <div v-if="team" class="flex l-items-cross-center gap-2">
+            <div v-if="team" class="flex l-items-cross-center l-gap-1">
               <img
                 alt="Event Seat"
                 src="@/assets/images/seat-selected.png"
@@ -257,7 +257,7 @@ const closeModal = () => {
               />
               <span>Place actuelle de l'équipe</span>
             </div>
-            <div class="flex l-items-cross-center gap-2">
+            <div class="flex l-items-cross-center l-gap-1">
               <img
                 alt="Event Seat"
                 src="@/assets/images/seat-taken.png"
@@ -265,7 +265,7 @@ const closeModal = () => {
               />
               <span>Places occupées du tournoi : {{ tournament.name }}</span>
             </div>
-            <div class="flex l-items-cross-center gap-2">
+            <div class="flex l-items-cross-center l-gap-1">
               <img
                 alt="Event Seat"
                 src="@/assets/images/seat-event.png"
@@ -276,7 +276,7 @@ const closeModal = () => {
           </div>
           <p
             v-if="!team"
-            class="mt-2"
+            class="u-mt-1"
           >
             Pour modifier votre placement, rendez-vous sur la page de votre équipe, accessible depuis
             <router-link
@@ -303,7 +303,7 @@ const closeModal = () => {
       </h3>
     </template>
     <template #body>
-      <p class="mt-2">
+      <p class="u-mt-1">
         Êtes vous sûr de vouloir sélectionner ces places ?
         <br/>
         Vous pourrez les modifier jusqu'à la fin des inscription

@@ -37,7 +37,7 @@ const editEl = (index: number) => {
 
 <template>
   <div :class="{ 'border-red-500': error }" class="border-2 border-gray-500 focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
-    <div v-if="modelValue.length" class="m-1 flex flex-wrap gap-1">
+    <div v-if="modelValue.length" class="m-1 flex flex-wrap l-gap-1">
       <div v-for="(el, i) in modelValue" :key="i" class="flex overflow-hidden rounded bg-cyan-900">
         <button
           type="button"

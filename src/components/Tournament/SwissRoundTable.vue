@@ -39,7 +39,7 @@ const qualifying_round_idx = computed(() => {
       <h1
         v-for="round_idx in roundCount"
         :key="round_idx"
-        class="text-center text-3xl"
+        class="u-text-center text-3xl"
       >
         Tour {{ round_idx }}
       </h1>
@@ -54,7 +54,7 @@ const qualifying_round_idx = computed(() => {
           class="border-2 border-gray-500"
         >
           <div
-            class="bg-gray-500 text-center"
+            class="bg-gray-500 u-text-center"
           >
             <div
               v-if="Number(round_idx) <= qualifying_round_idx"

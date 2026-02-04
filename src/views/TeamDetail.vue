@@ -241,10 +241,10 @@ const kick_member = async (type: string, id: number) => {
 <template>
   <div
     :style="{ backgroundImage: `url(${tournament?.logo})` }"
-    class="l-flex-column flex-1 l-items-cross-center border-2 border-black bg-cover bg-center text-center text-white bg-blend-multiply"
+    class="l-flex-column flex-1 l-items-cross-center border-2 border-black bg-cover bg-center u-text-center text-white bg-blend-multiply"
   >
     <h1
-      class="c-title w-full"
+      class="c-title u-full-width"
     >
       {{ tournament?.name }}
     </h1>
@@ -253,7 +253,7 @@ const kick_member = async (type: string, id: number) => {
       class="my-5 mb-6 l-flex-column w-5/6 l-items-cross-center l-items-main-center rounded-2xl bg-[#144B61] md:w-3/4"
     >
       <div
-        class="l-flex-column w-full justify-between border-b-2 border-black p-2 md:flex-row"
+        class="l-flex-column u-full-width justify-between border-b-2 border-black u-p-1 md:flex-row"
       >
         <div class="flex l-items-cross-center overflow-hidden">
           <div
@@ -262,7 +262,7 @@ const kick_member = async (type: string, id: number) => {
             [{{ tournament?.game.short_name }}]
             {{ selected_team?.name }}
           </div>
-          <img v-if="selected_team.validated" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="m-2 inline-block size-6"/>
+          <img v-if="selected_team.validated" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="u-m-1 inline-block size-6"/>
         </div>
         <button
           v-if="
@@ -277,7 +277,7 @@ const kick_member = async (type: string, id: number) => {
               )
           "
           type="button"
-          class="center rounded bg-green-600 p-2 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+          class="center rounded bg-green-600 u-p-1 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
           @click="showModalTeamName = true"
           @keydown.enter="showModalTeamName = true"
         >
@@ -285,10 +285,10 @@ const kick_member = async (type: string, id: number) => {
         </button>
       </div>
       <div
-        class="l-flex-column w-full bg-[#116B8E]"
+        class="l-flex-column u-full-width bg-[#116B8E]"
       >
         <div
-          class="l-flex-column w-full justify-between border-b-2 border-black p-2"
+          class="l-flex-column u-full-width justify-between border-b-2 border-black u-p-1"
         >
           <div
             class="u-underline"
@@ -296,12 +296,12 @@ const kick_member = async (type: string, id: number) => {
             Joueurs :
           </div>
           <ul
-            class="grid list-disc p-2 md:grid-cols-2"
+            class="grid list-disc u-p-1 md:grid-cols-2"
           >
             <li
               v-for="player in selected_team?.players as PlayerRegistration[]"
               :key="player.id"
-              class="mx-2 overflow-hidden text-justify"
+              class="u-mx-1 overflow-hidden u-text-justify"
             >
               <div class="flex l-items-cross-center">
                 <fa-awesome-icon
@@ -312,7 +312,7 @@ const kick_member = async (type: string, id: number) => {
                 <div class="truncate">
                   {{ player.name_in_game }}
                 </div>
-                <img v-if="player.payment_status === PaymentStatus.PAID" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="m-2 inline-block size-4"/>
+                <img v-if="player.payment_status === PaymentStatus.PAID" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="u-m-1 inline-block size-4"/>
                 <fa-awesome-icon
                   v-if="
                     player.payment_status !== PaymentStatus.PAID
@@ -339,7 +339,7 @@ const kick_member = async (type: string, id: number) => {
         </div>
         <div
           v-if="!(props.id in privateTournamentsList)"
-          class="l-flex-column w-full justify-between border-b-2 border-black p-2"
+          class="l-flex-column u-full-width justify-between border-b-2 border-black u-p-1"
         >
           <div
             class="u-underline"
@@ -347,12 +347,12 @@ const kick_member = async (type: string, id: number) => {
             Managers :
           </div>
           <ul
-            class="grid list-disc p-2 md:grid-cols-2"
+            class="grid list-disc u-p-1 md:grid-cols-2"
           >
             <li
               v-for="manager in selected_team?.managers as String[]"
               :key="manager as string"
-              class="mx-2 overflow-hidden text-justify"
+              class="u-mx-1 overflow-hidden u-text-justify"
             >
               <div class="flex l-items-cross-center">
                 <div class="truncate">
@@ -364,7 +364,7 @@ const kick_member = async (type: string, id: number) => {
         </div>
         <div
           v-if="!(props.id in privateTournamentsList)"
-          class="l-flex-column w-full justify-between border-b-2 border-black p-2"
+          class="l-flex-column u-full-width justify-between border-b-2 border-black u-p-1"
         >
           <div
             class="u-underline"
@@ -372,18 +372,18 @@ const kick_member = async (type: string, id: number) => {
             Remplaçants :
           </div>
           <ul
-            class="grid list-disc p-2 md:grid-cols-2"
+            class="grid list-disc u-p-1 md:grid-cols-2"
           >
             <li
               v-for="substitute in selected_team?.substitutes as PlayerRegistration[]"
               :key="substitute.id"
-              class="mx-2 overflow-hidden text-justify"
+              class="u-mx-1 overflow-hidden u-text-justify"
             >
               <div class="flex l-items-cross-center">
                 <div class="truncate">
                   {{ substitute.name_in_game }}
                 </div>
-                <img v-if="substitute.payment_status === PaymentStatus.PAID" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="m-2 inline-block size-4"/>
+                <img v-if="substitute.payment_status === PaymentStatus.PAID" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="u-m-1 inline-block size-4"/>
                 <fa-awesome-icon
                   v-if="
                     substitute.payment_status !== PaymentStatus.PAID
@@ -408,10 +408,10 @@ const kick_member = async (type: string, id: number) => {
       </div>
       <div
         v-if="tournament && (!('event' in tournament) || (tournament as EventTournamentDeref)?.event.ongoing)"
-        class="l-flex-column w-full justify-between gap-2 border-t-2 border-black p-2 md:flex-row"
+        class="l-flex-column u-full-width justify-between l-gap-1 border-t-2 border-black u-p-1 md:flex-row"
       >
         <div
-          class="l-flex-column w-full items-start"
+          class="l-flex-column u-full-width items-start"
         >
           <button
             v-if="
@@ -425,7 +425,7 @@ const kick_member = async (type: string, id: number) => {
                 && !(props.id in privateTournamentsList)
             "
             type="button"
-            class="center size-full rounded bg-red-600 p-2 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
+            class="center size-full rounded bg-red-600 u-p-1 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
             @click="showModalTeamPassword = true"
             @keydown.enter="showModalTeamPassword = true"
           >
@@ -433,32 +433,32 @@ const kick_member = async (type: string, id: number) => {
           </button>
         </div>
         <div
-          class="l-flex-column w-full l-items-cross-center md:max-w-[33%]"
+          class="l-flex-column u-full-width l-items-cross-center md:max-w-[33%]"
         >
           <div
             v-if="team_registration?.[0] === 'player' || team_registration?.[0] === 'substitute'"
-            class="flex w-full max-w-full l-items-cross-center l-items-main-center rounded bg-blue-700 transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500 md:w-auto"
+            class="flex u-full-width max-w-full l-items-cross-center l-items-main-center rounded bg-blue-700 transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500 md:w-auto"
             @click.prevent="showModalNameInGame = true"
             @keydown.prevent="showModalNameInGame = true"
           >
-            <div class="m-2 overflow-hidden truncate">
+            <div class="u-m-1 overflow-hidden truncate">
               {{ (team_registration?.[1] as PlayerRegistrationDeref).name_in_game }}
             </div>
             <fa-awesome-icon
-              class="m-2 hover:cursor-pointer"
+              class="u-m-1 hover:cursor-pointer"
               icon="fa-solid fa-pencil"
             />
           </div>
         </div>
         <div
-          class="l-flex-column w-full items-end"
+          class="l-flex-column u-full-width items-end"
         >
           <button
             v-if="
               team_registration?.[1]?.payment_status !== PaymentStatus.PAID
             "
             type="button"
-            class="center size-full rounded bg-red-600 p-2 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
+            class="center size-full rounded bg-red-600 u-p-1 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
             @click="showModalLeaveTeam = true"
           >
             Quitter l'équipe
@@ -467,7 +467,7 @@ const kick_member = async (type: string, id: number) => {
       </div>
       <div
         v-else
-        class="m-2 w-full"
+        class="u-m-1 u-full-width"
       >
         Le tournoi est terminé et l'équipe ne peut plus être modifiée.
       </div>
@@ -494,11 +494,11 @@ const kick_member = async (type: string, id: number) => {
       </h3>
     </template>
     <template #body>
-      <form id="patch-user" class="mt-2" @submit.prevent="ValidateModalNameInGame">
+      <form id="patch-user" class="u-mt-1" @submit.prevent="ValidateModalNameInGame">
         <FormField
           v-slot="context"
           :validations="v$_name_in_game.name_in_game"
-          class="m-2 l-flex-column"
+          class="u-m-1 l-flex-column"
           label="Nouveau Pseudo"
         >
           <input
@@ -543,11 +543,11 @@ const kick_member = async (type: string, id: number) => {
       </h3>
     </template>
     <template #body>
-      <form id="patch-user" class="mt-2" @submit.prevent="ValidateModalTeamName">
+      <form id="patch-user" class="u-mt-1" @submit.prevent="ValidateModalTeamName">
         <FormField
           v-slot="context"
           :validations="v$_team_name.name"
-          class="m-2 l-flex-column"
+          class="u-m-1 l-flex-column"
           label="Nouveau nom"
         >
           <input
@@ -592,11 +592,11 @@ const kick_member = async (type: string, id: number) => {
       </h3>
     </template>
     <template #body>
-      <form id="patch-user" class="mt-2" @submit.prevent="ValidateModalTeamPassword">
+      <form id="patch-user" class="u-mt-1" @submit.prevent="ValidateModalTeamPassword">
         <FormField
           v-slot="context"
           :validations="v$_team_password.password"
-          class="m-2 l-flex-column"
+          class="u-m-1 l-flex-column"
           label="Nouveau mot de passe"
         >
           <input

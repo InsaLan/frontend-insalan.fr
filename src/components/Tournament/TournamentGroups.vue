@@ -35,13 +35,13 @@ const group_details = computed<Group | undefined>(() => get_group_by_id(groups |
   >
     <h1
       v-if="groups?.length === 0"
-      class="mt-6 flex l-items-main-center text-center text-4xl"
+      class="mt-6 flex l-items-main-center u-text-center text-4xl"
     >
       Les poules ne sont pas disponibles.
     </h1>
     <div
       v-else
-      class="m-4 flex flex-wrap l-items-main-center gap-6 md:m-6 lg:m-8 lg:gap-8 2xl:m-9 2xl:gap-10"
+      class="u-m-2 flex flex-wrap l-items-main-center gap-6 md:m-6 lg:m-8 lg:gap-8 2xl:m-9 2xl:gap-10"
     >
       <GroupTable
         v-for="group in tournament.groups"
@@ -58,13 +58,13 @@ const group_details = computed<Group | undefined>(() => get_group_by_id(groups |
     v-if="group_details !== undefined"
     id="group"
     :class="{ hidden: show_group_details === 0 }"
-    class="l-flex-column gap-5 p-4 lg:gap-8 lg:p-8"
+    class="l-flex-column gap-5 u-p-2 lg:gap-8 lg:p-8"
   >
     <nav class="flex l-items-main-center gap-3">
-      <button type="button" class="l-items-main-center rounded-md bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500" @click="show_group_details = 0">
+      <button type="button" class="l-items-main-center rounded-md bg-blue-600 px-3 u-py-1 u-text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500" @click="show_group_details = 0">
         <fa-awesome-icon icon="fa-solid fa-arrow-left"/> Retour
       </button>
-      <h1 class="text-center text-3xl font-black">
+      <h1 class="u-text-center text-3xl font-black">
         {{ group_details?.name }}
       </h1>
     </nav>
@@ -82,7 +82,7 @@ const group_details = computed<Group | undefined>(() => get_group_by_id(groups |
           v-for="matchs in get_matchs_per_round(group_details?.matchs ?? []).reverse()"
           :key="matchs[0].id"
         >
-          <h1 class="text-center text-3xl font-black">
+          <h1 class="u-text-center text-3xl font-black">
             Tour {{ matchs[0].round_number }}
           </h1>
           <div

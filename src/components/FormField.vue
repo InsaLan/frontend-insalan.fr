@@ -15,6 +15,6 @@ const errors = computed(() => props.validations.$errors.at(0));
 <template>
   <div>
     <slot :errors="errors" :invalid="invalid"/>
-    <span v-if="invalid" class="bg-red-500 text-center">{{ errors?.$message }}</span>
+    <span v-if="invalid" class="c-card-error-1-nopad u-text-center">{{ errors?.$message }}</span>
   </div>
 </template>

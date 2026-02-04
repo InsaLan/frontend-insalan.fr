@@ -162,18 +162,18 @@ const swiss_fill_round = async () => {
   </h1>
 
   <div
-    class="mx-4 flex flex-wrap l-items-main-center gap-4 lg:mx-8 lg:gap-8"
+    class="u-mx-2 flex flex-wrap l-items-main-center gap-4 lg:u-mx-4 lg:l-gap-4"
   >
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+      class="rounded bg-blue-800 u-p-1 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
       @click="open_fill_round_modal"
     >
       Générer un tour
     </button>
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 u-p-1 u-bold transition duration-150 ease-in-out"
       :class="[has_matchs ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
       :disabled="!has_matchs"
       @click="open_launch_round_modal"
@@ -182,7 +182,7 @@ const swiss_fill_round = async () => {
     </button>
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 u-p-1 u-bold transition duration-150 ease-in-out"
       :class="[has_matchs && selected_matchs.size > 0 ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
       :disabled="!has_matchs || selected_matchs.size === 0"
       @click="launch_selected_matchs"
@@ -192,10 +192,10 @@ const swiss_fill_round = async () => {
   </div>
 
   <div
-    class="mx-4 l-flex-column l-items-cross-center gap-4 overflow-auto"
+    class="u-mx-2 l-flex-column l-items-cross-center l-gap-2 overflow-auto"
   >
     <div
-      class="mx-2 flex flex-col items-center md:mx-4 lg:mx-8"
+      class="u-mx-1 flex flex-col items-center md:mx-4 lg:u-mx-4"
     >
       <div
         class="grid size-full gap-x-10 gap-y-5"
@@ -204,7 +204,7 @@ const swiss_fill_round = async () => {
         <h1
           v-for="round_idx in roundCounts"
           :key="round_idx"
-          class="text-center text-3xl"
+          class="u-text-center text-3xl"
         >
           Tour {{ round_idx }}
         </h1>
@@ -219,7 +219,7 @@ const swiss_fill_round = async () => {
             class="border-2 border-gray-500"
           >
             <div
-              class="bg-gray-500 text-center"
+              class="bg-gray-500 u-text-center"
             >
               <div
                 v-if="Number(round_idx) <= qualifying_round_idx"
@@ -238,7 +238,7 @@ const swiss_fill_round = async () => {
               <div
                 v-for="match in matchs"
                 :key="match.id"
-                class="w-full"
+                class="u-full-width"
               >
                 <MatchCard
                   v-model="selected_matchs"
@@ -298,7 +298,7 @@ const swiss_fill_round = async () => {
     <template #body>
       <form
         id="create_groups_form"
-        class="m-4 l-flex-column gap-4"
+        class="u-m-2 l-flex-column l-gap-2"
         @submit.prevent="launch_round_matchs"
       >
         <FormField
@@ -314,7 +314,7 @@ const swiss_fill_round = async () => {
             type="number"
             name="round"
             aria-label="Round number"
-            class="ml-2 bg-inherit"
+            class="u-ml-1 bg-inherit"
             :class="{ error: context.invalid }"
             @blur="v_round$.round_to_launch.$touch"
           >
@@ -355,7 +355,7 @@ const swiss_fill_round = async () => {
     <template #body>
       <form
         id="create_groups_form"
-        class="m-4 l-flex-column gap-4"
+        class="u-m-2 l-flex-column l-gap-2"
         @submit.prevent="swiss_fill_round"
       >
         <FormField
@@ -371,7 +371,7 @@ const swiss_fill_round = async () => {
             type="number"
             name="round"
             aria-label="Round number"
-            class="ml-2 bg-inherit"
+            class="u-ml-1 bg-inherit"
             :class="{ error: context.invalid }"
             @blur="v_create_round$.round_to_create.$touch"
           >
