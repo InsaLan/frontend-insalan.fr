@@ -30,7 +30,7 @@ const sections = computed<Record<string, TournamentDetailSection>>(() => ({
   teams: { title: 'Équipes', is_available: true },
   seatings: { title: 'Placement', is_available: 'seatslots' in (tournament.value as EventTournamentDeref) },
   stages: { title: 'Phases', is_available: true },
-  planning: { title: 'Planning', is_available: 'planning' in (tournament.value as EventTournamentDeref) },
+  planning: { title: 'Planning', is_available: 'planning_file' in (tournament.value as EventTournamentDeref) },
   rules: { title: 'Règlement', is_available: true },
 }));
 
