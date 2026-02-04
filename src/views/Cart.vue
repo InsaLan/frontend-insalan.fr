@@ -25,13 +25,13 @@ const modal_cgv = ref(false);
         Votre panier
       </h1>
 
-      <div v-if="cart.length === 0" class="py-8 text-center">
+      <div v-if="cart.length === 0" class="u-py-4 u-text-center">
         <p class="text-xl">
           Votre panier est vide.
         </p>
       </div>
 
-      <ul v-else class="l-flex-column gap-2 border-t border-white p-2">
+      <ul v-else class="l-flex-column l-gap-1 border-t border-white u-p-1">
         <li
           v-for="item in cart"
           :key="item.product"
@@ -63,7 +63,7 @@ const modal_cgv = ref(false);
         <input
           id="terms"
           v-model="hasReadTerms"
-          class="mr-2"
+          class="u-mr-1"
           type="checkbox"
         />
         <label for="terms">
@@ -78,7 +78,7 @@ const modal_cgv = ref(false);
         </div>
       </div>
 
-      <div class="mt-8 flex justify-between gap-4">
+      <div class="u-mt-4 flex justify-between l-gap-2">
         <button
           class="c-btn-error"
           type="button"

@@ -56,7 +56,7 @@ const handleImageChange = (event: Event) => {
       </h3>
     </template>
     <template #body>
-      <form class="mt-2 w-80 sm:w-96" @submit.prevent="validate">
+      <form class="u-mt-1 w-80 sm:w-96" @submit.prevent="validate">
         <FormField v-slot="context" :validations="v$_pizza.name" class="l-flex-column">
           <label for="pizza-name">Nom</label>
           <input
@@ -69,7 +69,7 @@ const handleImageChange = (event: Event) => {
             :class="{ error: context.invalid }"
           />
         </FormField>
-        <FormField v-slot="context" :validations="v$_pizza.ingredients" class="mt-2">
+        <FormField v-slot="context" :validations="v$_pizza.ingredients" class="u-mt-1">
           <label for="pizza-ingredients">Ingrédients</label>
           <StringListInput
             id="pizza-ingredients"
@@ -79,7 +79,7 @@ const handleImageChange = (event: Event) => {
             :error="context.invalid"
           />
         </FormField>
-        <FormField v-slot="context" :validations="v$_pizza.ingredients" class="mt-2">
+        <FormField v-slot="context" :validations="v$_pizza.ingredients" class="u-mt-1">
           <label for="pizza-ingredients">Allergènes</label>
           <StringListInput
             id="pizza-allergens"
@@ -89,11 +89,11 @@ const handleImageChange = (event: Event) => {
             :error="context.invalid"
           />
         </FormField>
-        <div class="mt-2 l-flex-column">
+        <div class="u-mt-1 l-flex-column">
           <label for="pizza-image">Image</label>
           <input
             id="pizza-image"
-            class="border-2 border-gray-500 p-2"
+            class="border-2 border-gray-500 u-p-1"
             accept="image/*"
             :onchange="handleImageChange"
             type="file"

@@ -83,10 +83,10 @@ const save_seeds = async () => {
 </script>
 
 <template>
-  <h4 class="py-4 text-center text-2xl">
+  <h4 class="u-py-2 u-text-center text-2xl">
     Liste des équipes et seeding
   </h4>
-  <p class="mx-4 text-center">
+  <p class="u-mx-2 u-text-center">
     Le seed d'une équipe doit être un entier compris entre 1 et
     {{ tournament.max_team_thresholds[tournament?.current_threshold_index] }}.
     Chaque seed doit être unique.
@@ -95,17 +95,17 @@ const save_seeds = async () => {
     Toutes les équipes sans seed seront placées aléatoirement après toutes les équipes seedées.
   </p>
   <div class="flex l-items-main-center">
-    <table class="m-4 w-full border-2 lg:w-3/5">
+    <table class="u-m-2 u-full-width border-2 lg:w-3/5">
       <colgroup>
         <col class="w-4/5"/>
         <col class="w-1/5"/>
       </colgroup>
       <thead>
         <tr>
-          <th class="border-2 p-2 text-xl">
+          <th class="border-2 u-p-1 text-xl">
             Équipe
           </th>
-          <th class="border-2 p-2 text-xl">
+          <th class="border-2 u-p-1 text-xl">
             Seed
           </th>
         </tr>
@@ -115,7 +115,7 @@ const save_seeds = async () => {
           v-for="team in tourney_teams.validated_teams"
           :key="team.id"
         >
-          <td class="border p-2">
+          <td class="border u-p-1">
             {{ team.name }}
           </td>
           <td align="center" class="border p-1">
@@ -128,7 +128,7 @@ const save_seeds = async () => {
                 id="seed"
                 v-model="seeding_form[team.id]"
                 type="number"
-                class="border-2 bg-inherit text-center"
+                class="border-2 bg-inherit u-text-center"
                 :class="{ error: context.invalid, 'text-orange-300': team.seed !== seeding_form[team.id], 'text-red-500': context.invalid }"
                 @blur="v$[team.id].$touch"
               >
@@ -138,7 +138,7 @@ const save_seeds = async () => {
       </tbody>
     </table>
   </div>
-  <button type="submit" class="mx-auto mb-8 rounded bg-blue-800 p-2 text-xl u-bold text-white transition duration-150 ease-in-out hover:bg-blue-700" @click="save_seeds">
+  <button type="submit" class="mx-auto u-mb-4 rounded bg-blue-800 u-p-1 text-xl u-bold text-white transition duration-150 ease-in-out hover:bg-blue-700" @click="save_seeds">
     Sauvegarder
   </button>
 </template>

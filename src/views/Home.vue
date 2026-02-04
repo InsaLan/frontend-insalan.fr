@@ -35,17 +35,17 @@ await getOngoingEvents();
         :key="tournament"
       />
     </div>
-    <div class="u-mb-4 l-flex-column l-items-main-center">
+    <div class="u-mb-4 l-flex-column l-items-cross-center">
       <router-link
-        to="/archives"
+        to="/tournament"
         class="c-btn-primary"
       >
-        Voir les anciennes éditions
+        Voir tous les tournois
       </router-link>
     </div>
-    <div class="l-grid-2 u-m-double-body l-gap-4">
+    <div class="l-grid-2 u-m-double-body l-horizontal-gap-4">
       <Content name="Horaire"/>
-      <Content name="parti_public"/>
+      <Content name="partie_public"/>
     </div>
   </section>
   <Partners/>

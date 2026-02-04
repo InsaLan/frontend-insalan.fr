@@ -94,11 +94,11 @@ const launch_selected_matchs = async () => {
 
 <template>
   <div
-    class="m-4 flex flex-wrap l-items-main-center gap-4 lg:mb-0 lg:gap-8"
+    class="u-m-2 flex flex-wrap l-items-main-center l-gap-2 lg:mb-0 lg:gap-8"
   >
     <router-link
       :to="{ name: 'tournament_admin_groups' }"
-      class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+      class="rounded bg-blue-800 u-p-1 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
     >
       <fa-awesome-icon
         icon="fa-solid fa-arrow-left"
@@ -107,7 +107,7 @@ const launch_selected_matchs = async () => {
     </router-link>
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 u-p-1 u-bold transition duration-150 ease-in-out"
       :class="[!has_matchs ? '-z-10 opacity-60' : 'hover:ring hover:ring-pink-500']"
       :disabled="!has_matchs"
       @click="open_launch_round_modal"
@@ -116,7 +116,7 @@ const launch_selected_matchs = async () => {
     </button>
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 u-p-1 u-bold transition duration-150 ease-in-out"
       :class="[!has_matchs || selected_matchs.size === 0 ? '-z-10 opacity-60' : 'hover:ring hover:ring-pink-500']"
       :disabled="!has_matchs || selected_matchs.size === 0 "
       @click="launch_selected_matchs"
@@ -127,7 +127,7 @@ const launch_selected_matchs = async () => {
 
   <div
     v-if="has_groups"
-    class="m-2 flex l-items-main-center md:m-4 xl:m-8"
+    class="u-m-1 flex l-items-main-center md:m-4 xl:m-8"
   >
     <div
       class="overflow-x-auto"
@@ -136,13 +136,13 @@ const launch_selected_matchs = async () => {
         class="grid"
         :style="{ 'grid-template-columns': `6rem repeat(${max_round}, 18rem)` }"
       >
-        <span class="border-b-2 border-r-2 p-2 text-center text-xl">
+        <span class="border-b-2 border-r-2 u-p-1 u-text-center text-xl">
           Poule
         </span>
         <div
           v-for="round in max_round"
           :key="round"
-          class="border-b-2 border-r text-center text-xl"
+          class="border-b-2 border-r u-text-center text-xl"
         >
           Tour {{ round }}
         </div>
@@ -191,7 +191,7 @@ const launch_selected_matchs = async () => {
     <template #body>
       <form
         id="create_groups_form"
-        class="m-4 l-flex-column gap-4"
+        class="u-m-2 l-flex-column l-gap-2"
         @submit.prevent="launch_round_matchs"
       >
         <FormField
@@ -207,7 +207,7 @@ const launch_selected_matchs = async () => {
             type="number"
             name="round"
             aria-label="Round number"
-            class="ml-2 bg-inherit"
+            class="u-ml-1 bg-inherit"
             :class="{ error: context.invalid }"
             @blur="v_round$.round_to_launch.$touch"
           >

@@ -40,7 +40,7 @@ const register_user = async () => {
 
 <template>
   <div class="mb-5 l-flex-column basis-1/2 l-items-cross-center rounded-lg hover:border-solid">
-    <h1 class="text-center text-4xl text-white">
+    <h1 class="u-text-center text-4xl text-white">
       Réinitialiser votre mot de passe
     </h1>
     <form id="password-reset" class="my-5 l-flex-column" @submit.prevent="register_user">

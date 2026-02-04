@@ -18,7 +18,7 @@ const roundCount = computed(() => 2 * swiss.min_score - 1);
     <h1
       v-for="round_idx in roundCount"
       :key="round_idx"
-      class="text-center text-3xl"
+      class="u-text-center text-3xl"
     >
       Tour {{ round_idx }}
     </h1>
@@ -33,7 +33,7 @@ const roundCount = computed(() => 2 * swiss.min_score - 1);
         class="border-2 border-gray-500"
       >
         <div
-          class="bg-gray-500 text-center"
+          class="bg-gray-500 u-text-center"
         >
           <div
             v-if="Number(round_idx) <= swiss.min_score"
@@ -52,7 +52,7 @@ const roundCount = computed(() => 2 * swiss.min_score - 1);
           <div
             v-for="match in matchs"
             :key="match.id"
-            class="w-full"
+            class="u-full-width"
           >
             <MatchCard
               :match="match"

@@ -38,18 +38,18 @@ onMounted(async () => {
 
 </script>
 <template>
-  <div v-if="tournament?.is_announced" class="grid c-card-bg-2-nopad pb-4">
+  <div v-if="tournament?.is_announced" class="grid c-card-bg-2-nopad u-pb-2">
     <img
       :alt="`Logo du ${tournament?.name}`"
       :src="tournament?.logo"
-      class="max-w-screen aspect-video text-clip u-rounded"
+      class="aspect-video u-full-width overflow-hidden object-cover u-rounded"
     />
     <p class="text-lg">
       {{ tournament?.validated_teams }}/{{ tournament?.max_team_thresholds[tournament?.current_threshold_index] }}
       Équipes | Cashprize:
       {{ tournament?.cashprizes?.length !== 0 ? `${tournament?.cashprizes?.reduce((acc, val) => acc += Number(val), 0)} €` : "À venir" }}
     </p>
-    <div class="flex w-4/5 l-items-main-center gap-4 text-center">
+    <div class="flex w-4/5 l-items-main-center l-gap-2 u-text-center">
       <router-link :to="`tournament/${tournament?.id as number}/info`" class="c-btn-bg-3">
         Plus d'infos
       </router-link>
@@ -69,7 +69,7 @@ onMounted(async () => {
     </div>
   </div>
   <!-- Placeholder when the tournament is not announced -->
-  <div v-else class="grid place-items-center gap-2 bg-cyan-900 shadow-lg">
+  <div v-else class="grid place-items-center l-gap-1 bg-cyan-900 shadow-lg">
     <svg
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +103,7 @@ onMounted(async () => {
         />
       </g>
     </svg>
-    <p class="text-center text-xl">
+    <p class="u-text-center text-xl">
       Le tournoi sera annoncé prochainement !
     </p>
   </div>

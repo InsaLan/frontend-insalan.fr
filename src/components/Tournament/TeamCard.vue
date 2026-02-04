@@ -14,13 +14,13 @@ defineProps<{
 </script>
 
 <template>
-  <div v-if="typeof team !== 'number'" class="overflow-hidden text-ellipsis rounded bg-cyan-500 p-4">
-    <h1 class="text-shadow text-center text-3xl font-black">
+  <div v-if="typeof team !== 'number'" class="overflow-hidden text-ellipsis rounded bg-cyan-500 u-p-2">
+    <h1 class="text-shadow u-text-center text-3xl font-black">
       {{ team.name }}
       <img v-if="team.validated" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="inline-block size-6"/>
     </h1>
     <ul
-      class="ml-4 list-disc text-xl"
+      class="u-ml-2 list-disc text-xl"
     >
       <li v-for="player in team.players" :key="((player as PlayerRegistration).user)">
         <p>
@@ -34,7 +34,7 @@ defineProps<{
     </p>
     <div v-if="team.substitutes.length" class="text-2xl">
       Remplaçant :
-      <ul class="ml-4 list-disc text-xl">
+      <ul class="u-ml-2 list-disc text-xl">
         <li v-for="player in team.substitutes" :key="((player as PlayerRegistration).user)">
           <p>
             {{ (player as PlayerRegistration).name_in_game }}

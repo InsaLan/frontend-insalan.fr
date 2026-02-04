@@ -5,11 +5,11 @@ const buildYear = BUILD_YEAR;
 <template>
   <div class="rounded-corners"/>
   <section class="grid-row-2 u-bg-bg-2 grid grid-cols-2 md:grid-cols-12 md:grid-rows-1">
-    <div class="row-start-2 m-2 l-flex-column l-items-cross-center l-items-main-center justify-items-center md:col-span-3 md:row-start-1">
-      <h1 class="hidden text-center text-xl md:block">
+    <div class="row-start-2 u-m-1 l-flex-column l-items-cross-center l-items-main-center justify-items-center md:col-span-3 md:row-start-1">
+      <h1 class="hidden u-text-center text-xl md:block">
         Réseaux
       </h1>
-      <div class="l-flex-row w-full l-items-cross-center l-items-main-center gap-2">
+      <div class="l-flex-row u-full-width l-items-cross-center l-items-main-center l-gap-1">
         <a class="icon-size c-image-btn" href="https://www.instagram.com/insalan_officiel" target="_blank" rel="noopener noreferrer">
           <img src="/src/assets/images/instagram.svg" alt="Logo Instagram">
         </a>
@@ -25,23 +25,23 @@ const buildYear = BUILD_YEAR;
       </div>
     </div>
     <div class="col-span-6 l-flex-column l-items-main-center">
-      <div class="my-2 l-flex-column l-items-main-center">
+      <div class="u-my-1 l-flex-column l-items-main-center">
         <div class="grid">
-          <h1 class="text-center">
+          <h1 class="u-text-center">
             Sitemap
           </h1>
         </div>
         <div class="grid">
-          <p class="text-center">
+          <p class="u-text-center">
             InsaLan 2023 - {{ buildYear }}
           </p>
-          <p class="text-center">
+          <p class="u-text-center">
             Code & design: équipe Dev
           </p>
         </div>
       </div>
     </div>
-    <div class="col-span-3 my-2 mr-4 l-flex-row l-items-cross-center l-items-main-center justify-items-center">
+    <div class="col-span-3 u-my-1 u-mr-2 l-flex-row l-items-cross-center l-items-main-center justify-items-center">
       <a href="https://aeir.insa-rennes.fr" target="_blank" rel="noopener noreferrer">
         <img
           alt="Logo de l'AEIR"
@@ -49,7 +49,7 @@ const buildYear = BUILD_YEAR;
           class="insa-logos"
         />
       </a>
-      <a class="ml-2" href="https://insa-rennes.fr" target="_blank" rel="noopener noreferrer">
+      <a class="u-ml-1" href="https://insa-rennes.fr" target="_blank" rel="noopener noreferrer">
         <img
           alt="Logo de l'INSA"
           src="/src/assets/images/logo_insa.png"

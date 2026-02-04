@@ -146,14 +146,14 @@ const delete_group_matchs = async () => {
 
 <template>
   <div
-    class="m-8 flex gap-16"
+    class="u-m-4 flex gap-16"
   >
     <div
-      class="l-flex-column w-1/2 justify-end gap-8 sm:flex-row"
+      class="l-flex-column w-1/2 justify-end l-gap-4 sm:flex-row"
     >
       <button
         type="button"
-        class="rounded p-2 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+        class="rounded u-p-1 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
         :class="[has_groups ? 'bg-red-500' : 'bg-blue-800']"
         @click="open_modal(has_groups ? 'delete_groups' : 'create_groups')"
       >
@@ -162,7 +162,7 @@ const delete_group_matchs = async () => {
 
       <button
         type="button"
-        class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out"
+        class="rounded bg-blue-800 u-p-1 u-bold transition duration-150 ease-in-out"
         :class="[has_matchs ? 'bg-red-500' : 'bg-blue-800', has_groups ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
         :disabled="!has_groups"
         @click="open_modal(has_matchs ? 'delete_matchs' : 'create_matchs')"
@@ -171,11 +171,11 @@ const delete_group_matchs = async () => {
       </button>
     </div>
     <div
-      class="l-flex-column w-1/2 gap-8 sm:flex-row"
+      class="l-flex-column w-1/2 l-gap-4 sm:flex-row"
     >
       <button
         type="button"
-        class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out"
+        class="rounded bg-blue-800 u-p-1 u-bold transition duration-150 ease-in-out"
         :class="[!has_matchs ? '-z-10 opacity-60' : 'hover:ring hover:ring-pink-500']"
         :disabled="!has_matchs"
         @click="open_launch_round_modal"
@@ -185,7 +185,7 @@ const delete_group_matchs = async () => {
 
       <router-link
         :to="{ name: has_matchs ? 'tournament_admin_groups-matchs' : '' }"
-        class="content-center rounded bg-blue-800 p-2 text-center u-bold transition duration-150 ease-in-out "
+        class="content-center rounded bg-blue-800 u-p-1 u-text-center u-bold transition duration-150 ease-in-out "
         :class="[has_matchs ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
       >
         Gérer les matchs
@@ -197,7 +197,7 @@ const delete_group_matchs = async () => {
   </div>
 
   <div
-    class="m-4 mt-0 flex flex-wrap l-items-main-center gap-6 md:m-6 md:mt-0 lg:m-8 lg:mt-0 lg:gap-8 2xl:m-9 2xl:mt-0 2xl:gap-10"
+    class="u-m-2 mt-0 flex flex-wrap l-items-main-center gap-6 md:m-6 md:mt-0 lg:m-8 lg:mt-0 lg:gap-8 2xl:m-9 2xl:mt-0 2xl:gap-10"
   >
     <GroupTable
       v-for="group in tournament.groups"
@@ -220,7 +220,7 @@ const delete_group_matchs = async () => {
     <template #body>
       <form
         id="create_groups_form"
-        class="m-4 l-flex-column gap-4"
+        class="u-m-2 l-flex-column l-gap-2"
         @submit.prevent="create_groups"
       >
         <FormField
@@ -237,7 +237,7 @@ const delete_group_matchs = async () => {
               v-model="group_data.count"
               :class="{ error: context.invalid }"
               aria-label="Group count"
-              class="ml-2 bg-inherit"
+              class="u-ml-1 bg-inherit"
               type="number"
               @blur="v$.count.$touch"
             >
@@ -257,7 +257,7 @@ const delete_group_matchs = async () => {
               v-model="group_data.team_per_group"
               :class="{ error: context.invalid }"
               aria-label="Team per group"
-              class="ml-2 bg-inherit"
+              class="u-ml-1 bg-inherit"
               type="number"
               @blur="v$.team_per_group.$touch"
             >
@@ -275,7 +275,7 @@ const delete_group_matchs = async () => {
             id="names"
             :class="{ error: context.invalid }"
             aria-label="Group names"
-            class="ml-2 bg-inherit"
+            class="u-ml-1 bg-inherit"
             type="text"
             :value="group_data.names.join(',')"
             @input="update_names"
@@ -296,7 +296,7 @@ const delete_group_matchs = async () => {
               v-model="group_data.use_seeding"
               :class="{ error: context.invalid }"
               aria-label="Use team seeding"
-              class="ml-2 bg-inherit"
+              class="u-ml-1 bg-inherit"
               type="checkbox"
               @blur="v$.use_seeding.$touch"
             >
@@ -363,7 +363,7 @@ const delete_group_matchs = async () => {
       Les matchs des poules vont être créés.
 
       <div
-        class="flex l-items-cross-center gap-4 pt-2"
+        class="flex l-items-cross-center l-gap-2 u-pt-1"
       >
         <label for="bo_type">
           Type de BO
@@ -441,7 +441,7 @@ const delete_group_matchs = async () => {
     <template #body>
       <form
         id="create_groups_form"
-        class="m-4 l-flex-column gap-4"
+        class="u-m-2 l-flex-column l-gap-2"
         @submit.prevent="launch_round_matchs"
       >
         <FormField
@@ -457,7 +457,7 @@ const delete_group_matchs = async () => {
             type="number"
             name="round"
             aria-label="Round number"
-            class="ml-2 bg-inherit"
+            class="u-ml-1 bg-inherit"
             :class="{ error: context.invalid }"
             @blur="v_round$.round.$touch"
           >

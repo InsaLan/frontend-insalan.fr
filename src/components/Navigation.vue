@@ -42,9 +42,9 @@ const logout_user = async () => {
 const burger_menu = ref(false);
 </script>
 <template>
-  <div id="navcontainer" class="sticky top-4 z-[51] m-4 xl:mx-12">
+  <div id="navcontainer" class="sticky top-4 z-[51] u-m-2 xl:mx-12">
     <nav id="navigation" class="c-card-bg-2">
-      <div id="desktop" class="hidden h-full l-items-cross-center justify-around xl:flex">
+      <div id="desktop" class="hidden u-full-height l-items-cross-center justify-around xl:flex">
         <router-link to="/">
           <img alt="Logo InsaLan" class="size-[4.5rem] c-image-btn" src="@/assets/images/logo_home.png"/>
         </router-link>
@@ -61,25 +61,25 @@ const burger_menu = ref(false);
         <div v-if="!isConnected">
           <router-link
             class="c-btn-primary"
-            to="/register"
+            to="/login"
           >
             Se connecter/S'inscrire
           </router-link>
         </div>
         <div
           v-else
-          class="flex l-items-cross-center gap-4"
+          class="flex l-items-cross-center l-gap-2"
         >
           <div
             v-if="role === 'dev' || role === 'staff'"
-            class="group l-relative-position mx-4 transition duration-150 ease-in-out"
+            class="group l-relative-position u-mx-2 transition duration-150 ease-in-out"
           >
             <div
               class="c-text-btn-secondary"
             >
               Admin
               <fa-awesome-icon
-                class="ml-2 u-color-text-2 group-hover:rotate-180"
+                class="u-ml-1 u-color-text-2 group-hover:rotate-180"
                 icon="fa-chevron-up"
               />
             </div>
@@ -159,12 +159,12 @@ const burger_menu = ref(false);
             <div v-if="!isConnected">
               <router-link
                 class="c-btn-primary"
-                to="/register"
+                to="/login"
               >
                 Se connecter/S'inscrire
               </router-link>
             </div>
-            <div v-else class="flex l-items-cross-center gap-2">
+            <div v-else class="flex l-items-cross-center l-gap-1">
               <router-link
                 class="c-text-btn-secondary"
                 to="/me"
@@ -180,7 +180,7 @@ const burger_menu = ref(false);
               </button>
             </div>
             <button
-              class="c-text-btn size-8 text-center"
+              class="c-text-btn size-8 u-text-center"
               type="button"
               @click="burger_menu = !burger_menu"
             >
@@ -212,7 +212,7 @@ const burger_menu = ref(false);
         <div v-if="burger_menu" class="max-h-[calc(100vh_-_6rem)] l-flex-column overflow-scroll u-bg-bg-2">
           <a
             v-if="role === 'dev' || role === 'staff'"
-            class="u-mx-1 u-py-2 c-text-btn-secondary text-center"
+            class="u-mx-1 u-py-2 c-text-btn-secondary u-text-center"
             :href="`${apiUrl}/admin/`"
             target="_blank"
             rel="noopener noreferrer"
@@ -221,7 +221,7 @@ const burger_menu = ref(false);
           </a>
           <router-link
             v-if="role === 'dev' || role === 'staff'"
-            class="u-mx-1 u-py-2 c-text-btn-secondary text-center"
+            class="u-mx-1 u-py-2 c-text-btn-secondary u-text-center"
             :to="{ path: '/admin/scan' }"
           >
             Scan billets

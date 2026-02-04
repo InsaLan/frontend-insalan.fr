@@ -101,20 +101,20 @@ Object.values(timeslotList.value).forEach((timeslot) => {
   <h1 class="c-title">
     Liste des exports
   </h1>
-  <div class="mb-6 mt-2 l-flex-column px-4">
+  <div class="mb-6 u-mt-1 l-flex-column u-px-2">
     <div v-if="timeslots_id.length === 0" class="flex l-items-main-center text-2xl">
       Il n'y a pas de créneau de commande.
     </div>
     <div
       v-else
-      class="l-flex-column gap-2"
+      class="l-flex-column l-gap-1"
     >
       <!-- Loading spinner -->
       <div
         v-if="loading"
         class="flex l-items-main-center"
       >
-        <div class="l-flex-column w-full flex-1 l-items-cross-center l-items-main-center gap-5">
+        <div class="l-flex-column u-full-width flex-1 l-items-cross-center l-items-main-center gap-5">
           <div class="text-2xl">
             Chargement...
           </div>
@@ -132,7 +132,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
         }"
       >
         <div
-          class="flex select-none l-items-cross-center gap-2 p-2"
+          class="flex select-none l-items-cross-center l-gap-1 u-p-1"
           :class="{
             'hover:bg-cyan-800': timeslotExportList[timeslot.id].length > 0,
             'hover:bg-gray-400': timeslotExportList[timeslot.id].length === 0,
@@ -168,12 +168,12 @@ Object.values(timeslotList.value).forEach((timeslot) => {
         <div
           v-for="timeslotExport in timeslotExportList[timeslot.id]"
           :key="timeslotExport.id"
-          class="ml-4 hover:bg-cyan-800"
+          class="u-ml-2 hover:bg-cyan-800"
           :class="{ hidden: !timeslotsExpand[timeslot.id] }"
           @click="downloadTimeslotDetails(timeslotExport.id)"
           @keydown.enter="downloadTimeslotDetails(timeslotExport.id)"
         >
-          <div class="flex select-none l-items-cross-center gap-2 p-2">
+          <div class="flex select-none l-items-cross-center l-gap-1 u-p-1">
             <div class="flex size-8 l-items-cross-center px-3">
               <fa-awesome-icon icon="fa-file"/>
             </div>
@@ -197,7 +197,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
       <div class="flex l-items-cross-center l-items-main-center space-x-2">
         <button
           type="button"
-          class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
+          class="rounded-md border border-gray-300 bg-white px-3 u-py-1 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
           :disabled="page === 1"
           @click="changePage(page - 1)"
         >
@@ -211,18 +211,18 @@ Object.values(timeslotList.value).forEach((timeslot) => {
           <button
             v-if="typeof _page === 'number'"
             type="button"
-            class="rounded-md px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            class="rounded-md px-3 u-py-1 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             :class="_page === page ? 'bg-indigo-600 text-white' : 'text-gray-700 bg-white border border-gray-300 hover:bg-gray-50'"
             @click="changePage(_page)"
           >
             {{ _page }}
           </button>
-          <span v-else class="px-3 py-2 text-gray-500">...</span>
+          <span v-else class="px-3 u-py-1 text-gray-500">...</span>
         </template>
 
         <button
           type="button"
-          class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
+          class="rounded-md border border-gray-300 bg-white px-3 u-py-1 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
           :disabled="page >= max_pages"
           @click="changePage(page + 1)"
         >
@@ -246,7 +246,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
       </h3>
     </template>
     <template #body>
-      <p class="mt-2 max-w-sm">
+      <p class="u-mt-1 max-w-sm">
         Voulez-vous supprimer l'export du <span class="u-underline">{{ frenchFormatFromDate(new Date(exportToDelete.created_at)) }}</span> ?
       </p>
     </template>

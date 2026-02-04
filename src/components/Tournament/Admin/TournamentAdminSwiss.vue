@@ -161,11 +161,11 @@ const create_round = async () => {
 
 <template>
   <div
-    class="m-4 flex flex-wrap l-items-main-center gap-4 lg:m-8 lg:mb-0 lg:gap-16"
+    class="u-m-2 flex flex-wrap l-items-main-center l-gap-2 lg:m-8 lg:mb-0 lg:gap-16"
   >
     <button
       type="button"
-      class="rounded p-2 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+      class="rounded u-p-1 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
       :class="[has_swiss ? 'bg-red-500' : 'bg-blue-800']"
       @click="open_modal(has_swiss ? 'delete_swiss' : 'generate_swiss')"
     >
@@ -173,7 +173,7 @@ const create_round = async () => {
     </button>
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 u-p-1 u-bold transition duration-150 ease-in-out"
       :class="[has_swiss ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
       :disabled="!has_swiss"
       @click="open_create_round_modal"
@@ -182,7 +182,7 @@ const create_round = async () => {
     </button>
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 u-p-1 u-bold transition duration-150 ease-in-out"
       :class="[has_matchs ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
       :disabled="!has_matchs"
       @click="open_launch_round_modal"
@@ -191,7 +191,7 @@ const create_round = async () => {
     </button>
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 u-p-1 u-bold transition duration-150 ease-in-out"
       :class="[has_matchs && selected_matchs.size > 0 ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
       :disabled="!has_matchs || selected_matchs.size === 0"
       @click="launch_selected_matchs"
@@ -201,12 +201,12 @@ const create_round = async () => {
   </div>
 
   <div
-    class="m-2 l-flex-column l-items-cross-center md:m-4 lg:m-8"
+    class="u-m-1 l-flex-column l-items-cross-center md:m-4 lg:m-8"
   >
     <div
       v-for="(swiss, swiss_idx) in tournament.swissRounds"
       :key="swiss_idx"
-      class="flex w-full overflow-x-auto pb-4"
+      class="flex u-full-width overflow-x-auto u-pb-2"
     >
       <div
         class="grid size-full gap-x-10 gap-y-5"
@@ -215,7 +215,7 @@ const create_round = async () => {
         <h1
           v-for="round_idx in roundCounts[swiss_idx]"
           :key="round_idx"
-          class="text-center text-3xl"
+          class="u-text-center text-3xl"
         >
           Tour {{ round_idx }}
         </h1>
@@ -230,7 +230,7 @@ const create_round = async () => {
             class="border-2 border-gray-500"
           >
             <div
-              class="bg-gray-500 text-center"
+              class="bg-gray-500 u-text-center"
             >
               <div
                 v-if="Number(round_idx) <= swiss.min_score"
@@ -249,7 +249,7 @@ const create_round = async () => {
               <div
                 v-for="match in matchs"
                 :key="match.id"
-                class="w-full"
+                class="u-full-width"
               >
                 <MatchCard
                   v-model="selected_matchs"
@@ -283,7 +283,7 @@ const create_round = async () => {
     <template #body>
       <form
         id="generate_swiss_form"
-        class="m-4 l-flex-column gap-4"
+        class="u-m-2 l-flex-column l-gap-2"
         @submit.prevent="generate_swiss"
       >
         <FormField
@@ -299,7 +299,7 @@ const create_round = async () => {
             type="number"
             name="min_score"
             aria-label="Score for qualification"
-            class="ml-2 bg-inherit"
+            class="u-ml-1 bg-inherit"
             :class="{ error: context.invalid }"
             @blur="v$.min_score.$touch"
           />
@@ -316,7 +316,7 @@ const create_round = async () => {
             v-model="swiss_data.use_seeding"
             :class="{ error: context.invalid }"
             aria-label="Use team seeding"
-            class="ml-2 bg-inherit"
+            class="u-ml-1 bg-inherit"
             type="checkbox"
             @blur="v$.use_seeding.$touch"
           >
@@ -332,7 +332,7 @@ const create_round = async () => {
             id="bo_type"
             v-model="swiss_data.bo_type"
             name="bo_type"
-            class="ml-2 bg-inherit"
+            class="u-ml-1 bg-inherit"
             :class="{ error: context.invalid }"
             @blur="v$.bo_type.$touch"
           >
@@ -409,7 +409,7 @@ const create_round = async () => {
     <template #body>
       <form
         id="create_groups_form"
-        class="m-4 l-flex-column gap-4"
+        class="u-m-2 l-flex-column l-gap-2"
         @submit.prevent="launch_round_matchs"
       >
         <FormField
@@ -425,7 +425,7 @@ const create_round = async () => {
             type="number"
             name="round"
             aria-label="Round number"
-            class="ml-2 bg-inherit"
+            class="u-ml-1 bg-inherit"
             :class="{ error: context.invalid }"
             @blur="v_round$.round_to_launch.$touch"
           >
@@ -466,7 +466,7 @@ const create_round = async () => {
     <template #body>
       <form
         id="create_groups_form"
-        class="m-4 l-flex-column gap-4"
+        class="u-m-2 l-flex-column l-gap-2"
         @submit.prevent="create_round"
       >
         <FormField
@@ -482,7 +482,7 @@ const create_round = async () => {
             type="number"
             name="round"
             aria-label="Round number"
-            class="ml-2 bg-inherit"
+            class="u-ml-1 bg-inherit"
             :class="{ error: context.invalid }"
             @blur="v_create_round$.round_to_create.$touch"
           >

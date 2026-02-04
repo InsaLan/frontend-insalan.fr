@@ -69,6 +69,8 @@
   --color-correct-2: #18632f;
   --color-error-1: #fc7188;
   --color-error-2: #66212d;
+  
+  text-align: justify;
 }
 
 .light {
@@ -240,10 +242,24 @@ html {
   color: var(--color-secondary-1);
 }
 
+.c-image-btn {
+  transition: filter 0.15s;
+}
+
 .c-image-btn:hover {
   cursor: pointer;
   transition: filter 0.15s;
   filter: brightness(.7);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--base-margin) * 2);
+}
+
+button[type="submit"] {
+  align-self: center;
 }
 
 input[type="checkbox"] {
@@ -255,8 +271,9 @@ input[type="checkbox"] {
   background-color: var(--form-background);
 
   color: currentColor;
-  width: 1.15em;
-  height: 1.15em;
+  width: 1em;
+  height: 1em;
+  margin-top: .25em;
   border: 0.15em solid currentColor;
   border-radius: 0.15em;
   transform: translateY(-0.075em);
@@ -349,6 +366,10 @@ select:focus {
   outline: none;
   border-color: var(--color-primary-1);
   background-color: var(--color-bg-3);
+}
+
+img {
+  object-fit: contain;
 }
 
 .c-text-primary-1 {
@@ -612,6 +633,34 @@ b, .u-bold {
   gap: calc(var(--base-margin) * 4);
 }
 
+.l-horizontal-gap-1 {
+  column-gap: var(--base-margin);
+}
+
+.l-horizontal-gap-2 {
+  column-gap: calc(var(--base-margin) * 2);
+}
+
+.l-horizontal-gap-4 {
+  column-gap: calc(var(--base-margin) * 4);
+}
+
+.l-vertical-gap-1 {
+  row-gap: var(--base-margin);
+}
+
+.l-vertical-gap-2 {
+  row-gap: calc(var(--base-margin) * 2);
+}
+
+.l-vertical-gap-4 {
+  row-gap: calc(var(--base-margin) * 4);
+}
+
+.l-overflow-auto {
+  overflow: auto;
+}
+
 .u-color-text-1 {
   color: var(--color-text-1);
 }
@@ -656,6 +705,22 @@ b, .u-bold {
   text-align: justify;
 }
 
+.u-text-left {
+  text-align: left;
+}
+
+.u-text-indent p {
+  text-indent: 3rem;
+}
+
+.u-full-height {
+  height: 100%;
+}
+
+.u-full-width {
+  width: 100%;
+}
+
 @media (max-width: 48rem) {
   .u-m-body {
     margin-left: 1rem;
@@ -690,6 +755,10 @@ b, .u-bold {
     margin-left: 6rem;
     margin-right: 6rem;
   }
+}
+
+.u-m-0 {
+  margin: 0;
 }
 
 .u-m-1 {

@@ -12,6 +12,6 @@ const { md } = useContentStore();
 <template>
   <section id="rules">
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <div class="mx-auto my-4 w-[min(1080px,90%)] text-justify" v-html="md.render(props.tournament?.rules)"/>
+    <div class="mx-auto u-my-2 w-[min(1080px,90%)] u-text-justify" v-html="md.render(props.tournament?.rules)"/>
   </section>
 </template>

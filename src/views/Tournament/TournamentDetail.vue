@@ -77,7 +77,7 @@ const admin_switch = computed(() => {
     v-if="tournament && (!('is_announced' in tournament) || tournament?.is_announced)"
     class="l-flex-column min-h-[calc(100vh_-_6rem)]"
   >
-    <div class="py-2 text-center text-5xl u-bold text-white">
+    <div class="u-py-1 u-text-center text-5xl u-bold text-white">
       {{ tournament?.name }}
     </div>
 
@@ -90,7 +90,7 @@ const admin_switch = computed(() => {
         >
           {{ sections[selected_section].title }}
           <fa-awesome-icon
-            class="l-absolute-position mx-2 my-[0.6rem] transition duration-150 ease-in-out"
+            class="l-absolute-position u-mx-1 my-[0.6rem] transition duration-150 ease-in-out"
             icon="fa-solid fa-chevron-up"
             size="2xs"
             :class="{ 'rotate-180': open_dropdown }"
@@ -98,7 +98,7 @@ const admin_switch = computed(() => {
         </button>
         <div
           :class="[open_dropdown ? 'flex border-y-2 border-white' : 'hidden']"
-          class="l-absolute-position z-10 max-h-[60vh] w-screen translate-y-10 flex-col l-items-cross-center gap-2 overflow-scroll bg-gray-500 py-3 lg:static lg:z-0 lg:flex lg:w-auto lg:-translate-x-16 lg:translate-y-0 lg:flex-row lg:gap-4 lg:overflow-visible lg:py-0 xl:gap-10"
+          class="l-absolute-position z-10 max-h-[60vh] w-screen translate-y-10 flex-col l-items-cross-center l-gap-1 overflow-scroll bg-gray-500 py-3 lg:static lg:z-0 lg:flex lg:w-auto lg:-translate-x-16 lg:translate-y-0 lg:flex-row lg:gap-4 lg:overflow-visible lg:py-0 xl:gap-10"
         >
           <template v-for="(section, key) in sections" :key="key">
             <router-link
@@ -133,7 +133,7 @@ const admin_switch = computed(() => {
       />
     </RouterView>
   </div>
-  <div v-else class="mt-6 text-center text-4xl">
+  <div v-else class="mt-6 u-text-center text-4xl">
     Le tournoi que vous cherchez n'a pas encore été annoncé, revenez plus tard !
   </div>
 </template>

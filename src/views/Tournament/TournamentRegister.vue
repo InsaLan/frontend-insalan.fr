@@ -196,13 +196,13 @@ const handleCloseTravelFormModal = () => {
   >
     <!-- Design 3-->
     <div class="w-11/12 md:w-9/12 2xl:w-1/2">
-      <div class="text-shadow bg-[#63d1ff] py-8 text-center text-6xl u-bold text-white">
+      <div class="text-shadow bg-[#63d1ff] u-py-4 u-text-center text-6xl u-bold text-white">
         Inscription {{ tournament?.name }}
       </div>
       <div class="flex hover:cursor-pointer">
         <button
           :class="{ 'bg-slate-500 shadow-inner': !create }"
-          class="w-full bg-[#2c292d] py-2 text-center text-2xl"
+          class="u-full-width bg-[#2c292d] u-py-1 u-text-center text-2xl"
           type="button"
           @click="create = true"
         >
@@ -210,14 +210,14 @@ const handleCloseTravelFormModal = () => {
         </button>
         <button
           :class="{ 'bg-slate-500 shadow-inner': create }"
-          class="w-full bg-[#2c292d] py-2 text-center text-2xl"
+          class="u-full-width bg-[#2c292d] u-py-1 u-text-center text-2xl"
           type="button"
           @click="create = false"
         >
           Rejoindre une équipe
         </button>
       </div>
-      <div class="l-flex-column bg-[#2c292d] p-8">
+      <div class="l-flex-column bg-[#2c292d] u-p-4">
         <form
           id="register_form"
           class="grid gap-x-14 gap-y-2 sm:grid-cols-2"
@@ -391,7 +391,7 @@ const handleCloseTravelFormModal = () => {
           </FormField>
         </form>
 
-        <span class="my-3 text-center text-4xl">Rappel du Règlement</span>
+        <span class="my-3 u-text-center text-4xl">Rappel du Règlement</span>
         <ul class="my-5 list-inside list-disc text-2xl">
           <li>Pas d'insulte</li>
           <li>Apporter son propre matériel <b>filaire </b></li>
@@ -402,7 +402,7 @@ const handleCloseTravelFormModal = () => {
           class="l-flex-column self-center text-3xl"
         >
           <div
-            class="flex w-full l-items-cross-center l-items-main-center gap-2"
+            class="flex u-full-width l-items-cross-center l-items-main-center l-gap-1"
           >
             <input
               id="check"
@@ -465,7 +465,7 @@ const handleCloseTravelFormModal = () => {
       </h3>
     </template>
     <template #body>
-      <div v-if="create" class="p-4 text-justify">
+      <div v-if="create" class="u-p-2 u-text-justify">
         L'inscription de votre équipe {{ register_form.team }} à bien été enregistrée. Il ne vous reste plus qu'à
         transmettre le lien suivant à vos coéquipiers⋅ères/managers⋅euses pour
         qu'ils puissent rejoindre votre équipe : <br>
@@ -477,7 +477,7 @@ const handleCloseTravelFormModal = () => {
         </a> <br>
         Vous pouvez dès à présent payer votre inscription ou bien revenir le faire plus tard.
       </div>
-      <div v-else class="p-4 text-justify">
+      <div v-else class="u-p-2 u-text-justify">
         Votre inscription dans l'équipe {{ selected_team?.name }} à bien été enregistrée. <br>
         Vous pouvez dès à présent payer votre inscription ou bien revenir le faire plus tard.
       </div>
@@ -511,7 +511,7 @@ const handleCloseTravelFormModal = () => {
       </h3>
     </template>
     <template #body>
-      <div class="p-4 text-justify">
+      <div class="u-p-2 u-text-justify">
         Votre inscription a été ajoutée au panier.
         <br>
         Vous pouvez retrouver votre panier depuis votre compte.

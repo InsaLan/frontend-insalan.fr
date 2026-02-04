@@ -91,7 +91,7 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
 </script>
 
 <template>
-  <section class="mx-4 l-flex-column l-items-cross-center gap-4">
+  <section class="u-mx-2 l-flex-column l-items-cross-center l-gap-2">
     <qrcode-stream
       :paused="paused"
       :torch="torchActive"
@@ -138,21 +138,21 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
         </button>
       </div>
     </div>
-    <div v-else class="mb-4 l-flex-column max-h-[100px] w-full gap-1">
-      <div class="flex gap-2 rounded-2xl bg-gray-500 p-1 text-center text-black">
+    <div v-else class="u-mb-2 l-flex-column max-h-[100px] u-full-width l-gap-1">
+      <div class="flex l-gap-1 rounded-2xl bg-gray-500 p-1 u-text-center text-black">
         <div class="l-flex-column">
           <fa-awesome-icon
-            class="ml-2 flex-1"
+            class="u-ml-1 flex-1"
             icon="fa-magnifying-glass"
           />
         </div>
         <div class="flex-1">
           <label for="search" class="sr-only">Rechercher une inscription</label>
-          <input id="search" v-model="search" type="text" class="w-full rounded-xl border-2 border-black bg-gray-300 p-0 text-center" placeholder="Rechercher une inscription non payé"/>
+          <input id="search" v-model="search" type="text" class="u-full-width rounded-xl border-2 border-black bg-gray-300 p-0 u-text-center" placeholder="Rechercher une inscription non payé"/>
         </div>
       </div>
       <div v-if="search && unpaidRegistration.filter((registration) => registration.user.includes(search)).length > 0">
-        <div class="rounded-2xl bg-green-600 text-center">
+        <div class="rounded-2xl bg-green-600 u-text-center">
           {{ unpaidRegistration.filter((registration) => registration.user.includes(search))[0]?.user }} :
           {{ unpaidRegistration.filter((registration) => registration.user.includes(search))[0]?.team }}
         </div>
@@ -173,7 +173,7 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
           </button>
         </div>
       </div>
-      <div v-else-if="search" class="rounded-2xl bg-red-500 text-center">
+      <div v-else-if="search" class="rounded-2xl bg-red-500 u-text-center">
         Aucune inscription trouvée
       </div>
     </div>
