@@ -57,7 +57,7 @@ const openModal = () => {
 </script>
 
 <template>
-  <div class="flex basis-1/2 flex-col items-center card-bg-2">
+  <div class="flex basis-1/2 flex-col items-center c-card-bg-2">
     <h1 class="text-center text-4xl text-white">
       Se connecter
     </h1>
@@ -128,18 +128,18 @@ const openModal = () => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="validateModal"
-      >
-        Valider
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="closeModal"
       >
         Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="validateModal"
+      >
+        Valider
       </button>
     </template>
   </Modal>

@@ -196,7 +196,7 @@ const handleCloseTravelFormModal = () => {
   >
     <!-- Design 3-->
     <div class="w-11/12 md:w-9/12 2xl:w-1/2">
-      <div class="text-shadow bg-[#63d1ff] py-8 text-center text-6xl font-bold text-white">
+      <div class="text-shadow bg-[#63d1ff] py-8 text-center text-6xl c-bold text-white">
         Inscription {{ tournament?.name }}
       </div>
       <div class="flex hover:cursor-pointer">
@@ -471,7 +471,7 @@ const handleCloseTravelFormModal = () => {
         qu'ils puissent rejoindre votre équipe : <br>
         <a
           :href="`${host}/tournament/${tournament?.id}/register?team=${selected_team?.id}${register_form.password ? `&pwd=${register_form.password}` : ''}`"
-          class="text-[#62d1ff] underline hover:text-blue-600"
+          class="text-[#62d1ff] c-underline hover:text-blue-600"
         >
           {{ `${host}/tournament/${tournament?.id}/register?team=${selected_team?.id}${register_form.password ? `&pwd=${register_form.password}` : ''}` }}
         </a> <br>
@@ -483,20 +483,20 @@ const handleCloseTravelFormModal = () => {
       </div>
     </template>
     <template #buttons>
+      <router-link
+        :to="`/tournament/${isPrivate ? 'private/' : ''}${tournament?.id}/teams`"
+        class="c-btn-primary"
+      >
+        Continuer
+      </router-link>
       <button
         v-if="!isPrivate"
-        class="ml-2 inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:mt-0 sm:w-auto"
+        class="c-btn-secondary"
         type="button"
         @click="payment"
       >
         Continuer & payer
       </button>
-      <router-link
-        :to="`/tournament/${isPrivate ? 'private/' : ''}${tournament?.id}/teams`"
-        class="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
-      >
-        Continuer
-      </router-link>
     </template>
   </Modal>
 
@@ -512,25 +512,25 @@ const handleCloseTravelFormModal = () => {
     </template>
     <template #body>
       <div class="p-4 text-justify">
-        Votre inscription a été ajoutée au panier
+        Votre inscription a été ajoutée au panier.
         <br>
-        Vous pouvez retrouver votre panier depuis votre compte
+        Vous pouvez retrouver votre panier depuis votre compte.
       </div>
     </template>
     <template #buttons>
-      <router-link
-        class="my-1 inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mx-4 sm:mt-0 sm:w-auto"
-        :to="`/cart`"
-      >
-        Aller au panier
-      </router-link>
       <button
-        class="my-1 inline-flex w-full justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mx-4 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="modal_payment = false"
       >
         Rester sur cette page
       </button>
+      <router-link
+        class="c-btn-secondary"
+        :to="`/cart`"
+      >
+        Aller au panier
+      </router-link>
     </template>
   </Modal>
 

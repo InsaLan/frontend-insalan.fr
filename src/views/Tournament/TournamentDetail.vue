@@ -77,7 +77,7 @@ const admin_switch = computed(() => {
     v-if="tournament && (!('is_announced' in tournament) || tournament?.is_announced)"
     class="flex min-h-[calc(100vh_-_6rem)] flex-col"
   >
-    <div class="py-2 text-center text-5xl font-bold text-white">
+    <div class="py-2 text-center text-5xl c-bold text-white">
       {{ tournament?.name }}
     </div>
 
@@ -85,7 +85,7 @@ const admin_switch = computed(() => {
       <nav class="flex justify-center gap-10 bg-gray-500 py-3 sm:gap-16">
         <button
           type="button"
-          class="text-xl underline decoration-[#63d1ff] decoration-4 underline-offset-8 lg:hidden"
+          class="text-xl c-underline decoration-[#63d1ff] decoration-4 underline-offset-8 lg:hidden"
           @click="open_dropdown = !open_dropdown"
         >
           {{ sections[selected_section].title }}
@@ -104,8 +104,8 @@ const admin_switch = computed(() => {
             <router-link
               v-if="section.is_available || (admin_mode && !['seatings', 'planning'].includes(key))"
               :to="{ name: `tournament_${admin_mode ? 'admin_' : ''}${key}` }"
-              :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': key === selected_section }"
-              class="text-xl underline-offset-8 hover:underline hover:decoration-[#63d1ff] hover:decoration-4"
+              :class="{ 'c-underline decoration-[#63d1ff] decoration-4 underline-offset-8': key === selected_section }"
+              class="text-xl underline-offset-8 hover:c-underline hover:decoration-[#63d1ff] hover:decoration-4"
               @click="open_dropdown = false"
             >
               {{ section.title }}

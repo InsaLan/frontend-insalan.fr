@@ -1,9 +1,9 @@
 <template>
-  <h1 class="title">
+  <h1 class="c-title">
     Où nous trouver
   </h1>
-  <section class="mb2 mbody section">
-    <div class="map rounded-custom">
+  <section class="u-mb-2 u-m-body section">
+    <div class="map u-rounded">
       <l-map ref="map" v-model:zoom="zoom" :center="insalan_pos" :use-global-leaflet="false">
         <l-tile-layer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

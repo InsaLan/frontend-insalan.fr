@@ -68,7 +68,7 @@ const register_user = async () => {
 </script>
 
 <template>
-  <div class="flex basis-1/2 flex-col items-center card-bg-2">
+  <div class="flex basis-1/2 flex-col items-center c-card-bg-2">
     <h1 class="text-center text-4xl text-white">
       S'enregistrer
     </h1>
@@ -145,7 +145,7 @@ const register_user = async () => {
             type="checkbox"
           >
           <label class="text-white" for="accept">J'accepte les <a
-            class="text-gray-400 underline decoration-dashed"
+            class="text-gray-400 c-underline decoration-dashed"
             href="#"
             @click="show_modal_cgu"
             @keydown.enter="show_modal_cgu"
@@ -198,7 +198,7 @@ const register_user = async () => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+        class="c-btn-secondary"
         type="button"
         @click="modal_cgu = false"
       >

@@ -378,7 +378,7 @@ const factorise = (pizzas: number[]) => {
     </div>
     <div class="m-2 flex flex-1 flex-col gap-5 md:flex-row" :class="{ blur: extend }">
       <div class="flex flex-1 flex-col">
-        <div class="title my-2 text-center text-white">
+        <div class="c-title my-2 text-center text-white">
           Liste des Pizzas disponibles
         </div>
         <form id="add_pizza" class="flex flex-1 flex-col gap-5">
@@ -437,7 +437,7 @@ const factorise = (pizzas: number[]) => {
         </form>
       </div>
       <div class="flex flex-1 flex-col">
-        <div class="title my-2 rounded-xl text-center text-white" :class="{ 'bg-red-600': pizzaCount >= timeslotList[selectedTimeslotId]?.pizza_max }">
+        <div class="c-title my-2 rounded-xl text-center text-white" :class="{ 'bg-red-600': pizzaCount >= timeslotList[selectedTimeslotId]?.pizza_max }">
           Commandes : {{ pizzaCount }} /
           {{ timeslotList[selectedTimeslotId]?.pizza_max }}
           <fa-awesome-icon
@@ -724,18 +724,18 @@ const factorise = (pizzas: number[]) => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="validateModal"
-      >
-        Valider
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="showModal = false"
       >
         Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="validateModal"
+      >
+        Valider
       </button>
     </template>
   </Modal>
@@ -763,7 +763,14 @@ const factorise = (pizzas: number[]) => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+        class="c-btn-bg-3"
+        type="button"
+        @click="showDeleteModal = false"
+      >
+        Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
         type="submit"
         @click="
           showDeleteModal = false;
@@ -777,13 +784,6 @@ const factorise = (pizzas: number[]) => {
         "
       >
         Valider
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
-        type="button"
-        @click="showDeleteModal = false"
-      >
-        Annuler
       </button>
     </template>
   </Modal>
@@ -813,18 +813,18 @@ const factorise = (pizzas: number[]) => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+        type="button"
+        class="c-btn-bg-3"
+        @click="showConfirmationModal = false"
+      >
+        Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
         type="submit"
         @click="sendOrder"
       >
         Valider
-      </button>
-      <button
-        type="button"
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
-        @click="showConfirmationModal = false"
-      >
-        Annuler
       </button>
     </template>
   </Modal>

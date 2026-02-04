@@ -5,13 +5,13 @@ const buildYear = BUILD_YEAR;
 
 <template>
   <div class="rounded-corners"/>
-  <section class="grid-row-2 grid grid-cols-2 bg-bg-2 md:grid-cols-12 md:grid-rows-1">
+  <section class="grid-row-2 grid grid-cols-2 u-bg-bg-2 md:grid-cols-12 md:grid-rows-1">
     <div class="row-start-2 m-2 flex flex-col items-center justify-center justify-items-center md:col-span-3 md:row-start-1">
       <h1 class="hidden text-center text-xl md:block">
         Réseaux
       </h1>
       <div class="flex w-full flex-row items-center justify-center gap-2">
-        <a class="w-14 image-btn" href="https://www.instagram.com/insalan_officiel" target="_blank" rel="noopener noreferrer">
+        <a class="w-14 c-image-btn" href="https://www.instagram.com/insalan_officiel" target="_blank" rel="noopener noreferrer">
           <svg
             id="instagram"
             viewBox="30 30 140 140"
@@ -107,7 +107,7 @@ const buildYear = BUILD_YEAR;
             </g>
           </svg>
         </a>
-        <a class="w-14 image-btn" href="https://twitter.com/insalan" target="_blank" rel="noopener noreferrer">
+        <a class="w-14 c-image-btn" href="https://twitter.com/insalan" target="_blank" rel="noopener noreferrer">
           <svg
             id="X"
             viewBox="30 30 140 140"
@@ -129,7 +129,7 @@ const buildYear = BUILD_YEAR;
             </g>
           </svg>
         </a>
-        <a class="w-14 image-btn" href="https://www.facebook.com/insalan/" target="_blank" rel="noopener noreferrer">
+        <a class="w-14 c-image-btn" href="https://www.facebook.com/insalan/" target="_blank" rel="noopener noreferrer">
           <svg
             id="facebook"
             viewBox="30 30 140 140"
@@ -151,7 +151,7 @@ const buildYear = BUILD_YEAR;
             </g>
           </svg>
         </a>
-        <a class="w-14 image-btn" href="https://discord.com/invite/eWEzRpjmj4" target="_blank" rel="noopener noreferrer">
+        <a class="w-14 c-image-btn" href="https://discord.com/invite/eWEzRpjmj4" target="_blank" rel="noopener noreferrer">
           <svg
             id="discord"
             viewBox="100 100 50 50"

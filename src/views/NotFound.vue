@@ -1,6 +1,6 @@
 <template>
-  <div class="mbody">
-    <h1 class="title">
+  <div class="u-m-body">
+    <h1 class="c-title">
       404
     </h1>
     <h2 class="invalid">
@@ -12,10 +12,10 @@
         n'hésitez pas à nous contacter.
       </p>
     </div>
-    <div class="my4 center-btn">
+    <div class="u-my-4 center-btn">
       <router-link
         to="/"
-        class="btn-primary"
+        class="c-btn-primary"
       >
         Page d'accueil
       </router-link>

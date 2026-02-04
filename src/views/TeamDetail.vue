@@ -244,7 +244,7 @@ const kick_member = async (type: string, id: number) => {
     class="flex flex-1 flex-col items-center border-2 border-black bg-cover bg-center text-center text-white bg-blend-multiply"
   >
     <h1
-      class="title w-full"
+      class="c-title w-full"
     >
       {{ tournament?.name }}
     </h1>
@@ -277,7 +277,7 @@ const kick_member = async (type: string, id: number) => {
               )
           "
           type="button"
-          class="center rounded bg-green-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+          class="center rounded bg-green-600 p-2 c-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
           @click="showModalTeamName = true"
           @keydown.enter="showModalTeamName = true"
         >
@@ -291,7 +291,7 @@ const kick_member = async (type: string, id: number) => {
           class="flex w-full flex-col justify-between border-b-2 border-black p-2"
         >
           <div
-            class="underline"
+            class="c-underline"
           >
             Joueurs :
           </div>
@@ -342,7 +342,7 @@ const kick_member = async (type: string, id: number) => {
           class="flex w-full flex-col justify-between border-b-2 border-black p-2"
         >
           <div
-            class="underline"
+            class="c-underline"
           >
             Managers :
           </div>
@@ -367,7 +367,7 @@ const kick_member = async (type: string, id: number) => {
           class="flex w-full flex-col justify-between border-b-2 border-black p-2"
         >
           <div
-            class="underline"
+            class="c-underline"
           >
             Remplaçants :
           </div>
@@ -425,7 +425,7 @@ const kick_member = async (type: string, id: number) => {
                 && !(props.id in privateTournamentsList)
             "
             type="button"
-            class="center size-full rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
+            class="center size-full rounded bg-red-600 p-2 c-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
             @click="showModalTeamPassword = true"
             @keydown.enter="showModalTeamPassword = true"
           >
@@ -458,7 +458,7 @@ const kick_member = async (type: string, id: number) => {
               team_registration?.[1]?.payment_status !== PaymentStatus.PAID
             "
             type="button"
-            class="center size-full rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
+            class="center size-full rounded bg-red-600 p-2 c-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
             @click="showModalLeaveTeam = true"
           >
             Quitter l'équipe
@@ -517,18 +517,18 @@ const kick_member = async (type: string, id: number) => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="ValidateModalNameInGame"
-      >
-        Valider
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="closeModalNameInGame"
       >
         Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="ValidateModalNameInGame"
+      >
+        Valider
       </button>
     </template>
   </Modal>
@@ -566,18 +566,18 @@ const kick_member = async (type: string, id: number) => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="ValidateModalTeamName"
-      >
-        Valider
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="closeModalTeamName"
       >
         Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="ValidateModalTeamName"
+      >
+        Valider
       </button>
     </template>
   </Modal>
@@ -615,18 +615,18 @@ const kick_member = async (type: string, id: number) => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="ValidateModalTeamPassword"
-      >
-        Valider
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="closeModalTeamPassword"
       >
         Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="ValidateModalTeamPassword"
+      >
+        Valider
       </button>
     </template>
   </Modal>
@@ -649,18 +649,18 @@ const kick_member = async (type: string, id: number) => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="leave_team(team_registration?.[0] || '', team_registration?.[1]?.id ?? 0); router.push('/me')"
-      >
-        Oui
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="showModalLeaveTeam = false"
       >
         Non
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="leave_team(team_registration?.[0] || '', team_registration?.[1]?.id ?? 0); router.push('/me')"
+      >
+        Oui
       </button>
     </template>
   </Modal>
@@ -685,18 +685,18 @@ const kick_member = async (type: string, id: number) => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="kick_member(kickregtype, kickregid)"
-      >
-        Oui
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="showModalKickPlayer = false"
       >
         Non
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="kick_member(kickregtype, kickregid)"
+      >
+        Oui
       </button>
     </template>
   </Modal>

@@ -30,14 +30,14 @@ await getPrivateTournaments();
     <div class="mb-4 flex justify-center">
       <router-link
         to="/archives"
-        class="btn-primary"
+        class="c-btn-primary"
       >
         Voir les anciennes éditions
       </router-link>
     </div>
   </div>
   <div v-if="Object.keys(privateTournamentsList).length > 0">
-    <h1 class="title">
+    <h1 class="c-title">
       Tournois privés
     </h1>
     <div class="mb-4 grid w-full gap-4 px-4 md:grid-cols-2 xl:grid-cols-3">

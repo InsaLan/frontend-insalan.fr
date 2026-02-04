@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import type { Event } from '@/models/event';
 import { useContentStore } from '@/stores/content.store';
 
@@ -30,17 +30,29 @@ const eventText = computed(() => {
   return `${date_start.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()} - ${date_end.getDate()} ${date_end.toLocaleString('default', { month: 'long' })} ${date_end.getFullYear()}`;
 });
 
+const topOffset = ref(0);
+
+onMounted(() => {
+  const navContainer = document.getElementById('navcontainer');
+  if (navContainer) {
+    const style = getComputedStyle(navContainer);
+    const marginTop = parseFloat(style.marginTop);
+    const marginBottom = parseFloat(style.marginBottom);
+    topOffset.value = navContainer.offsetHeight + marginTop + marginBottom;
+  }
+});
+
 const scrollPastHero = () => {
   window.scrollTo({
-    top: (document.getElementById('main_page')?.offsetTop || 0) - (document.getElementById('navigation')?.offsetHeight || 0),
+    top: (document.getElementById('main_page')?.offsetTop || 0) - topOffset.value,
     behavior: 'smooth',
   });
 };
 </script>
 
 <template>
-  <div id="hero" class="relative flex items-center justify-center h-[100vh]">
-    <div class="absolute -z-10 flex size-full items-center justify-center rounded-custom-bottom">
+  <div id="hero" class="relative flex items-center justify-center h-screen">
+    <div class="absolute -z-10 flex size-full items-center justify-center u-rounded-bottom">
       <iframe
         :src="trailer_embed"
         allowfullscreen
@@ -49,12 +61,15 @@ const scrollPastHero = () => {
         title="Trailer InsaLan"
       />
     </div>
-    <div class="flex flex-col items-center">
+    <div
+      class="u-mx-2 relative flex flex-col items-center"
+      :style="{ top: `${topOffset * 0.35}px` }"
+    >
       <img alt="logo InsaLan" class="w-[32rem]" src="../assets/images/logo_wide.png">
-      <h1 class="text-shadow text-center text-6xl font-bold text-white">
+      <h1 class="text-shadow text-center text-6xl c-bold text-white">
         {{ eventText }}
       </h1>
-      <div id="next" class="mt2 hero-btn" @click="scrollPastHero()" @keydown="scrollPastHero()">
+      <div id="next" class="mt-2 hero-btn" @click="scrollPastHero()" @keydown="scrollPastHero()">
         <svg
           aria-hidden="true"
           fill="none"
@@ -75,7 +90,7 @@ const scrollPastHero = () => {
 </template>
 
 <style scoped layer="override">
-.rounded-custom-bottom {
+.u-rounded-bottom {
   border-bottom-left-radius: var(--radius);
   border-bottom-right-radius: var(--radius);
   overflow: hidden;

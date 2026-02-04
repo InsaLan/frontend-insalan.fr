@@ -96,7 +96,7 @@ const validateModal = async () => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:ml-3 sm:w-auto"
+        class="c-btn-secondary"
         type="submit"
         @click="validateModal"
       >

@@ -2,6 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 
+  === Style du site InsaLan ===
+  
+  Ce fichier définit les classes CSS globales utilisées dans tout le frontend.
+  
+  Les fichiers individuels peuvent aussi définir des classes CSS spécifiques à
+  leurs composants, dans la balise <style>.
+
+  *Toutes* les couleurs sont définies ici, en tant que variables CSS. Elles
+  peuvent être utilisées dans les classes globales ou locales.
+  
+  Les classes globales suivent une convention de nommage stricte :
+   - `c-` : composants (boutons, cartes, etc.)
+   - `l-` : layout (flexbox, grid, etc.)
+   - `u-` : utilitaires (marges, paddings, etc.)
+  
+  Il est possible de styler les éléments HTML directement, mais ce n'est pas
+  obligatoire. Faites preuve de bon sens, par exemple on n'a pas besoin de 18
+  types de titres différents, donc on utilise just `c-title` pour ça, pas les
+  balises <h1>, <h2>, ...
+*/
+
 :root {
   --base-margin: .5rem;
   --radius: 1.5rem;
@@ -96,49 +118,46 @@ html {
   min-height: 100vh;
 }
 
-/* Generic layout elements */
-.card-error-1, .card-bg-2, .card-bg-3, .card-error-1-nopad, .card-bg-2-nopad, .card-bg-3-nopad {
+.c-card-error-1, .c-card-bg-2, .c-card-bg-3, .c-card-error-1-nopad, .c-card-bg-2-nopad, .c-card-bg-3-nopad {
   border-radius: var(--radius);
   place-items: center;
-  /* display: grid; */
   gap: 0.8rem;
 }
 
-.card-bg-2 {
+.c-card-bg-2 {
   padding: 1rem;
   background-color: var(--color-bg-2);
 }
 
-.card-bg-3 {
+.c-card-bg-3 {
   padding: 1rem;
   background-color: var(--color-bg-3);
 }
 
-.card-error-1 {
+.c-card-error-1 {
   padding: 1rem;
   background-color: var(--color-error-1);
   color: var(--color-light-text-1);
 }
 
-.card-bg-2-nopad {
+.c-card-bg-2-nopad {
   background-color: var(--color-bg-2);
 }
 
-.card-bg-3-nopad {
+.c-card-bg-3-nopad {
   background-color: var(--color-bg-3);
 }
 
-.card-error-1-nopad {
+.c-card-error-1-nopad {
   background-color: var(--color-error-1);
   color: var(--color-light-text-1);
 }
 
-/* Inputs */
-.btn-primary,
-.btn-secondary,
-.btn-bg-2,
-.btn-bg-3,
-.btn-error {
+.c-btn-primary,
+.c-btn-secondary,
+.c-btn-bg-2,
+.c-btn-bg-3,
+.c-btn-error {
   font-size: clamp(0.9rem, 2vw, 1.15rem);
   font-weight: bold;
   border-radius: var(--radius);
@@ -148,53 +167,53 @@ html {
   text-align: center;
 }
 
-.btn-primary {
+.c-btn-primary {
   background-color: var(--color-primary-1);
   color: var(--color-light-text-1);
 }
 
-.btn-primary:hover {
+.c-btn-primary:hover {
   background-color: var(--color-primary-2);
   color: var(--color-dark-text-1);
 }
 
-.btn-secondary {
+.c-btn-secondary {
   background-color: var(--color-secondary-1);
   color: var(--color-light-text-1);
 }
 
-.btn-secondary:hover {
+.c-btn-secondary:hover {
   background-color: var(--color-secondary-2);
   color: var(--color-dark-text-1);
 }
 
-.btn-bg-2 {
+.c-btn-bg-2 {
   background-color: var(--color-bg-2);
 }
 
-.btn-bg-2:hover {
+.c-btn-bg-2:hover {
   background-color: var(--color-bg-3);
 }
 
-.btn-bg-3 {
+.c-btn-bg-3 {
   background-color: var(--color-bg-3);
 }
 
-.btn-bg-3:hover {
+.c-btn-bg-3:hover {
   background-color: var(--color-bg-4);
 }
 
-.btn-error {
+.c-btn-error {
   background-color: var(--color-error-1);
   color: var(--color-light-text-1);
 }
 
-.btn-error:hover {
+.c-btn-error:hover {
   background-color: var(--color-error-2);
   color: var(--color-dark-text-1);
 }
 
-.text-btn-secondary, .text-btn {
+.c-text-btn-secondary, .c-text-btn {
   cursor: pointer;
   transition: color 0.1s;
   font-size: clamp(0.9rem, 2vw, 1.15rem);
@@ -202,18 +221,18 @@ html {
   margin: .5rem;
 }
 
-.text-btn:hover {
+.c-text-btn:hover {
   color: var(--color-text-2);
 }
 
-.text-btn-secondary:hover {
+.c-text-btn-secondary:hover {
   color: var(--color-secondary-1);
 }
 
-.image-btn:hover {
+.c-image-btn:hover {
   cursor: pointer;
-  transition: filter 0.2s;
-  filter: brightness(.75);
+  transition: filter 0.15s;
+  filter: brightness(.7);
 }
 
 input[type="checkbox"] {
@@ -249,23 +268,94 @@ input[type="checkbox"]:focus {
   outline-offset: max(2px, 0.15em);
 }
 
-/* Other elements */
-.text-primary-1 {
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+textarea {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: var(--color-bg-2);
+  border: 0.15em solid var(--color-bg-4);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  font-size: clamp(0.9rem, 2vw, 1.15rem);
+  color: var(--color-text-1);
+  transition: border-color 0.2s, background-color 0.2s;
+  width: 100%;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-primary-1);
+  background-color: var(--color-bg-3);
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder,
+input[type="email"]::placeholder,
+input[type="number"]::placeholder,
+input[type="search"]::placeholder,
+input[type="tel"]::placeholder,
+input[type="url"]::placeholder,
+textarea::placeholder {
+  color: var(--color-text-2);
+}
+
+select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: var(--color-bg-2);
+  border: 0.15em solid var(--color-bg-4);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  font-size: clamp(0.9rem, 2vw, 1.15rem);
+  color: var(--color-text-2);
+  transition: border-color 0.2s, background-color 0.2s;
+  width: 100%;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23a1aad3' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+select:has(option[value]:not([value=""]):checked) {
+  color: var(--color-text-1);
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--color-primary-1);
+  background-color: var(--color-bg-3);
+}
+
+.c-text-primary-1 {
   color: var(--color-primary-1);
 }
 
-.link {
+.c-link {
   color: var(--color-primary-1);
   text-decoration: underline;
   cursor: pointer;
   transition: color 0.2s;
 }
 
-.link:hover {
+.c-link:hover {
   color: var(--color-primary-2);
 }
 
-.title {
+.c-title {
   font-size: 2.5em;
   font-family: Exo2-Bold, Exo2, serif;
   color: var(--color-secondary-1);
@@ -276,16 +366,16 @@ input[type="checkbox"]:focus {
   margin-bottom: 2rem;
 }
 
-b, .bold {
+b, .c-bold {
   font-family: Exo2-Bold, Exo2, serif;
 }
 
-.underline {
+.c-underline {
   text-decoration: underline;
   text-underline-offset: .2em;
 }
 
-.spinner {
+.c-spinner {
   width: 3rem;
   height: 3rem;
   border-radius: .7rem;
@@ -330,209 +420,239 @@ b, .bold {
   }
 }
 
-/* Utils */
-.rounded-custom {
+.u-color-text-1 {
+  color: var(--color-text-1);
+}
+
+.u-color-text-2 {
+  color: var(--color-text-2);
+}
+
+.u-color-text-3 {
+  color: var(--color-text-3);
+}
+
+.u-color-correct-1 {
+  color: var(--color-correct-1);
+}
+
+.u-color-error-1 {
+  color: var(--color-error-1);
+}
+
+.u-bg-bg-1 {
+  background-color: var(--color-bg-1);
+}
+
+.u-bg-bg-2 {
+  background-color: var(--color-bg-2);
+}
+
+.u-bg-bg-3 {
+  background-color: var(--color-bg-3);
+}
+
+.u-rounded {
   border-radius: var(--radius);
 }
 
-/* Margins */
 @media (min-width: 80rem) {
-  .mbody {
+  .u-m-body {
     margin-left: 16rem;
     margin-right: 16rem;
   }
 }
 
 @media (min-width: 48rem) and (max-width: 80rem) {
-  .mbody {
+  .u-m-body {
     margin-left: 8rem;
     margin-right: 8rem;
   }
 }
 
 @media (max-width: 48rem) {
-  .mbody {
+  .u-m-body {
     margin-left: 1rem;
     margin-right: 1rem;
   }
 }
 
-.m1 {
+.u-m-1 {
   margin: var(--base-margin);
 }
 
-.mx1 {
+.u-mx-1 {
   margin-left: var(--base-margin);
   margin-right: var(--base-margin);
 }
 
-.my1 {
+.u-my-1 {
   margin-top: var(--base-margin);
   margin-bottom: var(--base-margin);
 }
 
-.mt1 {
+.u-mt-1 {
   margin-top: var(--base-margin);
 }
 
-.mb1 {
+.u-mb-1 {
   margin-bottom: var(--base-margin);
 }
 
-.ml1 {
+.u-ml-1 {
   margin-left: var(--base-margin);
 }
 
-.mr1 {
+.u-mr-1 {
   margin-right: var(--base-margin);
 }
 
-.m2 {
+.u-m-2 {
   margin: calc(var(--base-margin) * 2);
 }
 
-.mx2 {
+.u-mx-2 {
   margin-left: calc(var(--base-margin) * 2);
   margin-right: calc(var(--base-margin) * 2);
 }
 
-.my2 {
+.u-my-2 {
   margin-top: calc(var(--base-margin) * 2);
   margin-bottom: calc(var(--base-margin) * 2);
 }
 
-.mt2 {
+.u-mt-2 {
   margin-top: calc(var(--base-margin) * 2);
 }
 
-.mb2 {
+.u-mb-2 {
   margin-bottom: calc(var(--base-margin) * 2);
 }
 
-.ml2 {
+.u-ml-2 {
   margin-left: calc(var(--base-margin) * 2);
 }
 
-.mr2 {
+.u-mr-2 {
   margin-right: calc(var(--base-margin) * 2);
 }
 
-.m4 {
+.u-m4 {
   margin: calc(var(--base-margin) * 4);
 }
 
-.mx4 {
+.u-mx-4 {
   margin-left: calc(var(--base-margin) * 4);
   margin-right: calc(var(--base-margin) * 4);
 }
 
-.my4 {
+.u-my-4 {
   margin-top: calc(var(--base-margin) * 4);
   margin-bottom: calc(var(--base-margin) * 4);
 }
 
-.mt4 {
+.u-mt-4 {
   margin-top: calc(var(--base-margin) * 4);
 }
 
-.mb4 {
+.u-mb-4 {
   margin-bottom: calc(var(--base-margin) * 4);
 }
 
-.ml4 {
+.u-ml-4 {
   margin-left: calc(var(--base-margin) * 4);
 }
 
-.mr4 {
+.u-mr-4 {
   margin-right: calc(var(--base-margin) * 4);
 }
 
-.p1 {
+.u-p-1 {
   padding: var(--base-margin);
 }
 
-.px1 {
+.u-px-1 {
   padding-left: var(--base-margin);
   padding-right: var(--base-margin);
 }
 
-.py1 {
+.u-py-1 {
   padding-top: var(--base-margin);
   padding-bottom: var(--base-margin);
 }
 
-.pt1 {
+.u-pt-1 {
   padding-top: var(--base-margin);
 }
 
-.pb1 {
+.u-pb-1 {
   padding-bottom: var(--base-margin);
 }
 
-.pl1 {
+.u-pl-1 {
   padding-left: var(--base-margin);
 }
 
-.pr1 {
+.u-pr-1 {
   padding-right: var(--base-margin);
 }
 
-.p2 {
+.u-p-2 {
   padding: calc(var(--base-margin) * 2);
 }
 
-.px2 {
+.u-px-2 {
   padding-left: calc(var(--base-margin) * 2);
   padding-right: calc(var(--base-margin) * 2);
 }
 
-.py2 {
+.u-py-2 {
   padding-top: calc(var(--base-margin) * 2);
   padding-bottom: calc(var(--base-margin) * 2);
 }
 
-.pt2 {
+.u-pt-2 {
   padding-top: calc(var(--base-margin) * 2);
 }
 
-.pb2 {
+.u-pb-2 {
   padding-bottom: calc(var(--base-margin) * 2);
 }
 
-.pl2 {
+.u-pl-2 {
   padding-left: calc(var(--base-margin) * 2);
 }
 
-.pr2 {
+.u-pr-2 {
   padding-right: calc(var(--base-margin) * 2);
 }
 
-.p4 {
+.u-p-4 {
   padding: calc(var(--base-margin) * 4);
 }
 
-.px4 {
+.u-px-4 {
   padding-left: calc(var(--base-margin) * 4);
   padding-right: calc(var(--base-margin) * 4);
 }
 
-.py4 {
+.u-py-4 {
   padding-top: calc(var(--base-margin) * 4);
   padding-bottom: calc(var(--base-margin) * 4);
 }
 
-.pt4 {
+.u-pt-4 {
   padding-top: calc(var(--base-margin) * 4);
 }
 
-.pb4 {
+.u-pb-4 {
   padding-bottom: calc(var(--base-margin) * 4);
 }
 
-.pl4 {
+.u-pl-4 {
   padding-left: calc(var(--base-margin) * 4);
 }
 
-.pr4 {
+.u-pr-4 {
   padding-right: calc(var(--base-margin) * 4);
 }

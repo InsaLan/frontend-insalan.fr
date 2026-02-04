@@ -7,15 +7,15 @@ import Map from '@/components/Map.vue';
 <template>
   <Content
     name="joueur_checklist"
-    class="mbody"
+    class="u-m-body"
   />
   <Content
     name="Discord"
-    class="mbody"
+    class="u-m-body"
   />
   <Content
     name="Contact"
-    class="mbody"
+    class="u-m-body"
   />
   <Map/>
 </template>

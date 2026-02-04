@@ -19,9 +19,9 @@ const modal_cgv = ref(false);
 </script>
 
 <template>
-  <div class="card-bg-2 mx-auto max-w-2xl">
-    <div class="p-6">
-      <h1 class="mb-6 text-3xl font-bold">
+  <div class="c-card-bg-2 mx-auto max-w-2xl">
+    <div class="p2">
+      <h1 class="mb-6 text-3xl c-bold">
         Votre panier
       </h1>
 
@@ -42,14 +42,14 @@ const modal_cgv = ref(false);
               - {{ item.name }}
             </h2>
           </div>
-          <p class="text-lg font-bold">
+          <p class="text-lg c-bold">
             {{ item.price.toFixed(2) }} €
           </p>
         </li>
       </ul>
 
       <div v-if="cart.length > 0" class="border-t border-white pt-6">
-        <div class="flex items-center justify-between text-xl font-bold">
+        <div class="flex items-center justify-between text-xl c-bold">
           <span>Total:</span>
           <span>{{ totalPrice.toFixed(2) }} €</span>
         </div>
@@ -58,7 +58,7 @@ const modal_cgv = ref(false);
       <!-- Terms and conditions of sale -->
       <div
         v-if="cart.length > 0"
-        class="mt4 card-bg-3-custom-gap-1 flex items-center"
+        class="u-mt-4 c-card-bg-3-custom-gap-1 flex items-center"
       >
         <input
           id="terms"
@@ -70,7 +70,7 @@ const modal_cgv = ref(false);
           J'ai lu et j'accepte
         </label>
         <div
-          class="link"
+          class="c-link"
           @click="modal_cgv = true"
           @keydown.enter="modal_cgv = true"
         >
@@ -78,9 +78,9 @@ const modal_cgv = ref(false);
         </div>
       </div>
 
-      <div class="mt-8 flex justify-between">
+      <div class="mt-8 flex justify-between gap-4">
         <button
-          class="btn-error"
+          class="c-btn-error"
           type="button"
           :disabled="cart.length === 0"
           @click="clear_cart"
@@ -88,7 +88,7 @@ const modal_cgv = ref(false);
           Vider le panier
         </button>
         <button
-          class="btn-primary"
+          class="c-btn-primary"
           :class="{ 'cursor-not-allowed bg-gray-400 hover:bg-gray-400': cart.length === 0 || !hasReadTerms }"
           type="button"
           :disabled="cart.length === 0 || !hasReadTerms"
@@ -133,12 +133,12 @@ const modal_cgv = ref(false);
     </template>
     <template #body>
       <div class="max-h-[50vh] overflow-y-auto">
-        <Content name="cgv" class="mx4"/>
+        <Content name="cgv" class="u-mx-4"/>
       </div>
     </template>
     <template #buttons>
       <button
-        class="inline-flex justify-center w-auto btn-bg-3"
+        class="c-btn-bg-3"
         type="button"
         @click="modal_cgv = false"
       >
@@ -149,7 +149,7 @@ const modal_cgv = ref(false);
 </template>
 
 <style scoped>
-.card-bg-3-custom-gap-1 {
+.c-card-bg-3-custom-gap-1 {
   border-radius: var(--radius);
   place-items: center;
   gap: 0.25rem;

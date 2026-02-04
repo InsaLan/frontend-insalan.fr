@@ -129,7 +129,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
   >
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 text-xl font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+      class="rounded bg-blue-800 p-2 text-xl c-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
       @click="open_modal('create_bracket')"
     >
       Créer un arbre
@@ -140,7 +140,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
 
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 p-2 c-bold transition duration-150 ease-in-out"
       :class="[has_matchs && selected_matchs.size > 0 ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
       :disabled="!has_matchs || selected_matchs.size === 0"
       @click="launch_selected_matchs"
@@ -154,7 +154,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
     :key="bracket.id"
     class="mb-5"
   >
-    <h1 class="title">
+    <h1 class="c-title">
       Arbre {{ bracket.name }}
       <fa-awesome-icon
         icon="fa-solid fa-trash-can"
@@ -448,18 +448,18 @@ const bracket_round_title = (depth: number, round_idx: number) => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-        type="button"
-        @click="create_bracket"
-      >
-        Créer l'arbre
-      </button>
-      <button
-        class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="modal_open = false;"
       >
         Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="button"
+        @click="create_bracket"
+      >
+        Créer l'arbre
       </button>
     </template>
   </Modal>
@@ -479,18 +479,18 @@ const bracket_round_title = (depth: number, round_idx: number) => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-        type="button"
-        @click="delete_bracket"
-      >
-        Valider
-      </button>
-      <button
-        class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="modal_open = false;"
       >
         Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="button"
+        @click="delete_bracket"
+      >
+        Valider
       </button>
     </template>
   </Modal>

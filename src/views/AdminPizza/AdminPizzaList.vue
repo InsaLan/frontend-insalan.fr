@@ -75,7 +75,7 @@ await fetchAllPizzas();
 </script>
 
 <template>
-  <h1 class="title">
+  <h1 class="c-title">
     Liste des Pizzas
   </h1>
   <div class="m-4 mb-6 mt-0 flex justify-between gap-4">
@@ -157,29 +157,27 @@ await fetchAllPizzas();
     </template>
     <template #body>
       <p class="mt-2 max-w-sm">
-        Voulez-vous supprimer la pizza <span class="underline">{{ pizzaToDelete.name }}</span> ?
+        Voulez-vous supprimer la pizza <span class="c-underline">{{ pizzaToDelete.name }}</span> ?
         <br/>
         <br/>
         Ne supprimez pas une pizza qui pourrait être commandée dans un créneau en cours.
       </p>
     </template>
     <template #buttons>
-      <div class="flex w-full justify-center gap-4">
-        <button
-          class="rounded bg-gray-500 p-2 text-sm text-gray-900 hover:bg-gray-300"
-          type="button"
-          @click="closeDeleteConfirmModal"
-        >
-          Annuler
-        </button>
-        <button
-          class="rounded bg-red-600 p-2 text-sm hover:bg-red-500"
-          type="submit"
-          @click="confirmDeletePizza"
-        >
-          Valider
-        </button>
-      </div>
+      <button
+        class="c-btn-bg-3"
+        type="button"
+        @click="closeDeleteConfirmModal"
+      >
+        Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="confirmDeletePizza"
+      >
+        Valider
+      </button>
     </template>
   </Modal>
 </template>

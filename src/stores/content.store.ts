@@ -26,7 +26,7 @@ export const useContentStore = defineStore('content', () => {
     h4: 'text-center text-2xl text-bold',
     ul: 'list-disc',
     li: 'ml-5',
-    a: 'underline underline-offset-2',
+    a: 'c-underline underline-offset-2',
     strong: 'bold',
   };
   md.use(MarkdownItClass, classesMapping);
