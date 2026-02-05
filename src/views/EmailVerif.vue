@@ -14,7 +14,7 @@ const props = defineProps<{
 
 // Url must be /insalan.fr/verification/name/token
 // to be sure to work even if he validates on a device not connected (like a phone)
-await verifMail(props);
+const { username } = await verifMail(props);
 
 // If the name and token are the right ones, boolean value MailVerified is set on true.
 // Else in any other case (problem if token, lack of token etc.)
@@ -29,7 +29,7 @@ await verifMail(props);
         - Création de compte -
       </p>
       <p class="mb-4 text-center text-xl md:m-10 md:text-2xl">
-        <em class="text-cyan-300">{{ props.idname }}</em>, votre adresse Email a été vérifiée
+        <em class="text-cyan-300">{{ username }}</em>, votre adresse Email a été vérifiée
       </p>
       <p class="text-center md:m-8 md:text-2xl">
         Vous pouvez désormais vous connecter à
