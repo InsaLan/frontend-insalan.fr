@@ -241,7 +241,7 @@ const kick_member = async (type: string, id: number) => {
 <template>
   <div
     :style="{ backgroundImage: `url(${tournament?.logo})` }"
-    class="l-flex-column flex-1 l-items-cross-center border-2 border-black bg-cover bg-center u-text-center text-white bg-blend-multiply"
+    class="l-flex-column l-grow l-items-cross-center border-2 border-black bg-cover bg-center u-text-center text-white bg-blend-multiply"
   >
     <h1
       class="c-title u-full-width"

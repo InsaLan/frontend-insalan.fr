@@ -128,8 +128,8 @@ const editField = (field: string) => {
         Mon compte
       </h1>
       <div class="myr-2 place-center l-flex-column justify-between md:place-items-center md:justify-items-center">
-        <div class="u-my-1 l-flex-column place-items-center justify-items-center md:flex-row">
-          <div class="u-m-1 flex place-items-center justify-items-center">
+        <div class="u-my-1 l-flex-column place-items-center l-justify-center md:flex-row">
+          <div class="u-m-1 flex place-items-center l-justify-center">
             <a>
               <img
                 :src="user.image ? user.image : placeholder"
@@ -172,7 +172,7 @@ const editField = (field: string) => {
                 @keydown="editField('password')"
               />
             </p>
-            <div class="flex place-items-center justify-items-center">
+            <div class="flex place-items-center l-justify-center">
               <p class="text-xl">
                 Rôle :
               </p>
@@ -248,7 +248,7 @@ const editField = (field: string) => {
             class="c-card-bg-2"
           >
             <div
-              class="l-flex-column flex-1 l-items-main-center"
+              class="l-flex-column l-grow l-items-main-center"
             >
               <b class="text-xl">
                 {{ inscription[1].team.name }}
@@ -267,7 +267,7 @@ const editField = (field: string) => {
               />
               <div
                 v-if="inscription[1].ticket"
-                class="l-flex-column flex-1 l-items-main-center"
+                class="l-flex-column l-grow l-items-main-center"
               >
                 <p class="text-xs">
                   Télecharger son billet
@@ -283,7 +283,7 @@ const editField = (field: string) => {
               </router-link>
             </div>
             <div class="block">
-              <div class="l-flex-row flex-1 l-items-main-center items-stretch l-items-main-center">
+              <div class="l-flex-row l-grow l-items-main-center items-stretch l-items-main-center">
                 <router-link
                   class="c-btn-primary"
                   :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
@@ -331,7 +331,7 @@ const editField = (field: string) => {
             class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 u-text-center"
           >
             <div class="my-1 hidden md:block">
-              <div class="m-1 l-flex-column h-8 flex-1 l-items-main-center">
+              <div class="m-1 l-flex-column h-8 l-grow l-items-main-center">
                 <div>
                   <router-link
                     class="center rounded bg-green-600 u-p-1 u-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
@@ -356,7 +356,7 @@ const editField = (field: string) => {
               class="size-32 max-w-full overflow-hidden"
               style="width: 100%; object-fit: cover;"
             />
-            <div class="m-1 l-flex-column flex-1 l-items-main-center">
+            <div class="m-1 l-flex-column l-grow l-items-main-center">
               <p class="text-xl">
                 {{ inscription[1].team.name }}
               </p>
@@ -378,10 +378,10 @@ const editField = (field: string) => {
             class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 u-text-center"
           >
             <div class="block">
-              <div class="l-flex-column flex-1 l-items-main-center">
+              <div class="l-flex-column l-grow l-items-main-center">
                 <div class="u-m-1 l-flex-row items-stretch l-items-main-center l-gap-1">
                   <router-link
-                    class="center flex flex-1 l-items-cross-center l-items-main-center rounded bg-green-600 u-p-1 u-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
+                    class="center flex l-grow l-items-cross-center l-items-main-center rounded bg-green-600 u-p-1 u-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
                     :to="`/tournament/private/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
                   >
                     <div>
@@ -406,7 +406,7 @@ const editField = (field: string) => {
               style="width: 100%; object-fit: cover;"
             />
             <div
-              class="m-1 l-flex-column flex-1 l-items-main-center"
+              class="m-1 l-flex-column l-grow l-items-main-center"
             >
               <p class="text-xl">
                 {{ inscription[1].team.tournament.name }}

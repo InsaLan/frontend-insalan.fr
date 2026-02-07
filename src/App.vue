@@ -41,14 +41,14 @@ onUnmounted(() => {
   <Navigation/>
   <NameConfirmationModal/>
   <Notification/>
-  <div class="flex-1" :style="$route.path === '/' ? { marginTop: `${topOffset}px` } : {}">
+  <div class="l-grow" :style="$route.path === '/' ? { marginTop: `${topOffset}px` } : {}">
     <RouterView v-slot="{ Component }">
       <template v-if="Component">
         <Suspense timeout="0">
           <component :is="Component"/>
           <template #fallback>
-            <div class="center flex-1">
-              <div class="text-big">
+            <div class="l-flex-column l-items-main-center l-items-cross-center l-gap-2  u-full-height l-grow">
+              <div class="u-big-text">
                 Chargement...
               </div>
               <div role="status" aria-hidden="true" class="c-spinner"/>
@@ -60,23 +60,3 @@ onUnmounted(() => {
   </div>
   <Footer v-if="!$route.path.startsWith('/admin/')"/>
 </template>
-
-<style scoped layer="override">
-.flex-1 {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 0;
-}
-
-.center {
-  align-items: center;
-  justify-content: center;
-  gap: 1.25rem;
-  width: 100%;
-}
-
-.text-big {
-  font-size: 1.5rem;
-  line-height: 2rem;
-}
-</style>

@@ -73,27 +73,30 @@ const register_user = async () => {
         <h1 class="c-title u-m-0">
           S'enregistrer
         </h1>
-        <a
-          class="l-flex-row l-items-cross-center c-text-btn u-m-0"
-          href="/login"
+        <router-link
+          to="/login"
         >
-          J'ai déjà un compte
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            class="u-ml-1"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+          <div
+            class="l-flex-row l-items-cross-center c-text-btn u-m-0"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="3"
-              d="M9 19l7-7-7-7"
-            />
-          </svg>
-        </a>
+            J'ai déjà un compte
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              class="u-ml-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="3"
+                d="M9 19l7-7-7-7"
+              />
+            </svg>
+          </div>
+        </router-link>
       </div>
       <form @submit.prevent="register_user">
         <div class="l-grid-2 l-horizontal-gap-4 l-vertical-gap-2">

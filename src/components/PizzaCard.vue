@@ -15,25 +15,29 @@ const pizza = computed<Pizza | undefined>(() => pizzaList.value[props.id]);
 
 </script>
 <template>
-  <div class="grid c-card-bg-2-nopad u-pb-2">
+  <div class="c-card-bg-2-nopad u-pb-2 l-flex-column l-items-cross-center">
     <!-- TODO: Fix image not sticking to the top -->
     <img
       :alt="`Image de ${pizza?.name}`"
       :src="pizza?.image"
-      class="max-w-screen aspect-video h-48 u-full-width text-clip object-cover u-rounded"
+      class="pizza-thumbnail u-full-width u-rounded"
     />
-    <div class="l-flex-column u-full-width l-items-cross-center u-px-2">
-      <div class="u-mb-1 w-3/4">
-        <p class="u-text-center text-2xl u-bold">
-          {{ pizza?.name }}
-        </p>
-      </div>
-      <div class="flex">
-        <p class="u-text-center">
-          <span class="font-black">Ingrédients :</span> {{ pizza?.ingredients.join(', ') }}<br>
-          <span class="font-black">Allergènes :</span> {{ pizza?.allergens.join(', ') }}
-        </p>
-      </div>
+    <div class="l-flex-column l-items-cross-center l-items-main-center u-full-width u-px-2 l-grow">
+      <p class="u-mb-1 u-text-center u-big-text u-bold">
+        {{ pizza?.name }}
+      </p>
+      <p class="u-text-center">
+        <b>Ingrédients :</b> {{ pizza?.ingredients.join(', ') }}<br>
+        <b>Allergènes :</b> {{ pizza?.allergens.join(', ') }}
+      </p>
     </div>
   </div>
 </template>
+
+<style scoped>
+.pizza-thumbnail {
+  aspect-ratio: 16 / 9;
+  height: 12rem;
+  object-fit: cover;
+}
+</style>

@@ -114,7 +114,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
         v-if="loading"
         class="flex l-items-main-center"
       >
-        <div class="l-flex-column u-full-width flex-1 l-items-cross-center l-items-main-center gap-5">
+        <div class="l-flex-column u-full-width l-grow l-items-cross-center l-items-main-center gap-5">
           <div class="text-2xl">
             Chargement...
           </div>
