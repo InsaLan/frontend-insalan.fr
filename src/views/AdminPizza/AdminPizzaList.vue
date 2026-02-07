@@ -75,13 +75,13 @@ await fetchAllPizzas();
 </script>
 
 <template>
-  <h1 class="title">
+  <h1 class="c-title">
     Liste des Pizzas
   </h1>
-  <div class="m-4 mb-6 mt-0 flex justify-between gap-4">
+  <div class="u-m-2 mb-6 mt-0 flex justify-between l-gap-2">
     <button
       type="button"
-      class="rounded bg-green-600 p-2 hover:bg-green-500"
+      class="rounded bg-green-600 u-p-1 hover:bg-green-500"
       @click="showCreatePizzaModal = true"
     >
       Ajouter une nouvelle pizza
@@ -97,24 +97,24 @@ await fetchAllPizzas();
       >
     </form>
   </div>
-  <div class="mb-6 flex flex-col gap-2 px-4">
-    <div class="grid-layout grid gap-2 rounded bg-cyan-900 p-2">
-      <div class="flex w-20 items-center overflow-x-hidden border-r border-white pr-2">
+  <div class="mb-6 l-flex-column l-gap-1 u-px-2">
+    <div class="grid-layout grid l-gap-1 rounded bg-cyan-900 u-p-1">
+      <div class="flex w-20 l-items-cross-center overflow-x-hidden border-r border-white u-pr-1">
         <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
           Image
         </p>
       </div>
-      <div class="flex items-center overflow-x-hidden border-r border-white pr-2">
+      <div class="flex l-items-cross-center overflow-x-hidden border-r border-white u-pr-1">
         <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
           Nom
         </p>
       </div>
-      <div class="hidden items-center overflow-x-hidden border-r border-white pr-2 sm:flex">
+      <div class="hidden l-items-cross-center overflow-x-hidden border-r border-white u-pr-1 sm:flex">
         <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
           Ingrédients
         </p>
       </div>
-      <div class="hidden items-center overflow-x-hidden border-r border-white pr-2 lg:flex">
+      <div class="hidden l-items-cross-center overflow-x-hidden border-r border-white u-pr-1 lg:flex">
         <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
           Allergènes
         </p>
@@ -156,30 +156,28 @@ await fetchAllPizzas();
       </h3>
     </template>
     <template #body>
-      <p class="mt-2 max-w-sm">
-        Voulez-vous supprimer la pizza <span class="underline">{{ pizzaToDelete.name }}</span> ?
+      <p class="u-mt-1 max-w-sm">
+        Voulez-vous supprimer la pizza <span class="u-underline">{{ pizzaToDelete.name }}</span> ?
         <br/>
         <br/>
         Ne supprimez pas une pizza qui pourrait être commandée dans un créneau en cours.
       </p>
     </template>
     <template #buttons>
-      <div class="flex w-full justify-center gap-4">
-        <button
-          class="rounded bg-gray-500 p-2 text-sm text-gray-900 hover:bg-gray-300"
-          type="button"
-          @click="closeDeleteConfirmModal"
-        >
-          Annuler
-        </button>
-        <button
-          class="rounded bg-red-600 p-2 text-sm hover:bg-red-500"
-          type="submit"
-          @click="confirmDeletePizza"
-        >
-          Valider
-        </button>
-      </div>
+      <button
+        class="c-btn-bg-3"
+        type="button"
+        @click="closeDeleteConfirmModal"
+      >
+        Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="confirmDeletePizza"
+      >
+        Valider
+      </button>
     </template>
   </Modal>
 </template>

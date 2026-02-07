@@ -1,15 +1,15 @@
 <template>
-  <div aria-labelledby="modal-title" aria-modal="true" class="relative z-50" role="dialog">
+  <div aria-labelledby="modal-title" aria-modal="true" class="l-relative-position z-[60]" role="dialog">
     <div class="fixed inset-0 bg-gray-900/75 transition-opacity"/>
     <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-        <div class="relative overflow-hidden rounded-lg bg-theme-bg text-left shadow-xl transition-all sm:my-8 sm:max-w-[75%]">
-          <div class="bg-theme-bg px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+      <div class="flex min-h-full items-end l-items-main-center u-p-2 u-text-center sm:items-center sm:p-0">
+        <div class="l-relative-position overflow-hidden text-left transition-all sm:my-8 sm:max-w-[75%] c-card-bg-2">
+          <div class="bg-theme-bg u-px-2 u-pb-2 pt-5 sm:p-6 sm:pb-4">
             <div class="sm:flex sm:items-start">
-              <div class="mt-3 w-full text-center sm:mt-0 sm:text-left">
-                <div class="flex flex-row">
+              <div class="mt-3 u-full-width u-text-center sm:mt-0 sm:text-left">
+                <div class="l-flex-row">
                   <slot name="icon">
-                    <div class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-red-300 sm:mx-0 sm:size-10">
+                    <div class="mx-auto flex size-12 shrink-0 l-items-cross-center l-items-main-center rounded-full bg-red-300 sm:mx-0 sm:size-10">
                       <svg
                         aria-hidden="true"
                         class="size-6 text-red-600"
@@ -26,7 +26,7 @@
                       </svg>
                     </div>
                   </slot>
-                  <div class="ml-2 flex w-full flex-col justify-center border-b-2 border-white">
+                  <div class="u-ml-1 l-flex-column u-full-width l-items-main-center">
                     <slot name="title">
                       <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
                         Default title
@@ -36,7 +36,7 @@
                 </div>
                 <div class="min-w-64">
                   <slot name="body">
-                    <div class="mt-2">
+                    <div class="u-mt-1">
                       <p class="text-sm text-gray-300">
                         This is the default body.
                       </p>
@@ -46,19 +46,19 @@
               </div>
             </div>
           </div>
-          <div class="items-center justify-center px-4 pb-4 sm:flex sm:flex-row-reverse sm:px-6">
+          <div class="flex u-full-width l-items-cross-center l-items-main-center l-gap-2">
             <slot name="buttons">
               <button
-                class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                type="button"
-              >
-                Continue
-              </button>
-              <button
-                class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+                class="c-btn-bg-3"
                 type="button"
               >
                 Cancel
+              </button>
+              <button
+                class="c-btn-secondary"
+                type="button"
+              >
+                Continue
               </button>
             </slot>
           </div>

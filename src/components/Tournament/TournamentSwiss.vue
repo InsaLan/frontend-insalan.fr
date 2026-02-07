@@ -8,8 +8,8 @@ const { tournament } = defineProps<{
 </script>
 
 <template>
-  <section class="m-2 flex flex-col items-center md:m-4 lg:m-8">
-    <div v-for="swiss in tournament?.swissRounds" :key="swiss.id" class="flex w-full overflow-x-auto pb-4">
+  <section class="u-m-1 l-flex-column l-items-cross-center md:m-4 lg:m-8">
+    <div v-for="swiss in tournament?.swissRounds" :key="swiss.id" class="flex u-full-width overflow-x-auto u-pb-2">
       <SwissRoundTable
         :swiss="swiss"
         :team-per-match="tournament?.game.team_per_match"

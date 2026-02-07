@@ -39,12 +39,12 @@ const register_user = async () => {
 </script>
 
 <template>
-  <div class="mb-5 flex basis-1/2 flex-col items-center rounded-lg hover:border-solid">
-    <h1 class="text-center text-4xl text-white">
+  <div class="mb-5 l-flex-column basis-1/2 l-items-cross-center rounded-lg hover:border-solid">
+    <h1 class="u-text-center text-4xl text-white">
       Réinitialiser votre mot de passe
     </h1>
-    <form id="password-reset" class="my-5 flex flex-col" @submit.prevent="register_user">
-      <FormField v-slot="context" :validations="v$.password" class="flex flex-col" required>
+    <form id="password-reset" class="my-5 l-flex-column" @submit.prevent="register_user">
+      <FormField v-slot="context" :validations="v$.password" class="l-flex-column" required>
         <label for="password">
           Nouveau mot de passe
         </label>
@@ -55,7 +55,7 @@ const register_user = async () => {
           :on-blur="v$.password.$touch"
         />
       </FormField>
-      <FormField v-slot="context" :validations="v$.password_confirm" class="flex flex-col" required>
+      <FormField v-slot="context" :validations="v$.password_confirm" class="l-flex-column" required>
         <label for="repeat">
           Répéter le mot de passe
         </label>
@@ -68,7 +68,7 @@ const register_user = async () => {
           :on-blur="v$.password_confirm.$touch"
         />
       </FormField>
-      <div class="flex justify-center">
+      <div class="flex l-items-main-center">
         <button class="form-btn" type="submit">
           Valider
         </button>

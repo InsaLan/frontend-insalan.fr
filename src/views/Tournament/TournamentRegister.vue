@@ -192,17 +192,17 @@ const handleCloseTravelFormModal = () => {
 <template>
   <div
     :style="{ backgroundImage: `url(${tournament?.logo})` }"
-    class="flex h-min items-center justify-center bg-cover bg-center py-10 2xl:min-h-[calc(100vh_-_6rem)] 2xl:py-4"
+    class="flex h-min l-items-cross-center l-items-main-center bg-cover bg-center py-10 2xl:min-h-[calc(100vh_-_6rem)] 2xl:py-4"
   >
     <!-- Design 3-->
     <div class="w-11/12 md:w-9/12 2xl:w-1/2">
-      <div class="text-shadow bg-[#63d1ff] py-8 text-center text-6xl font-bold text-white">
+      <div class="text-shadow bg-[#63d1ff] u-py-4 u-text-center text-6xl u-bold text-white">
         Inscription {{ tournament?.name }}
       </div>
       <div class="flex hover:cursor-pointer">
         <button
           :class="{ 'bg-slate-500 shadow-inner': !create }"
-          class="w-full bg-[#2c292d] py-2 text-center text-2xl"
+          class="u-full-width bg-[#2c292d] u-py-1 u-text-center text-2xl"
           type="button"
           @click="create = true"
         >
@@ -210,14 +210,14 @@ const handleCloseTravelFormModal = () => {
         </button>
         <button
           :class="{ 'bg-slate-500 shadow-inner': create }"
-          class="w-full bg-[#2c292d] py-2 text-center text-2xl"
+          class="u-full-width bg-[#2c292d] u-py-1 u-text-center text-2xl"
           type="button"
           @click="create = false"
         >
           Rejoindre une équipe
         </button>
       </div>
-      <div class="flex flex-col bg-[#2c292d] p-8">
+      <div class="l-flex-column bg-[#2c292d] u-p-4">
         <form
           id="register_form"
           class="grid gap-x-14 gap-y-2 sm:grid-cols-2"
@@ -227,7 +227,7 @@ const handleCloseTravelFormModal = () => {
             v-if="create && !soloGame"
             v-slot="context"
             :validations="v$.team"
-            class="flex flex-col text-xl"
+            class="l-flex-column text-xl"
           >
             <label for="team">
               Nom de l'équipe
@@ -247,7 +247,7 @@ const handleCloseTravelFormModal = () => {
             v-else-if="create && soloGame"
             v-slot="context"
             :validations="v$.name_in_game"
-            class="flex flex-col text-xl"
+            class="l-flex-column text-xl"
           >
             <label for="name_in_game">
               Pseudo en jeu
@@ -268,7 +268,7 @@ const handleCloseTravelFormModal = () => {
             v-else
             v-slot="context"
             :validations="v$.team"
-            class="flex flex-col text-xl"
+            class="l-flex-column text-xl"
           >
             <label for="teams">
               Équipe
@@ -293,7 +293,7 @@ const handleCloseTravelFormModal = () => {
             v-else
             v-slot="context"
             :validations="v$.name_in_game"
-            class="flex flex-col text-xl"
+            class="l-flex-column text-xl"
           >
             <label for="name_in_game">
               Pseudo en jeu
@@ -317,13 +317,13 @@ const handleCloseTravelFormModal = () => {
             "
             v-slot="context"
             :validations="v$.password"
-            class="flex flex-col text-xl"
+            class="l-flex-column text-xl"
           >
             <label for="pwd">
               {{ isPrivate ? 'Mot de passe du tournoi' : 'Mot de passe de l\'équipe' }}
             </label>
             <div
-              class="relative flex size-full items-center"
+              class="l-relative-position flex size-full l-items-cross-center"
             >
               <input
                 id="pwd"
@@ -337,7 +337,7 @@ const handleCloseTravelFormModal = () => {
               <button
                 v-if="!(isPrivate)"
                 type="button"
-                class="absolute right-8 top-1 z-10 size-8"
+                class="l-absolute-position right-8 top-1 z-10 size-8"
                 @click="generate_password"
               >
                 <fa-awesome-icon
@@ -349,7 +349,7 @@ const handleCloseTravelFormModal = () => {
               </button>
               <button
                 type="button"
-                class="absolute right-1 top-1 z-10 size-8"
+                class="l-absolute-position right-1 top-1 z-10 size-8"
                 @click="view_password = !view_password"
               >
                 <fa-awesome-icon
@@ -366,7 +366,7 @@ const handleCloseTravelFormModal = () => {
             "
             v-slot="context"
             :validations="v$.role"
-            class="flex flex-col text-xl"
+            class="l-flex-column text-xl"
           >
             <label for="role">
               Rôle dans l'équipe
@@ -391,7 +391,7 @@ const handleCloseTravelFormModal = () => {
           </FormField>
         </form>
 
-        <span class="my-3 text-center text-4xl">Rappel du Règlement</span>
+        <span class="my-3 u-text-center text-4xl">Rappel du Règlement</span>
         <ul class="my-5 list-inside list-disc text-2xl">
           <li>Pas d'insulte</li>
           <li>Apporter son propre matériel <b>filaire </b></li>
@@ -399,10 +399,10 @@ const handleCloseTravelFormModal = () => {
         <FormField
           v-slot="context"
           :validations="v$.accept_rules"
-          class="flex flex-col self-center text-3xl"
+          class="l-flex-column self-center text-3xl"
         >
           <div
-            class="flex w-full items-center justify-center gap-2"
+            class="flex u-full-width l-items-cross-center l-items-main-center l-gap-1"
           >
             <input
               id="check"
@@ -415,7 +415,7 @@ const handleCloseTravelFormModal = () => {
           </div>
         </FormField>
       </div>
-      <div class="flex justify-center bg-[#63d1ff] p-5">
+      <div class="flex l-items-main-center bg-[#63d1ff] p-5">
         <button
           v-if="create"
           class="rounded border-solid bg-green-600 p-3 text-3xl md:w-5/12"
@@ -465,38 +465,38 @@ const handleCloseTravelFormModal = () => {
       </h3>
     </template>
     <template #body>
-      <div v-if="create" class="p-4 text-justify">
+      <div v-if="create" class="u-p-2 u-text-justify">
         L'inscription de votre équipe {{ register_form.team }} à bien été enregistrée. Il ne vous reste plus qu'à
         transmettre le lien suivant à vos coéquipiers⋅ères/managers⋅euses pour
         qu'ils puissent rejoindre votre équipe : <br>
         <a
           :href="`${host}/tournament/${tournament?.id}/register?team=${selected_team?.id}${register_form.password ? `&pwd=${register_form.password}` : ''}`"
-          class="text-[#62d1ff] underline hover:text-blue-600"
+          class="text-[#62d1ff] u-underline hover:text-blue-600"
         >
           {{ `${host}/tournament/${tournament?.id}/register?team=${selected_team?.id}${register_form.password ? `&pwd=${register_form.password}` : ''}` }}
         </a> <br>
         Vous pouvez dès à présent payer votre inscription ou bien revenir le faire plus tard.
       </div>
-      <div v-else class="p-4 text-justify">
+      <div v-else class="u-p-2 u-text-justify">
         Votre inscription dans l'équipe {{ selected_team?.name }} à bien été enregistrée. <br>
         Vous pouvez dès à présent payer votre inscription ou bien revenir le faire plus tard.
       </div>
     </template>
     <template #buttons>
+      <router-link
+        :to="`/tournament/${isPrivate ? 'private/' : ''}${tournament?.id}/teams`"
+        class="c-btn-primary"
+      >
+        Continuer
+      </router-link>
       <button
         v-if="!isPrivate"
-        class="ml-2 inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:mt-0 sm:w-auto"
+        class="c-btn-secondary"
         type="button"
         @click="payment"
       >
         Continuer & payer
       </button>
-      <router-link
-        :to="`/tournament/${isPrivate ? 'private/' : ''}${tournament?.id}/teams`"
-        class="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
-      >
-        Continuer
-      </router-link>
     </template>
   </Modal>
 
@@ -511,26 +511,26 @@ const handleCloseTravelFormModal = () => {
       </h3>
     </template>
     <template #body>
-      <div class="p-4 text-justify">
-        Votre inscription a été ajoutée au panier
+      <div class="u-p-2 u-text-justify">
+        Votre inscription a été ajoutée au panier.
         <br>
-        Vous pouvez retrouver votre panier depuis votre compte
+        Vous pouvez retrouver votre panier depuis votre compte.
       </div>
     </template>
     <template #buttons>
-      <router-link
-        class="my-1 inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mx-4 sm:mt-0 sm:w-auto"
-        :to="`/cart`"
-      >
-        Aller au panier
-      </router-link>
       <button
-        class="my-1 inline-flex w-full justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mx-4 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="modal_payment = false"
       >
         Rester sur cette page
       </button>
+      <router-link
+        class="c-btn-secondary"
+        :to="`/cart`"
+      >
+        Aller au panier
+      </router-link>
     </template>
   </Modal>
 

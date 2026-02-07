@@ -12,30 +12,30 @@ await fetchAllEvents();
 
 <template>
   <div>
-    <h1 class="title">
+    <h1 class="c-title">
       Archives
     </h1>
-    <div v-if="oldEvents?.length === 0" class="flex justify-center">
+    <div v-if="oldEvents?.length === 0" class="flex l-items-main-center">
       Aucune archive n'est disponible pour le moment, revenez plus tard !
     </div>
     <div
       v-for="event in oldEvents"
       :key="event.id"
     >
-      <h2 class="text-center text-2xl">
+      <h2 class="u-text-center text-2xl">
         {{ event.name }} | {{ event.date_start.toLocaleDateString() }}
       </h2>
       <div
-        class="mx-2 mb-2 flex flex-col gap-4 px-4 md:grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+        class="u-mx-1 u-mb-1 l-flex-column l-gap-2 u-px-2 md:grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
       >
         <img
           v-if="event.poster"
           :src="event.poster"
-          class="w-full object-contain"
+          class="u-full-width object-contain"
           :alt="`Poster ${event.name}`"
         />
         <div
-          class=" mb-4 grid gap-4"
+          class=" u-mb-2 grid l-gap-2"
           :class="{
             'col-span-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4': !event.poster,
             'col-span-1 md:grid-cols-1 xl:col-span-2 xl:grid-cols-2 2xl:col-span-3 2xl:grid-cols-3': event.poster,

@@ -122,19 +122,19 @@ const editField = (field: string) => {
 </script>
 
 <template>
-  <div class="ml-1 flex flex-col md:flex-row">
-    <div id="profile" class="mb-3 items-center md:w-2/6">
-      <h1 class="m-3 text-center text-4xl font-bold">
+  <div class="u-mx-2 l-flex-column md:flex-row">
+    <div id="profile" class="mb-3 l-items-cross-center md:w-2/6 c-card-bg-2">
+      <h1 class="m-3 u-text-center text-4xl u-bold">
         Mon compte
       </h1>
-      <div class="myr-2 place-center flex flex-col justify-between md:place-items-center md:justify-items-center">
-        <div class="my-2 flex flex-col place-items-center justify-items-center md:flex-row">
-          <div class="m-2 flex place-items-center justify-items-center">
+      <div class="myr-2 place-center l-flex-column justify-between md:place-items-center md:justify-items-center">
+        <div class="u-my-1 l-flex-column place-items-center l-justify-center md:flex-row">
+          <div class="u-m-1 flex place-items-center l-justify-center">
             <a>
               <img
                 :src="user.image ? user.image : placeholder"
                 alt="image de profile"
-                class="m-2 max-h-full w-16 max-w-full rounded-full hover:blur-sm"
+                class="u-m-1 max-h-full w-16 max-w-full rounded-full c-image-btn"
               />
             </a>
           </div>
@@ -145,7 +145,7 @@ const editField = (field: string) => {
             <p class="text-xl">
               Prénom et Nom : <em>{{ user.first_name }} {{ user.last_name }}</em>
               <fa-awesome-icon
-                class="ml-2 hover:cursor-pointer hover:text-blue-600"
+                class="u-ml-1 c-image-btn"
                 icon="fa-solid fa-pencil"
                 size="2xs"
                 @click="editField('name')"
@@ -155,7 +155,7 @@ const editField = (field: string) => {
             <p class="text-xl">
               Email : <em>{{ user.email }}</em>
               <fa-awesome-icon
-                class="ml-2 hover:cursor-pointer hover:text-blue-600"
+                class="u-ml-1 c-image-btn"
                 icon="fa-solid fa-pencil"
                 size="2xs"
                 @click="editField('email')"
@@ -165,18 +165,18 @@ const editField = (field: string) => {
             <p class="text-xl">
               Mot de passe : <em>**********</em>
               <fa-awesome-icon
-                class="ml-2 hover:cursor-pointer hover:text-blue-600"
+                class="u-ml-1 c-image-btn"
                 icon="fa-solid fa-pencil"
                 size="2xs"
                 @click="editField('password')"
                 @keydown="editField('password')"
               />
             </p>
-            <div class="flex place-items-center justify-items-center">
+            <div class="flex place-items-center l-justify-center">
               <p class="text-xl">
                 Rôle :
               </p>
-              <div class="text-md m-1 flex w-16 justify-around rounded bg-blue-700 p-1">
+              <div class="text-md u-p-1 m-1 flex w-16 justify-around u-rounded u-bg-bg-3">
                 <svg
                   v-if="role === 'dev'"
                   class="size-6"
@@ -199,15 +199,15 @@ const editField = (field: string) => {
         </div>
         <div
           v-if="cart.length > 0"
-          class="m-2 flex items-center justify-between gap-4 rounded-lg bg-cyan-900 p-4"
+          class="u-m-1 flex l-items-cross-center justify-between c-card-bg-3"
         >
           <div>
-            <h2 class="text-xl">
-              Vous avez <span class="text-2xl font-bold text-green-600">{{ cart.length }}</span> article{{ cart.length !== 1 ? 's' : '' }} dans votre panier
+            <h2 class="text-xl u-text-left">
+              Vous avez <b>{{ cart.length }}</b> article{{ cart.length !== 1 ? 's' : '' }} dans votre panier
             </h2>
           </div>
           <router-link
-            class="rounded bg-green-600 px-4 py-2 font-bold text-white transition-colors duration-200 hover:bg-green-700"
+            class="c-btn-secondary"
             to="/cart"
           >
             Voir le panier
@@ -215,20 +215,19 @@ const editField = (field: string) => {
         </div>
         <!--div class="myr-2 ml-1">
           <button
-          @click="delete_account()" class="center rounded transition duration-150 ease-in-out p-2 font-bold
+          @click="delete_account()" class="center rounded transition duration-150 ease-in-out u-p-1 u-bold
            text-white bg-red-600 hover:ring hover:ring-pink-500" style="display: flex; align-items: center;">
            Supprimer son compte</button>
         </div-->
       </div>
       <TournamentMeCard v-if="ongoing_match !== null" :ongoing-match="ongoing_match"/>
     </div>
-    <div class="hidden h-auto w-[2px] bg-white sm:block"/>
     <div id="team" class="md:w-4/6">
-      <h1 class="m-3 text-center text-4xl font-bold">
+      <h1 class="m-3 u-text-center text-4xl u-bold">
         Mes Équipes
       </h1>
       <!--div>
-        <div class="bg-red-900 rounded-xl text-center m-2 text-xl" v-if="Object.keys(inscriptions.unpaid).length">
+        <div class="bg-red-900 rounded-xl u-text-center u-m-1 text-xl" v-if="Object.keys(inscriptions.unpaid).length">
           <h2 class="mx-5 text-xl" v-if="Object.keys(inscriptions.unpaid).length === 1">
             <fa-awesome-icon size="xs" icon="fa-solid fa-warning" />  Vous avez une inscription non payée
             <fa-awesome-icon size="xs" icon="fa-solid fa-warning" /> </h2>
@@ -237,8 +236,8 @@ const editField = (field: string) => {
             <fa-awesome-icon size="xs" icon="fa-solid fa-warning" /> </h2>
         </div>
       </div-->
-      <div v-if="(inscriptions.ongoing as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="m-4">
-        <h1 class="text-xl">
+      <div v-if="(inscriptions.ongoing as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="u-m-2">
+        <h1 class="u-m-2 text-xl">
           Edition Actuelle
         </h1>
         <div class="m-1 grid gap-3 md:grid-cols-3">
@@ -246,51 +245,14 @@ const editField = (field: string) => {
             v-for="inscription in (inscriptions.ongoing as [string, PlayerRegistrationDeref | RegistrationDeref][])"
             :key="inscription[1].id"
             :class="{ /*[`bg-red-900`]: inscriptions.unpaid[inscription.team.id]*/ }"
-            class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
+            class="c-card-bg-2"
           >
-            <div class="block">
-              <div class="flex flex-1 flex-col justify-center">
-                <div class="m-2 flex flex-row items-stretch justify-center gap-2">
-                  <router-link
-                    class="center flex flex-1 items-center justify-center rounded bg-green-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
-                    :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
-                  >
-                    <div>
-                      {{ (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
-                    </div>
-                  </router-link>
-                  <div
-                    v-if="(inscriptions.unpaid as Record<string, boolean>)[inscription[1].id]"
-                    class="center flex flex-1 items-center justify-center rounded bg-red-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
-                    @click.prevent="
-                      (
-                        modal_payment = true,
-                        addRegistrationToCart(
-                          inscription[1].team.tournament as unknown as EventTournament, inscription[0],
-                        )
-                      )"
-                    @keydown.prevent="
-                      (
-                        modal_payment = true,
-                        addRegistrationToCart(
-                          inscription[1].team.tournament as unknown as EventTournament, inscription[0],
-                        )
-                      )"
-                  >
-                    <div>
-                      Terminer l'inscription
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="hidden flex-col md:block">
-              <router-link
-                class="mt-auto text-zinc-400"
-                :to="`/tournament/${inscription[1].team.tournament.id}/rules`"
-              >
-                Règlement du tournoi
-              </router-link>
+            <div
+              class="l-flex-column l-grow l-items-main-center"
+            >
+              <b class="text-xl">
+                {{ inscription[1].team.name }}
+              </b>
             </div>
             <div
               :class="{ ['hover:cursor-pointer']: inscription[1].ticket }"
@@ -300,29 +262,64 @@ const editField = (field: string) => {
               <img
                 :src="inscription[1].team.tournament.logo"
                 alt="image du tournoi"
-                class="size-32 max-w-full overflow-hidden"
+                class="size-32 max-w-full overflow-hidden u-rounded"
                 style="width: 100%; object-fit: cover;"
               />
               <div
                 v-if="inscription[1].ticket"
-                class="m-1 flex flex-1 flex-col justify-center"
+                class="l-flex-column l-grow l-items-main-center"
               >
                 <p class="text-xs">
                   Télecharger son billet
                 </p>
               </div>
             </div>
-            <div
-              class="m-1 flex flex-1 flex-col justify-center"
-            >
-              <p class="text-xl">
-                {{ inscription[1].team.name }}
-              </p>
+            <div class="hidden flex-col md:block">
+              <router-link
+                class="u-color-text-2"
+                :to="`/tournament/${inscription[1].team.tournament.id}/rules`"
+              >
+                Règlement du tournoi
+              </router-link>
+            </div>
+            <div class="block">
+              <div class="l-flex-row l-grow l-items-main-center items-stretch l-items-main-center">
+                <router-link
+                  class="c-btn-primary"
+                  :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
+                >
+                  <div>
+                    {{ (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
+                  </div>
+                </router-link>
+                <div
+                  v-if="(inscriptions.unpaid as Record<string, boolean>)[inscription[1].id]"
+                  class="c-btn-secondary"
+                  @click.prevent="
+                    (
+                      modal_payment = true,
+                      addRegistrationToCart(
+                        inscription[1].team.tournament as unknown as EventTournament, inscription[0],
+                      )
+                    )"
+                  @keydown.prevent="
+                    (
+                      modal_payment = true,
+                      addRegistrationToCart(
+                        inscription[1].team.tournament as unknown as EventTournament, inscription[0],
+                      )
+                    )"
+                >
+                  <div>
+                    Terminer l'inscription
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div v-if="(inscriptions.past as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="m-4">
+      <div v-if="(inscriptions.past as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="u-m-2">
         <h1 class="text-xl">
           Autres Editions
         </h1>
@@ -331,13 +328,13 @@ const editField = (field: string) => {
             v-for="inscription in (inscriptions.past as [string, PlayerRegistrationDeref | RegistrationDeref][])"
             :key="inscription[1].id"
             :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
-            class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
+            class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 u-text-center"
           >
             <div class="my-1 hidden md:block">
-              <div class="m-1 flex h-8 flex-1 flex-col justify-center">
+              <div class="m-1 l-flex-column h-8 l-grow l-items-main-center">
                 <div>
                   <router-link
-                    class="center rounded bg-green-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+                    class="center rounded bg-green-600 u-p-1 u-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
                     :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
                   >
                     {{ (inscription[1].team.players[0] === user.id || inscription[0] === 'manager') ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
@@ -359,7 +356,7 @@ const editField = (field: string) => {
               class="size-32 max-w-full overflow-hidden"
               style="width: 100%; object-fit: cover;"
             />
-            <div class="m-1 flex flex-1 flex-col justify-center">
+            <div class="m-1 l-flex-column l-grow l-items-main-center">
               <p class="text-xl">
                 {{ inscription[1].team.name }}
               </p>
@@ -367,7 +364,7 @@ const editField = (field: string) => {
           </router-link>
         </div>
       </div>
-      <div v-if="(inscriptions.private_regs as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="m-4">
+      <div v-if="(inscriptions.private_regs as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="u-m-2">
         <h1 class="text-xl">
           Tournois secondaires
         </h1>
@@ -378,13 +375,13 @@ const editField = (field: string) => {
             )"
             :key="inscription[1].id"
             :class="{ /*[`bg-red-900`]: inscriptions.unpaid[inscription.team.id]*/ }"
-            class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
+            class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 u-text-center"
           >
             <div class="block">
-              <div class="flex flex-1 flex-col justify-center">
-                <div class="m-2 flex flex-row items-stretch justify-center gap-2">
+              <div class="l-flex-column l-grow l-items-main-center">
+                <div class="u-m-1 l-flex-row items-stretch l-items-main-center l-gap-1">
                   <router-link
-                    class="center flex flex-1 items-center justify-center rounded bg-green-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
+                    class="center flex l-grow l-items-cross-center l-items-main-center rounded bg-green-600 u-p-1 u-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
                     :to="`/tournament/private/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
                   >
                     <div>
@@ -409,7 +406,7 @@ const editField = (field: string) => {
               style="width: 100%; object-fit: cover;"
             />
             <div
-              class="m-1 flex flex-1 flex-col justify-center"
+              class="m-1 l-flex-column l-grow l-items-main-center"
             >
               <p class="text-xl">
                 {{ inscription[1].team.tournament.name }}
@@ -431,12 +428,12 @@ const editField = (field: string) => {
       </h3>
     </template>
     <template #body>
-      <form id="patch-user" class="mt-2" @submit.prevent="validateModal">
+      <form id="patch-user" class="u-mt-1" @submit.prevent="validateModal">
         <div v-if="focus === 'name'" id="name">
           <FormField
             v-slot="context"
             :validations="v$_name.first_name"
-            class="m-2 flex flex-col"
+            class="u-m-1 l-flex-column"
             label="Nouveau Prénom"
           >
             <input
@@ -450,7 +447,7 @@ const editField = (field: string) => {
               @blur="v$_name.first_name.$touch"
             />
           </FormField>
-          <FormField v-slot="context" :validations="v$_name.last_name" class="m-2 flex flex-col" label="Nouveau Nom">
+          <FormField v-slot="context" :validations="v$_name.last_name" class="u-m-1 l-flex-column" label="Nouveau Nom">
             <input
               v-model="data_name.last_name"
               :class="{ error: context.invalid }"
@@ -465,7 +462,7 @@ const editField = (field: string) => {
         </div>
 
         <div v-if="focus === 'email'" id="email">
-          <FormField v-slot="context" :validations="v$_email.email" class="m-2 flex flex-col" label="Email">
+          <FormField v-slot="context" :validations="v$_email.email" class="u-m-1 l-flex-column" label="Email">
             <input
               v-model="data_email.email"
               :class="{ error: context.invalid }"
@@ -483,7 +480,7 @@ const editField = (field: string) => {
           <FormField
             v-slot="context"
             :validations="v$_password.new_password"
-            class="m-2 flex flex-col"
+            class="u-m-1 l-flex-column"
             label="Nouveau mot de passe"
           >
             <PasswordInput
@@ -498,7 +495,7 @@ const editField = (field: string) => {
           <FormField
             v-slot="context"
             :validations="v$_password.password_validation"
-            class="m-2 flex flex-col"
+            class="u-m-1 l-flex-column"
             label="Confirmer le mot de passe"
           >
             <PasswordInput
@@ -513,7 +510,7 @@ const editField = (field: string) => {
           <FormField
             v-slot="context"
             :validations="v$_password.current_password"
-            class="m-2 flex flex-col"
+            class="u-m-1 l-flex-column"
             label="Mot de passe actuel"
           >
             <PasswordInput
@@ -532,18 +529,18 @@ const editField = (field: string) => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="validateModal"
-      >
-        Valider
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="closeModal"
       >
         Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="validateModal"
+      >
+        Valider
       </button>
     </template>
   </Modal>
@@ -559,26 +556,26 @@ const editField = (field: string) => {
       </h3>
     </template>
     <template #body>
-      <div class="p-4 text-justify">
+      <div class="u-p-2 u-text-justify">
         Votre inscription a été ajoutée au panier
         <br>
         Vous pouvez retrouver votre panier depuis votre compte
       </div>
     </template>
     <template #buttons>
-      <router-link
-        class="my-1 inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mx-4 sm:mt-0 sm:w-auto"
-        :to="`/cart`"
-      >
-        Aller au panier
-      </router-link>
       <button
-        class="my-1 inline-flex w-full justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mx-4 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="modal_payment = false"
       >
         Rester sur cette page
       </button>
+      <router-link
+        class="c-btn-secondary"
+        :to="`/cart`"
+      >
+        Aller au panier
+      </router-link>
     </template>
   </Modal>
 </template>

@@ -296,40 +296,40 @@ const factorise = (pizzas: number[]) => {
 };
 </script>
 <template>
-  <div v-if="timeslotList && Object.keys(timeslotList).length > 0" class="flex flex-1 flex-col">
+  <div v-if="timeslotList && Object.keys(timeslotList).length > 0" class="l-flex-column l-grow">
     <div
-      class="absolute z-10 flex w-screen rounded-xl text-center text-3xl hover:cursor-pointer"
+      class="l-absolute-position z-10 flex w-screen rounded-xl u-text-center text-3xl hover:cursor-pointer"
       :class="{ 'bg-black': extend }"
       @click="extend = !extend"
       @keydown.enter="extend = !extend"
     >
-      <div class="flex-1">
+      <div class="l-grow">
         <div
           v-for="timeslot in timeslotList"
           :key="timeslot.id"
-          class="flex flex-row hover:cursor-pointer"
+          class="l-flex-row hover:cursor-pointer"
           :class="{ hidden: !extend }"
           @click="selectedTimeslotId = timeslot.id"
           @keydown.enter="selectedTimeslotId = timeslot.id"
         >
-          <div class="m-2 flex-1">
+          <div class="u-m-1 l-grow">
             Créneau {{ frenchFormatFromDate(new Date(timeslot.delivery_time)) }}
             <fa-awesome-icon
-              class="ml-2 text-red-500"
+              class="u-ml-1 text-red-500"
               icon="fa-trash-can"
               @click.stop="showDeleteModal = true; selectedDelete = timeslot.id"
             />
           </div>
         </div>
-        <div class="flex flex-row hover:cursor-pointer" :class="{ hidden: !extend }">
+        <div class="l-flex-row hover:cursor-pointer" :class="{ hidden: !extend }">
           <div
-            class="m-2 flex-1"
+            class="u-m-1 l-grow"
             @click="openModal"
             @keydown.enter="openModal"
           >
             Ajouter un créneau
             <fa-awesome-icon
-              class="ml-2"
+              class="u-ml-1"
               icon="fa-circle-plus"
             />
           </div>
@@ -342,12 +342,12 @@ const factorise = (pizzas: number[]) => {
         >
           <fa-awesome-icon
             v-if="extend"
-            class="ml-2"
+            class="u-ml-1"
             icon="fa-chevron-up"
           />
           <fa-awesome-icon
             v-else
-            class="ml-2"
+            class="u-ml-1"
             icon="fa-chevron-down"
           />
         </div>
@@ -355,59 +355,59 @@ const factorise = (pizzas: number[]) => {
     </div>
     <div>
       <div
-        class="flex w-screen rounded-xl bg-black text-center text-3xl"
+        class="flex w-screen rounded-xl bg-black u-text-center text-3xl"
       >
-        <div class="m-2 flex-1">
+        <div class="u-m-1 l-grow">
           Créneau {{ frenchFormatFromDate(new Date(timeslotList[selectedTimeslotId]?.delivery_time)) }}
         </div>
         <div
-          class="m-2"
+          class="u-m-1"
         >
           <fa-awesome-icon
             v-if="extend"
-            class="ml-2"
+            class="u-ml-1"
             icon="fa-chevron-up"
           />
           <fa-awesome-icon
             v-else
-            class="ml-2"
+            class="u-ml-1"
             icon="fa-chevron-down"
           />
         </div>
       </div>
     </div>
-    <div class="m-2 flex flex-1 flex-col gap-5 md:flex-row" :class="{ blur: extend }">
-      <div class="flex flex-1 flex-col">
-        <div class="title my-2 text-center text-white">
+    <div class="u-m-1 l-flex-column l-grow gap-5 md:flex-row" :class="{ blur: extend }">
+      <div class="l-flex-column l-grow">
+        <div class="c-title u-my-1 u-text-center text-white">
           Liste des Pizzas disponibles
         </div>
-        <form id="add_pizza" class="flex flex-1 flex-col gap-5">
-          <div class="flex gap-2 rounded-2xl bg-gray-500 p-1 text-center text-black">
-            <div class="flex flex-col">
+        <form id="add_pizza" class="l-flex-column l-grow gap-5">
+          <div class="flex l-gap-1 rounded-2xl bg-gray-500 p-1 u-text-center text-black">
+            <div class="l-flex-column">
               <fa-awesome-icon
-                class="ml-2 flex-1"
+                class="u-ml-1 l-grow"
                 icon="fa-magnifying-glass"
               />
             </div>
-            <div class="flex-1">
+            <div class="l-grow">
               <label for="searchPizza" class="sr-only">Rechercher une pizza</label>
-              <input id="searchPizza" v-model="pizzaSearch" type="text" class="w-full rounded-xl border-2 border-black bg-gray-300 p-0 text-center" placeholder="Rechercher une pizza"/>
+              <input id="searchPizza" v-model="pizzaSearch" type="text" class="u-full-width rounded-xl border-2 border-black bg-gray-300 p-0 u-text-center" placeholder="Rechercher une pizza"/>
             </div>
           </div>
-          <div class="grow overflow-y-auto bg-gray-300 text-center text-black md:h-px">
-            <div v-for="pizzaId in timeslotList[selectedTimeslotId]?.pizza" :key="pizzaId" class="flex flex-row justify-between">
-              <div :class="{ hidden: !pizzaList[pizzaId]?.name.toLowerCase().includes(pizzaSearch.toLowerCase()) }" class="flex flex-1 border-b-2 border-black">
-                <label :for="`pizzaQuantity-${pizzaId}`" class="flex flex-1 flex-col justify-center">
+          <div class="grow overflow-y-auto bg-gray-300 u-text-center text-black md:h-px">
+            <div v-for="pizzaId in timeslotList[selectedTimeslotId]?.pizza" :key="pizzaId" class="l-flex-row justify-between">
+              <div :class="{ hidden: !pizzaList[pizzaId]?.name.toLowerCase().includes(pizzaSearch.toLowerCase()) }" class="flex l-grow border-b-2 border-black">
+                <label :for="`pizzaQuantity-${pizzaId}`" class="l-flex-column l-grow l-items-main-center">
                   {{ pizzaList[pizzaId]?.name }}: {{ pizzaList[pizzaId]?.ingredients.join(', ') }}
                 </label>
-                <input :id="`pizzaQuantity-${pizzaId}`" type="number" class="w-20 border-0 bg-gray-300 text-center" :value="0" min="0" @wheel="handleWheel"/>
+                <input :id="`pizzaQuantity-${pizzaId}`" type="number" class="w-20 border-0 bg-gray-300 u-text-center" :value="0" min="0" @wheel="handleWheel"/>
               </div>
             </div>
           </div>
-          <div class="flex flex-col rounded-2xl bg-gray-500 text-center md:flex-row">
-            <div class="flex-1">
+          <div class="l-flex-column rounded-2xl bg-gray-500 u-text-center md:flex-row">
+            <div class="l-grow">
               <label for="paymentMethod" class="sr-only">Payment Method</label>
-              <select id="paymentMethod" v-model="selectedPaymentMethod" class="m-2 rounded-xl bg-gray-300 p-0 pl-2 pr-8 text-left text-black">
+              <select id="paymentMethod" v-model="selectedPaymentMethod" class="u-m-1 rounded-xl bg-gray-300 p-0 u-pl-1 u-pr-4 text-left text-black">
                 <option value="default" selected>
                   Choisir un moyen de paiement
                 </option>
@@ -416,73 +416,73 @@ const factorise = (pizzas: number[]) => {
                 </option>
               </select>
             </div>
-            <div class="flex-1">
+            <div class="l-grow">
               <label for="order-type" class="sr-only">Type de commande</label>
-              <select id="order-type" v-model="selectedOrderType" class="m-2 rounded-xl bg-gray-300 p-0 pl-2 pr-8 text-left text-black">
+              <select id="order-type" v-model="selectedOrderType" class="u-m-1 rounded-xl bg-gray-300 p-0 u-pl-1 u-pr-4 text-left text-black">
                 <option v-for="type in OrderType" :key="type" :value="type">
                   {{ orderTypeToString[type] }}
                 </option>
               </select>
             </div>
-            <div class="flex flex-1">
+            <div class="flex l-grow">
               <label for="InputPseudo" class="sr-only">Input Text</label>
-              <input id="InputPseudo" v-model="pseudo" type="text" class="m-2 flex-1 rounded-xl border-2 border-black bg-gray-300 p-0 text-center text-black" placeholder="Pseudo"/>
+              <input id="InputPseudo" v-model="pseudo" type="text" class="u-m-1 l-grow rounded-xl border-2 border-black bg-gray-300 p-0 u-text-center text-black" placeholder="Pseudo"/>
             </div>
-            <div class="flex justify-center">
-              <button type="submit" class="m-2 w-20 flex-1 rounded-xl bg-green-600 p-0 text-center text-white" @click.prevent="validatePizza">
+            <div class="flex l-items-main-center">
+              <button type="submit" class="u-m-1 w-20 l-grow rounded-xl bg-green-600 p-0 u-text-center text-white" @click.prevent="validatePizza">
                 Ajouter
               </button>
             </div>
           </div>
         </form>
       </div>
-      <div class="flex flex-1 flex-col">
-        <div class="title my-2 rounded-xl text-center text-white" :class="{ 'bg-red-600': pizzaCount >= timeslotList[selectedTimeslotId]?.pizza_max }">
+      <div class="l-flex-column l-grow">
+        <div class="c-title u-my-1 rounded-xl u-text-center text-white" :class="{ 'bg-red-600': pizzaCount >= timeslotList[selectedTimeslotId]?.pizza_max }">
           Commandes : {{ pizzaCount }} /
           {{ timeslotList[selectedTimeslotId]?.pizza_max }}
           <fa-awesome-icon
-            class="ml-2 hover:cursor-pointer"
+            class="u-ml-1 hover:cursor-pointer"
             icon="fa-download"
             @click="exportOrders(selectedTimeslotId)"
             @keydown.enter="exportOrders(selectedTimeslotId)"
           />
         </div>
-        <div class="flex flex-1 flex-col gap-5">
-          <div class="flex gap-2 rounded-2xl bg-gray-500 p-1 text-center text-black">
-            <div class="flex flex-col">
+        <div class="l-flex-column l-grow gap-5">
+          <div class="flex l-gap-1 rounded-2xl bg-gray-500 p-1 u-text-center text-black">
+            <div class="l-flex-column">
               <fa-awesome-icon
-                class="ml-2 flex-1"
+                class="u-ml-1 l-grow"
                 icon="fa-magnifying-glass"
               />
             </div>
-            <div class="flex-1">
+            <div class="l-grow">
               <label for="searchPizza" class="sr-only">Rechercher une commande</label>
-              <input id="searchPizza" v-model="orderSearch" type="text" class="w-full rounded-xl border-2 border-black bg-gray-300 p-0 text-center" placeholder="Rechercher une commande"/>
+              <input id="searchPizza" v-model="orderSearch" type="text" class="u-full-width rounded-xl border-2 border-black bg-gray-300 p-0 u-text-center" placeholder="Rechercher une commande"/>
             </div>
           </div>
-          <div class="flex flex-1 flex-col">
-            <div class="flex bg-gray-500 text-center text-2xl">
-              <div class="flex-1">
+          <div class="l-flex-column l-grow">
+            <div class="flex bg-gray-500 u-text-center text-2xl">
+              <div class="l-grow">
                 pseudo
               </div>
-              <div class="flex-1">
+              <div class="l-grow">
                 pizza
               </div>
-              <div class="flex-1">
+              <div class="l-grow">
                 récupéré
               </div>
             </div>
-            <div class="flex grow flex-col overflow-y-auto bg-gray-300 text-black md:h-px">
+            <div class="l-flex-column grow overflow-y-auto bg-gray-300 text-black md:h-px">
               <div v-for="order in (timeslotList[selectedTimeslotId] as AdminTimeslotDeref)?.orders" :key="order.id">
-                <div v-if="order.user.toLowerCase().includes(orderSearch.toLowerCase())" class="align-center mx-2 my-1 flex flex-row justify-center rounded-xl bg-gray-200 text-center">
-                  <div class="flex flex-1 items-center justify-center">
+                <div v-if="order.user.toLowerCase().includes(orderSearch.toLowerCase())" class="align-center u-mx-1 my-1 l-flex-row l-items-main-center rounded-xl bg-gray-200 u-text-center">
+                  <div class="flex l-grow l-items-cross-center l-items-main-center">
                     {{ order.user }}
                   </div>
-                  <div class="flex-1 text-left">
+                  <div class="l-grow text-left">
                     {{ factorise(order.pizza) }}
                   </div>
-                  <div class="flex flex-1 flex-col items-center">
-                    <label for="isTakenCheckbox-{{ order.id }}" class="flex flex-1 flex-col justify-center">
+                  <div class="l-flex-column l-grow l-items-cross-center">
+                    <label for="isTakenCheckbox-{{ order.id }}" class="l-flex-column l-grow l-items-main-center">
                       <input id="isTakenCheckbox-{{ order.id }}" type="checkbox" class="size-5 bg-gray-300" :value="order.delivered" :checked="order.delivered" @change="patchOrder(selectedTimeslotId, order.id, !order.delivered)"/>
                     </label>
                   </div>
@@ -491,20 +491,20 @@ const factorise = (pizzas: number[]) => {
             </div>
           </div>
           <div
-            class="flex flex-col rounded-2xl bg-gray-500 text-center md:flex-row"
+            class="l-flex-column rounded-2xl bg-gray-500 u-text-center md:flex-row"
             :class="{
               'bg-red-600': new Date(timeslotList[selectedTimeslotId]?.end) < new Date(),
             }"
           >
-            <div class="flex flex-1">
+            <div class="flex l-grow">
               <div
-                class="m-1 flex flex-1 justify-center text-center text-2xl text-black"
+                class="m-1 flex l-grow l-items-main-center u-text-center text-2xl text-black"
                 :class="{
                   invisible: new Date(timeslotList[selectedTimeslotId]?.end) > new Date(),
                 }"
               >
                 L'heure de fin de commande est dépassée
-                <div class="invisible border-2 border-red-600 p-4"/>
+                <div class="invisible border-2 border-red-600 u-p-2"/>
               </div>
             </div>
           </div>
@@ -514,25 +514,25 @@ const factorise = (pizzas: number[]) => {
   </div>
   <div v-else class="">
     <div
-      class="flex w-screen rounded-xl bg-black text-center text-3xl hover:cursor-pointer"
+      class="flex w-screen rounded-xl bg-black u-text-center text-3xl hover:cursor-pointer"
     >
-      <div class="flex-1">
-        <div class="flex flex-row hover:cursor-pointer">
+      <div class="l-grow">
+        <div class="l-flex-row hover:cursor-pointer">
           <div
-            class="m-2 flex-1"
+            class="u-m-1 l-grow"
             @click="openModal"
             @keydown.enter="openModal"
           >
             Ajouter un créneau
             <fa-awesome-icon
-              class="ml-2"
+              class="u-ml-1"
               icon="fa-circle-plus"
             />
           </div>
         </div>
       </div>
     </div>
-    <div class="mt-6 text-center text-4xl">
+    <div class="mt-6 u-text-center text-4xl">
       Il n'y a pas de créneau de commande
     </div>
   </div>
@@ -547,12 +547,12 @@ const factorise = (pizzas: number[]) => {
       </h3>
     </template>
     <template #body>
-      <form id="patch-user" class="mt-2 flex flex-col md:flex-row" @submit.prevent="validateModal">
+      <form id="patch-user" class="u-mt-1 l-flex-column md:flex-row" @submit.prevent="validateModal">
         <div class="">
           <FormField
             v-slot="context"
             :validations="v$_create.delivery_time"
-            class="m-2 flex flex-col"
+            class="u-m-1 l-flex-column"
             label="Date de livraison"
           >
             <label for="delivery_time">
@@ -572,7 +572,7 @@ const factorise = (pizzas: number[]) => {
           <FormField
             v-slot="context"
             :validations="v$_create.start"
-            class="m-2 flex flex-col"
+            class="u-m-1 l-flex-column"
             label="Début de la commande"
           >
             <label for="start">
@@ -592,7 +592,7 @@ const factorise = (pizzas: number[]) => {
           <FormField
             v-slot="context"
             :validations="v$_create.end"
-            class="m-2 flex flex-col"
+            class="u-m-1 l-flex-column"
             label="Fin de la commande"
           >
             <label for="end">
@@ -614,7 +614,7 @@ const factorise = (pizzas: number[]) => {
           <FormField
             v-slot="context"
             :validations="v$_create.player_price"
-            class="m-2 flex flex-col"
+            class="u-m-1 l-flex-column"
             label="Prix pour les joueurs"
           >
             <label for="player_price">
@@ -634,7 +634,7 @@ const factorise = (pizzas: number[]) => {
           <FormField
             v-slot="context"
             :validations="v$_create.staff_price"
-            class="m-2 flex flex-col"
+            class="u-m-1 l-flex-column"
             label="Prix pour les staffs"
           >
             <label for="staff_price">
@@ -654,7 +654,7 @@ const factorise = (pizzas: number[]) => {
           <FormField
             v-slot="context"
             :validations="v$_create.external_price"
-            class="m-2 flex flex-col"
+            class="u-m-1 l-flex-column"
             label="Prix pour les externes"
           >
             <label for="external_price">
@@ -676,7 +676,7 @@ const factorise = (pizzas: number[]) => {
           <FormField
             v-slot="context"
             :validations="v$_create.pizza_max"
-            class="m-2 flex flex-col"
+            class="u-m-1 l-flex-column"
             label="Nombre de pizza maximum"
           >
             <label for="pizza_max">
@@ -696,7 +696,7 @@ const factorise = (pizzas: number[]) => {
           <FormField
             v-slot="context"
             :validations="v$_create.pizza_selection"
-            class="m-2 flex max-w-xs flex-col"
+            class="u-m-1 l-flex-column max-w-xs"
             label="Sélection de pizza"
           >
             <label for="pizza_selection">
@@ -724,18 +724,18 @@ const factorise = (pizzas: number[]) => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="validateModal"
-      >
-        Valider
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="showModal = false"
       >
         Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="validateModal"
+      >
+        Valider
       </button>
     </template>
   </Modal>
@@ -750,7 +750,7 @@ const factorise = (pizzas: number[]) => {
       </h3>
     </template>
     <template #body>
-      <div class="m-2">
+      <div class="u-m-1">
         Vous allez suppimer le créneau du {{
           frenchFormatFromDate(new Date(timeslotList[selectedDelete].delivery_time))
         }}
@@ -763,7 +763,14 @@ const factorise = (pizzas: number[]) => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+        class="c-btn-bg-3"
+        type="button"
+        @click="showDeleteModal = false"
+      >
+        Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
         type="submit"
         @click="
           showDeleteModal = false;
@@ -778,13 +785,6 @@ const factorise = (pizzas: number[]) => {
       >
         Valider
       </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
-        type="button"
-        @click="showDeleteModal = false"
-      >
-        Annuler
-      </button>
     </template>
   </Modal>
 
@@ -798,7 +798,7 @@ const factorise = (pizzas: number[]) => {
       </h3>
     </template>
     <template #body>
-      <div class="m-2 text-left">
+      <div class="u-m-1 text-left">
         <p>Pseudo : {{ pseudo }} </p>
         <p>Type de command : {{ orderTypeToString[selectedOrderType] }}</p>
         <p>Pizza{{ Object.values(pizzaQuantities).reduce((acc, val) => acc + val) > 1 ? 's' : '' }} :</p>
@@ -813,18 +813,18 @@ const factorise = (pizzas: number[]) => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+        type="button"
+        class="c-btn-bg-3"
+        @click="showConfirmationModal = false"
+      >
+        Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
         type="submit"
         @click="sendOrder"
       >
         Valider
-      </button>
-      <button
-        type="button"
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
-        @click="showConfirmationModal = false"
-      >
-        Annuler
       </button>
     </template>
   </Modal>

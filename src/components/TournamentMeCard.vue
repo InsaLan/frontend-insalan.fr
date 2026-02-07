@@ -139,19 +139,19 @@ const gameSpecificData = computed(() => {
 
 <template>
   <div id="ongoing_match">
-    <h1 class="m-3 text-center text-4xl font-bold">
+    <h1 class="m-3 u-text-center text-4xl font-bold">
       Partie en cours
     </h1>
-    <div class="mx-4 flex flex-col justify-around rounded-md bg-cyan-900">
-      <div class="flex w-full flex-col divide-y">
-        <div v-for="team, team_id in ongoingMatch.teams" :key="team_id" class="mx-2 p-4">
+    <div class="u-mx-2 flex flex-col justify-around rounded-md bg-cyan-900">
+      <div class="flex u-full-width flex-col divide-y">
+        <div v-for="team, team_id in ongoingMatch.teams" :key="team_id" class="u-mx-1 u-p-2">
           <p class="truncate text-xl font-bold">
             {{ team }}
           </p>
         </div>
       </div>
-      <div v-if="gameSpecificData" class="m-2 border-t border-cyan-700 bg-cyan-800 p-2">
-        <p class="mb-2 text-lg font-semibold">
+      <div v-if="gameSpecificData" class="u-m-1 border-t border-cyan-700 bg-cyan-800 u-p-1">
+        <p class="u-mb-1 text-lg font-semibold">
           {{ gameSpecificData.title }}
         </p>
         <div class="space-y-1 font-mono text-sm">
@@ -160,7 +160,7 @@ const gameSpecificData = computed(() => {
           </p>
         </div>
       </div>
-      <button type="button" class="w-full rounded-b-md bg-red-700 p-2 duration-100 hover:bg-red-400" @click="openScoreModal()">
+      <button type="button" class="u-full-width rounded-b-md bg-red-700 u-p-1 duration-100 hover:bg-red-400" @click="openScoreModal()">
         Terminer la partie manuellement
       </button>
     </div>
@@ -176,7 +176,7 @@ const gameSpecificData = computed(() => {
       </h3>
     </template>
     <template #body>
-      <form id="patch-user" class="mt-2" @submit.prevent="">
+      <form id="patch-user" class="u-mt-1" @submit.prevent="">
         <FormField
           v-for="(name, id) in ongoingMatch.teams"
           :key="id"
@@ -210,14 +210,14 @@ const gameSpecificData = computed(() => {
     </template>
     <template #buttons>
       <button
-        class="mx-4 inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="u-mx-2 inline-flex u-full-width justify-center rounded-md bg-green-500 px-3 u-py-1 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
         type="button"
         @click.prevent="NextModalEnterScore"
       >
         Suivant
       </button>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="inline-flex u-full-width justify-center rounded-md bg-gray-500 px-3 u-py-1 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
         type="button"
         @click="closeModalEnterScore"
       >
@@ -236,7 +236,7 @@ const gameSpecificData = computed(() => {
       </h3>
     </template>
     <template #body>
-      <form id="patch-user" class="mt-2" @submit.prevent="">
+      <form id="patch-user" class="u-mt-1" @submit.prevent="">
         <FormField
           v-for="n in game_number"
           :key="n"
@@ -268,14 +268,14 @@ const gameSpecificData = computed(() => {
     </template>
     <template #buttons>
       <button
-        class="duration inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+        class="duration inline-flex u-full-width justify-center rounded-md bg-green-600 px-3 u-py-1 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
         type="submit"
         @click="sendScore"
       >
         Envoyer
       </button>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="inline-flex u-full-width justify-center rounded-md bg-red-500 px-3 u-py-1 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
         type="button"
         @click="PrevModalEnterScore"
       >

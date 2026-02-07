@@ -98,46 +98,41 @@ Object.values(timeslotList.value).forEach((timeslot) => {
 </script>
 
 <template>
-  <h1 class="title">
+  <h1 class="c-title">
     Liste des exports
   </h1>
-  <div class="mb-6 mt-2 flex flex-col px-4">
-    <div v-if="timeslots_id.length === 0" class="flex justify-center text-2xl">
+  <div class="mb-6 u-mt-1 l-flex-column u-px-2">
+    <div v-if="timeslots_id.length === 0" class="flex l-items-main-center text-2xl">
       Il n'y a pas de créneau de commande.
     </div>
     <div
       v-else
-      class="flex flex-col gap-2"
+      class="l-flex-column l-gap-1"
     >
       <!-- Loading spinner -->
       <div
         v-if="loading"
-        class="flex justify-center"
+        class="flex l-items-main-center"
       >
-        <div class="flex w-full flex-1 flex-col items-center justify-center gap-5">
+        <div class="l-flex-column u-full-width l-grow l-items-cross-center l-items-main-center gap-5">
           <div class="text-2xl">
             Chargement...
           </div>
-          <div role="status">
-            <svg aria-hidden="true" class="size-16 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-              <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-            </svg>
-          </div>
+          <div role="status" aria-hidden="true" class="c-spinner"/>
         </div>
       </div>
       <div
         v-for="timeslot in Object.values(timeslotList).filter((timeslot) => timeslots_id.includes(timeslot.id))"
         v-else
         :key="timeslot.id"
-        class="flex flex-col overflow-hidden rounded hover:cursor-pointer"
+        class="l-flex-column overflow-hidden rounded hover:cursor-pointer"
         :class="{
           'bg-cyan-900': timeslotExportList[timeslot.id].length > 0,
           'bg-gray-500': timeslotExportList[timeslot.id].length === 0,
         }"
       >
         <div
-          class="flex select-none items-center gap-2 p-2"
+          class="flex select-none l-items-cross-center l-gap-1 u-p-1"
           :class="{
             'hover:bg-cyan-800': timeslotExportList[timeslot.id].length > 0,
             'hover:bg-gray-400': timeslotExportList[timeslot.id].length === 0,
@@ -145,12 +140,12 @@ Object.values(timeslotList.value).forEach((timeslot) => {
           @click="timeslotsExpand[timeslot.id] = !timeslotsExpand[timeslot.id]"
           @keydown.enter="timeslotsExpand[timeslot.id] = !timeslotsExpand[timeslot.id]"
         >
-          <div class="flex size-8 items-center justify-center text-2xl">
+          <div class="flex size-8 l-items-cross-center l-items-main-center text-2xl">
             <fa-awesome-icon icon="fa-caret-right" :class="{ 'rotate-90': timeslotsExpand[timeslot.id] }"/>
           </div>
           <div
             v-if="timeslotExportList[timeslot.id].length > 0"
-            class="flex size-8 items-center justify-center text-2xl"
+            class="flex size-8 l-items-cross-center l-items-main-center text-2xl"
             @click.stop="exportOrders(timeslot.id)"
             @keydown.enter="exportOrders(timeslot.id)"
           >
@@ -165,7 +160,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
         </div>
         <div
           v-if="timeslotExportList[timeslot.id].length === 0"
-          class="flex items-center justify-center p-3"
+          class="flex l-items-cross-center l-items-main-center p-3"
           :class="{ hidden: !timeslotsExpand[timeslot.id] }"
         >
           Aucun export n'a été effectué pour ce créneau.
@@ -173,13 +168,13 @@ Object.values(timeslotList.value).forEach((timeslot) => {
         <div
           v-for="timeslotExport in timeslotExportList[timeslot.id]"
           :key="timeslotExport.id"
-          class="ml-4 hover:bg-cyan-800"
+          class="u-ml-2 hover:bg-cyan-800"
           :class="{ hidden: !timeslotsExpand[timeslot.id] }"
           @click="downloadTimeslotDetails(timeslotExport.id)"
           @keydown.enter="downloadTimeslotDetails(timeslotExport.id)"
         >
-          <div class="flex select-none items-center gap-2 p-2">
-            <div class="flex size-8 items-center px-3">
+          <div class="flex select-none l-items-cross-center l-gap-1 u-p-1">
+            <div class="flex size-8 l-items-cross-center px-3">
               <fa-awesome-icon icon="fa-file"/>
             </div>
             <div class="m-0">
@@ -199,10 +194,10 @@ Object.values(timeslotList.value).forEach((timeslot) => {
           </div>
         </div>
       </div>
-      <div class="flex items-center justify-center space-x-2">
+      <div class="flex l-items-cross-center l-items-main-center space-x-2">
         <button
           type="button"
-          class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
+          class="rounded-md border border-gray-300 bg-white px-3 u-py-1 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
           :disabled="page === 1"
           @click="changePage(page - 1)"
         >
@@ -216,18 +211,18 @@ Object.values(timeslotList.value).forEach((timeslot) => {
           <button
             v-if="typeof _page === 'number'"
             type="button"
-            class="rounded-md px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            class="rounded-md px-3 u-py-1 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             :class="_page === page ? 'bg-indigo-600 text-white' : 'text-gray-700 bg-white border border-gray-300 hover:bg-gray-50'"
             @click="changePage(_page)"
           >
             {{ _page }}
           </button>
-          <span v-else class="px-3 py-2 text-gray-500">...</span>
+          <span v-else class="px-3 u-py-1 text-gray-500">...</span>
         </template>
 
         <button
           type="button"
-          class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
+          class="rounded-md border border-gray-300 bg-white px-3 u-py-1 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
           :disabled="page >= max_pages"
           @click="changePage(page + 1)"
         >
@@ -251,27 +246,25 @@ Object.values(timeslotList.value).forEach((timeslot) => {
       </h3>
     </template>
     <template #body>
-      <p class="mt-2 max-w-sm">
-        Voulez-vous supprimer l'export du <span class="underline">{{ frenchFormatFromDate(new Date(exportToDelete.created_at)) }}</span> ?
+      <p class="u-mt-1 max-w-sm">
+        Voulez-vous supprimer l'export du <span class="u-underline">{{ frenchFormatFromDate(new Date(exportToDelete.created_at)) }}</span> ?
       </p>
     </template>
     <template #buttons>
-      <div class="flex w-full justify-center gap-4">
-        <button
-          class="rounded bg-gray-500 p-2 text-sm text-gray-900 hover:bg-gray-300"
-          type="button"
-          @click="closeConfirmDeleteModal"
-        >
-          Annuler
-        </button>
-        <button
-          class="rounded bg-red-600 p-2 text-sm hover:bg-red-500"
-          type="submit"
-          @click="confirmDeleteExport"
-        >
-          Valider
-        </button>
-      </div>
+      <button
+        class="c-btn-bg-3"
+        type="button"
+        @click="closeConfirmDeleteModal"
+      >
+        Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="confirmDeleteExport"
+      >
+        Valider
+      </button>
     </template>
   </Modal>
 </template>

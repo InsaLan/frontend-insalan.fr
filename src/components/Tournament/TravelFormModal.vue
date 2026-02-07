@@ -59,20 +59,22 @@ const handleSubmit = async () => {
 <template>
   <Modal>
     <template #icon>
-      <fa-awesome-icon class="m-auto text-green-600" icon="fa-solid fa-leaf"/>
+      <fa-awesome-icon class="m-auto color-correct-1" icon="fa-solid fa-leaf"/>
     </template>
     <template #title>
-      Hello
+      <h3>
+        Hello
+      </h3>
     </template>
     <template #body>
-      <p class="mt-2 max-w-2xl text-justify">
+      <p class="u-mt-1 max-w-2xl u-text-justify">
         Ce formulaire est facultatif, mais votre réponse nous serait très utile !
-        En partageant <span class="font-bold">anonymement</span> votre ville de départ et le moyen
+        En partageant <span class="u-bold">anonymement</span> votre ville de départ et le moyen
         de transport que vous comptez utiliser pour venir à la LAN, vous nous aidez à mieux
         estimer l’impact environnemental de l’évènement et à l’améliorer chaque année. Merci d’avance !
       </p>
       <form @submit.prevent="handleSubmit">
-        <FormField v-slot="context" :validations="v$.city" class="mt-2 flex flex-col">
+        <FormField v-slot="context" :validations="v$.city" class="u-mt-1 l-flex-column">
           <label for="city">Ville</label>
           <input
             id="city"
@@ -85,7 +87,7 @@ const handleSubmit = async () => {
             :class="{ error: context.invalid }"
           />
         </FormField>
-        <FormField v-slot="context" :validations="v$.transportationMethod" class="mt-2 flex flex-col">
+        <FormField v-slot="context" :validations="v$.transportationMethod" class="u-mt-1 l-flex-column">
           <label for="transportation_method">Méthode de transport</label>
           <select
             id="transportation_method"
@@ -107,24 +109,22 @@ const handleSubmit = async () => {
       </form>
     </template>
     <template #buttons>
-      <div class="flex w-full justify-center gap-4">
-        <button
-          class="rounded bg-gray-500 p-2 text-sm hover:bg-gray-300"
-          type="button"
-          :disabled="submittingForm"
-          @click="closeModal"
-        >
-          Ne pas répondre
-        </button>
-        <button
-          class="rounded bg-green-600 p-2 text-sm hover:bg-green-500"
-          type="submit"
-          :disabled="submittingForm"
-          @click="handleSubmit"
-        >
-          {{ submittingForm ? 'Envoie...' : 'Envoyer' }}
-        </button>
-      </div>
+      <button
+        class="c-btn-bg-3"
+        type="button"
+        :disabled="submittingForm"
+        @click="closeModal"
+      >
+        Ne pas répondre
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        :disabled="submittingForm"
+        @click="handleSubmit"
+      >
+        {{ submittingForm ? 'Envoi...' : 'Envoyer' }}
+      </button>
     </template>
   </Modal>
 </template>

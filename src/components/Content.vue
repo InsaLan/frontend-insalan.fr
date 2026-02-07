@@ -16,11 +16,7 @@ const { getContent } = contentStore;
   <!-- we trust this HTML content -->
   <!-- eslint-disable -->
   <section
-    class="text-justify mx-4"
     v-html="getContent(props.name)"
   >
   </section>
 </template>
-
-<style scoped>
-</style>

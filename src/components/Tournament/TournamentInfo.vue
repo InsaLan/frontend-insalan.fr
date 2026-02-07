@@ -15,9 +15,9 @@ const props = defineProps<{
   <section
     id="info"
     :style="{ backgroundImage: `url(${props.tournament?.logo})` }"
-    class="grid grow grid-rows-[min-content_1fr] items-center bg-gray-500 bg-cover bg-center bg-blend-multiply"
+    class="grid grow grid-rows-[min-content_1fr] l-items-cross-center bg-gray-500 bg-cover bg-center bg-blend-multiply"
   >
-    <h2 class="font mx-auto w-3/4 py-4 text-center text-3xl font-bold">
+    <h2 class="font mx-auto w-3/4 u-py-2 u-text-center text-3xl u-bold">
       {{ tournament?.description }}
     </h2>
 
@@ -30,7 +30,7 @@ const props = defineProps<{
       "
       class="grid gap-7 lg:grid-cols-3"
     >
-      <div class="flex w-full flex-col items-center md:my-24">
+      <div class="l-flex-column u-full-width l-items-cross-center md:my-24">
         <h3 class="mb-6 text-4xl">
           Format
         </h3>
@@ -59,7 +59,7 @@ const props = defineProps<{
         </svg>
       </div>
 
-      <div class="flex w-full flex-col items-center">
+      <div class="l-flex-column u-full-width l-items-cross-center">
         <h3 class="mb-6 text-4xl">
           Cashprize
         </h3>
@@ -90,7 +90,7 @@ const props = defineProps<{
         </svg>
       </div>
 
-      <div class="mb-12 flex w-full grow flex-col items-center md:my-24">
+      <div class="mb-12 l-flex-column u-full-width grow l-items-cross-center md:my-24">
         <h3 class="mb-6 text-4xl">
           Casters
         </h3>
@@ -142,18 +142,18 @@ const props = defineProps<{
     </div>
     <div
       v-else
-      class="flex flex-col items-center justify-center p-4 md:p-6"
+      class="l-flex-column l-items-cross-center l-items-main-center u-p-2 md:p-6"
     >
       <div
-        class="w-full max-w-md rounded-lg border-2 border-cyan-700 bg-gradient-to-br from-cyan-950 to-cyan-900 p-5 text-white shadow-lg"
+        class="u-full-width max-w-md rounded-lg border-2 border-cyan-700 bg-gradient-to-br from-cyan-950 to-cyan-900 p-5 text-white shadow-lg"
       >
-        <div class="mb-4 flex items-center justify-between">
+        <div class="u-mb-2 flex l-items-cross-center justify-between">
           <h3
-            class="text-xl font-bold md:text-2xl"
+            class="text-xl u-bold md:text-2xl"
           >
             Informations du tournoi
           </h3>
-          <span class="rounded-full bg-cyan-800 p-2 text-center">
+          <span class="rounded-full bg-cyan-800 u-p-1 u-text-center">
             <fa-awesome-icon
               class="text-yellow-500"
               icon="fa-trophy"
@@ -161,21 +161,21 @@ const props = defineProps<{
           </span>
         </div>
 
-        <div class="mb-4 rounded-md bg-cyan-800/50 px-4 py-3 text-cyan-100">
+        <div class="u-mb-2 rounded-md bg-cyan-800/50 u-px-2 py-3 text-cyan-100">
           <p class="mb-3 text-sm font-medium">
             Ce tournoi est un tournoi secondaire et n'est pas lié à une édition de l'InsaLan.
             Pour plus d'informations, veuillez demander à l'équipe Animation.
           </p>
 
           <div
-            class="flex items-center gap-2 text-xl"
+            class="flex l-items-cross-center l-gap-1 text-xl"
           >
             <fa-awesome-icon
               icon="fa-calendar-days"
             />
             <span>Début:
               <b
-                class="font-bold text-yellow-500"
+                class="u-bold text-yellow-500"
               >
                 {{ frenchFormatFromDate(new Date(tournament?.start)) }}
               </b>
@@ -185,19 +185,19 @@ const props = defineProps<{
 
         <div
           v-if="tournament?.rewards"
-          class="mb-3 rounded-md bg-gradient-to-r from-cyan-800/70 to-cyan-700/70 p-4 text-center"
+          class="mb-3 rounded-md bg-gradient-to-r from-cyan-800/70 to-cyan-700/70 u-p-2 u-text-center"
         >
           <fa-awesome-icon
             class="text-4xl text-yellow-500"
             icon="fa-gift"
           />
           <!-- eslint-disable-next-line vue/no-v-html -->
-          <div class="text-2xl font-bold" v-html="md.render(tournament?.rewards)"/>
+          <div class="text-2xl u-bold" v-html="md.render(tournament?.rewards)"/>
         </div>
 
         <div
           v-if="tournament?.password"
-          class="flex items-center justify-center gap-1.5 text-xs text-cyan-200"
+          class="flex l-items-cross-center l-items-main-center gap-1.5 text-xs text-cyan-200"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <span>L'inscription à ce tournoi est protégée par un mot de passe</span>
@@ -205,7 +205,7 @@ const props = defineProps<{
       </div>
     </div>
 
-    <div class="mx-4 mb-2 flex justify-center text-xs">
+    <div class="u-mx-2 u-mb-1 flex l-items-main-center text-xs">
       {{ tournament?.description_bottom }}
     </div>
   </section>

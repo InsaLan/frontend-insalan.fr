@@ -65,7 +65,7 @@ const validateModal = async () => {
     </template>
     <template #body>
       Nous avons besoin de votre nom pour vérifier votre identité à l'entrée
-      <FormField v-slot="context" :validations="v$.first_name" class="flex flex-col">
+      <FormField v-slot="context" :validations="v$.first_name" class="l-flex-column">
         <label for="first_name">
           Prénom
         </label>
@@ -79,7 +79,7 @@ const validateModal = async () => {
           @blur="v$.first_name.$touch"
         />
       </FormField>
-      <FormField v-slot="context" :validations="v$.last_name" class="flex flex-col">
+      <FormField v-slot="context" :validations="v$.last_name" class="l-flex-column">
         <label for="last_name">
           Nom
         </label>
@@ -96,7 +96,7 @@ const validateModal = async () => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:ml-3 sm:w-auto"
+        class="c-btn-secondary"
         type="submit"
         @click="validateModal"
       >

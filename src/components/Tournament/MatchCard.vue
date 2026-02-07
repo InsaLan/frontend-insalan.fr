@@ -155,7 +155,7 @@ const open_edition = () => {
 
 <template>
   <div
-    class="m-2 min-w-0 rounded bg-cyan-900 px-2 py-1 font-black shadow-lg"
+    class="u-m-1 min-w-0 rounded bg-cyan-900 u-px-1 py-1 font-black shadow-lg"
     :class="{
       'ring-4 ring-[#63d1ff]': selected,
       'hover:ring-2 hover:ring-[#63d1ff]': match.status === MatchStatus.SCHEDULED && !selected && selectable && !edit_mode,
@@ -194,21 +194,21 @@ const open_edition = () => {
 
       <div
         v-if="!edit_mode"
-        class="text-center"
+        class="u-text-center"
       >
-        <span v-if="match.status === MatchStatus.SCHEDULED" class="text-center text-blue-500">
+        <span v-if="match.status === MatchStatus.SCHEDULED" class="u-text-center text-blue-500">
           <fa-awesome-icon
             icon="fa-solid fa-clock"
           />
           Prévu
         </span>
-        <span v-else-if="match.status === MatchStatus.ONGOING" class="text-center text-orange-500">
+        <span v-else-if="match.status === MatchStatus.ONGOING" class="u-text-center text-orange-500">
           <fa-awesome-icon
             icon="fa-solid fa-arrows-rotate"
           />
           En cours
         </span>
-        <span v-else class="text-center text-green-500">
+        <span v-else class="u-text-center text-green-500">
           <fa-awesome-icon
             icon="fa-solid fa-check"
           />
@@ -217,7 +217,7 @@ const open_edition = () => {
       </div>
       <div
         v-else
-        class="text-center"
+        class="u-text-center"
       >
         <select
           id="match_status"
@@ -243,7 +243,7 @@ const open_edition = () => {
 
       <div
         v-if="isAdmin && editable"
-        class="flex items-center justify-end"
+        class="flex l-items-cross-center justify-end"
       >
         <fa-awesome-icon
           v-if="!edit_mode"
@@ -256,7 +256,7 @@ const open_edition = () => {
 
         <div
           v-else
-          class="flex items-center gap-2"
+          class="flex l-items-cross-center l-gap-1"
         >
           <fa-awesome-icon
             class="text-green-500 hover:cursor-pointer hover:text-green-700"
@@ -300,7 +300,7 @@ const open_edition = () => {
         :key="idx"
         v-slot="context"
         :validations="v$.score[match_info.teams[idx - 1]]"
-        class="flex flex-col"
+        class="l-flex-column"
       >
         <div
           class="flex justify-between"

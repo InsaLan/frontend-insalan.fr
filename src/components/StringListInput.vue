@@ -37,11 +37,11 @@ const editEl = (index: number) => {
 
 <template>
   <div :class="{ 'border-red-500': error }" class="border-2 border-gray-500 focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
-    <div v-if="modelValue.length" class="m-1 flex flex-wrap gap-1">
+    <div v-if="modelValue.length" class="m-1 flex flex-wrap l-gap-1">
       <div v-for="(el, i) in modelValue" :key="i" class="flex overflow-hidden rounded bg-cyan-900">
         <button
           type="button"
-          class="flex items-center overflow-hidden px-1 hover:bg-cyan-800"
+          class="flex l-items-cross-center overflow-hidden px-1 hover:bg-cyan-800"
           title="Modifier"
           @click="editEl(i)"
         >
@@ -51,7 +51,7 @@ const editEl = (index: number) => {
         </button>
         <button
           type="button"
-          class="flex items-center px-1 hover:bg-cyan-800"
+          class="flex l-items-cross-center px-1 hover:bg-cyan-800"
           title="Supprimer"
           @click="removeEl(i)"
         >
@@ -59,7 +59,7 @@ const editEl = (index: number) => {
         </button>
       </div>
     </div>
-    <div class="flex items-center">
+    <div class="flex l-items-cross-center">
       <input
         :id="id"
         v-model="newElement"

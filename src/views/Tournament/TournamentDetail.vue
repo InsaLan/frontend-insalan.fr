@@ -75,22 +75,22 @@ const admin_switch = computed(() => {
 <template>
   <div
     v-if="tournament && (!('is_announced' in tournament) || tournament?.is_announced)"
-    class="flex min-h-[calc(100vh_-_6rem)] flex-col"
+    class="l-flex-column min-h-[calc(100vh_-_6rem)]"
   >
-    <div class="py-2 text-center text-5xl font-bold text-white">
+    <div class="u-py-1 u-text-center text-5xl u-bold text-white">
       {{ tournament?.name }}
     </div>
 
     <div class="sticky top-24 z-50">
-      <nav class="flex justify-center gap-10 bg-gray-500 py-3 sm:gap-16">
+      <nav class="flex l-items-main-center gap-10 bg-gray-500 py-3 sm:gap-16">
         <button
           type="button"
-          class="text-xl underline decoration-[#63d1ff] decoration-4 underline-offset-8 lg:hidden"
+          class="text-xl u-underline decoration-[#63d1ff] decoration-4 underline-offset-8 lg:hidden"
           @click="open_dropdown = !open_dropdown"
         >
           {{ sections[selected_section].title }}
           <fa-awesome-icon
-            class="absolute mx-2 my-[0.6rem] transition duration-150 ease-in-out"
+            class="l-absolute-position u-mx-1 my-[0.6rem] transition duration-150 ease-in-out"
             icon="fa-solid fa-chevron-up"
             size="2xs"
             :class="{ 'rotate-180': open_dropdown }"
@@ -98,14 +98,14 @@ const admin_switch = computed(() => {
         </button>
         <div
           :class="[open_dropdown ? 'flex border-y-2 border-white' : 'hidden']"
-          class="absolute z-10 max-h-[60vh] w-screen translate-y-10 flex-col items-center gap-2 overflow-scroll bg-gray-500 py-3 lg:static lg:z-0 lg:flex lg:w-auto lg:-translate-x-16 lg:translate-y-0 lg:flex-row lg:gap-4 lg:overflow-visible lg:py-0 xl:gap-10"
+          class="l-absolute-position z-10 max-h-[60vh] w-screen translate-y-10 flex-col l-items-cross-center l-gap-1 overflow-scroll bg-gray-500 py-3 lg:static lg:z-0 lg:flex lg:w-auto lg:-translate-x-16 lg:translate-y-0 lg:flex-row lg:gap-4 lg:overflow-visible lg:py-0 xl:gap-10"
         >
           <template v-for="(section, key) in sections" :key="key">
             <router-link
               v-if="section.is_available || (admin_mode && !['seatings', 'planning'].includes(key))"
               :to="{ name: `tournament_${admin_mode ? 'admin_' : ''}${key}` }"
-              :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': key === selected_section }"
-              class="text-xl underline-offset-8 hover:underline hover:decoration-[#63d1ff] hover:decoration-4"
+              :class="{ 'u-underline decoration-[#63d1ff] decoration-4 underline-offset-8': key === selected_section }"
+              class="text-xl underline-offset-8 hover:u-underline hover:decoration-[#63d1ff] hover:decoration-4"
               @click="open_dropdown = false"
             >
               {{ section.title }}
@@ -133,7 +133,7 @@ const admin_switch = computed(() => {
       />
     </RouterView>
   </div>
-  <div v-else class="mt-6 text-center text-4xl">
+  <div v-else class="mt-6 u-text-center text-4xl">
     Le tournoi que vous cherchez n'a pas encore été annoncé, revenez plus tard !
   </div>
 </template>

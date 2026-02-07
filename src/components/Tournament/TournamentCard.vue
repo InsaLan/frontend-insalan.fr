@@ -38,38 +38,38 @@ onMounted(async () => {
 
 </script>
 <template>
-  <div v-if="tournament?.is_announced" class="grid place-items-center gap-2 bg-cyan-900 shadow-lg">
+  <div v-if="tournament?.is_announced" class="grid c-card-bg-2-nopad u-pb-2">
     <img
       :alt="`Logo du ${tournament?.name}`"
       :src="tournament?.logo"
-      class="max-w-screen aspect-video text-clip"
+      class="aspect-video u-full-width overflow-hidden object-cover u-rounded"
     />
     <p class="text-lg">
       {{ tournament?.validated_teams }}/{{ tournament?.max_team_thresholds[tournament?.current_threshold_index] }}
       Équipes | Cashprize:
       {{ tournament?.cashprizes?.length !== 0 ? `${tournament?.cashprizes?.reduce((acc, val) => acc += Number(val), 0)} €` : "À venir" }}
     </p>
-    <div class="mb-3 flex w-4/5 justify-center gap-3 text-center">
-      <router-link :to="`tournament/${tournament?.id as number}/info`" class="rounded border-2 border-green-600 p-2 text-lg hover:border-green-500">
+    <div class="flex w-4/5 l-items-main-center l-gap-2 u-text-center">
+      <router-link :to="`tournament/${tournament?.id as number}/info`" class="c-btn-bg-3">
         Plus d'infos
       </router-link>
-      <button v-if="Date.parse(tournament?.registration_open) > Date.now()" type="button" class="rounded bg-green-600 p-2 text-lg opacity-60" disabled>
+      <button v-if="Date.parse(tournament?.registration_open) > Date.now()" type="button" class="c-btn-secondary" disabled>
         Inscriptions à venir
       </button>
       <router-link
         v-else-if="event_ongoing && Date.parse(tournament?.registration_close) > Date.now()"
         :to="`tournament/${tournament?.id as number}/register`"
-        class="rounded bg-green-600 p-2 text-lg hover:bg-green-500"
+        class="c-btn-secondary"
       >
         S'inscrire
       </router-link>
-      <button v-else type="button" class="rounded bg-green-600 p-2 text-lg opacity-60" disabled>
+      <button v-else type="button" class="c-btn-secondary" disabled>
         Inscriptions fermées
       </button>
     </div>
   </div>
   <!-- Placeholder when the tournament is not announced -->
-  <div v-else class="grid place-items-center gap-2 bg-cyan-900 shadow-lg">
+  <div v-else class="grid place-items-center l-gap-1 bg-cyan-900 shadow-lg">
     <svg
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +103,7 @@ onMounted(async () => {
         />
       </g>
     </svg>
-    <p class="text-center text-xl">
+    <p class="u-text-center text-xl">
       Le tournoi sera annoncé prochainement !
     </p>
   </div>

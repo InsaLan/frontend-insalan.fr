@@ -41,7 +41,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
   <section id="brackets">
     <h1
       v-if="tournament.brackets.length === 0"
-      class="mt-6 text-center text-4xl"
+      class="mt-6 u-text-center text-4xl"
     >
       Les arbres ne sont pas disponibles.
     </h1>
@@ -51,34 +51,34 @@ const bracket_round_title = (depth: number, round_idx: number) => {
       :key="bracket.id"
       class="mb-5"
     >
-      <h1 class="title">
+      <h1 class="c-title">
         Arbre {{ bracket.name }}
       </h1>
       <div
         v-if="bracket.bracket_type === BracketType.SINGLE"
         :key="bracket.id"
-        class="mx-4 overflow-x-auto"
+        class="u-mx-2 overflow-x-auto"
       >
         <div
-          class="grid items-center gap-x-10 gap-y-2"
+          class="grid l-items-cross-center gap-x-10 gap-y-2"
           :style="get_col_style(bracket)"
         >
           <div
             v-for="round_idx in bracket.depth + 1"
             :key="round_idx"
-            class="text-center text-xl"
+            class="u-text-center text-xl"
           >
             {{ bracket_round_title(bracket.depth, round_idx) }}
           </div>
           <div
             v-for="(games, round_idx) in get_matchs_per_round(bracket.matchs)"
             :key="round_idx"
-            class="flex h-full flex-col justify-around gap-4"
+            class="l-flex-column u-full-height justify-around l-gap-2"
           >
             <div
               v-for="game in games"
               :key="game.id"
-              class="m-2 divide-y"
+              class="u-m-1 divide-y"
             >
               <MatchCard
                 :match="game"
@@ -89,15 +89,15 @@ const bracket_round_title = (depth: number, round_idx: number) => {
           </div>
           <div
             v-if="bracket.winner !== null"
-            class="w-40 bg-yellow-600 p-2"
+            class="w-40 bg-yellow-600 u-p-1"
           >
             <h1
-              class="text-bold text-center text-2xl"
+              class="text-bold u-text-center text-2xl"
             >
               Vainqueur
             </h1>
             <p
-              class="text-center text-xl"
+              class="u-text-center text-xl"
             >
               {{ get_validated_team_by_id(bracket.winner)?.name }}
             </p>
@@ -107,21 +107,21 @@ const bracket_round_title = (depth: number, round_idx: number) => {
       <div
         v-if="bracket.bracket_type === BracketType.DOUBLE"
         :key="bracket.id"
-        class="mx-4 overflow-x-auto"
+        class="u-mx-2 overflow-x-auto"
       >
         <h2
-          class="ml-4 p-2 text-2xl"
+          class="u-ml-2 u-p-1 text-2xl"
         >
           Arbre principal
         </h2>
         <div
-          class="grid h-full items-center gap-x-10 gap-y-2"
+          class="grid u-full-height l-items-cross-center gap-x-10 gap-y-2"
           :style="get_col_style(bracket)"
         >
           <div
             v-for="round_idx in 2 * bracket.depth + 1"
             :key="round_idx"
-            class="text-center text-xl"
+            class="u-text-center text-xl"
           >
             {{
               (round_idx === 1)
@@ -134,12 +134,12 @@ const bracket_round_title = (depth: number, round_idx: number) => {
             }}
           </div>
           <div
-            class="flex h-full flex-col justify-around gap-4"
+            class="l-flex-column u-full-height justify-around l-gap-2"
           >
             <div
               v-for="game in get_winner_matchs_per_round(bracket.matchs, bracket.depth)"
               :key="game.id"
-              class="m-2 divide-y"
+              class="u-m-1 divide-y"
             >
               <MatchCard
                 :match="game"
@@ -151,16 +151,16 @@ const bracket_round_title = (depth: number, round_idx: number) => {
           <div
             v-for="col_idx in get_bracket_cols_count(bracket) - 2"
             :key="col_idx"
-            class="flex h-full flex-col"
+            class="l-flex-column u-full-height"
           >
             <div
               v-if="col_idx % 2"
-              class="flex h-full flex-col justify-around gap-4"
+              class="l-flex-column u-full-height justify-around l-gap-2"
             >
               <div
                 v-for="game in get_winner_matchs_per_round(bracket.matchs, bracket.depth - (col_idx - 1) / 2 - 1)"
                 :key="game.id"
-                class="m-2 divide-y"
+                class="u-m-1 divide-y"
               >
                 <MatchCard
                   :match="game"
@@ -172,15 +172,15 @@ const bracket_round_title = (depth: number, round_idx: number) => {
           </div>
           <div
             v-if="bracket.winner !== null"
-            class="w-40 bg-yellow-600 p-2"
+            class="w-40 bg-yellow-600 u-p-1"
           >
             <h1
-              class="text-bold text-center text-2xl"
+              class="text-bold u-text-center text-2xl"
             >
               Vainqueur
             </h1>
             <p
-              class="text-center text-xl"
+              class="u-text-center text-xl"
             >
               {{ get_validated_team_by_id(bracket.winner)?.name }}
             </p>
@@ -188,19 +188,19 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         </div>
 
         <h2
-          class="ml-4 p-2 text-2xl"
+          class="u-ml-2 u-p-1 text-2xl"
         >
           Arbre de repêchage
         </h2>
 
         <div
-          class="grid items-center gap-x-10 gap-y-2"
+          class="grid l-items-cross-center gap-x-10 gap-y-2"
           :style="get_col_style(bracket)"
         >
           <div
             v-for="round_idx in 2 * bracket.depth + 1"
             :key="round_idx"
-            class="text-center text-xl"
+            class="u-text-center text-xl"
           >
             {{
               (round_idx !== 1 && round_idx < 2 * bracket.depth - 1)
@@ -214,12 +214,12 @@ const bracket_round_title = (depth: number, round_idx: number) => {
           <div
             v-for="(games, round_idx) in get_looser_matchs(bracket.matchs)"
             :key="round_idx"
-            class="flex h-full flex-col justify-around gap-4"
+            class="l-flex-column u-full-height justify-around l-gap-2"
           >
             <div
               v-for="game in games"
               :key="game.id"
-              class="m-2 divide-y"
+              class="u-m-1 divide-y"
             >
               <MatchCard
                 :match="game"

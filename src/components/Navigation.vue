@@ -42,201 +42,204 @@ const logout_user = async () => {
 const burger_menu = ref(false);
 </script>
 <template>
-  <nav id="navigation" class="sticky top-0 z-[51] h-24 bg-theme-bg">
-    <div id="desktop" class="hidden h-full items-center justify-around border-b-2 border-white xl:flex">
-      <router-link to="/">
-        <img alt="Logo InsaLan" class="size-[4.5rem]" src="@/assets/images/logo_home.png"/>
-      </router-link>
-      <div>
-        <router-link
-          v-for="(item, i) in items"
-          :key="i"
-          :to="{ path: item.url }"
-          class="mx-2 text-[clamp(1rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
-        >
-          {{ item.text }}
-        </router-link>
-      </div>
-      <div v-if="!isConnected">
-        <router-link
-          class="block rounded bg-blue-800 p-2 text-[clamp(1rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-          to="/register"
-        >
-          Se connecter/S'inscrire
-        </router-link>
-      </div>
-      <div
-        v-else
-        class="flex items-center gap-4"
-      >
-        <div
-          v-if="role === 'dev' || role === 'staff'"
-          class="group relative mx-4 transition duration-150 ease-in-out"
-        >
-          <div
-            class="cursor-pointer text-[clamp(1rem,2vw,1.25rem)] font-bold text-white group-hover:text-blue-800"
-          >
-            Admin
-            <fa-awesome-icon
-              class="ml-2 text-gray-400 group-hover:rotate-180"
-              icon="fa-chevron-up"
-            />
-          </div>
-          <div
-            class="absolute hidden min-w-48 flex-col rounded-lg border-2 border-white bg-theme-bg p-2 group-hover:flex"
-          >
-            <div
-              v-if="user?.groups.includes('Equipe Bouffe')"
-              class="flex flex-col"
-            >
-              <div
-                class="font-bold text-gray-400"
-              >
-                Team Bouffe :
-              </div>
-              <router-link
-                class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
-                to="/admin/pizza/export/list"
-              >
-                Liste des exports
-              </router-link>
-              <router-link
-                class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
-                to="/admin/pizza/list"
-              >
-                Liste des Pizzas
-              </router-link>
-              <router-link
-                class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
-                to="/admin/pizza"
-              >
-                Menu pizza
-              </router-link>
-            </div>
-            <div
-              v-if="role === 'dev' || role === 'staff'"
-              class="flex flex-col"
-            >
-              <div
-                class="font-bold text-gray-400"
-              >
-                Backend :
-              </div>
-              <a
-                class="mx-4 font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
-                :href="`${apiUrl}/admin/`"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Panel Admin
-              </a>
-            </div>
-          </div>
-        </div>
-        <router-link class="mx-4 text-[clamp(1rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:text-blue-800" to="/me">
-          Mon compte
-        </router-link>
-
-        <button
-          class="rounded bg-blue-800 p-2 text-[clamp(1rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-          type="button"
-          @click="logout_user()"
-        >
-          Se déconnecter
-        </button>
-      </div>
-    </div>
-    <div class="min-h-full border-b-2 border-white xl:hidden">
-      <div id="top" class="flex h-[calc(6rem_-_2px)] items-center justify-between">
+  <div id="navcontainer" class="sticky top-4 z-[51] u-m-2 xl:mx-12">
+    <nav id="navigation" class="c-card-bg-2">
+      <div id="desktop" class="hidden u-full-height l-items-cross-center justify-around xl:flex">
         <router-link to="/">
-          <img alt="Logo InsaLan" class="size-[4.5rem]" src="@/assets/images/logo_home.png"/>
+          <img alt="Logo InsaLan" class="size-[4.5rem] c-image-btn" src="@/assets/images/logo_home.png"/>
         </router-link>
-        <div class="center flex items-center gap-4 p-5">
-          <div v-if="!isConnected">
-            <router-link
-              class="block rounded bg-blue-800 p-2 text-[clamp(0.9rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:text-base"
-              to="/register"
-            >
-              Se connecter/S'inscrire
-            </router-link>
-          </div>
-          <div v-else class="flex items-center gap-2">
-            <router-link
-              class="p-2 text-[clamp(0.9rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
-              to="/me"
-            >
-              Mon compte
-            </router-link>
-            <button
-              class="rounded bg-blue-800 p-2 text-[clamp(0.9rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-              type="button"
-              @click="logout_user()"
-            >
-              Se déconnecter
-            </button>
-          </div>
-          <button
-            class="size-8 rounded text-center text-gray-400 ring-2 ring-gray-400 hover:text-white"
-            type="button"
-            @click="burger_menu = !burger_menu"
+        <div>
+          <router-link
+            v-for="(item, i) in items"
+            :key="i"
+            :to="{ path: item.url }"
+            :class="$route.path === item.url ? 'u-underline c-text-btn-secondary' : 'c-text-btn-secondary'"
           >
-            <svg
-              v-if="!burger_menu"
-              class="m-auto size-6 stroke-2"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="{1.5}"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+            {{ item.text }}
+          </router-link>
+        </div>
+        <div v-if="!isConnected">
+          <router-link
+            class="c-btn-primary"
+            to="/login"
+          >
+            Se connecter/S'inscrire
+          </router-link>
+        </div>
+        <div
+          v-else
+          class="flex l-items-cross-center l-gap-2"
+        >
+          <div
+            v-if="role === 'dev' || role === 'staff'"
+            class="group l-relative-position u-mx-2 transition duration-150 ease-in-out"
+          >
+            <div
+              class="c-text-btn-secondary"
             >
-              <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <svg
-              v-else
-              class="m-auto size-6 stroke-2"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+              Admin
+              <fa-awesome-icon
+                class="u-ml-1 u-color-text-2 group-hover:rotate-180"
+                icon="fa-chevron-up"
+              />
+            </div>
+            <div
+              class="c-card-bg-3 l-absolute-position hidden min-w-48 flex-col group-hover:flex"
             >
-              <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+              <div
+                v-if="user?.groups.includes('Equipe Bouffe')"
+                class="l-flex-column"
+              >
+                <div
+                  class="u-bold u-color-text-2"
+                >
+                  Team Bouffe :
+                </div>
+                <router-link
+                  class="c-text-btn-secondary"
+                  to="/admin/pizza/export/list"
+                >
+                  Liste des exports
+                </router-link>
+                <router-link
+                  class="c-text-btn-secondary"
+                  to="/admin/pizza/list"
+                >
+                  Liste des Pizzas
+                </router-link>
+                <router-link
+                  class="c-text-btn-secondary"
+                  to="/admin/pizza"
+                >
+                  Menu pizza
+                </router-link>
+              </div>
+              <div
+                v-if="role === 'dev' || role === 'staff'"
+                class="l-flex-column"
+              >
+                <div
+                  class="u-bold u-color-text-2"
+                >
+                  Backend :
+                </div>
+                <a
+                  class="c-text-btn-secondary"
+                  :href="`${apiUrl}/admin/`"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Panel Admin
+                </a>
+              </div>
+            </div>
+          </div>
+          <router-link
+            to="/me"
+            :class="$route.path === '/me' ? 'u-underline c-text-btn-secondary' : 'c-text-btn-secondary'"
+          >
+            Mon compte
+          </router-link>
+
+          <button
+            class="c-btn-primary"
+            type="button"
+            @click="logout_user()"
+          >
+            Se déconnecter
           </button>
         </div>
       </div>
-      <div v-if="burger_menu" class="flex max-h-[calc(100vh_-_6rem)] flex-col overflow-scroll bg-theme-bg text-white">
-        <a
-          v-if="role === 'dev' || role === 'staff'"
-          class="mx-2 py-5 text-center font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
-          :href="`${apiUrl}/admin/`"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Panel Admin
-        </a>
-        <router-link
-          v-if="role === 'dev' || role === 'staff'"
-          class="mx-2 py-5 text-center font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
-          :to="{ path: '/admin/scan' }"
-        >
-          Scan billets
-        </router-link>
+      <div class="min-h-full xl:hidden">
+        <div id="top" class="flex h-[calc(5rem_-_2px)] l-items-cross-center justify-between">
+          <router-link to="/">
+            <img alt="Logo InsaLan" class="size-[4.5rem] c-image-btn u-mx-1" src="@/assets/images/logo_home.png"/>
+          </router-link>
+          <div class="center flex l-items-cross-center l-gap-2 u-p-1">
+            <div v-if="!isConnected">
+              <router-link
+                class="c-btn-primary"
+                to="/login"
+              >
+                Se connecter/S'inscrire
+              </router-link>
+            </div>
+            <div v-else class="flex l-items-cross-center l-gap-1">
+              <router-link
+                class="c-text-btn-secondary"
+                to="/me"
+              >
+                Mon compte
+              </router-link>
+              <button
+                class="c-btn-primary"
+                type="button"
+                @click="logout_user()"
+              >
+                Se déconnecter
+              </button>
+            </div>
+            <button
+              class="c-text-btn size-8 u-text-center"
+              type="button"
+              @click="burger_menu = !burger_menu"
+            >
+              <svg
+                v-if="!burger_menu"
+                class="m-auto size-8 stroke-2"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="{1.5}"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <svg
+                v-else
+                class="m-auto size-8 stroke-2"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div v-if="burger_menu" class="max-h-[calc(100vh_-_6rem)] l-flex-column overflow-scroll u-bg-bg-2">
+          <a
+            v-if="role === 'dev' || role === 'staff'"
+            class="u-mx-1 u-py-2 c-text-btn-secondary u-text-center"
+            :href="`${apiUrl}/admin/`"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Panel Admin
+          </a>
+          <router-link
+            v-if="role === 'dev' || role === 'staff'"
+            class="u-mx-1 u-py-2 c-text-btn-secondary u-text-center"
+            :to="{ path: '/admin/scan' }"
+          >
+            Scan billets
+          </router-link>
 
-        <router-link
-          v-for="(item, i) in mobile_items"
-          :key="i"
-          :to="{ path: item.url }"
-          class="mx-2 py-5 text-center font-bold text-white transition duration-150 ease-in-out hover:text-blue-800"
-          @click="burger_menu = !burger_menu"
-        >
-          {{ item.text }}
-        </router-link>
+          <router-link
+            v-for="(item, i) in mobile_items"
+            :key="i"
+            :to="{ path: item.url }"
+            class="u-mx-1 u-py-2 c-text-btn-secondary u-text-center"
+            @click="burger_menu = !burger_menu"
+          >
+            {{ item.text }}
+          </router-link>
+        </div>
       </div>
-    </div>
-  </nav>
-  <div v-if="getContent('alert') && !$route.path.startsWith('/admin/')" class="m-1 flex flex-col items-center rounded-lg border-2 border-red-700 bg-red-800">
-    <div class="m-1">
+    </nav>
+    <div v-if="getContent('alert') && !$route.path.startsWith('/admin/')" class="c-card-error-1-nopad u-mt-1 l-flex-column l-items-cross-center u-px-2 u-py-1">
       <Content name="alert"/>
     </div>
   </div>
