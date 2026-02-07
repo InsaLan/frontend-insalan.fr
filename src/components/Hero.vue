@@ -52,12 +52,11 @@ const scrollPastHero = () => {
 
 <template>
   <div id="hero" class="l-relative-position l-flex-column l-items-cross-center l-items-main-center h-screen">
-    <div class="l-absolute-position l-flex-row size-full l-items-cross-center l-items-main-center rounded-bottom">
+    <div class="l-absolute-position l-flex-row u-full-width u-full-height l-items-cross-center l-items-main-center rounded-bottom">
       <iframe
         :src="trailer_embed"
         allowfullscreen
-        class="aspect-video min-h-full grow object-cover blur-md"
-        frameborder="0"
+        class="video"
         title="Trailer InsaLan"
         inert
       />
@@ -67,7 +66,7 @@ const scrollPastHero = () => {
       :style="{ top: `${topOffset * 0.35}px` }"
     >
       <img alt="logo InsaLan" class="logo" src="../assets/images/logo_wide.png">
-      <h1 class="text-shadow u-bold u-text-center text-6xl">
+      <h1 class="u-color-always-light u-bold u-text-center u-huge-text">
         {{ eventText }}
       </h1>
       <div id="next" class="u-mt-2 hero-btn" @click="scrollPastHero()" @keydown="scrollPastHero()">
@@ -91,6 +90,18 @@ const scrollPastHero = () => {
 </template>
 
 <style scoped layer="override">
+.h-screen {
+  height: 100vh;
+}
+
+.video {
+  aspect-ratio: 16 / 9;
+  min-height: 100%;
+  flex-grow: 1;
+  object-fit: cover;
+  filter: blur(8px);
+}
+
 .rounded-bottom {
   border-bottom-left-radius: var(--radius);
   border-bottom-right-radius: var(--radius);
@@ -99,12 +110,69 @@ const scrollPastHero = () => {
 
 .logo {
   width: 42rem;
-  transition: width 0.6s;
 }
 
-.logo:hover {
-  width: 46rem;
-  transition: width 0.6s;
+@media (prefers-reduced-motion: no-preference) {
+  .logo {
+    /* transition: width 0.6s;
+    animation: expand 2s ease; */
+    animation: boing 0.9s ease;
+  }
+
+  /* @keyframes expand {
+    0% {
+      width: 0;
+    }
+    50% {
+      width: 50rem;
+    }
+    100% {
+      width: 42rem;
+    }
+  } */
+
+  .logo:hover {
+    /* width: 46rem;
+    transition: width 0.6s; */
+    animation: windUp 0.5s ease;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes windUp {
+    0% {
+    transform: scale3d(1, 1, 1);
+    }
+
+    100% {
+    transform: scale3d(1.25, 0.95, 1);
+    }
+  }
+
+  @keyframes boing {
+    0% {
+    /* transform: scale3d(1.25, 0.75, 1); */
+    }
+
+    14% {
+    transform: scale3d(0.75, 1.25, 1);
+    }
+
+    29% {
+    transform: scale3d(1.15, 0.85, 1);
+    }
+
+    50% {
+    transform: scale3d(0.95, 1.05, 1);
+    }
+
+    64% {
+    transform: scale3d(1.05, 0.95, 1);
+    }
+
+    100% {
+    transform: scale3d(1, 1, 1);
+    }
+  }
 }
 
 .hero-btn {

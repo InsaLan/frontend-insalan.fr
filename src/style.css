@@ -9,7 +9,7 @@
   
   Les fichiers individuels peuvent aussi définir des classes CSS spécifiques à
   leurs composants, dans la balise <style scoped>. Pas de style inline avec
-  style="..." directement dans le HTML.
+  style="..." directement dans le HTML (sauf éventuellement pour les fichiers SVG).
 
   *Toutes* les couleurs sont définies ici, en tant que variables CSS. Elles
   peuvent être utilisées dans les classes globales ou locales.
@@ -92,6 +92,23 @@ html {
   font-family: Exo2, serif;
   color: var(--color-text-1);
   background-color: var(--color-bg-1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    animation: fade-in .2s ease-out;
+  }
+
+  @keyframes fade-in {
+    from {
+      transform: translateY(-5px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0px);
+      opacity: 1;
+    }
+  }
 }
 
 @font-face {
@@ -463,6 +480,10 @@ b, .u-bold {
   flex-direction: column;
 }
 
+.l-grow {
+  flex: 1 1 0;
+}
+
 .l-items-main-start {
   justify-content: flex-start;
 }
@@ -485,6 +506,18 @@ b, .u-bold {
 
 .l-items-cross-end {
   align-items: flex-end;
+}
+
+.l-justify-start {
+  justify-items: flex-start;
+}
+
+.l-justify-center {
+  justify-items: center;
+}
+
+.l-justify-end {
+  justify-items: flex-end;
 }
 
 @media (max-width: 70rem) {
@@ -681,6 +714,14 @@ b, .u-bold {
   color: var(--color-error-1);
 }
 
+.u-color-always-light {
+  color: var(--color-dark-text-1);
+}
+
+.u-color-always-dark {
+  color: var(--color-light-text-1);
+}
+
 .u-bg-bg-1 {
   background-color: var(--color-bg-1);
 }
@@ -707,6 +748,14 @@ b, .u-bold {
 
 .u-text-left {
   text-align: left;
+}
+
+.u-big-text {
+  font-size: 1.25rem;
+}
+
+.u-huge-text {
+  font-size: clamp(3rem, 6vw, 4rem);
 }
 
 .u-text-indent p {

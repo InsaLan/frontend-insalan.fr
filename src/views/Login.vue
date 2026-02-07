@@ -62,27 +62,30 @@ const openModal = () => {
         <h1 class="c-title u-m-0">
           Se connecter
         </h1>
-        <a
-          class="l-flex-row l-items-cross-center c-text-btn u-m-0"
-          href="/register"
+        <router-link
+          to="/register"
         >
-          Je n'ai pas de compte
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            class="u-ml-1"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+          <div
+            class="l-flex-row l-items-cross-center c-text-btn u-m-0"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="3"
-              d="M9 19l7-7-7-7"
-            />
-          </svg>
-        </a>
+            Je n'ai pas de compte
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              class="u-ml-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="3"
+                d="M9 19l7-7-7-7"
+              />
+            </svg>
+          </div>
+        </router-link>
       </div>
       <form id="login" @submit.prevent="login_user">
         <FormField v-slot="context" :validations="v$.username" class="l-flex-column">

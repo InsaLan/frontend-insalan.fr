@@ -142,11 +142,11 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
       <div class="flex l-gap-1 rounded-2xl bg-gray-500 p-1 u-text-center text-black">
         <div class="l-flex-column">
           <fa-awesome-icon
-            class="u-ml-1 flex-1"
+            class="u-ml-1 l-grow"
             icon="fa-magnifying-glass"
           />
         </div>
-        <div class="flex-1">
+        <div class="l-grow">
           <label for="search" class="sr-only">Rechercher une inscription</label>
           <input id="search" v-model="search" type="text" class="u-full-width rounded-xl border-2 border-black bg-gray-300 p-0 u-text-center" placeholder="Rechercher une inscription non payé"/>
         </div>
