@@ -33,12 +33,12 @@ const group_details = computed<Group | undefined>(() => get_group_by_id(groups |
     id="groups"
     :class="{ hidden: show_group_details !== 0 }"
   >
-    <h1
+    <div
       v-if="groups?.length === 0"
       class="mt-6 flex l-items-main-center u-text-center text-4xl"
     >
       Les poules ne sont pas disponibles.
-    </h1>
+    </div>
     <div
       v-else
       class="u-m-2 flex flex-wrap l-items-main-center gap-6 md:m-6 lg:m-8 lg:gap-8 2xl:m-9 2xl:gap-10"
@@ -64,9 +64,9 @@ const group_details = computed<Group | undefined>(() => get_group_by_id(groups |
       <button type="button" class="l-items-main-center rounded-md bg-blue-600 px-3 u-py-1 u-text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500" @click="show_group_details = 0">
         <fa-awesome-icon icon="fa-solid fa-arrow-left"/> Retour
       </button>
-      <h1 class="u-text-center text-3xl font-black">
+      <div class="u-text-center text-3xl font-black">
         {{ group_details?.name }}
-      </h1>
+      </div>
     </nav>
     <div class="l-flex-column l-items-main-center gap-10 lg:flex-row lg:gap-3">
       <div class="flex lg:w-1/2">
@@ -82,9 +82,9 @@ const group_details = computed<Group | undefined>(() => get_group_by_id(groups |
           v-for="matchs in get_matchs_per_round(group_details?.matchs ?? []).reverse()"
           :key="matchs[0].id"
         >
-          <h1 class="u-text-center text-3xl font-black">
+          <div class="u-text-center text-3xl font-black">
             Tour {{ matchs[0].round_number }}
-          </h1>
+          </div>
           <div
             class="flex flex-wrap l-items-cross-center l-items-main-center"
           >

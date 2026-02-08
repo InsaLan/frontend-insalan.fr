@@ -59,22 +59,18 @@ const handleSubmit = async () => {
 <template>
   <Modal>
     <template #icon>
-      <fa-awesome-icon class="m-auto color-correct-1" icon="fa-solid fa-leaf"/>
+      <fa-awesome-icon class="u-color-correct-1" icon="fa-solid fa-leaf"/>
     </template>
     <template #title>
-      <h3>
-        Hello
-      </h3>
+      Estimation de l’impact environnemental de la LAN
     </template>
     <template #body>
-      <p class="u-mt-1 max-w-2xl u-text-justify">
-        Ce formulaire est facultatif, mais votre réponse nous serait très utile !
-        En partageant <span class="u-bold">anonymement</span> votre ville de départ et le moyen
-        de transport que vous comptez utiliser pour venir à la LAN, vous nous aidez à mieux
-        estimer l’impact environnemental de l’évènement et à l’améliorer chaque année. Merci d’avance !
-      </p>
-      <form @submit.prevent="handleSubmit">
-        <FormField v-slot="context" :validations="v$.city" class="u-mt-1 l-flex-column">
+      Ce formulaire est facultatif, mais votre réponse nous serait très utile !
+      En partageant <b>anonymement</b> votre ville de départ et le moyen
+      de transport que vous comptez utiliser pour venir à la LAN, vous nous aidez à mieux
+      estimer l’impact environnemental de l’évènement et à l’améliorer chaque année. Merci d’avance !
+      <form class="u-mt-2" @submit.prevent="handleSubmit">
+        <FormField :validations="v$.city">
           <label for="city">Ville</label>
           <input
             id="city"
@@ -83,18 +79,14 @@ const handleSubmit = async () => {
             name="city"
             placeholder="Nantes, Rennes, Paris..."
             required
-            class="border-2 bg-theme-bg"
-            :class="{ error: context.invalid }"
           />
         </FormField>
-        <FormField v-slot="context" :validations="v$.transportationMethod" class="u-mt-1 l-flex-column">
+        <FormField :validations="v$.transportationMethod">
           <label for="transportation_method">Méthode de transport</label>
           <select
             id="transportation_method"
             v-model="form_data.transportationMethod"
             name="transportation_method"
-            class="border-2 bg-inherit"
-            :class="{ error: context.invalid }"
             @blur="v$.transportationMethod.$touch"
           >
             <option

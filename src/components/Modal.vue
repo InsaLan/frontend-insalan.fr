@@ -1,69 +1,76 @@
+<script setup lang="ts">
+import { getCurrentInstance } from 'vue';
+
+const instance = getCurrentInstance();
+
+// To make the modal closable, simply add an @close event listener to the component.
+
+const closable = !!instance?.vnode.props?.onClose;
+
+const emit = defineEmits(['close']);
+
+const close = () => {
+  if (closable) {
+    emit('close');
+  }
+};
+</script>
+
 <template>
-  <div aria-labelledby="modal-title" aria-modal="true" class="l-relative-position z-[60]" role="dialog">
-    <div class="fixed inset-0 bg-gray-900/75 transition-opacity"/>
-    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-      <div class="flex min-h-full items-end l-items-main-center u-p-2 u-text-center sm:items-center sm:p-0">
-        <div class="l-relative-position overflow-hidden text-left transition-all sm:my-8 sm:max-w-[75%] c-card-bg-2">
-          <div class="bg-theme-bg u-px-2 u-pb-2 pt-5 sm:p-6 sm:pb-4">
-            <div class="sm:flex sm:items-start">
-              <div class="mt-3 u-full-width u-text-center sm:mt-0 sm:text-left">
-                <div class="l-flex-row">
-                  <slot name="icon">
-                    <div class="mx-auto flex size-12 shrink-0 l-items-cross-center l-items-main-center rounded-full bg-red-300 sm:mx-0 sm:size-10">
-                      <svg
-                        aria-hidden="true"
-                        class="size-6 text-red-600"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </div>
-                  </slot>
-                  <div class="u-ml-1 l-flex-column u-full-width l-items-main-center">
-                    <slot name="title">
-                      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-                        Default title
-                      </h3>
-                    </slot>
-                  </div>
-                </div>
-                <div class="min-w-64">
-                  <slot name="body">
-                    <div class="u-mt-1">
-                      <p class="text-sm text-gray-300">
-                        This is the default body.
-                      </p>
-                    </div>
-                  </slot>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="flex u-full-width l-items-cross-center l-items-main-center l-gap-2">
-            <slot name="buttons">
-              <button
-                class="c-btn-bg-3"
-                type="button"
-              >
-                Cancel
-              </button>
-              <button
-                class="c-btn-secondary"
-                type="button"
-              >
-                Continue
-              </button>
-            </slot>
-          </div>
-        </div>
+  <div class="wrapper l-flex-column l-items-cross-center l-items-main-center u-p-2" aria-modal="true" role="dialog" tabindex="0" @keyup.esc="close">
+    <div class="backdrop l-absolute-position" @click="close" @keyup="close"/>
+
+    <div class="modal-card c-card-bg-2 l-relative-position l-flex-column l-gap-2 u-full-width">
+      <div class="l-flex-row l-items-cross-center l-gap-2 u-full-width u-text-left u-pl-2">
+        <slot name="icon"/>
+        <h2 class="l-grow u-m-1 u-mr-2">
+          <slot name="title">
+            Default title
+          </slot>
+        </h2>
+        <button v-if="closable" type="button" class="close-button c-image-btn u-m-2" aria-label="Close" @click="close" @keyup.enter="close">
+          <svg xmlns="http://www.w3.org/2000/svg" style="height:1.8rem; fill:var(--color-text-2);" viewBox="0 0 24 24">
+            <path d="M18.3 5.71c-.39-.39-1.02-.39-1.41 0L12 10.59 7.11 5.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41L10.59 12 5.7 16.89c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 13.41l4.89 4.89c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="u-full-width u-px-2 body">
+        <slot name="body">
+          <p>Default body content.</p>
+        </slot>
+      </div>
+
+      <div class="l-flex-row l-items-main-end l-gap-2 u-full-width">
+        <slot name="buttons"/>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+}
+
+.backdrop {
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  transition: opacity 0.2s;
+}
+
+.modal-card {
+  max-width: 50rem;
+}
+
+.body {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.close-button {
+  align-self: flex-start;
+}
+</style>

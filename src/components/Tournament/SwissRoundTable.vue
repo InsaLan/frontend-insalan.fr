@@ -15,13 +15,13 @@ const roundCount = computed(() => 2 * swiss.min_score - 1);
 
 <template>
   <div class="grid size-full gap-x-10 gap-y-5" :style="{ 'grid-template-columns': `repeat(${roundCount}, minmax(18rem, 1fr))` }">
-    <h1
+    <div
       v-for="round_idx in roundCount"
       :key="round_idx"
       class="u-text-center text-3xl"
     >
       Tour {{ round_idx }}
-    </h1>
+    </div>
     <div
       v-for="(round_matchs, round_idx) in groupBy(swiss.matchs, 'round_number')"
       :key="round_idx"

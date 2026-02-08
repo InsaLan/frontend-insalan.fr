@@ -298,16 +298,12 @@ const closeModal = () => {
     v-if="showModal"
   >
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Sélection des places
-      </h3>
+      Sélection des Places
     </template>
     <template #body>
-      <p class="u-mt-1">
-        Êtes vous sûr de vouloir sélectionner ces places ?
-        <br/>
-        Vous pourrez les modifier jusqu'à la fin des inscription
-      </p>
+      Êtes vous sûr·e de vouloir sélectionner ces places ?
+      <br/><br/>
+      Vous pourrez les modifier jusqu'à la fin des inscriptions.
     </template>
     <template #buttons>
       <button

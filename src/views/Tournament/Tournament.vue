@@ -37,7 +37,7 @@ await getPrivateTournaments();
     </div>
   </div>
   <div v-if="Object.keys(privateTournamentsList).length > 0">
-    <h1 class="c-title">
+    <h1>
       Tournois privés
     </h1>
     <div class="grid u-full-width l-gap-2 u-px-2 md:grid-cols-2 xl:grid-cols-3">

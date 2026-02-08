@@ -98,7 +98,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
 </script>
 
 <template>
-  <h1 class="c-title">
+  <h1>
     Liste des exports
   </h1>
   <div class="mb-6 u-mt-1 l-flex-column u-px-2">
@@ -236,19 +236,11 @@ Object.values(timeslotList.value).forEach((timeslot) => {
   </div>
 
   <Modal v-if="exportToDelete">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <div/>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Supprimer un export
-      </h3>
+      Supprimer un export
     </template>
     <template #body>
-      <p class="u-mt-1 max-w-sm">
-        Voulez-vous supprimer l'export du <span class="u-underline">{{ frenchFormatFromDate(new Date(exportToDelete.created_at)) }}</span> ?
-      </p>
+      Voulez-vous supprimer l'export du <span class="u-underline">{{ frenchFormatFromDate(new Date(exportToDelete.created_at)) }}</span> ?
     </template>
     <template #buttons>
       <button

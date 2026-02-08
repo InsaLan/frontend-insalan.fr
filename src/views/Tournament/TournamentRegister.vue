@@ -225,7 +225,6 @@ const handleCloseTravelFormModal = () => {
         >
           <FormField
             v-if="create && !soloGame"
-            v-slot="context"
             :validations="v$.team"
             class="l-flex-column text-xl"
           >
@@ -236,7 +235,6 @@ const handleCloseTravelFormModal = () => {
               id="team"
               v-model="register_form.team"
               class="text-black"
-              :class="{ error: context.invalid }"
               placeholder="Équipe 1"
               type="text"
               required
@@ -245,7 +243,6 @@ const handleCloseTravelFormModal = () => {
           </FormField>
           <FormField
             v-else-if="create && soloGame"
-            v-slot="context"
             :validations="v$.name_in_game"
             class="l-flex-column text-xl"
           >
@@ -256,7 +253,6 @@ const handleCloseTravelFormModal = () => {
               id="name_in_game"
               v-model="register_form.name_in_game"
               class="text-black disabled:opacity-75"
-              :class="{ error: context.invalid }"
               :disabled="register_form.role === 'manager'"
               placeholder="Pseudo"
               type="text"
@@ -266,7 +262,6 @@ const handleCloseTravelFormModal = () => {
           </FormField>
           <FormField
             v-else
-            v-slot="context"
             :validations="v$.team"
             class="l-flex-column text-xl"
           >
@@ -276,7 +271,6 @@ const handleCloseTravelFormModal = () => {
             <select
               id="teams"
               v-model="register_form.team"
-              :class="{ error: context.invalid }"
               class="text-black"
               required
             >
@@ -291,7 +285,6 @@ const handleCloseTravelFormModal = () => {
           <div v-if="create && soloGame"/> <!-- for padding -->
           <FormField
             v-else
-            v-slot="context"
             :validations="v$.name_in_game"
             class="l-flex-column text-xl"
           >
@@ -302,7 +295,6 @@ const handleCloseTravelFormModal = () => {
               id="name_in_game"
               v-model="register_form.name_in_game"
               class="text-black disabled:opacity-75"
-              :class="{ error: context.invalid }"
               :disabled="register_form.role === 'manager'"
               placeholder="Pseudo"
               type="text"
@@ -315,7 +307,6 @@ const handleCloseTravelFormModal = () => {
               isPrivate && privateTournamentsList[id].password
                 || !(isPrivate)
             "
-            v-slot="context"
             :validations="v$.password"
             class="l-flex-column text-xl"
           >
@@ -329,7 +320,6 @@ const handleCloseTravelFormModal = () => {
                 id="pwd"
                 v-model="register_form.password"
                 class="size-full text-black"
-                :class="{ error: context.invalid }"
                 :type="view_password ? 'text' : 'password'"
                 required
                 @blur="v$.password.$touch"
@@ -364,7 +354,6 @@ const handleCloseTravelFormModal = () => {
             v-if="
               !isPrivate
             "
-            v-slot="context"
             :validations="v$.role"
             class="l-flex-column text-xl"
           >
@@ -374,7 +363,6 @@ const handleCloseTravelFormModal = () => {
             <select
               id="role"
               v-model="register_form.role"
-              :class="{ error: context.invalid }"
               class="text-black"
               required
             >
@@ -397,7 +385,6 @@ const handleCloseTravelFormModal = () => {
           <li>Apporter son propre matériel <b>filaire </b></li>
         </ul>
         <FormField
-          v-slot="context"
           :validations="v$.accept_rules"
           class="l-flex-column self-center text-3xl"
         >
@@ -407,7 +394,6 @@ const handleCloseTravelFormModal = () => {
             <input
               id="check"
               v-model="register_form.accept_rules"
-              :class="{ error: context.invalid }"
               type="checkbox"
               required
             />
@@ -452,33 +438,32 @@ const handleCloseTravelFormModal = () => {
   </div>
 
   <Modal v-if="open_modal">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 v-if="create" id="open_modal-title" class="text-white-900 text-base font-semibold leading-6">
+      <div v-if="create">
         Inscription de l'équipe {{ register_form.team }}
-      </h3>
-      <h3 v-else id="open_modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Inscription de {{ register_form.name_in_game }} dans l'équipe
-        {{ selected_team?.name }}
-      </h3>
+      </div>
+      <div v-else>
+        Inscription de {{ register_form.name_in_game }} dans l'équipe {{ selected_team?.name }}
+      </div>
     </template>
     <template #body>
-      <div v-if="create" class="u-p-2 u-text-justify">
+      <div v-if="create">
         L'inscription de votre équipe {{ register_form.team }} à bien été enregistrée. Il ne vous reste plus qu'à
         transmettre le lien suivant à vos coéquipiers⋅ères/managers⋅euses pour
-        qu'ils puissent rejoindre votre équipe : <br>
+        qu'ils puissent rejoindre votre équipe :
+        <br><br>
         <a
           :href="`${host}/tournament/${tournament?.id}/register?team=${selected_team?.id}${register_form.password ? `&pwd=${register_form.password}` : ''}`"
-          class="text-[#62d1ff] u-underline hover:text-blue-600"
+          class="c-link"
         >
           {{ `${host}/tournament/${tournament?.id}/register?team=${selected_team?.id}${register_form.password ? `&pwd=${register_form.password}` : ''}` }}
-        </a> <br>
+        </a>
+        <br><br>
         Vous pouvez dès à présent payer votre inscription ou bien revenir le faire plus tard.
       </div>
-      <div v-else class="u-p-2 u-text-justify">
-        Votre inscription dans l'équipe {{ selected_team?.name }} à bien été enregistrée. <br>
+      <div v-else>
+        Votre inscription dans l'équipe {{ selected_team?.name }} à bien été enregistrée.
+        <br><br>
         Vous pouvez dès à présent payer votre inscription ou bien revenir le faire plus tard.
       </div>
     </template>
@@ -502,20 +487,13 @@ const handleCloseTravelFormModal = () => {
 
   <!-- Simple modal with a loading text for the payment -->
   <Modal v-if="modal_payment">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="open_modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Paiement
-      </h3>
+      Paiement
     </template>
     <template #body>
-      <div class="u-p-2 u-text-justify">
-        Votre inscription a été ajoutée au panier.
-        <br>
-        Vous pouvez retrouver votre panier depuis votre compte.
-      </div>
+      Votre inscription a été ajoutée au panier.
+      <br><br>
+      Vous pouvez retrouver votre panier depuis votre compte.
     </template>
     <template #buttons>
       <button

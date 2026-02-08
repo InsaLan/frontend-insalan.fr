@@ -18,11 +18,11 @@ const { tourney_teams, soloGame } = storeToRefs(tournamentStore);
 
 <template>
   <section id="teams">
-    <h1 v-if="props.tournament?.teams.length === 0" class="mt-6 u-text-center text-4xl">
+    <div v-if="props.tournament?.teams.length === 0" class="mt-6 u-text-center text-4xl">
       Aucune équipe inscrite
-    </h1>
+    </div>
     <div v-if="tourney_teams?.validated_teams.length > 0">
-      <h1 class="c-title">
+      <h1>
         Équipes validées (
         {{ tourney_teams.validated_teams.length }}/{{ props.tournament.max_team_thresholds[
           props.tournament.current_threshold_index
@@ -93,7 +93,7 @@ const { tourney_teams, soloGame } = storeToRefs(tournamentStore);
       </div>
     </div>
     <div v-if="tourney_teams?.waiting_validation_teams.length > 0">
-      <h1 class="c-title">
+      <h1>
         Équipes en attente du palier ({{ tourney_teams.waiting_validation_teams.length }})
       </h1>
       <span class="u-mb-2 block u-text-center text-sm text-gray-600 dark:text-gray-400">
@@ -109,7 +109,7 @@ const { tourney_teams, soloGame } = storeToRefs(tournamentStore);
       </div>
     </div>
     <div v-if="tourney_teams?.non_validated_teams.length > 0">
-      <h1 class="c-title">
+      <h1>
         Équipes en cours de validation ({{ tourney_teams.non_validated_teams.length }})
       </h1>
       <span class="u-mb-2 block u-text-center text-sm text-gray-600 dark:text-gray-400">

@@ -335,9 +335,7 @@ watchEffect(() => {
 
   <Modal v-if="modal_open">
     <template #title>
-      <h3>
-        Suppression de la {{ group.name }}
-      </h3>
+      Suppression de la {{ group.name }}
     </template>
     <template #body>
       La {{ group.name }} va être supprimée ainsi que tous les matchs qui lui sont liés.

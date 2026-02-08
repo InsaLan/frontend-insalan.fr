@@ -5,7 +5,6 @@ const showPassword = ref(false);
 
 interface Props {
   id?: string;
-  error: boolean;
   placeholder?: string;
   ariaLabel?: string;
   required?: boolean;
@@ -31,7 +30,6 @@ const onClick = (): void => {
 
 <template>
   <div
-    :class="{ error }"
     class="l-flex-row"
   >
     <input

@@ -54,45 +54,38 @@ const validateModal = async () => {
 </script>
 
 <template>
-  <Modal v-if="modal_open" @close="() => {}">
-    <template #icon>
-      <div/>
-    </template>
+  <Modal v-if="modal_open">
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Confirmez votre nom
-      </h3>
+      Confirmez votre nom
     </template>
     <template #body>
       Nous avons besoin de votre nom pour vérifier votre identité à l'entrée
-      <FormField v-slot="context" :validations="v$.first_name" class="l-flex-column">
-        <label for="first_name">
-          Prénom
-        </label>
-        <input
-          id="first_name"
-          v-model="name_form.first_name"
-          :class="{ error: context.invalid }"
-          class="border-2 bg-theme-bg"
-          placeholder="Jean"
-          type="text"
-          @blur="v$.first_name.$touch"
-        />
-      </FormField>
-      <FormField v-slot="context" :validations="v$.last_name" class="l-flex-column">
-        <label for="last_name">
-          Nom
-        </label>
-        <input
-          id="last_name"
-          v-model="name_form.last_name"
-          :class="{ error: context.invalid }"
-          class="border-2 bg-theme-bg"
-          placeholder="Dupont"
-          type="text"
-          @blur="v$.last_name.$touch"
-        />
-      </FormField>
+      <form>
+        <FormField :validations="v$.first_name" class="l-flex-column">
+          <label for="first_name">
+            Prénom
+          </label>
+          <input
+            id="first_name"
+            v-model="name_form.first_name"
+            placeholder="Jean"
+            type="text"
+            @blur="v$.first_name.$touch"
+          />
+        </FormField>
+        <FormField :validations="v$.last_name" class="l-flex-column">
+          <label for="last_name">
+            Nom
+          </label>
+          <input
+            id="last_name"
+            v-model="name_form.last_name"
+            placeholder="Dupont"
+            type="text"
+            @blur="v$.last_name.$touch"
+          />
+        </FormField>
+      </form>
     </template>
     <template #buttons>
       <button

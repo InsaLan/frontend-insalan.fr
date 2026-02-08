@@ -212,13 +212,13 @@ const create_round = async () => {
         class="grid size-full gap-x-10 gap-y-5"
         :style="{ 'grid-template-columns': `repeat(${roundCounts[swiss_idx]}, minmax(18rem,1fr))` }"
       >
-        <h1
+        <div
           v-for="round_idx in roundCounts[swiss_idx]"
           :key="round_idx"
           class="u-text-center text-3xl"
         >
           Tour {{ round_idx }}
-        </h1>
+        </div>
         <div
           v-for="(round_matchs, round_idx) in groupBy(swiss.matchs, 'round_number')"
           :key="round_idx"
@@ -270,24 +270,15 @@ const create_round = async () => {
   <Modal
     v-if="modal_open && modal_type === 'generate_swiss'"
   >
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3
-        class="text-white-900 text-base font-semibold leading-6"
-      >
-        Génération la ronde suisse
-      </h3>
+      Génération la ronde suisse
     </template>
     <template #body>
       <form
         id="generate_swiss_form"
-        class="u-m-2 l-flex-column l-gap-2"
         @submit.prevent="generate_swiss"
       >
         <FormField
-          v-slot="context"
           :validations="v$.min_score"
         >
           <label for="min_score">
@@ -299,13 +290,10 @@ const create_round = async () => {
             type="number"
             name="min_score"
             aria-label="Score for qualification"
-            class="u-ml-1 bg-inherit"
-            :class="{ error: context.invalid }"
             @blur="v$.min_score.$touch"
           />
         </FormField>
         <FormField
-          v-slot="context"
           :validations="v$.use_seeding"
         >
           <label for="seeding">
@@ -314,15 +302,12 @@ const create_round = async () => {
           <input
             id="seeding"
             v-model="swiss_data.use_seeding"
-            :class="{ error: context.invalid }"
             aria-label="Use team seeding"
-            class="u-ml-1 bg-inherit"
             type="checkbox"
             @blur="v$.use_seeding.$touch"
           >
         </FormField>
         <FormField
-          v-slot="context"
           :validations="v$.bo_type"
         >
           <label for="bo_type">
@@ -332,8 +317,6 @@ const create_round = async () => {
             id="bo_type"
             v-model="swiss_data.bo_type"
             name="bo_type"
-            class="u-ml-1 bg-inherit"
-            :class="{ error: context.invalid }"
             @blur="v$.bo_type.$touch"
           >
             <option
@@ -345,7 +328,7 @@ const create_round = async () => {
             </option>
           </select>
         </FormField>
-        <button class="hidden" type="submit"/>
+        <button class="u-hidden" type="submit"/>
       </form>
     </template>
     <template #buttons>
@@ -370,11 +353,7 @@ const create_round = async () => {
     v-if="modal_open && modal_type === 'delete_swiss'"
   >
     <template #title>
-      <h3
-        class="text-white-900 text-base font-semibold leading-6"
-      >
-        Supprimer la ronde suisse
-      </h3>
+      Supprimer la ronde suisse
     </template>
     <template #body>
       La ronde suisse va être supprimée ainsi que les matchs qui lui sont liés.
@@ -398,13 +377,8 @@ const create_round = async () => {
   </Modal>
 
   <Modal v-if="modal_open && modal_type === 'launch_round'">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 class="text-white-900 text-base font-semibold leading-6">
-        Lancer les matchs d'un tour
-      </h3>
+      Lancer les matchs d'un tour
     </template>
     <template #body>
       <form
@@ -413,7 +387,6 @@ const create_round = async () => {
         @submit.prevent="launch_round_matchs"
       >
         <FormField
-          v-slot="context"
           :validations="v_round$.round_to_launch"
         >
           <label for="round">
@@ -425,8 +398,6 @@ const create_round = async () => {
             type="number"
             name="round"
             aria-label="Round number"
-            class="u-ml-1 bg-inherit"
-            :class="{ error: context.invalid }"
             @blur="v_round$.round_to_launch.$touch"
           >
         </FormField>
@@ -451,26 +422,18 @@ const create_round = async () => {
   </Modal>
 
   <Modal v-if="modal_open && modal_type === 'create_round'">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 class="text-white-900 text-base font-semibold leading-6">
-        Générer les matchs d'un tour.
-        <br>
-        Les résultats du tour précédant vont être utilisés pour produire les nouveaux matchs.
-        <br>
-        Les rencontres au sein d'un même groupe de score sont déterminé aléatoirement.
-      </h3>
+      Générer les matchs d'un tour
     </template>
     <template #body>
+      Les résultats du tour précédant vont être utilisés pour produire les nouveaux matchs.
+      <br><br>
+      Les rencontres au sein d'un même groupe de score sont déterminé aléatoirement.
       <form
         id="create_groups_form"
-        class="u-m-2 l-flex-column l-gap-2"
         @submit.prevent="create_round"
       >
         <FormField
-          v-slot="context"
           :validations="v_create_round$.round_to_create"
         >
           <label for="round">
@@ -482,8 +445,6 @@ const create_round = async () => {
             type="number"
             name="round"
             aria-label="Round number"
-            class="u-ml-1 bg-inherit"
-            :class="{ error: context.invalid }"
             @blur="v_create_round$.round_to_create.$touch"
           >
         </FormField>

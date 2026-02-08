@@ -1,6 +1,6 @@
 <template>
   <div class="u-m-body l-flex-column l-items-cross-center">
-    <h1 class="c-title">
+    <h1>
       404
     </h1>
     <h2 class="u-big-text u-mb-2">

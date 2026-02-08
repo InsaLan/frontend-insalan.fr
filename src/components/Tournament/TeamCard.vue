@@ -15,10 +15,10 @@ defineProps<{
 
 <template>
   <div v-if="typeof team !== 'number'" class="overflow-hidden text-ellipsis rounded bg-cyan-500 u-p-2">
-    <h1 class="text-shadow u-text-center text-3xl font-black">
+    <div class="text-shadow u-text-center text-3xl font-black">
       {{ team.name }}
       <img v-if="team.validated" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="inline-block size-6"/>
-    </h1>
+    </div>
     <ul
       class="u-ml-2 list-disc text-xl"
     >

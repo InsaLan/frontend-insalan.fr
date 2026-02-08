@@ -120,7 +120,6 @@ const save_seeds = async () => {
           </td>
           <td align="center" class="border p-1">
             <FormField
-              v-slot="context"
               :validations="v$[team.id]"
               class="l-flex-column"
             >
@@ -129,7 +128,7 @@ const save_seeds = async () => {
                 v-model="seeding_form[team.id]"
                 type="number"
                 class="border-2 bg-inherit u-text-center"
-                :class="{ error: context.invalid, 'text-orange-300': team.seed !== seeding_form[team.id], 'text-red-500': context.invalid }"
+                :class="{ 'text-orange-300': team.seed !== seeding_form[team.id] }"
                 @blur="v$[team.id].$touch"
               >
             </FormField>

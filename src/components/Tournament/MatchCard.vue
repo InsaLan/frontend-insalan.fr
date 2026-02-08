@@ -298,7 +298,6 @@ const open_edition = () => {
       <FormField
         v-for="idx in teamPerMatch"
         :key="idx"
-        v-slot="context"
         :validations="v$.score[match_info.teams[idx - 1]]"
         class="l-flex-column"
       >
@@ -331,7 +330,6 @@ const open_edition = () => {
             v-model.number="match_info.score[match_info.teams[idx - 1]]"
             type="number"
             name="score"
-            :class="{ error: context.invalid }"
             class="w-10 bg-inherit p-1 text-right"
             @blur="v$.score[match_info.teams[idx - 1]].$touch"
           />

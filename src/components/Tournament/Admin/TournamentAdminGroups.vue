@@ -209,24 +209,16 @@ const delete_group_matchs = async () => {
   </div>
 
   <Modal v-if="modal_open && modal_type === 'create_groups'">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 class="text-white-900 text-base font-semibold leading-6">
-        Création des Poules
-      </h3>
+      Création des poules
     </template>
     <template #body>
       <form
         id="create_groups_form"
-        class="u-m-2 l-flex-column l-gap-2"
         @submit.prevent="create_groups"
       >
         <FormField
-          v-slot="context"
           :validations="v$.count"
-          class="l-flex-column"
         >
           <div>
             <label for="group_count">
@@ -235,18 +227,14 @@ const delete_group_matchs = async () => {
             <input
               id="group_count"
               v-model="group_data.count"
-              :class="{ error: context.invalid }"
               aria-label="Group count"
-              class="u-ml-1 bg-inherit"
               type="number"
               @blur="v$.count.$touch"
             >
           </div>
         </FormField>
         <FormField
-          v-slot="context"
           :validations="v$.team_per_group"
-          class="l-flex-column"
         >
           <div>
             <label for="team_per_group">
@@ -255,27 +243,21 @@ const delete_group_matchs = async () => {
             <input
               id="team_per_group"
               v-model="group_data.team_per_group"
-              :class="{ error: context.invalid }"
               aria-label="Team per group"
-              class="u-ml-1 bg-inherit"
               type="number"
               @blur="v$.team_per_group.$touch"
             >
           </div>
         </FormField>
         <FormField
-          v-slot="context"
           :validations="v$.names"
-          class="l-flex-column"
         >
           <label for="names">
             Noms des poules (Liste de noms séparées par des virgules)
           </label>
           <input
             id="names"
-            :class="{ error: context.invalid }"
             aria-label="Group names"
-            class="u-ml-1 bg-inherit"
             type="text"
             :value="group_data.names.join(',')"
             @input="update_names"
@@ -283,9 +265,7 @@ const delete_group_matchs = async () => {
           >
         </FormField>
         <FormField
-          v-slot="context"
           :validations="v$.use_seeding"
-          class="l-flex-column"
         >
           <div>
             <label for="seeding">
@@ -294,15 +274,13 @@ const delete_group_matchs = async () => {
             <input
               id="seeding"
               v-model="group_data.use_seeding"
-              :class="{ error: context.invalid }"
               aria-label="Use team seeding"
-              class="u-ml-1 bg-inherit"
               type="checkbox"
               @blur="v$.use_seeding.$touch"
             >
           </div>
         </FormField>
-        <button class="hidden" type="submit"/>
+        <button class="u-hidden" type="submit"/>
       </form>
     </template>
     <template #buttons>
@@ -325,9 +303,7 @@ const delete_group_matchs = async () => {
 
   <Modal v-if="modal_open && modal_type === 'delete_groups'">
     <template #title>
-      <h3>
-        Supprimer les poules
-      </h3>
+      Suppression des poules
     </template>
     <template #body>
       Les poules vont être supprimées ainsi que les matchs qui leurs sont liés.
@@ -351,20 +327,13 @@ const delete_group_matchs = async () => {
   </Modal>
 
   <Modal v-if="modal_open && modal_type === 'create_matchs'">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3>
-        Créer les matchs
-      </h3>
+      Créer les matchs
     </template>
     <template #body>
       Les matchs des poules vont être créés.
 
-      <div
-        class="flex l-items-cross-center l-gap-2 u-pt-1"
-      >
+      <form>
         <label for="bo_type">
           Type de BO
         </label>
@@ -372,7 +341,6 @@ const delete_group_matchs = async () => {
           id="bo_type"
           v-model="bo_type"
           name="bo_type"
-          class="bg-inherit"
         >
           <option
             v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"
@@ -382,7 +350,7 @@ const delete_group_matchs = async () => {
             {{ value === '0' ? 'Classement' : `BO ${value}` }}
           </option>
         </select>
-      </div>
+      </form>
     </template>
     <template #buttons>
       <button
@@ -404,12 +372,10 @@ const delete_group_matchs = async () => {
 
   <Modal v-if="modal_open && modal_type === 'delete_matchs'">
     <template #title>
-      <h3>
-        Supprimer les matchs
-      </h3>
+      Supprimer les matchs
     </template>
     <template #body>
-      Les matchs des poules vont êtres supprimés si aucun match n'est en cours ou terminés.
+      Les matchs des poules vont être supprimés si aucun match n'est en cours ou terminé.
     </template>
     <template #buttons>
       <button
@@ -430,22 +396,15 @@ const delete_group_matchs = async () => {
   </Modal>
 
   <Modal v-if="modal_open && modal_type === 'launch_round'">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 class="text-white-900 text-base font-semibold leading-6">
-        Lancer les matchs d'un tour
-      </h3>
+      Lancer les matchs d'un tour
     </template>
     <template #body>
       <form
         id="create_groups_form"
-        class="u-m-2 l-flex-column l-gap-2"
         @submit.prevent="launch_round_matchs"
       >
         <FormField
-          v-slot="context"
           :validations="v_round$.round"
         >
           <label for="round">
@@ -457,8 +416,6 @@ const delete_group_matchs = async () => {
             type="number"
             name="round"
             aria-label="Round number"
-            class="u-ml-1 bg-inherit"
-            :class="{ error: context.invalid }"
             @blur="v_round$.round.$touch"
           >
         </FormField>

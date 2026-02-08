@@ -20,13 +20,13 @@ export const sameAs = <E = unknown>(equalTo: E | Ref<E>, otherName: string = 'ch
 export const minLength = (min: number | Ref<number>) => helpers.withMessage(
   ({
     $params,
-  }) => `La longueur doit être supérieur à ${$params.min}`,
+  }) => `La longueur doit être supérieure à ${$params.min}`,
   vminLength(min),
 );
 export const maxLength = (max: number | Ref<number>) => helpers.withMessage(
   ({
     $params,
-  }) => `La longueur doit être inférieur à ${$params.max}`,
+  }) => `La longueur doit être inférieure à ${$params.max}`,
   vmaxLength(max),
 );
 export const between = (min: number | Ref<number>, max: number | Ref<number>) => helpers.withMessage(
@@ -38,13 +38,13 @@ export const between = (min: number | Ref<number>, max: number | Ref<number>) =>
 export const minValue = (min: number | Ref<number> | string | Ref<string>) => helpers.withMessage(
   ({
     $params,
-  }) => `La valeur doit être supérieur à ${$params.min}`,
+  }) => `La valeur doit être supérieure à ${$params.min}`,
   vminValue(min),
 );
 export const maxValue = (max: number | Ref<number> | string | Ref<string>) => helpers.withMessage(
   ({
     $params,
-  }) => `La valeur doit être inférieur à ${$params.max}`,
+  }) => `La valeur doit être inférieure à ${$params.max}`,
   vmaxValue(max),
 );
 export const integer = helpers.withMessage('Doit être un entier relatif', vinteger);

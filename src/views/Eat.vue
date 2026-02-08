@@ -33,7 +33,7 @@ await fetchNextTimeslots();
 <template>
   <Content class="u-m-body u-mb-4 l-flex-column l-gap-4 u-text-indent" name="Restauration"/>
   <section v-if="sortedTimeslotList.length" class="u-m-body u-mb-4">
-    <h1 class="c-title u-mb-4">
+    <h1 class="u-mb-4">
       Prochains créneaux
     </h1>
     <p>
@@ -46,7 +46,7 @@ await fetchNextTimeslots();
     </ul>
   </section>
   <section>
-    <h1 class="c-title u-mb-4">
+    <h1 class="u-mb-4">
       Pizzas {{ sortedTimeslotList.length ? 'du Prochain Créneau' : '' }}
     </h1>
     <div class="u-full-width l-gap-2 u-px-2 l-grid-3">

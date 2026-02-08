@@ -7,7 +7,7 @@ const store = useContentStore();
 </script>
 
 <template>
-  <h1 class="c-title">
+  <h1>
     L'association InsaLan
   </h1>
   <Content
@@ -32,5 +32,15 @@ const store = useContentStore();
   opacity: 0.15;
   z-index: -1;
   pointer-events: none;
+  animation: fade-in-bg 0.2s ease-out;
+}
+
+@keyframes fade-in-bg {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.15;
+  }
 }
 </style>

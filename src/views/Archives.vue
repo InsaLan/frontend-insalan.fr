@@ -12,7 +12,7 @@ await fetchAllEvents();
 
 <template>
   <div>
-    <h1 class="c-title">
+    <h1>
       Archives
     </h1>
     <div v-if="oldEvents?.length === 0" class="flex l-items-main-center">

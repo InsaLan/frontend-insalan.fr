@@ -39,9 +39,9 @@ const buildYear = BUILD_YEAR;
   </div>
   <section class="u-bg-bg-2 footer-grid">
     <div class="reseaux u-m-1 l-flex-column l-items-cross-center l-items-main-center l-justify-center">
-      <h1 class="reseaux-text u-text-center u-big-text">
+      <div class="reseaux-text u-text-center u-big-text">
         Réseaux
-      </h1>
+      </div>
       <div class="l-flex-row u-full-width l-items-cross-center l-items-main-center l-gap-1">
         <a class="icon-size c-image-btn" href="https://www.instagram.com/insalan_officiel" target="_blank" rel="noopener noreferrer">
           <img src="/src/assets/images/instagram.svg" alt="Logo Instagram">

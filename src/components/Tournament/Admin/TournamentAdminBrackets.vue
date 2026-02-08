@@ -154,7 +154,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
     :key="bracket.id"
     class="mb-5"
   >
-    <h1 class="c-title">
+    <h1>
       Arbre {{ bracket.name }}
       <fa-awesome-icon
         icon="fa-solid fa-trash-can"
@@ -201,11 +201,11 @@ const bracket_round_title = (depth: number, round_idx: number) => {
           v-if="bracket.winner !== null"
           class="bg-yellow-600 u-p-1"
         >
-          <h1
+          <div
             class="text-bold u-text-center text-2xl"
           >
             Vainqueur
-          </h1>
+          </div>
           <p
             class="truncate text-wrap u-text-center text-xl"
           >
@@ -283,11 +283,11 @@ const bracket_round_title = (depth: number, round_idx: number) => {
           v-if="bracket.winner !== null"
           class="bg-yellow-600 u-p-1"
         >
-          <h1
+          <div
             class="text-bold u-text-center text-2xl"
           >
             Vainqueur
-          </h1>
+          </div>
           <p
             class="truncate text-wrap u-text-center text-xl"
           >
@@ -344,24 +344,15 @@ const bracket_round_title = (depth: number, round_idx: number) => {
   <Modal
     v-if="modal_open && modal_type === 'create_bracket'"
   >
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3
-        class="text-white-900 text-base font-semibold leading-6"
-      >
-        Créer un arbre
-      </h3>
+      Créer un arbre
     </template>
     <template #body>
       <form
         id="generate_bracket_form"
-        class="u-m-2 l-flex-column l-gap-2"
         @submit.prevent="create_bracket"
       >
         <FormField
-          v-slot="context"
           :validations="v$.name"
         >
           <label for="bracket_name">
@@ -373,13 +364,10 @@ const bracket_round_title = (depth: number, round_idx: number) => {
             type="text"
             name="bracket_name"
             aria-label="Bracket's name"
-            class="u-ml-1 bg-inherit"
-            :class="{ error: context.invalid }"
             @blur="v$.name.$touch"
           />
         </FormField>
         <FormField
-          v-slot="context"
           :validations="v$.bracket_type"
         >
           <label for="bracket_type">
@@ -388,9 +376,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
           <select
             id="bracket_type"
             v-model="bracket_data.bracket_type"
-            :class="{ error: context.invalid }"
             aria-label="Bracket's type"
-            class="u-ml-1 bg-inherit"
             @blur="v$.bracket_type.$touch"
           >
             <option
@@ -403,7 +389,6 @@ const bracket_round_title = (depth: number, round_idx: number) => {
           </select>
         </FormField>
         <FormField
-          v-slot="context"
           :validations="v$.team_count"
         >
           <label for="bracket_team_count">
@@ -413,14 +398,11 @@ const bracket_round_title = (depth: number, round_idx: number) => {
             id="bracket_team_count"
             v-model.number="bracket_data.team_count"
             name="bracket_team_count"
-            class="u-ml-1 bg-inherit"
             type="number"
-            :class="{ error: context.invalid }"
             @blur="v$.team_count.$touch"
           />
         </FormField>
         <FormField
-          v-slot="context"
           :validations="v$.bo_type"
         >
           <label for="bo_type">
@@ -430,8 +412,6 @@ const bracket_round_title = (depth: number, round_idx: number) => {
             id="bo_type"
             v-model="bracket_data.bo_type"
             name="bo_type"
-            class="u-ml-1 bg-inherit"
-            :class="{ error: context.invalid }"
             @blur="v$.bo_type.$touch"
           >
             <option
@@ -443,7 +423,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
             </option>
           </select>
         </FormField>
-        <button class="hidden" type="submit"/>
+        <button class="u-hidden" type="submit"/>
       </form>
     </template>
     <template #buttons>
@@ -468,11 +448,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
     v-if="modal_open && modal_type === 'delete_bracket'"
   >
     <template #title>
-      <h3
-        class="text-white-900 text-base font-semibold leading-6"
-      >
-        Supprimer l'arbre
-      </h3>
+      Supprimer l'arbre
     </template>
     <template #body>
       L'arbre va être supprimée ainsi que les matchs qui lui sont liés.

@@ -22,9 +22,9 @@ await getOngoingEvents();
   </section>
   <Content id="main_page" name="main_page" class="u-m-body"/>
   <section>
-    <div class="c-title u-my-1">
+    <h1 class="u-my-1">
       Tournois
-    </div>
+    </h1>
     <div v-if="!tournaments_id" class="l-flex-column l-items-main-center">
       Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !
     </div>

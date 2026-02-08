@@ -59,7 +59,7 @@ const openModal = () => {
   <div class="l-flex-column l-items-cross-center u-m-body">
     <div class="l-flex-column l-items-cross-center c-card-bg-2 u-p-4">
       <div class="l-flex-column l-items-cross-center u-mb-2">
-        <h1 class="c-title u-m-0">
+        <h1 class="u-m-0">
           Se connecter
         </h1>
         <router-link
@@ -88,27 +88,25 @@ const openModal = () => {
         </router-link>
       </div>
       <form id="login" @submit.prevent="login_user">
-        <FormField v-slot="context" :validations="v$.username" class="l-flex-column">
+        <FormField :validations="v$.username">
           <label for="username">
             Nom d'utilisateur·rice
           </label>
           <input
             id="username"
             v-model="login_form.username"
-            :class="{ error: context.invalid }"
             placeholder="John doe"
             type="text"
             @blur="v$.username.$touch"
           />
         </FormField>
-        <FormField v-slot="context" :validations="v$.password" class="l-flex-column">
+        <FormField :validations="v$.password">
           <label for="password">
             Mot de passe
           </label>
           <PasswordInput
             id="password"
             v-model="login_form.password"
-            :error="context.invalid"
             :on-blur="v$.password.$touch"
           />
         </FormField>
@@ -122,24 +120,18 @@ const openModal = () => {
     </div>
 
     <Modal v-if="modal_open" @close="closeModal">
-      <template #icon>
-        <div/>
-      </template>
       <template #title>
-        <h3 id="modal-title">
-          Mot de passe oublié ?
-        </h3>
+        Mot de passe oublié
       </template>
       <template #body>
-        <form id="password-reset" class="u-mt-1" @submit.prevent="validateModal">
-          <FormField v-slot="context" :validations="v$_modal.email" class="u-m-1 l-flex-column">
+        <form id="password-reset" @submit.prevent="validateModal">
+          <FormField :validations="v$_modal.email">
             <label for="email">
               Email
             </label>
             <input
               id="email"
               v-model="data.email"
-              :class="{ error: context.invalid }"
               placeholder="John-doe@gmail.com"
               required
               type="text"
