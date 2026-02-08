@@ -186,22 +186,15 @@ const launch_selected_matchs = async () => {
   </div>
 
   <Modal v-if="modal_open && modal_type === 'launch_round'">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 class="text-white-900 text-base font-semibold leading-6">
-        Lancer les matchs d'un tour
-      </h3>
+      Lancer les matchs d'un tour
     </template>
     <template #body>
       <form
         id="create_groups_form"
-        class="u-m-2 l-flex-column l-gap-2"
         @submit.prevent="launch_round_matchs"
       >
         <FormField
-          v-slot="context"
           :validations="v_round$.round_to_launch"
         >
           <label for="round">
@@ -213,8 +206,6 @@ const launch_selected_matchs = async () => {
             type="number"
             name="round"
             aria-label="Round number"
-            class="u-ml-1 bg-inherit"
-            :class="{ error: context.invalid }"
             @blur="v_round$.round_to_launch.$touch"
           >
         </FormField>

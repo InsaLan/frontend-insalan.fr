@@ -47,58 +47,46 @@ const handleImageChange = (event: Event) => {
 
 <template>
   <Modal @close="console.log('close')">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        {{ title }}
-      </h3>
+      {{ title }}
     </template>
     <template #body>
-      <form class="u-mt-1 w-80 sm:w-96" @submit.prevent="validate">
-        <FormField v-slot="context" :validations="v$_pizza.name" class="l-flex-column">
+      <form @submit.prevent="validate">
+        <FormField :validations="v$_pizza.name">
           <label for="pizza-name">Nom</label>
           <input
             id="pizza-name"
             v-model="dataPizza.name"
             type="text"
             required
-            class="border-2 bg-theme-bg"
             placeholder="Nom"
-            :class="{ error: context.invalid }"
           />
         </FormField>
-        <FormField v-slot="context" :validations="v$_pizza.ingredients" class="u-mt-1">
+        <FormField :validations="v$_pizza.ingredients">
           <label for="pizza-ingredients">Ingrédients</label>
           <StringListInput
             id="pizza-ingredients"
             v-model="dataPizza.ingredients"
             label="Ingrédients"
             placeholder="Ajouter un ingrédients"
-            :error="context.invalid"
           />
         </FormField>
-        <FormField v-slot="context" :validations="v$_pizza.ingredients" class="u-mt-1">
+        <FormField :validations="v$_pizza.ingredients">
           <label for="pizza-ingredients">Allergènes</label>
           <StringListInput
             id="pizza-allergens"
             v-model="dataPizza.allergens"
             label="Allergènes"
             placeholder="Ajouter un allergènes"
-            :error="context.invalid"
           />
         </FormField>
-        <div class="u-mt-1 l-flex-column">
-          <label for="pizza-image">Image</label>
-          <input
-            id="pizza-image"
-            class="border-2 border-gray-500 u-p-1"
-            accept="image/*"
-            :onchange="handleImageChange"
-            type="file"
-          />
-        </div>
+        <label for="pizza-image">Image</label>
+        <input
+          id="pizza-image"
+          accept="image/*"
+          :onchange="handleImageChange"
+          type="file"
+        />
       </form>
     </template>
     <template #buttons>

@@ -66,9 +66,9 @@ const scrollPastHero = () => {
       :style="{ top: `${topOffset * 0.35}px` }"
     >
       <img alt="logo InsaLan" class="logo" src="../assets/images/logo_wide.png">
-      <h1 class="u-color-always-light u-bold u-text-center u-huge-text">
+      <div class="u-color-always-light u-bold u-text-center u-huge-text">
         {{ eventText }}
-      </h1>
+      </div>
       <div id="next" class="u-mt-2 hero-btn" @click="scrollPastHero()" @keydown="scrollPastHero()">
         <svg
           aria-hidden="true"

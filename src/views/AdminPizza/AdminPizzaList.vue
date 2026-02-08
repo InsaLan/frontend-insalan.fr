@@ -75,7 +75,7 @@ await fetchAllPizzas();
 </script>
 
 <template>
-  <h1 class="c-title">
+  <h1>
     Liste des Pizzas
   </h1>
   <div class="u-m-2 mb-6 mt-0 flex justify-between l-gap-2">
@@ -146,21 +146,15 @@ await fetchAllPizzas();
   />
 
   <Modal v-if="pizzaToDelete">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <div/>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Supprimer une pizza
-      </h3>
+      Supprimer une pizza
     </template>
     <template #body>
       <p class="u-mt-1 max-w-sm">
         Voulez-vous supprimer la pizza <span class="u-underline">{{ pizzaToDelete.name }}</span> ?
         <br/>
         <br/>
-        Ne supprimez pas une pizza qui pourrait être commandée dans un créneau en cours.
+        <em>Ne supprimez pas une pizza qui pourrait être commandée dans un créneau en cours.</em>
       </p>
     </template>
     <template #buttons>

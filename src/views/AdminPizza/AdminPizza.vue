@@ -378,9 +378,9 @@ const factorise = (pizzas: number[]) => {
     </div>
     <div class="u-m-1 l-flex-column l-grow gap-5 md:flex-row" :class="{ blur: extend }">
       <div class="l-flex-column l-grow">
-        <div class="c-title u-my-1 u-text-center text-white">
+        <h1 class="u-my-1 u-text-center text-white">
           Liste des Pizzas disponibles
-        </div>
+        </h1>
         <form id="add_pizza" class="l-flex-column l-grow gap-5">
           <div class="flex l-gap-1 rounded-2xl bg-gray-500 p-1 u-text-center text-black">
             <div class="l-flex-column">
@@ -437,7 +437,7 @@ const factorise = (pizzas: number[]) => {
         </form>
       </div>
       <div class="l-flex-column l-grow">
-        <div class="c-title u-my-1 rounded-xl u-text-center text-white" :class="{ 'bg-red-600': pizzaCount >= timeslotList[selectedTimeslotId]?.pizza_max }">
+        <h1 class="u-my-1 rounded-xl u-text-center text-white" :class="{ 'bg-red-600': pizzaCount >= timeslotList[selectedTimeslotId]?.pizza_max }">
           Commandes : {{ pizzaCount }} /
           {{ timeslotList[selectedTimeslotId]?.pizza_max }}
           <fa-awesome-icon
@@ -446,7 +446,7 @@ const factorise = (pizzas: number[]) => {
             @click="exportOrders(selectedTimeslotId)"
             @keydown.enter="exportOrders(selectedTimeslotId)"
           />
-        </div>
+        </h1>
         <div class="l-flex-column l-grow gap-5">
           <div class="flex l-gap-1 rounded-2xl bg-gray-500 p-1 u-text-center text-black">
             <div class="l-flex-column">
@@ -538,21 +538,14 @@ const factorise = (pizzas: number[]) => {
   </div>
 
   <Modal v-if="showModal" @close="showModal = false">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Créer un créneau
-      </h3>
+      Créer un créneau
     </template>
     <template #body>
-      <form id="patch-user" class="u-mt-1 l-flex-column md:flex-row" @submit.prevent="validateModal">
+      <form id="patch-user" @submit.prevent="validateModal">
         <div class="">
           <FormField
-            v-slot="context"
             :validations="v$_create.delivery_time"
-            class="u-m-1 l-flex-column"
             label="Date de livraison"
           >
             <label for="delivery_time">
@@ -561,18 +554,14 @@ const factorise = (pizzas: number[]) => {
             <input
               v-model="data_create.delivery_time"
               aria-label="Date de livraison"
-              class="border-2 bg-theme-bg"
               placeholder="2021-01-01 00:00"
               required
               type="text"
-              :class="{ 'border-red-500': context.invalid }"
               @blur="v$_create.delivery_time.$touch"
             />
           </FormField>
           <FormField
-            v-slot="context"
             :validations="v$_create.start"
-            class="u-m-1 l-flex-column"
             label="Début de la commande"
           >
             <label for="start">
@@ -581,18 +570,14 @@ const factorise = (pizzas: number[]) => {
             <input
               v-model="data_create.start"
               aria-label="Début de la commande"
-              class="border-2 bg-theme-bg"
               placeholder="2021-01-01 00:00"
               required
               type="text"
-              :class="{ 'border-red-500': context.invalid }"
               @blur="v$_create.delivery_time.$touch"
             />
           </FormField>
           <FormField
-            v-slot="context"
             :validations="v$_create.end"
-            class="u-m-1 l-flex-column"
             label="Fin de la commande"
           >
             <label for="end">
@@ -601,20 +586,16 @@ const factorise = (pizzas: number[]) => {
             <input
               v-model="data_create.end"
               aria-label="Fin de la commande"
-              class="border-2 bg-theme-bg"
               placeholder="2021-01-01 00:00"
               required
               type="text"
-              :class="{ 'border-red-500': context.invalid }"
               @blur="v$_create.delivery_time.$touch"
             />
           </formfield>
         </div>
         <div>
           <FormField
-            v-slot="context"
             :validations="v$_create.player_price"
-            class="u-m-1 l-flex-column"
             label="Prix pour les joueurs"
           >
             <label for="player_price">
@@ -623,18 +604,14 @@ const factorise = (pizzas: number[]) => {
             <input
               v-model="data_create.player_price"
               aria-label="Prix pour les joueurs"
-              class="border-2 bg-theme-bg"
               placeholder="0"
               required
               type="number"
-              :class="{ 'border-red-500': context.invalid }"
               @blur="v$_create.player_price.$touch"
             />
           </FormField>
           <FormField
-            v-slot="context"
             :validations="v$_create.staff_price"
-            class="u-m-1 l-flex-column"
             label="Prix pour les staffs"
           >
             <label for="staff_price">
@@ -643,18 +620,14 @@ const factorise = (pizzas: number[]) => {
             <input
               v-model="data_create.staff_price"
               aria-label="Prix pour les staffs"
-              class="border-2 bg-theme-bg"
               placeholder="0"
               required
               type="number"
-              :class="{ 'border-red-500': context.invalid }"
               @blur="v$_create.staff_price.$touch"
             />
           </FormField>
           <FormField
-            v-slot="context"
             :validations="v$_create.external_price"
-            class="u-m-1 l-flex-column"
             label="Prix pour les externes"
           >
             <label for="external_price">
@@ -663,20 +636,16 @@ const factorise = (pizzas: number[]) => {
             <input
               v-model="data_create.external_price"
               aria-label="Prix pour les externes"
-              class="border-2 bg-theme-bg"
               placeholder="0"
               required
               type="number"
-              :class="{ 'border-red-500': context.invalid }"
               @blur="v$_create.external_price.$touch"
             />
           </FormField>
         </div>
         <div>
           <FormField
-            v-slot="context"
             :validations="v$_create.pizza_max"
-            class="u-m-1 l-flex-column"
             label="Nombre de pizza maximum"
           >
             <label for="pizza_max">
@@ -685,18 +654,14 @@ const factorise = (pizzas: number[]) => {
             <input
               v-model="data_create.pizza_max"
               aria-label="Nombre de pizza maximum"
-              class="border-2 bg-theme-bg"
               placeholder="0"
               required
               type="number"
-              :class="{ 'border-red-500': context.invalid }"
               @blur="v$_create.pizza_max.$touch"
             />
           </FormField>
           <FormField
-            v-slot="context"
             :validations="v$_create.pizza_selection"
-            class="u-m-1 l-flex-column max-w-xs"
             label="Sélection de pizza"
           >
             <label for="pizza_selection">
@@ -714,12 +679,11 @@ const factorise = (pizzas: number[]) => {
               track-by="id"
               :preselect-first="false"
               :max-height="100"
-              :class="{ 'border-red-500': context.invalid }"
               @blur="v$_create.pizza_selection.$touch"
             />
           </FormField>
         </div>
-        <button class="hidden" type="submit"/>
+        <button class="u-hidden" type="submit"/>
       </form>
     </template>
     <template #buttons>
@@ -741,25 +705,18 @@ const factorise = (pizzas: number[]) => {
   </Modal>
 
   <Modal v-if="showDeleteModal" @close="showDeleteModal = false">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Supprimer un créneau
-      </h3>
+      Supprimer un créneau
     </template>
     <template #body>
-      <div class="u-m-1">
-        Vous allez suppimer le créneau du {{
-          frenchFormatFromDate(new Date(timeslotList[selectedDelete].delivery_time))
-        }}
-        <br/>
-        ainsi que les {{ (timeslotList[selectedDelete] as AdminTimeslotDeref).orders.length }} commandes associées
-        <br/>
-        <br/>
-        Ne supprimez pas un créneau terminé, les données seront perdues
-      </div>
+      Vous allez suppimer le créneau du {{
+        frenchFormatFromDate(new Date(timeslotList[selectedDelete].delivery_time))
+      }}
+      <br/>
+      ainsi que les {{ (timeslotList[selectedDelete] as AdminTimeslotDeref).orders.length }} commandes associées.
+      <br/>
+      <br/>
+      <em>Ne supprimez pas un créneau terminé, les données seront perdues.</em>
     </template>
     <template #buttons>
       <button
@@ -789,27 +746,20 @@ const factorise = (pizzas: number[]) => {
   </Modal>
 
   <Modal v-if="showConfirmationModal" @close="showConfirmationModal = false">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Résumé de la commande
-      </h3>
+      Résumé de la commande
     </template>
     <template #body>
-      <div class="u-m-1 text-left">
-        <p>Pseudo : {{ pseudo }} </p>
-        <p>Type de command : {{ orderTypeToString[selectedOrderType] }}</p>
-        <p>Pizza{{ Object.values(pizzaQuantities).reduce((acc, val) => acc + val) > 1 ? 's' : '' }} :</p>
-        <ul>
-          <li v-for="(quantity, pizzaId) in pizzaQuantities" :key="pizzaId">
-            - {{ quantity }} x {{ pizzaList[pizzaId].name }}
-          </li>
-        </ul>
-        <p>Méthode de paiement : {{ PAYMENT_METHODS[selectedPaymentMethod as Payment] }}</p>
-        <p>Total : {{ totalPrice }} €</p>
-      </div>
+      <p>Pseudo : {{ pseudo }} </p>
+      <p>Type de command : {{ orderTypeToString[selectedOrderType] }}</p>
+      <p>Pizza{{ Object.values(pizzaQuantities).reduce((acc, val) => acc + val) > 1 ? 's' : '' }} :</p>
+      <ul>
+        <li v-for="(quantity, pizzaId) in pizzaQuantities" :key="pizzaId">
+          - {{ quantity }} x {{ pizzaList[pizzaId].name }}
+        </li>
+      </ul>
+      <p>Méthode de paiement : {{ PAYMENT_METHODS[selectedPaymentMethod as Payment] }}</p>
+      <p>Total : {{ totalPrice }} €</p>
     </template>
     <template #buttons>
       <button

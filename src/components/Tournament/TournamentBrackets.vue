@@ -39,19 +39,19 @@ const bracket_round_title = (depth: number, round_idx: number) => {
 
 <template>
   <section id="brackets">
-    <h1
+    <div
       v-if="tournament.brackets.length === 0"
       class="mt-6 u-text-center text-4xl"
     >
       Les arbres ne sont pas disponibles.
-    </h1>
+    </div>
     <div
       v-for="bracket in tournament.brackets"
       v-else
       :key="bracket.id"
       class="mb-5"
     >
-      <h1 class="c-title">
+      <h1>
         Arbre {{ bracket.name }}
       </h1>
       <div
@@ -91,11 +91,11 @@ const bracket_round_title = (depth: number, round_idx: number) => {
             v-if="bracket.winner !== null"
             class="w-40 bg-yellow-600 u-p-1"
           >
-            <h1
+            <div
               class="text-bold u-text-center text-2xl"
             >
               Vainqueur
-            </h1>
+            </div>
             <p
               class="u-text-center text-xl"
             >
@@ -174,11 +174,11 @@ const bracket_round_title = (depth: number, round_idx: number) => {
             v-if="bracket.winner !== null"
             class="w-40 bg-yellow-600 u-p-1"
           >
-            <h1
+            <div
               class="text-bold u-text-center text-2xl"
             >
               Vainqueur
-            </h1>
+            </div>
             <p
               class="u-text-center text-xl"
             >

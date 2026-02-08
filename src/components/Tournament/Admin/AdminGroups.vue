@@ -175,9 +175,7 @@ const delete_groups_matchs = async () => {
 
   <Modal v-if="modal_open && modal_type === 'delete_groups'">
     <template #title>
-      <h3>
-        Supprimer les poules
-      </h3>
+      Suppression des poules
     </template>
     <template #body>
       Les poules vont être supprimées ainsi que les matchs qui leurs sont liés.
@@ -201,13 +199,8 @@ const delete_groups_matchs = async () => {
   </Modal>
 
   <Modal v-if="modal_open && modal_type === 'create_matchs'">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3>
-        Créer les matchs
-      </h3>
+      Créer les matchs
     </template>
     <template #body>
       Les matchs des poules vont être créés.
@@ -278,12 +271,10 @@ const delete_groups_matchs = async () => {
 
   <Modal v-if="modal_open && modal_type === 'delete_matchs'">
     <template #title>
-      <h3>
-        Supprimer les matchs
-      </h3>
+      Supprimer les matchs
     </template>
     <template #body>
-      Les matchs des poules vont êtres supprimés si aucun match n'est en cours ou terminés.
+      Les matchs des poules vont être supprimés si aucun match n'est en cours ou terminé.
     </template>
     <template #buttons>
       <button
@@ -304,22 +295,15 @@ const delete_groups_matchs = async () => {
   </Modal>
 
   <Modal v-if="modal_open && modal_type === 'launch_round'">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 class="text-white-900 text-base font-semibold leading-6">
-        Lancer les matchs d'un tour
-      </h3>
+      Lancer les matchs d'un tour
     </template>
     <template #body>
       <form
         id="create_groups_form"
-        class="u-m-2 l-flex-column l-gap-2"
         @submit.prevent="launch_round_matchs"
       >
         <FormField
-          v-slot="context"
           :validations="v_round$.round"
         >
           <label for="round">
@@ -331,8 +315,6 @@ const delete_groups_matchs = async () => {
             type="number"
             name="round"
             aria-label="Round number"
-            class="u-ml-1 bg-inherit"
-            :class="{ error: context.invalid }"
             @blur="v_round$.round.$touch"
           >
         </FormField>

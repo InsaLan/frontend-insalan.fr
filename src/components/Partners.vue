@@ -24,17 +24,17 @@ onMounted(async () => {
 
 <template>
   <section v-if="sponsors.length">
-    <div class="c-title">
+    <h1>
       Nos sponsors
-    </div>
+    </h1>
     <div class="l-grid-6 l-gap-2 u-px-2">
       <PartnerCard v-for="sponsor in sponsors" :key="sponsor.id" :partner="sponsor"/>
     </div>
   </section>
   <section v-if="partners.length">
-    <div class="c-title">
+    <h1>
       Nos partenaires
-    </div>
+    </h1>
     <div class="l-grid-6 l-gap-2 u-px-2">
       <PartnerCard v-for="partner in partners" :key="partner.id" :partner="partner"/>
     </div>

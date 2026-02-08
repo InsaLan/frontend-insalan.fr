@@ -244,7 +244,7 @@ const kick_member = async (type: string, id: number) => {
     class="l-flex-column l-grow l-items-cross-center border-2 border-black bg-cover bg-center u-text-center text-white bg-blend-multiply"
   >
     <h1
-      class="c-title u-full-width"
+      class="u-full-width"
     >
       {{ tournament?.name }}
     </h1>
@@ -485,34 +485,25 @@ const kick_member = async (type: string, id: number) => {
   </div>
 
   <Modal v-if="showModalNameInGame" @close="closeModalNameInGame">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Changer votre nom en jeu
-      </h3>
+      Changer votre nom en jeu
     </template>
     <template #body>
-      <form id="patch-user" class="u-mt-1" @submit.prevent="ValidateModalNameInGame">
+      <form id="patch-user" @submit.prevent="ValidateModalNameInGame">
         <FormField
-          v-slot="context"
           :validations="v$_name_in_game.name_in_game"
-          class="u-m-1 l-flex-column"
           label="Nouveau Pseudo"
         >
           <input
             v-model="data_name_in_game.name_in_game"
-            :class="{ error: context.invalid }"
             aria-label="Nouveau Pseudo"
-            class="border-2 bg-theme-bg"
             placeholder="Nouveau Pseudo"
             required
             type="text"
           />
         </FormField>
         <!-- hidden submit button with tailwind-->
-        <button class="hidden" type="submit"/>
+        <button class="u-hidden" type="submit"/>
       </form>
     </template>
     <template #buttons>
@@ -534,34 +525,25 @@ const kick_member = async (type: string, id: number) => {
   </Modal>
 
   <Modal v-if="showModalTeamName" @close="closeModalTeamName">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Changer le nom de l'équipe
-      </h3>
+      Changer le nom de l'équipe
     </template>
     <template #body>
-      <form id="patch-user" class="u-mt-1" @submit.prevent="ValidateModalTeamName">
+      <form id="patch-user" @submit.prevent="ValidateModalTeamName">
         <FormField
-          v-slot="context"
           :validations="v$_team_name.name"
-          class="u-m-1 l-flex-column"
           label="Nouveau nom"
         >
           <input
             v-model="data_team_name.name"
-            :class="{ error: context.invalid }"
             aria-label="Nouveau nom"
-            class="border-2 bg-theme-bg"
             placeholder="Nouveau nom"
             required
             type="text"
           />
         </FormField>
         <!-- hidden submit button with tailwind-->
-        <button class="hidden" type="submit"/>
+        <button class="u-hidden" type="submit"/>
       </form>
     </template>
     <template #buttons>
@@ -583,34 +565,24 @@ const kick_member = async (type: string, id: number) => {
   </Modal>
 
   <Modal v-if="showModalTeamPassword" @close="closeModalTeamPassword">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Changer le mot de passe de l'équipe
-      </h3>
+      Changer le mot de passe de l'équipe
     </template>
     <template #body>
-      <form id="patch-user" class="u-mt-1" @submit.prevent="ValidateModalTeamPassword">
+      <form id="patch-user" @submit.prevent="ValidateModalTeamPassword">
         <FormField
-          v-slot="context"
           :validations="v$_team_password.password"
-          class="u-m-1 l-flex-column"
           label="Nouveau mot de passe"
         >
           <input
             v-model="data_team_password.password"
-            :class="{ error: context.invalid }"
             aria-label="Nouveau mot de passe"
-            class="border-2 bg-theme-bg"
             placeholder="Nouveau mot de passe"
             required
             type="text"
           />
         </FormField>
-        <!-- hidden submit button with tailwind-->
-        <button class="hidden" type="submit"/>
+        <button class="u-hidden" type="submit"/>
       </form>
     </template>
     <template #buttons>
@@ -632,20 +604,13 @@ const kick_member = async (type: string, id: number) => {
   </Modal>
 
   <Modal v-if="showModalLeaveTeam" @close="showModalLeaveTeam = false">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Quiter l'équipe
-      </h3>
+      Quiter l'équipe
     </template>
     <template #body>
-      <div>
-        Êtes-vous sûr de vouloir quitter l'équipe ?
-        <br/>
-        Vous ne pourrez pas revenir dans l'équipe à moins d'être réinvité.
-      </div>
+      Êtes-vous sûr de vouloir quitter l'équipe ?
+      <br/><br/>
+      Vous ne pourrez pas revenir dans l'équipe à moins d'être réinvité.
     </template>
     <template #buttons>
       <button
@@ -666,22 +631,15 @@ const kick_member = async (type: string, id: number) => {
   </Modal>
 
   <Modal v-if="showModalKickPlayer" @close="showModalKickPlayer = false">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Kick un joueur
-      </h3>
+      Expulsion d'un joueur
     </template>
     <template #body>
-      <div>
-        Êtes-vous sûr de vouloir kick "{{
-          kickregtype === "player"
-            ? (selected_team?.players as PlayerRegistration[]).find((player) => player.id === kickregid)?.name_in_game
-            : (selected_team?.substitutes as PlayerRegistration[]).find((sub) => sub.id === kickregid)?.name_in_game
-        }}" de l'équipe ?
-      </div>
+      Êtes-vous sûr de vouloir expulser "{{
+        kickregtype === "player"
+          ? (selected_team?.players as PlayerRegistration[]).find((player) => player.id === kickregid)?.name_in_game
+          : (selected_team?.substitutes as PlayerRegistration[]).find((sub) => sub.id === kickregid)?.name_in_game
+      }}" de l'équipe ?
     </template>
     <template #buttons>
       <button

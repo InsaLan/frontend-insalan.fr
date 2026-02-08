@@ -139,9 +139,9 @@ const gameSpecificData = computed(() => {
 
 <template>
   <div id="ongoing_match">
-    <h1 class="m-3 u-text-center text-4xl font-bold">
+    <div class="m-3 u-text-center text-4xl font-bold">
       Partie en cours
-    </h1>
+    </div>
     <div class="u-mx-2 flex flex-col justify-around rounded-md bg-cyan-900">
       <div class="flex u-full-width flex-col divide-y">
         <div v-for="team, team_id in ongoingMatch.teams" :key="team_id" class="u-mx-1 u-p-2">
@@ -166,82 +166,63 @@ const gameSpecificData = computed(() => {
     </div>
   </div>
 
-  <Modal v-if="modal_enter_score" :close-on-click="false">
-    <template #icon>
-      <div/>
-    </template>
+  <Modal v-if="modal_enter_score">
     <template #title>
-      <h3 id="open_modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Enregistrer le {{ ongoingMatch.bo_type === BestofType.RANKING ? 'classement' : 'score' }}
-      </h3>
+      Enregistrer le {{ ongoingMatch.bo_type === BestofType.RANKING ? 'classement' : 'score' }}
     </template>
     <template #body>
-      <form id="patch-user" class="u-mt-1" @submit.prevent="">
+      <form id="patch-user" @submit.prevent="">
         <FormField
           v-for="(name, id) in ongoingMatch.teams"
           :key="id"
-          v-slot="context"
           :validations="v$_time_game.score[id]"
           label="{{id}}"
         >
-          <div
-            class="flex items-center justify-between"
-          >
-            <label :for="`input${id}`">{{ name }}</label>
-            <input
-              :id="`input${id}`"
-              v-model="data_score.score[Number(id)]"
-              :class="{ error: context.invalid }"
-              aria-label="score"
-              class="w-24 border-2 bg-theme-bg"
-              placeholder="score"
-              required
-              type="number"
-              @blur="v$_time_game.score[id].$touch"
-            />
-          </div>
+          <label :for="`input${id}`">{{ name }}</label>
+          <input
+            :id="`input${id}`"
+            v-model="data_score.score[Number(id)]"
+            aria-label="score"
+            placeholder="score"
+            required
+            type="number"
+            @blur="v$_time_game.score[id].$touch"
+          />
         </FormField>
         <!-- hidden submit button with tailwind-->
-        <button class="hidden" type="submit"/>
+        <button class="u-hidden" type="submit"/>
       </form>
-      <p v-if="invalid_score.length > 0" class="bg-red-400">
+      <p v-if="invalid_score.length > 0" class="u-color-error-1">
         {{ invalid_score }}
       </p>
     </template>
     <template #buttons>
       <button
-        class="u-mx-2 inline-flex u-full-width justify-center rounded-md bg-green-500 px-3 u-py-1 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
-        type="button"
-        @click.prevent="NextModalEnterScore"
-      >
-        Suivant
-      </button>
-      <button
-        class="inline-flex u-full-width justify-center rounded-md bg-gray-500 px-3 u-py-1 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="closeModalEnterScore"
       >
         Annuler
       </button>
+      <button
+        class="c-btn-secondary"
+        type="button"
+        @click.prevent="NextModalEnterScore"
+      >
+        Suivant
+      </button>
     </template>
   </Modal>
 
-  <Modal v-if="modal_enter_times" :close-on-click="false">
-    <template #icon>
-      <div/>
-    </template>
+  <Modal v-if="modal_enter_times">
     <template #title>
-      <h3 id="open_modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Enregistrer les durées de match (en minute)
-      </h3>
+      Enregistrer les durées de match (en minutes)
     </template>
     <template #body>
-      <form id="patch-user" class="u-mt-1" @submit.prevent="">
+      <form id="patch-user" @submit.prevent="">
         <FormField
           v-for="n in game_number"
           :key="n"
-          v-slot="context"
-          class="flex items-center justify-between"
           :validations="v$_time_game.times"
           label="times"
           @blur="v$_time_game.$touch"
@@ -250,36 +231,34 @@ const gameSpecificData = computed(() => {
           <input
             :id="`input${n}`"
             v-model="data_score.times[n]"
-            :class="{ error: context.invalid }"
             aria-label="duration (minutes)"
-            class="w-24 border-2 bg-theme-bg"
             placeholder="5"
             required
             type="number"
             min="1"
           />
         </FormField>
-        <p v-if="invalid_score.length > 0" class="bg-red-400">
+        <p v-if="invalid_score.length > 0" class="u-color-error-1">
           {{ invalid_score }}
         </p>
         <!-- hidden submit button with tailwind-->
-        <button class="hidden" type="submit"/>
+        <button class="u-hidden" type="submit"/>
       </form>
     </template>
     <template #buttons>
       <button
-        class="duration inline-flex u-full-width justify-center rounded-md bg-green-600 px-3 u-py-1 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="sendScore"
-      >
-        Envoyer
-      </button>
-      <button
-        class="inline-flex u-full-width justify-center rounded-md bg-red-500 px-3 u-py-1 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="PrevModalEnterScore"
       >
         Retour
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="sendScore"
+      >
+        Envoyer
       </button>
     </template>
   </Modal>

@@ -124,9 +124,9 @@ const editField = (field: string) => {
 <template>
   <div class="u-mx-2 l-flex-column md:flex-row">
     <div id="profile" class="mb-3 l-items-cross-center md:w-2/6 c-card-bg-2">
-      <h1 class="m-3 u-text-center text-4xl u-bold">
+      <div class="m-3 u-text-center text-4xl u-bold">
         Mon compte
-      </h1>
+      </div>
       <div class="myr-2 place-center l-flex-column justify-between md:place-items-center md:justify-items-center">
         <div class="u-my-1 l-flex-column place-items-center l-justify-center md:flex-row">
           <div class="u-m-1 flex place-items-center l-justify-center">
@@ -223,9 +223,9 @@ const editField = (field: string) => {
       <TournamentMeCard v-if="ongoing_match !== null" :ongoing-match="ongoing_match"/>
     </div>
     <div id="team" class="md:w-4/6">
-      <h1 class="m-3 u-text-center text-4xl u-bold">
+      <div class="m-3 u-text-center text-4xl u-bold">
         Mes Équipes
-      </h1>
+      </div>
       <!--div>
         <div class="bg-red-900 rounded-xl u-text-center u-m-1 text-xl" v-if="Object.keys(inscriptions.unpaid).length">
           <h2 class="mx-5 text-xl" v-if="Object.keys(inscriptions.unpaid).length === 1">
@@ -237,9 +237,9 @@ const editField = (field: string) => {
         </div>
       </div-->
       <div v-if="(inscriptions.ongoing as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="u-m-2">
-        <h1 class="u-m-2 text-xl">
+        <div class="u-m-2 text-xl">
           Edition Actuelle
-        </h1>
+        </div>
         <div class="m-1 grid gap-3 md:grid-cols-3">
           <div
             v-for="inscription in (inscriptions.ongoing as [string, PlayerRegistrationDeref | RegistrationDeref][])"
@@ -320,9 +320,9 @@ const editField = (field: string) => {
         </div>
       </div>
       <div v-if="(inscriptions.past as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="u-m-2">
-        <h1 class="text-xl">
+        <div class="text-xl">
           Autres Editions
-        </h1>
+        </div>
         <div class="m-1 grid gap-3 md:grid-cols-3">
           <router-link
             v-for="inscription in (inscriptions.past as [string, PlayerRegistrationDeref | RegistrationDeref][])"
@@ -365,9 +365,9 @@ const editField = (field: string) => {
         </div>
       </div>
       <div v-if="(inscriptions.private_regs as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="u-m-2">
-        <h1 class="text-xl">
+        <div class="text-xl">
           Tournois secondaires
-        </h1>
+        </div>
         <div class="m-1 grid gap-3 md:grid-cols-3">
           <div
             v-for="inscription in (
@@ -419,40 +419,29 @@ const editField = (field: string) => {
   </div>
 
   <Modal v-if="showModal" @close="closeModal">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        {{ title }}
-      </h3>
+      {{ title }}
     </template>
     <template #body>
-      <form id="patch-user" class="u-mt-1" @submit.prevent="validateModal">
+      <form id="patch-user" @submit.prevent="validateModal">
         <div v-if="focus === 'name'" id="name">
           <FormField
-            v-slot="context"
             :validations="v$_name.first_name"
-            class="u-m-1 l-flex-column"
             label="Nouveau Prénom"
           >
             <input
               v-model="data_name.first_name"
-              :class="{ error: context.invalid }"
               aria-label="Nouveau Prénom"
-              class="border-2 bg-theme-bg"
               placeholder="John"
               required
               type="text"
               @blur="v$_name.first_name.$touch"
             />
           </FormField>
-          <FormField v-slot="context" :validations="v$_name.last_name" class="u-m-1 l-flex-column" label="Nouveau Nom">
+          <FormField :validations="v$_name.last_name" label="Nouveau Nom">
             <input
               v-model="data_name.last_name"
-              :class="{ error: context.invalid }"
               aria-label="Nouveau Nom"
-              class="border-2 bg-theme-bg"
               placeholder="Doe"
               required
               type="text"
@@ -462,12 +451,10 @@ const editField = (field: string) => {
         </div>
 
         <div v-if="focus === 'email'" id="email">
-          <FormField v-slot="context" :validations="v$_email.email" class="u-m-1 l-flex-column" label="Email">
+          <FormField :validations="v$_email.email" class="u-m-1 l-flex-column" label="Email">
             <input
               v-model="data_email.email"
-              :class="{ error: context.invalid }"
               aria-label="Email"
-              class="border-2 bg-theme-bg"
               placeholder="john-doe@gmail.com"
               required
               type="text"
@@ -478,14 +465,23 @@ const editField = (field: string) => {
 
         <div v-if="focus === 'password'" id="password">
           <FormField
-            v-slot="context"
+            :validations="v$_password.current_password"
+            label="Mot de passe actuel"
+          >
+            <PasswordInput
+              v-model="data_password.current_password"
+              aria-label="mot de passe actuel"
+              placeholder="Mot de passe actuel"
+              required
+              :on-blur="v$_password.current_password.$touch"
+            />
+          </FormField>
+          <FormField
             :validations="v$_password.new_password"
-            class="u-m-1 l-flex-column"
             label="Nouveau mot de passe"
           >
             <PasswordInput
               v-model="data_password.new_password"
-              :error="context.invalid"
               aria-label="Nouveau mot de passe"
               placeholder="Nouveau mot de passe"
               required
@@ -493,38 +489,20 @@ const editField = (field: string) => {
             />
           </FormField>
           <FormField
-            v-slot="context"
             :validations="v$_password.password_validation"
-            class="u-m-1 l-flex-column"
-            label="Confirmer le mot de passe"
+            label="Confirmer le nouveau mot de passe"
           >
             <PasswordInput
               v-model="data_password.password_validation"
-              :error="context.invalid"
-              aria-label="Confirmer le mot de passe"
-              placeholder="Confirmer le mot de passe"
+              aria-label="Confirmer le nouveau mot de passe"
+              placeholder="Confirmer le nouveau mot de passe"
               required
               :on-blur="v$_password.password_validation.$touch"
             />
           </FormField>
-          <FormField
-            v-slot="context"
-            :validations="v$_password.current_password"
-            class="u-m-1 l-flex-column"
-            label="Mot de passe actuel"
-          >
-            <PasswordInput
-              v-model="data_password.current_password"
-              :error="context.invalid"
-              aria-label="mot de passe actuel"
-              placeholder="Mot de passe actuel"
-              required
-              :on-blur="v$_password.current_password.$touch"
-            />
-          </FormField>
         </div>
         <!-- hidden submit button with tailwind-->
-        <button class="hidden" type="submit"/>
+        <button class="u-hidden" type="submit"/>
       </form>
     </template>
     <template #buttons>
@@ -547,20 +525,13 @@ const editField = (field: string) => {
 
   <!-- Simple modal with a loading text for the payment -->
   <Modal v-if="modal_payment">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="open_modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Paiement
-      </h3>
+      Paiement
     </template>
     <template #body>
-      <div class="u-p-2 u-text-justify">
-        Votre inscription a été ajoutée au panier
-        <br>
-        Vous pouvez retrouver votre panier depuis votre compte
-      </div>
+      Votre inscription a été ajoutée au panier.
+      <br><br>
+      Vous pouvez retrouver votre panier depuis votre compte.
     </template>
     <template #buttons>
       <button

@@ -1,8 +1,8 @@
 <template>
-  <h1 class="c-title">
+  <h1>
     Où nous trouver
   </h1>
-  <div class="u-m-double-body u-mb-2 u-text-center u-flex-column l-items-cross-center">
+  <div class="u-m-double-body u-mb-2 u-text-center u-flex-column l-items-cross-center u-big-text">
     <Content name="Adresse"/>
   </div>
   <section class="u-mb-2 u-m-double-body l-flex-column l-items-main-center l-items-cross-center">
