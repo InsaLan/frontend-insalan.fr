@@ -197,7 +197,7 @@ const delete_group_matchs = async () => {
   </div>
 
   <div
-    class="u-m-2 mt-0 flex flex-wrap l-items-main-center gap-6 md:m-6 md:mt-0 lg:m-8 lg:mt-0 lg:gap-8 2xl:m-9 2xl:mt-0 2xl:gap-10"
+    class="u-m-2 mt-0 flex l-wrap l-items-main-center gap-6 md:m-6 md:mt-0 lg:m-8 lg:mt-0 lg:gap-8 2xl:m-9 2xl:mt-0 2xl:gap-10"
   >
     <GroupTable
       v-for="group in tournament.groups"

@@ -38,7 +38,7 @@ const register_user = async () => {
 </script>
 
 <template>
-  <div class="l-flex-column l-items-cross-center u-m-body">
+  <div class="l-flex-column l-items-cross-center u-m-text">
     <div class="l-flex-column l-items-cross-center c-card-bg-2 u-p-4">
       <h1 class="u-m-0">
         Réinitialiser votre mot de passe

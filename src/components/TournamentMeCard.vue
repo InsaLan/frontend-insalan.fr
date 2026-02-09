@@ -145,7 +145,7 @@ const gameSpecificData = computed(() => {
     <div class="u-mx-2 flex flex-col justify-around rounded-md bg-cyan-900">
       <div class="flex u-full-width flex-col divide-y">
         <div v-for="team, team_id in ongoingMatch.teams" :key="team_id" class="u-mx-1 u-p-2">
-          <p class="truncate text-xl font-bold">
+          <p class="truncate u-big-text font-bold">
             {{ team }}
           </p>
         </div>
@@ -176,7 +176,6 @@ const gameSpecificData = computed(() => {
           v-for="(name, id) in ongoingMatch.teams"
           :key="id"
           :validations="v$_time_game.score[id]"
-          label="{{id}}"
         >
           <label :for="`input${id}`">{{ name }}</label>
           <input
@@ -224,7 +223,6 @@ const gameSpecificData = computed(() => {
           v-for="n in game_number"
           :key="n"
           :validations="v$_time_game.times"
-          label="times"
           @blur="v$_time_game.$touch"
         >
           <label :for="`input${n}`">Partie {{ n }} </label>

@@ -11,13 +11,13 @@ defineProps<{
 <template>
   <div
     :key="pizza.id"
-    class="grid-layout grid l-gap-1 rounded bg-cyan-900 u-p-1 hover:bg-cyan-800"
+    class="c-card-bg-2 grid-layout l-gap-1 grid rounded u-full-width"
   >
     <img
       v-if="pizza.image"
       :src="pizza.image"
       :alt="`${pizza.name} image`"
-      class="aspect-video w-20 border-r border-white object-cover u-pr-1"
+      class="pizza-thumb u-rounded"
     >
     <div
       v-if="!pizza.image"
@@ -60,3 +60,11 @@ defineProps<{
     </div>
   </div>
 </template>
+
+<style scoped>
+.pizza-thumb {
+  width: 5rem;
+  height: 3rem;
+  object-fit: cover;
+}
+</style>

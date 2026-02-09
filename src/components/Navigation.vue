@@ -42,8 +42,8 @@ const logout_user = async () => {
 const burger_menu = ref(false);
 </script>
 <template>
-  <div id="navcontainer" class="sticky top-4 z-[51] u-m-2 xl:mx-12">
-    <nav id="navigation" class="c-card-bg-2">
+  <div id="navcontainer" class="sticky top-4 z-[51] u-my-2 u-m-main">
+    <nav id="navigation" class="c-card-bg-2 u-full-width">
       <div id="desktop" class="hidden u-full-height l-items-cross-center justify-around xl:flex">
         <router-link to="/">
           <img alt="Logo InsaLan" class="size-[4.5rem] c-image-btn" src="@/assets/images/logo_home.png"/>
@@ -72,10 +72,10 @@ const burger_menu = ref(false);
         >
           <div
             v-if="role === 'dev' || role === 'staff'"
-            class="group l-relative-position u-mx-2 transition duration-150 ease-in-out"
+            class="group l-relative-position u-mx-2"
           >
             <div
-              class="c-text-btn-secondary"
+              class="u-big-text"
             >
               Admin
               <fa-awesome-icon
@@ -84,11 +84,11 @@ const burger_menu = ref(false);
               />
             </div>
             <div
-              class="c-card-bg-3 l-absolute-position hidden min-w-48 flex-col group-hover:flex"
+              class="hidden c-card-bg-3 l-absolute-position min-w-48 flex-col group-hover:flex u-text-left"
             >
               <div
                 v-if="user?.groups.includes('Equipe Bouffe')"
-                class="l-flex-column"
+                class="l-flex-column u-full-width"
               >
                 <div
                   class="u-bold u-color-text-2"
@@ -116,7 +116,7 @@ const burger_menu = ref(false);
               </div>
               <div
                 v-if="role === 'dev' || role === 'staff'"
-                class="l-flex-column"
+                class="l-flex-column u-full-width"
               >
                 <div
                   class="u-bold u-color-text-2"
@@ -239,7 +239,7 @@ const burger_menu = ref(false);
         </div>
       </div>
     </nav>
-    <div v-if="getContent('alert') && !$route.path.startsWith('/admin/')" class="c-card-error-1-nopad u-mt-1 l-flex-column l-items-cross-center u-px-2 u-py-1">
+    <div v-if="getContent('alert') && !$route.path.startsWith('/admin/')" class="c-card-error-1 u-mt-1 l-flex-column l-items-cross-center u-px-2 u-py-1">
       <Content name="alert"/>
     </div>
   </div>

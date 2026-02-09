@@ -102,10 +102,10 @@ const save_seeds = async () => {
       </colgroup>
       <thead>
         <tr>
-          <th class="border-2 u-p-1 text-xl">
+          <th class="border-2 u-p-1 u-big-text">
             Équipe
           </th>
-          <th class="border-2 u-p-1 text-xl">
+          <th class="border-2 u-p-1 u-big-text">
             Seed
           </th>
         </tr>
@@ -137,7 +137,7 @@ const save_seeds = async () => {
       </tbody>
     </table>
   </div>
-  <button type="submit" class="mx-auto u-mb-4 rounded bg-blue-800 u-p-1 text-xl u-bold text-white transition duration-150 ease-in-out hover:bg-blue-700" @click="save_seeds">
+  <button type="submit" class="mx-auto u-mb-4 rounded bg-blue-800 u-p-1 u-big-text u-bold text-white transition duration-150 ease-in-out hover:bg-blue-700" @click="save_seeds">
     Sauvegarder
   </button>
 </template>

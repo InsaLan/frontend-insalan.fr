@@ -16,31 +16,27 @@ await getPrivateTournaments();
 </script>
 
 <template>
-  <div>
-    <div v-if="!tournaments_id" class="flex l-items-main-center">
+  <div class="l-flex-column l-items-cross-center u-m-main">
+    <div v-if="!tournaments_id">
       Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !
     </div>
-    <div class="u-mb-2 grid u-full-width l-gap-2 u-px-2 md:grid-cols-2 xl:grid-cols-3">
+    <div class="l-grid-3 l-gap-2">
       <TournamentCard
         v-for="tournament in tournaments_id"
         :id="tournament"
         :key="tournament"
       />
     </div>
-    <div class="u-mb-2 flex l-items-main-center">
-      <router-link
-        to="/archives"
-        class="c-btn-primary"
-      >
-        Voir les anciennes éditions
-      </router-link>
-    </div>
-  </div>
-  <div v-if="Object.keys(privateTournamentsList).length > 0">
-    <h1>
+    <router-link
+      to="/archives"
+      class="u-my-2 c-btn-primary"
+    >
+      Voir les anciennes éditions
+    </router-link>
+    <h1 v-if="Object.keys(privateTournamentsList).length > 0">
       Tournois privés
     </h1>
-    <div class="grid u-full-width l-gap-2 u-px-2 md:grid-cols-2 xl:grid-cols-3">
+    <div v-if="Object.keys(privateTournamentsList).length > 0" class="l-grid-3 l-gap-2">
       <PrivateTournamentCard
         v-for="tournament in privateTournamentsList"
         :key="tournament.id"

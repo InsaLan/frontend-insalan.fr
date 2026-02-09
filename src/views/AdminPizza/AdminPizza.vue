@@ -353,27 +353,25 @@ const factorise = (pizzas: number[]) => {
         </div>
       </div>
     </div>
-    <div>
+    <div
+      class="flex w-screen rounded-xl bg-black u-text-center text-3xl"
+    >
+      <div class="u-m-1 l-grow">
+        Créneau {{ frenchFormatFromDate(new Date(timeslotList[selectedTimeslotId]?.delivery_time)) }}
+      </div>
       <div
-        class="flex w-screen rounded-xl bg-black u-text-center text-3xl"
+        class="u-m-1"
       >
-        <div class="u-m-1 l-grow">
-          Créneau {{ frenchFormatFromDate(new Date(timeslotList[selectedTimeslotId]?.delivery_time)) }}
-        </div>
-        <div
-          class="u-m-1"
-        >
-          <fa-awesome-icon
-            v-if="extend"
-            class="u-ml-1"
-            icon="fa-chevron-up"
-          />
-          <fa-awesome-icon
-            v-else
-            class="u-ml-1"
-            icon="fa-chevron-down"
-          />
-        </div>
+        <fa-awesome-icon
+          v-if="extend"
+          class="u-ml-1"
+          icon="fa-chevron-up"
+        />
+        <fa-awesome-icon
+          v-else
+          class="u-ml-1"
+          icon="fa-chevron-down"
+        />
       </div>
     </div>
     <div class="u-m-1 l-flex-column l-grow gap-5 md:flex-row" :class="{ blur: extend }">
@@ -542,16 +540,16 @@ const factorise = (pizzas: number[]) => {
       Créer un créneau
     </template>
     <template #body>
-      <form id="patch-user" @submit.prevent="validateModal">
-        <div class="">
+      <form id="patch-user" class="l-grid-3" @submit.prevent="validateModal">
+        <div class="l-flex-column l-gap-2">
           <FormField
             :validations="v$_create.delivery_time"
-            label="Date de livraison"
           >
             <label for="delivery_time">
               Date de livraison
             </label>
             <input
+              id="delivery_time"
               v-model="data_create.delivery_time"
               aria-label="Date de livraison"
               placeholder="2021-01-01 00:00"
@@ -562,12 +560,12 @@ const factorise = (pizzas: number[]) => {
           </FormField>
           <FormField
             :validations="v$_create.start"
-            label="Début de la commande"
           >
             <label for="start">
               Début de la commande
             </label>
             <input
+              id="start"
               v-model="data_create.start"
               aria-label="Début de la commande"
               placeholder="2021-01-01 00:00"
@@ -578,12 +576,12 @@ const factorise = (pizzas: number[]) => {
           </FormField>
           <FormField
             :validations="v$_create.end"
-            label="Fin de la commande"
           >
             <label for="end">
               Fin de la commande
             </label>
             <input
+              id="end"
               v-model="data_create.end"
               aria-label="Fin de la commande"
               placeholder="2021-01-01 00:00"
@@ -593,15 +591,15 @@ const factorise = (pizzas: number[]) => {
             />
           </formfield>
         </div>
-        <div>
+        <div class="l-flex-column l-gap-2">
           <FormField
             :validations="v$_create.player_price"
-            label="Prix pour les joueurs"
           >
             <label for="player_price">
               Prix pour les joueurs
             </label>
             <input
+              id="player_price"
               v-model="data_create.player_price"
               aria-label="Prix pour les joueurs"
               placeholder="0"
@@ -612,14 +610,14 @@ const factorise = (pizzas: number[]) => {
           </FormField>
           <FormField
             :validations="v$_create.staff_price"
-            label="Prix pour les staffs"
           >
             <label for="staff_price">
-              Prix pour les staffs
+              Prix pour le staff
             </label>
             <input
+              id="staff_price"
               v-model="data_create.staff_price"
-              aria-label="Prix pour les staffs"
+              aria-label="Prix pour le staff"
               placeholder="0"
               required
               type="number"
@@ -628,12 +626,12 @@ const factorise = (pizzas: number[]) => {
           </FormField>
           <FormField
             :validations="v$_create.external_price"
-            label="Prix pour les externes"
           >
             <label for="external_price">
               Prix pour les externes
             </label>
             <input
+              id="external_price"
               v-model="data_create.external_price"
               aria-label="Prix pour les externes"
               placeholder="0"
@@ -643,17 +641,17 @@ const factorise = (pizzas: number[]) => {
             />
           </FormField>
         </div>
-        <div>
+        <div class="l-flex-column l-gap-2">
           <FormField
             :validations="v$_create.pizza_max"
-            label="Nombre de pizza maximum"
           >
             <label for="pizza_max">
-              Nombre de pizza maximum
+              Nombre de pizzas maximum
             </label>
             <input
+              id="pizza_max"
               v-model="data_create.pizza_max"
-              aria-label="Nombre de pizza maximum"
+              aria-label="Nombre de pizzas maximum"
               placeholder="0"
               required
               type="number"
@@ -662,19 +660,20 @@ const factorise = (pizzas: number[]) => {
           </FormField>
           <FormField
             :validations="v$_create.pizza_selection"
-            label="Sélection de pizza"
           >
             <label for="pizza_selection">
-              Sélection de pizza
+              Sélection de pizzas
             </label>
+            <!-- TODO: Fix this it's like really bad -->
             <multiselect
+              id="pizza_selection"
               v-model="data_create.pizza_selection"
               :options="Object.values(pizzaList).map((pizza) => ({ id: pizza.id, name: pizza.name }))"
               :multiple="true"
               :close-on-select="false"
               :clear-on-select="false"
               :preserve-search="true"
-              placeholder="Sélection de pizza"
+              placeholder="Sélection de pizzas"
               label="name"
               track-by="id"
               :preselect-first="false"

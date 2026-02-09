@@ -46,7 +46,7 @@ const handleImageChange = (event: Event) => {
 </script>
 
 <template>
-  <Modal @close="console.log('close')">
+  <Modal @close="props.close">
     <template #title>
       {{ title }}
     </template>
@@ -68,7 +68,7 @@ const handleImageChange = (event: Event) => {
             id="pizza-ingredients"
             v-model="dataPizza.ingredients"
             label="Ingrédients"
-            placeholder="Ajouter un ingrédients"
+            placeholder="Ajouter un ingrédient"
           />
         </FormField>
         <FormField :validations="v$_pizza.ingredients">
@@ -77,7 +77,7 @@ const handleImageChange = (event: Event) => {
             id="pizza-allergens"
             v-model="dataPizza.allergens"
             label="Allergènes"
-            placeholder="Ajouter un allergènes"
+            placeholder="Ajouter un allergène"
           />
         </FormField>
         <label for="pizza-image">Image</label>

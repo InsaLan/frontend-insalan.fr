@@ -85,7 +85,7 @@ const admin_switch = computed(() => {
       <nav class="flex l-items-main-center gap-10 bg-gray-500 py-3 sm:gap-16">
         <button
           type="button"
-          class="text-xl u-underline decoration-[#63d1ff] decoration-4 underline-offset-8 lg:hidden"
+          class="u-big-text u-underline decoration-[#63d1ff] decoration-4 underline-offset-8 lg:hidden"
           @click="open_dropdown = !open_dropdown"
         >
           {{ sections[selected_section].title }}
@@ -105,7 +105,7 @@ const admin_switch = computed(() => {
               v-if="section.is_available || (admin_mode && !['seatings', 'planning'].includes(key))"
               :to="{ name: `tournament_${admin_mode ? 'admin_' : ''}${key}` }"
               :class="{ 'u-underline decoration-[#63d1ff] decoration-4 underline-offset-8': key === selected_section }"
-              class="text-xl underline-offset-8 hover:u-underline hover:decoration-[#63d1ff] hover:decoration-4"
+              class="u-big-text underline-offset-8 hover:u-underline hover:decoration-[#63d1ff] hover:decoration-4"
               @click="open_dropdown = false"
             >
               {{ section.title }}
@@ -120,7 +120,7 @@ const admin_switch = computed(() => {
             'bg-blue-800': admin_mode,
           }"
           type="button"
-          class="-my-1 rounded p-1 text-xl text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500 sm:absolute sm:right-5 sm:-mt-1"
+          class="-my-1 rounded p-1 u-big-text text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500 sm:absolute sm:right-5 sm:-mt-1"
         >
           {{ admin_mode ? 'Mode Normal' : 'Mode Admin' }}
         </router-link>
@@ -133,7 +133,7 @@ const admin_switch = computed(() => {
       />
     </RouterView>
   </div>
-  <div v-else class="mt-6 u-text-center text-4xl">
+  <div v-else class="u-text-center u-big-text">
     Le tournoi que vous cherchez n'a pas encore été annoncé, revenez plus tard !
   </div>
 </template>

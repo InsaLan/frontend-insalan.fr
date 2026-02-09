@@ -41,7 +41,7 @@ const group_details = computed<Group | undefined>(() => get_group_by_id(groups |
     </div>
     <div
       v-else
-      class="u-m-2 flex flex-wrap l-items-main-center gap-6 md:m-6 lg:m-8 lg:gap-8 2xl:m-9 2xl:gap-10"
+      class="u-m-2 flex l-wrap l-items-main-center gap-6 md:m-6 lg:m-8 lg:gap-8 2xl:m-9 2xl:gap-10"
     >
       <GroupTable
         v-for="group in tournament.groups"
@@ -86,7 +86,7 @@ const group_details = computed<Group | undefined>(() => get_group_by_id(groups |
             Tour {{ matchs[0].round_number }}
           </div>
           <div
-            class="flex flex-wrap l-items-cross-center l-items-main-center"
+            class="flex l-wrap l-items-cross-center l-items-main-center"
           >
             <MatchCard
               v-for="match in matchs"

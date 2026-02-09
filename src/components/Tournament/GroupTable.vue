@@ -220,7 +220,7 @@ watchEffect(() => {
     </div>
 
     <div
-      class="grid l-items-cross-center l-items-main-center gap-y-2 u-p-1 u-text-center text-xl"
+      class="grid l-items-cross-center l-items-main-center gap-y-2 u-p-1 u-text-center u-big-text"
       :class="[editable && isAdmin ? 'grid-cols-[1fr,3fr,1fr]' : 'grid-cols-[4fr,1fr]']"
     >
       <div

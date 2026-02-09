@@ -125,11 +125,11 @@ const bracket_round_title = (depth: number, round_idx: number) => {
 
 <template>
   <div
-    class="u-m-2 flex flex-wrap l-items-main-center l-gap-2 lg:m-8 lg:mb-2 lg:gap-16"
+    class="u-m-2 flex l-wrap l-items-main-center l-gap-2 lg:m-8 lg:mb-2 lg:gap-16"
   >
     <button
       type="button"
-      class="rounded bg-blue-800 u-p-1 text-xl u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+      class="rounded bg-blue-800 u-p-1 u-big-text u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
       @click="open_modal('create_bracket')"
     >
       Créer un arbre
@@ -177,7 +177,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         <div
           v-for="round_idx in bracket.depth + 1"
           :key="round_idx"
-          class="u-text-center text-xl"
+          class="u-text-center u-big-text"
         >
           {{ bracket_round_title(bracket.depth, round_idx) }}
         </div>
@@ -207,7 +207,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
             Vainqueur
           </div>
           <p
-            class="truncate text-wrap u-text-center text-xl"
+            class="truncate text-wrap u-text-center u-big-text"
           >
             {{ get_validated_team_by_id(bracket.winner)?.name }}
           </p>
@@ -232,7 +232,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         <div
           v-for="round_idx in 2 * bracket.depth + 1"
           :key="round_idx"
-          class="u-text-center text-xl"
+          class="u-text-center u-big-text"
         >
           {{
             (round_idx === 1)
@@ -289,7 +289,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
             Vainqueur
           </div>
           <p
-            class="truncate text-wrap u-text-center text-xl"
+            class="truncate text-wrap u-text-center u-big-text"
           >
             {{ get_validated_team_by_id(bracket.winner)?.name }}
           </p>
@@ -309,7 +309,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         <div
           v-for="round_idx in 2 * bracket.depth + 1"
           :key="round_idx"
-          class="u-text-center text-xl"
+          class="u-text-center u-big-text"
         >
           {{
             (round_idx !== 1 && round_idx < 2 * bracket.depth - 1)

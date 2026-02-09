@@ -20,7 +20,7 @@ defineProps<{
       <img v-if="team.validated" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="inline-block size-6"/>
     </div>
     <ul
-      class="u-ml-2 list-disc text-xl"
+      class="u-ml-2 list-disc u-big-text"
     >
       <li v-for="player in team.players" :key="((player as PlayerRegistration).user)">
         <p>
@@ -34,7 +34,7 @@ defineProps<{
     </p>
     <div v-if="team.substitutes.length" class="text-2xl">
       Remplaçant :
-      <ul class="u-ml-2 list-disc text-xl">
+      <ul class="u-ml-2 list-disc u-big-text">
         <li v-for="player in team.substitutes" :key="((player as PlayerRegistration).user)">
           <p>
             {{ (player as PlayerRegistration).name_in_game }}

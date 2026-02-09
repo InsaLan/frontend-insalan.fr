@@ -161,7 +161,7 @@ const create_round = async () => {
 
 <template>
   <div
-    class="u-m-2 flex flex-wrap l-items-main-center l-gap-2 lg:m-8 lg:mb-0 lg:gap-16"
+    class="u-m-2 flex l-wrap l-items-main-center l-gap-2 lg:m-8 lg:mb-0 lg:gap-16"
   >
     <button
       type="button"

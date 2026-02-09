@@ -35,48 +35,66 @@ const editEl = (index: number) => {
 </script>
 
 <template>
-  <div class="border-2 border-gray-500 focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
-    <div v-if="modelValue.length" class="m-1 flex flex-wrap l-gap-1">
-      <div v-for="(el, i) in modelValue" :key="i" class="flex overflow-hidden rounded bg-cyan-900">
-        <button
-          type="button"
-          class="flex l-items-cross-center overflow-hidden px-1 hover:bg-cyan-800"
-          title="Modifier"
-          @click="editEl(i)"
-        >
-          <p class="truncate">
-            {{ el }}
-          </p>
-        </button>
-        <button
-          type="button"
-          class="flex l-items-cross-center px-1 hover:bg-cyan-800"
-          title="Supprimer"
-          @click="removeEl(i)"
-        >
-          <fa-awesome-icon icon="fa-xmark"/>
-        </button>
-      </div>
-    </div>
-    <div class="flex l-items-cross-center">
-      <input
-        :id="id"
-        v-model="newElement"
-        type="text"
-        :aria-label="label"
-        class="grow border-0 bg-theme-bg focus:ring-0"
-        :placeholder="placeholder"
-        @keydown.enter="addElement"
-      />
+  <div v-if="modelValue.length" class="u-my-1 l-flex-row l-wrap l-gap-1">
+    <div v-for="(el, i) in modelValue" :key="i" class="l-flex-row c-btn-bg-3 nopad">
       <button
         type="button"
-        title="Ajouter"
-        class="mx-3 w-6 rounded"
-        :class="{ 'text-gray-500': !newElement }"
-        @click="addElement"
+        class="l-flex-row l-items-cross-center u-pl-1"
+        title="Modifier"
+        @click="editEl(i)"
       >
-        <fa-awesome-icon icon="fa-check"/>
+        <p class="truncate">
+          {{ el }}
+        </p>
+      </button>
+      <button
+        type="button"
+        class="u-px-1"
+        title="Supprimer"
+        @click="removeEl(i)"
+      >
+        <fa-awesome-icon class="xmark" icon="fa-xmark"/>
       </button>
     </div>
   </div>
+  <div class="l-flex-row l-items-cross-center">
+    <input
+      :id="id"
+      v-model="newElement"
+      type="text"
+      :aria-label="label"
+      :placeholder="placeholder"
+      @keydown.enter="addElement"
+    />
+    <button
+      type="button"
+      title="Ajouter"
+      class="u-mx-2 c-image-btn"
+      :disabled="newElement ? false : true"
+      @click="addElement"
+    >
+      <fa-awesome-icon class="check" icon="fa-check"/>
+    </button>
+  </div>
 </template>
+
+<style scoped>
+.xmark {
+  color: var(--color-text-1);
+  transition: color .2s;
+}
+
+.xmark:hover {
+  color: var(--color-error-1);
+  transition: color .2s;
+}
+
+.check {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.nopad {
+  padding: .2rem;
+}
+</style>
