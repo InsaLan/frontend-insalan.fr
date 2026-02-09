@@ -66,7 +66,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
           <div
             v-for="round_idx in bracket.depth + 1"
             :key="round_idx"
-            class="u-text-center text-xl"
+            class="u-text-center u-big-text"
           >
             {{ bracket_round_title(bracket.depth, round_idx) }}
           </div>
@@ -97,7 +97,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
               Vainqueur
             </div>
             <p
-              class="u-text-center text-xl"
+              class="u-text-center u-big-text"
             >
               {{ get_validated_team_by_id(bracket.winner)?.name }}
             </p>
@@ -121,7 +121,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
           <div
             v-for="round_idx in 2 * bracket.depth + 1"
             :key="round_idx"
-            class="u-text-center text-xl"
+            class="u-text-center u-big-text"
           >
             {{
               (round_idx === 1)
@@ -180,7 +180,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
               Vainqueur
             </div>
             <p
-              class="u-text-center text-xl"
+              class="u-text-center u-big-text"
             >
               {{ get_validated_team_by_id(bracket.winner)?.name }}
             </p>
@@ -200,7 +200,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
           <div
             v-for="round_idx in 2 * bracket.depth + 1"
             :key="round_idx"
-            class="u-text-center text-xl"
+            class="u-text-center u-big-text"
           >
             {{
               (round_idx !== 1 && round_idx < 2 * bracket.depth - 1)

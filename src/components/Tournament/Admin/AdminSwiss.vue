@@ -162,7 +162,7 @@ const swiss_fill_round = async () => {
   </h1>
 
   <div
-    class="u-mx-2 flex flex-wrap l-items-main-center gap-4 lg:u-mx-4 lg:l-gap-4"
+    class="u-mx-2 flex l-wrap l-items-main-center gap-4 lg:u-mx-4 lg:l-gap-4"
   >
     <button
       type="button"

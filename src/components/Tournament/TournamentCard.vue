@@ -11,7 +11,7 @@ const props = defineProps<{
 }>();
 
 const { getTournamentFull, getTournamentTeams } = tournamentStore;
-const { eventTournamentsList, eventsList, tourney_teams } = storeToRefs(tournamentStore);
+const { eventTournamentsList, eventsList } = storeToRefs(tournamentStore); // tourney_teams
 const tournament = computed<EventTournament | EventTournamentDeref | undefined>(
   () => eventTournamentsList.value[props.id],
 );
@@ -32,25 +32,25 @@ const event_ongoing = computed(() => {
   return event === undefined ? false : event.ongoing;
 });
 
-const thresholds = computed(() => tournament.value?.max_team_thresholds ?? [0]);
-const current_threshold_index = computed(() => tournament.value?.current_threshold_index ?? 0);
+// const thresholds = computed(() => tournament.value?.max_team_thresholds ?? [0]);
+// const current_threshold_index = computed(() => tournament.value?.current_threshold_index ?? 0);
 
-const available_thresholds = computed(() => current_threshold_index.value < thresholds.value.length - 1);
+// const available_thresholds = computed(() => current_threshold_index.value < thresholds.value.length - 1);
 
-const max_teams = computed(() => {
-  if (tournament.value === undefined) { return 1; }
+// const max_teams = computed(() => {
+//   if (tournament.value === undefined) { return 1; }
 
-  if (available_thresholds.value) {
-    return thresholds.value[current_threshold_index.value + 1];
-  }
-  return thresholds.value[current_threshold_index.value];
-});
-const max_validated_teams = computed(() => thresholds.value
-  .at(current_threshold_index.value) ?? 0);
-const validated_teams_proportion = computed(() => (max_validated_teams.value / max_teams.value) * 100);
-const is_threshold_full = computed(
-  () => tournament.value?.validated_teams === thresholds.value.at(current_threshold_index.value),
-);
+//   if (available_thresholds.value) {
+//     return thresholds.value[current_threshold_index.value + 1];
+//   }
+//   return thresholds.value[current_threshold_index.value];
+// });
+// const max_validated_teams = computed(() => thresholds.value
+//   .at(current_threshold_index.value) ?? 0);
+// const validated_teams_proportion = computed(() => (max_validated_teams.value / max_teams.value) * 100);
+// const is_threshold_full = computed(
+//   () => tournament.value?.validated_teams === thresholds.value.at(current_threshold_index.value),
+// );
 
 onMounted(async () => {
   await getTournamentFull(props.id);
@@ -58,88 +58,30 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <div v-if="tournament?.is_announced" class="grid c-card-bg-2-nopad u-pb-2">
+  <div v-if="tournament?.is_announced" class="l-flex-column l-items-cross-center c-card-bg-2 u-p-0 u-pb-2 l-gap-2 u-full-width">
     <img
       :alt="`Logo du ${tournament?.name}`"
       :src="tournament?.logo"
-      class="aspect-video u-full-width overflow-hidden object-cover u-rounded"
+      class="c-thumbnail"
     />
-    <p class="text-lg">
-      Équipes :
-    </p>
-    <div class="w-4/5">
-      <div class="relative flex h-6 w-full items-center justify-center rounded-2xl bg-white text-lg text-black">
-        <template
-          v-if="is_threshold_full && available_thresholds"
-        >
-          <div
-            class="tooltip-target z-[1] flex h-6 items-center justify-center rounded-s-2xl bg-green-600"
-            :style="{ width: `${validated_teams_proportion}%` }"
-            aria-describedby="validated_teams_tooltip"
-          >
-            {{ tournament?.validated_teams }}/{{ thresholds[current_threshold_index] }}
-            <span
-              id="validated_teams_tooltip"
-              role="tooltip"
-              class="tooltip-text invisible absolute top-8 rounded-md border border-white bg-theme-bg px-3 py-2 text-white opacity-0 transition duration-300"
-            >
-              {{ tournament?.validated_teams }}/{{ thresholds[current_threshold_index] }} équipes validées
-            </span>
-          </div>
-          <span
-            class="tooltip-target z-[1] flex justify-center"
-            :style="{ width: `${((thresholds[current_threshold_index + 1] - thresholds[current_threshold_index]) / max_teams) * 100}%` }"
-            aria-describedby="waiting_validation_teams_tooltip"
-          >
-            {{ tourney_teams.waiting_validation_teams.length }}/{{ thresholds[current_threshold_index + 1]
-              - thresholds[current_threshold_index] }}
-            <span
-              id="waiting_validation_teams_tooltip"
-              role="tooltip"
-              class="tooltip-text invisible absolute top-8 w-36 rounded-md border border-white bg-theme-bg px-3 py-2 text-center text-white opacity-0 transition duration-300"
-            >
-              {{ tourney_teams.waiting_validation_teams.length }}/{{ thresholds[current_threshold_index + 1]
-                - thresholds[current_threshold_index] }} en attente du palier
-            </span>
-          </span>
-          <!--  -->
-          <div
-            class="absolute left-0 h-6 rounded-2xl bg-blue-800 opacity-80"
-            :style="{ width: `${((tournament?.validated_teams + tourney_teams.waiting_validation_teams.length) / max_teams) * 100}%` }"
-          />
-        </template>
-        <template
-          v-else
-        >
-          <div
-            class="absolute left-0 h-6 rounded-2xl bg-green-600"
-            :style="{ width: `${(tournament?.validated_teams / max_validated_teams) * 100}%` }"
-          />
-          <span
-            class="tooltip-target z-[1] flex justify-center"
-            aria-describedby="validated_teams_tooltip"
-          >
-            {{ tournament?.validated_teams }}/{{ thresholds[current_threshold_index] }}
-            <span
-              id="validated_teams_tooltip"
-              role="tooltip"
-              class="tooltip-text invisible absolute top-8 rounded-md border border-white bg-theme-bg px-3 py-2 text-white opacity-0 transition duration-300"
-            >
-              {{ tournament?.validated_teams }}/{{ thresholds[current_threshold_index] }} équipes validées
-            </span>
-          </span>
-        </template>
-      </div>
-    </div>
-    <p class="text-lg">
-      Cashprize :
+    <p class="u-big-text"> <!-- TODO: Add back progress bar from #846327e (can't be bothered during rebase) -->
+      {{ tournament?.validated_teams }}/{{ tournament?.max_team_thresholds[tournament?.current_threshold_index] }}
+      Équipes | Cashprize:
       {{ tournament?.cashprizes?.length !== 0 ? `${tournament?.cashprizes?.reduce((acc, val) => acc += Number(val), 0)} €` : "À venir" }}
     </p>
-    <div class="flex w-4/5 l-items-main-center l-gap-2 u-text-center">
-      <router-link :to="`tournament/${tournament?.id as number}/info`" class="c-btn-bg-3">
+    <div class="l-flex-row l-items-main-center l-items-cross-center l-gap-2">
+      <router-link
+        :to="`tournament/${tournament?.id as number}/info`"
+        class="c-btn-bg-3"
+      >
         Plus d'infos
       </router-link>
-      <button v-if="Date.parse(tournament?.registration_open) > Date.now()" type="button" class="c-btn-secondary" disabled>
+      <button
+        v-if="Date.parse(tournament?.registration_open) > Date.now()"
+        type="button"
+        class="c-btn-secondary"
+        disabled
+      >
         Inscriptions à venir
       </button>
       <router-link
@@ -149,27 +91,32 @@ onMounted(async () => {
       >
         S'inscrire
       </router-link>
-      <button v-else type="button" class="c-btn-secondary" disabled>
+      <button
+        v-else
+        type="button"
+        class="c-btn-secondary"
+        disabled
+      >
         Inscriptions fermées
       </button>
     </div>
   </div>
   <!-- Placeholder when the tournament is not announced -->
-  <div v-else class="grid place-items-center l-gap-1 bg-cyan-900 shadow-lg">
+  <div v-else class="l-flex-column l-items-cross-center c-card-bg-2 u-full-width u-full-height">
     <svg
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
       viewBox="0 0 512 512"
       xml:space="preserve"
-      class="aspect-video py-10"
+      class="u-py-4 l-grow"
+      fill="currentColor"
     >
       <desc>
         Question mark
       </desc>
       <g>
         <path
-          class="fill-white"
           d="M396.138,85.295c-13.172-25.037-33.795-45.898-59.342-61.03C311.26,9.2,280.435,0.001,246.98,0.001
           c-41.238-0.102-75.5,10.642-101.359,25.521c-25.962,14.826-37.156,32.088-37.156,32.088c-4.363,3.786-6.824,9.294-6.721,15.056
           c0.118,5.77,2.775,11.186,7.273,14.784l35.933,28.78c7.324,5.864,17.806,5.644,24.875-0.518c0,0,4.414-7.978,18.247-15.88
@@ -183,13 +130,12 @@ onMounted(async () => {
           C410.243,120.761,404.879,101.971,396.138,85.295z"
         />
         <path
-          class="st0 fill-white"
           d="M228.809,406.44c-29.152,0-52.788,23.644-52.788,52.788c0,29.136,23.637,52.772,52.788,52.772
           c29.136,0,52.763-23.636,52.763-52.772C281.572,430.084,257.945,406.44,228.809,406.44z"
         />
       </g>
     </svg>
-    <p class="u-text-center text-xl">
+    <p class="u-text-center u-big-text u-py-2">
       Le tournoi sera annoncé prochainement !
     </p>
   </div>

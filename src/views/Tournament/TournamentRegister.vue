@@ -226,7 +226,7 @@ const handleCloseTravelFormModal = () => {
           <FormField
             v-if="create && !soloGame"
             :validations="v$.team"
-            class="l-flex-column text-xl"
+            class="l-flex-column u-big-text"
           >
             <label for="team">
               Nom de l'équipe
@@ -244,7 +244,7 @@ const handleCloseTravelFormModal = () => {
           <FormField
             v-else-if="create && soloGame"
             :validations="v$.name_in_game"
-            class="l-flex-column text-xl"
+            class="l-flex-column u-big-text"
           >
             <label for="name_in_game">
               Pseudo en jeu
@@ -263,7 +263,7 @@ const handleCloseTravelFormModal = () => {
           <FormField
             v-else
             :validations="v$.team"
-            class="l-flex-column text-xl"
+            class="l-flex-column u-big-text"
           >
             <label for="teams">
               Équipe
@@ -286,7 +286,7 @@ const handleCloseTravelFormModal = () => {
           <FormField
             v-else
             :validations="v$.name_in_game"
-            class="l-flex-column text-xl"
+            class="l-flex-column u-big-text"
           >
             <label for="name_in_game">
               Pseudo en jeu
@@ -308,7 +308,7 @@ const handleCloseTravelFormModal = () => {
                 || !(isPrivate)
             "
             :validations="v$.password"
-            class="l-flex-column text-xl"
+            class="l-flex-column u-big-text"
           >
             <label for="pwd">
               {{ isPrivate ? 'Mot de passe du tournoi' : 'Mot de passe de l\'équipe' }}
@@ -355,7 +355,7 @@ const handleCloseTravelFormModal = () => {
               !isPrivate
             "
             :validations="v$.role"
-            class="l-flex-column text-xl"
+            class="l-flex-column u-big-text"
           >
             <label for="role">
               Rôle dans l'équipe

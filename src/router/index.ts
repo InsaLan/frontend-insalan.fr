@@ -177,7 +177,7 @@ const routes: RouteRecordRaw[] = [
         !isConnected
         || (!user.is_superuser && !user.is_staff)
         // Restrict route from loading on desktop
-        || window.innerWidth > 768
+        // || window.innerWidth > 768
       ) ? { path: '/' } : true;
     },
   },

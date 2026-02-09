@@ -1,5 +1,5 @@
 <template>
-  <div class="u-m-body l-flex-column l-items-cross-center">
+  <div class="u-m-text l-flex-column l-items-cross-center">
     <h1>
       404
     </h1>

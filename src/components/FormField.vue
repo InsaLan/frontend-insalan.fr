@@ -2,12 +2,9 @@
 import type { BaseValidation } from '@vuelidate/core';
 import { computed } from 'vue';
 
-const props = withDefaults(defineProps<{
+const props = defineProps<{
   validations: BaseValidation;
-  label?: string;
-}>(), {
-  label: 'label',
-});
+}>();
 
 const invalid = computed(() => props.validations.$error);
 const errors = computed(() => props.validations.$errors.at(0));
@@ -15,6 +12,6 @@ const errors = computed(() => props.validations.$errors.at(0));
 <template>
   <div :class="$attrs.class || 'l-flex-column'">
     <slot :errors="errors" :invalid="invalid"/>
-    <span v-if="invalid" class="c-card-error-1-nopad u-text-center">{{ errors?.$message }}</span>
+    <span v-if="invalid" class="c-card-error-1 u-p-0 u-text-center u-full-width">{{ errors?.$message }}</span>
   </div>
 </template>

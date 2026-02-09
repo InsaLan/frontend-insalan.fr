@@ -11,7 +11,7 @@ const store = useContentStore();
     L'association InsaLan
   </h1>
   <Content
-    class="u-m-body l-flex-column l-gap-4 u-text-indent"
+    class="u-m-text l-flex-column l-gap-4 u-text-indent"
     name="Association"
   />
   <img

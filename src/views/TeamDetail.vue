@@ -492,9 +492,12 @@ const kick_member = async (type: string, id: number) => {
       <form id="patch-user" @submit.prevent="ValidateModalNameInGame">
         <FormField
           :validations="v$_name_in_game.name_in_game"
-          label="Nouveau Pseudo"
         >
+          <label for="name_in_game">
+            Nouveau Pseudo
+          </label>
           <input
+            id="name_in_game"
             v-model="data_name_in_game.name_in_game"
             aria-label="Nouveau Pseudo"
             placeholder="Nouveau Pseudo"
@@ -532,9 +535,12 @@ const kick_member = async (type: string, id: number) => {
       <form id="patch-user" @submit.prevent="ValidateModalTeamName">
         <FormField
           :validations="v$_team_name.name"
-          label="Nouveau nom"
         >
+          <label for="name">
+            Nouveau nom
+          </label>
           <input
+            id="name"
             v-model="data_team_name.name"
             aria-label="Nouveau nom"
             placeholder="Nouveau nom"
@@ -572,8 +578,10 @@ const kick_member = async (type: string, id: number) => {
       <form id="patch-user" @submit.prevent="ValidateModalTeamPassword">
         <FormField
           :validations="v$_team_password.password"
-          label="Nouveau mot de passe"
         >
+          <label for="password">
+            Nouveau mot de passe
+          </label>
           <input
             v-model="data_team_password.password"
             aria-label="Nouveau mot de passe"

@@ -21,8 +21,6 @@ export const useContentStore = defineStore('content', () => {
     html: true,
   });
   const classesMapping = {
-    ul: 'list-disc',
-    li: 'ml-5',
     a: 'c-link',
     strong: 'u-bold',
   };

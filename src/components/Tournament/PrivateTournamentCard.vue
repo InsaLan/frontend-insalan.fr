@@ -7,18 +7,21 @@ defineProps<{
 
 </script>
 <template>
-  <div class="grid c-card-bg-2-nopad u-pb-2">
+  <div class="l-flex-column l-items-cross-center c-card-bg-2 u-p-0 u-pb-2 l-gap-2 u-full-width">
     <img
       :alt="`Logo du ${tournament?.name}`"
       :src="tournament?.logo"
-      class="aspect-video u-full-width overflow-hidden object-cover u-rounded"
+      class="c-thumbnail"
     />
-    <p class="text-lg">
+    <p class="u-big-text">
       {{ tournament?.validated_teams }}/{{ tournament?.max_team_thresholds[tournament?.current_threshold_index] }}
       Équipes
     </p>
-    <div class="flex w-4/5 l-items-main-center l-gap-2 u-text-center">
-      <router-link :to="`tournament/private/${tournament?.id as number}/info`" class="c-btn-bg-3">
+    <div class="l-flex-row l-items-main-center l-items-cross-center l-gap-2">
+      <router-link
+        :to="`tournament/private/${tournament?.id as number}/info`"
+        class="c-btn-bg-3"
+      >
         Plus d'infos
       </router-link>
       <router-link

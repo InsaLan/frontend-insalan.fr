@@ -149,7 +149,7 @@ const props = defineProps<{
       >
         <div class="u-mb-2 flex l-items-cross-center justify-between">
           <h3
-            class="text-xl u-bold md:text-2xl"
+            class="u-big-text u-bold md:text-2xl"
           >
             Informations du tournoi
           </h3>
@@ -168,7 +168,7 @@ const props = defineProps<{
           </p>
 
           <div
-            class="flex l-items-cross-center l-gap-1 text-xl"
+            class="flex l-items-cross-center l-gap-1 u-big-text"
           >
             <fa-awesome-icon
               icon="fa-calendar-days"

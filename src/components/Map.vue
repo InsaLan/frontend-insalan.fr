@@ -2,10 +2,10 @@
   <h1>
     Où nous trouver
   </h1>
-  <div class="u-m-double-body u-mb-2 u-text-center u-flex-column l-items-cross-center u-big-text">
+  <div class="u-m-double-text u-mb-2 u-text-center u-flex-column l-items-cross-center u-big-text">
     <Content name="Adresse"/>
   </div>
-  <section class="u-mb-2 u-m-double-body l-flex-column l-items-main-center l-items-cross-center">
+  <section class="u-mb-2 u-m-double-text l-flex-column l-items-main-center l-items-cross-center">
     <div class="map u-rounded">
       <l-map ref="map" v-model:zoom="zoom" :center="insalan_pos" :use-global-leaflet="false">
         <l-tile-layer

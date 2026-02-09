@@ -78,14 +78,15 @@ await fetchAllPizzas();
   <h1>
     Liste des Pizzas
   </h1>
-  <div class="u-m-2 mb-6 mt-0 flex justify-between l-gap-2">
+  <div class="u-m-2 l-flex-row l-gap-1 l-items-cross-center">
     <button
       type="button"
-      class="rounded bg-green-600 u-p-1 hover:bg-green-500"
+      class="c-btn-primary"
       @click="showCreatePizzaModal = true"
     >
-      Ajouter une nouvelle pizza
+      Ajouter une pizza
     </button>
+    <div class="l-grow"/>
     <form>
       <input
         id="pizza-search"
@@ -98,23 +99,23 @@ await fetchAllPizzas();
     </form>
   </div>
   <div class="mb-6 l-flex-column l-gap-1 u-px-2">
-    <div class="grid-layout grid l-gap-1 rounded bg-cyan-900 u-p-1">
-      <div class="flex w-20 l-items-cross-center overflow-x-hidden border-r border-white u-pr-1">
+    <div class="c-card-bg-2 grid-layout grid l-gap-1 rounded u-full-width">
+      <div class="flex w-20 l-items-cross-center overflow-x-hidden u-pr-1">
         <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
           Image
         </p>
       </div>
-      <div class="flex l-items-cross-center overflow-x-hidden border-r border-white u-pr-1">
+      <div class="flex l-items-cross-center overflow-x-hidden u-pr-1">
         <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
           Nom
         </p>
       </div>
-      <div class="hidden l-items-cross-center overflow-x-hidden border-r border-white u-pr-1 sm:flex">
+      <div class="hidden l-items-cross-center overflow-x-hidden u-pr-1 sm:flex">
         <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
           Ingrédients
         </p>
       </div>
-      <div class="hidden l-items-cross-center overflow-x-hidden border-r border-white u-pr-1 lg:flex">
+      <div class="hidden l-items-cross-center overflow-x-hidden u-pr-1 lg:flex">
         <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
           Allergènes
         </p>

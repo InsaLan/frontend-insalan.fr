@@ -101,7 +101,7 @@ const launch_selected_matchs = async () => {
 
 <template>
   <div
-    class="u-m-2 flex flex-wrap l-items-main-center l-gap-2 lg:mb-0 lg:gap-8"
+    class="u-m-2 flex l-wrap l-items-main-center l-gap-2 lg:mb-0 lg:gap-8"
   >
     <button
       type="button"
@@ -143,13 +143,13 @@ const launch_selected_matchs = async () => {
         class="grid"
         :style="{ 'grid-template-columns': `6rem repeat(${max_round}, 18rem)` }"
       >
-        <span class="border-b-2 border-r-2 u-p-1 u-text-center text-xl">
+        <span class="border-b-2 border-r-2 u-p-1 u-text-center u-big-text">
           Poule
         </span>
         <div
           v-for="round in max_round"
           :key="round"
-          class="border-b-2 border-r u-text-center text-xl"
+          class="border-b-2 border-r u-text-center u-big-text"
         >
           Tour {{ round }}
         </div>
@@ -158,7 +158,7 @@ const launch_selected_matchs = async () => {
           :key="group.id"
         >
           <div
-            class="flex l-items-cross-center l-items-main-center text-wrap border-b border-r-2 text-xl"
+            class="flex l-items-cross-center l-items-main-center text-wrap border-b border-r-2 u-big-text"
           >
             {{ group.name }}
           </div>
@@ -167,7 +167,7 @@ const launch_selected_matchs = async () => {
             :key="round"
             class="border-b border-r"
           >
-            <div class="flex flex-wrap justify-around p-1">
+            <div class="flex l-wrap justify-around p-1">
               <MatchCard
                 v-for="match in get_matchs_per_round(group.matchs).reverse()[round - 1]"
                 :key="match.id"

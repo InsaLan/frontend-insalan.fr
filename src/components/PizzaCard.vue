@@ -15,8 +15,7 @@ const pizza = computed<Pizza | undefined>(() => pizzaList.value[props.id]);
 
 </script>
 <template>
-  <div class="c-card-bg-2-nopad u-pb-2 l-flex-column l-items-cross-center">
-    <!-- TODO: Fix image not sticking to the top -->
+  <div class="c-card-bg-2 u-p-0 u-pb-2 l-flex-column l-items-cross-center u-full-height u-full-width">
     <img
       :alt="`Image de ${pizza?.name}`"
       :src="pizza?.image"
@@ -37,7 +36,7 @@ const pizza = computed<Pizza | undefined>(() => pizzaList.value[props.id]);
 <style scoped>
 .pizza-thumbnail {
   aspect-ratio: 16 / 9;
-  height: 12rem;
+  height: 13rem;
   object-fit: cover;
 }
 </style>

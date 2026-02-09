@@ -155,18 +155,18 @@ watch(() => props.link, fetchEvents);
 </script>
 
 <template>
-  <div class="event-schedule font-sans">
-    <div v-if="events.length === 0" class="p-5 u-text-center">
-      Le planning n'est pas encore disponible, revenez plus tard !
+  <div class="event-schedule">
+    <div v-if="events.length === 0" class="u-text-center u-big-text">
+      ⌛ Le planning n'est pas encore disponible, revenez plus tard !
     </div>
     <div v-else class="calendar">
       <div
         v-if="canGoBack || canGoForward"
-        class="mb-5 flex justify-between"
+        class="l-flex-row u-full-width u-mb-2 l-items-main-center u-gap-4"
       >
         <button
           :disabled="!canGoBack"
-          class="rounded bg-blue-500 u-px-2 u-py-1 text-black disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
+          class="c-text-btn"
           type="button"
           @click="goBack"
         >
@@ -174,7 +174,7 @@ watch(() => props.link, fetchEvents);
         </button>
         <button
           :disabled="!canGoForward"
-          class="rounded bg-blue-500 u-px-2 u-py-1 text-black disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
+          class="c-text-btn"
           type="button"
           @click="goForward"
         >
@@ -190,10 +190,10 @@ watch(() => props.link, fetchEvents);
               <span class="u-mr-1">{{ hour.toString().padStart(2, '0') }}:00</span>
             </div>
           </div>
-          <div v-for="day in visibleDays" :key="day.toISOString()" class="col-span-2 overflow-hidden rounded border border-gray-200">
-            <h2 class="bg-gray-100 p-3 u-text-center text-sm u-bold text-black">
+          <div v-for="day in visibleDays" :key="day.toISOString()" class="col-span-2 overflow-hidden u-rounded u-bg-bg-2">
+            <div class="u-bg-bg-3 u-p-2 u-text-center u-bold u-m-0">
               {{ frenchDayFormatFromDate(day) }}
-            </h2>
+            </div>
             <div class="l-relative-position border-t border-gray-200" :style="{ height: `${60 * (24 - START_HOURE)}px` }">
               <div
                 v-for="hour in timeSlots"
@@ -205,7 +205,7 @@ watch(() => props.link, fetchEvents);
                 v-for="event in getEventsForDay(day)"
                 :key="event.start.toISOString()"
                 :class="[
-                  'absolute l-flex-column cursor-pointer overflow-hidden rounded border border-black p-1 u-text-center text-xs text-white shadow-lg transition-transform duration-200 hover:z-10 hover:shadow-xl hover:ring hover:ring-blue-500 focus:z-10 focus:ring focus:ring-blue-500',
+                  'l-flex-column u-rounded u-text-center absolute cursor-pointer overflow-hidden u-p-1 text-xs transition-transform duration-200 hover:z-10',
                   colors[
                     event.id.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0)
                     % colors.length
@@ -221,9 +221,7 @@ watch(() => props.link, fetchEvents);
                 <div class="u-bold">
                   {{ format(event.start, 'HH:mm') }} - {{ format(event.end, 'HH:mm') }}
                 </div>
-                <div class="mt-1">
-                  {{ event.summary }}
-                </div>
+                {{ event.summary }}
               </button>
             </div>
           </div>
