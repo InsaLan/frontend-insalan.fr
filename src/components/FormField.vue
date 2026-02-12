@@ -12,6 +12,6 @@ const errors = computed(() => props.validations.$errors.at(0));
 <template>
   <div :class="$attrs.class || 'l-flex-column'">
     <slot :errors="errors" :invalid="invalid"/>
-    <span v-if="invalid" class="c-card-error-1 u-p-0 u-text-center u-full-width">{{ errors?.$message }}</span>
+    <span v-if="invalid" class="c-card-error u-p-0 u-text-center u-full-width">{{ errors?.$message }}</span>
   </div>
 </template>

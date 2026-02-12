@@ -289,7 +289,7 @@ const closeModal = () => {
         </div>
       </div>
     </div>
-    <div v-else class="flex l-items-main-center">
+    <div v-else class="u-text-center u-my-4 u-big-text">
       Le plan de la salle n'est pas encore disponible, revenez plus tard !
     </div>
   </section>

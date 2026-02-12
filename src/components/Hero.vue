@@ -6,13 +6,19 @@ import { useContentStore } from '@/stores/content.store';
 const contentStore = useContentStore();
 const { getConstant } = contentStore;
 
-const trailer_embed = 'https://www.youtube.com/embed/Bxi-4XEANbE?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&rel=0&enablejsapi=1&playlist=Bxi-4XEANbE&end=36';
+const d = new Date();
+const n = d.getDay() * 100 + d.getMonth() * 3;
 
 interface Props {
   event?: Event;
 }
 
 const props = defineProps<Props>();
+
+// Youtube video ID to play (found in the URL after v=)
+const video_id = 'Bxi-4XEANbE';
+// How many seconds to play the video before looping
+const video_end = 34;
 
 const eventText = computed(() => {
   if (props.event === undefined) {
@@ -54,7 +60,7 @@ const scrollPastHero = () => {
   <div id="hero" class="l-relative-position l-flex-column l-items-cross-center l-items-main-center h-screen">
     <div class="l-absolute-position l-flex-row u-full-width u-full-height l-items-cross-center l-items-main-center rounded-bottom">
       <iframe
-        :src="trailer_embed"
+        :src="`https://www.youtube.com/embed/${n === 112 ? 'dQw4w9WgXcQ' : video_id}?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&rel=0&enablejsapi=1&playlist=${n === 112 ? 'dQw4w9WgXcQ' : video_id}${n !== 112 && `&end=${video_end}`}`"
         allowfullscreen
         class="video"
         title="Trailer InsaLan"

@@ -35,7 +35,7 @@ enum OrderType {
 
 const orderTypeToString = {
   [OrderType.PUBLIC]: 'Publique',
-  [OrderType.PLAYER]: 'Joueur',
+  [OrderType.PLAYER]: 'Joueur·euse',
   [OrderType.STAFF]: 'Staff',
 };
 
@@ -380,7 +380,7 @@ const factorise = (pizzas: number[]) => {
           Liste des Pizzas disponibles
         </h1>
         <form id="add_pizza" class="l-flex-column l-grow gap-5">
-          <div class="flex l-gap-1 rounded-2xl bg-gray-500 p-1 u-text-center text-black">
+          <div class="flex l-gap-1 rounded-2xl bg-gray-500 p-1 u-text-center">
             <div class="l-flex-column">
               <fa-awesome-icon
                 class="u-ml-1 l-grow"
@@ -392,7 +392,7 @@ const factorise = (pizzas: number[]) => {
               <input id="searchPizza" v-model="pizzaSearch" type="text" class="u-full-width rounded-xl border-2 border-black bg-gray-300 p-0 u-text-center" placeholder="Rechercher une pizza"/>
             </div>
           </div>
-          <div class="grow overflow-y-auto bg-gray-300 u-text-center text-black md:h-px">
+          <div class="grow overflow-y-auto bg-gray-300 u-text-center md:h-px">
             <div v-for="pizzaId in timeslotList[selectedTimeslotId]?.pizza" :key="pizzaId" class="l-flex-row justify-between">
               <div :class="{ hidden: !pizzaList[pizzaId]?.name.toLowerCase().includes(pizzaSearch.toLowerCase()) }" class="flex l-grow border-b-2 border-black">
                 <label :for="`pizzaQuantity-${pizzaId}`" class="l-flex-column l-grow l-items-main-center">
@@ -405,7 +405,7 @@ const factorise = (pizzas: number[]) => {
           <div class="l-flex-column rounded-2xl bg-gray-500 u-text-center md:flex-row">
             <div class="l-grow">
               <label for="paymentMethod" class="sr-only">Payment Method</label>
-              <select id="paymentMethod" v-model="selectedPaymentMethod" class="u-m-1 rounded-xl bg-gray-300 p-0 u-pl-1 u-pr-4 text-left text-black">
+              <select id="paymentMethod" v-model="selectedPaymentMethod" class="u-m-1 rounded-xl bg-gray-300 p-0 u-pl-1 u-pr-4 text-left">
                 <option value="default" selected>
                   Choisir un moyen de paiement
                 </option>
@@ -416,7 +416,7 @@ const factorise = (pizzas: number[]) => {
             </div>
             <div class="l-grow">
               <label for="order-type" class="sr-only">Type de commande</label>
-              <select id="order-type" v-model="selectedOrderType" class="u-m-1 rounded-xl bg-gray-300 p-0 u-pl-1 u-pr-4 text-left text-black">
+              <select id="order-type" v-model="selectedOrderType" class="u-m-1 rounded-xl bg-gray-300 p-0 u-pl-1 u-pr-4 text-left">
                 <option v-for="type in OrderType" :key="type" :value="type">
                   {{ orderTypeToString[type] }}
                 </option>
@@ -424,7 +424,7 @@ const factorise = (pizzas: number[]) => {
             </div>
             <div class="flex l-grow">
               <label for="InputPseudo" class="sr-only">Input Text</label>
-              <input id="InputPseudo" v-model="pseudo" type="text" class="u-m-1 l-grow rounded-xl border-2 border-black bg-gray-300 p-0 u-text-center text-black" placeholder="Pseudo"/>
+              <input id="InputPseudo" v-model="pseudo" type="text" class="u-m-1 l-grow rounded-xl border-2 border-black bg-gray-300 p-0 u-text-center" placeholder="Pseudo"/>
             </div>
             <div class="flex l-items-main-center">
               <button type="submit" class="u-m-1 w-20 l-grow rounded-xl bg-green-600 p-0 u-text-center text-white" @click.prevent="validatePizza">
@@ -446,7 +446,7 @@ const factorise = (pizzas: number[]) => {
           />
         </h1>
         <div class="l-flex-column l-grow gap-5">
-          <div class="flex l-gap-1 rounded-2xl bg-gray-500 p-1 u-text-center text-black">
+          <div class="flex l-gap-1 rounded-2xl bg-gray-500 p-1 u-text-center">
             <div class="l-flex-column">
               <fa-awesome-icon
                 class="u-ml-1 l-grow"
@@ -470,7 +470,7 @@ const factorise = (pizzas: number[]) => {
                 récupéré
               </div>
             </div>
-            <div class="l-flex-column grow overflow-y-auto bg-gray-300 text-black md:h-px">
+            <div class="l-flex-column grow overflow-y-auto bg-gray-300 md:h-px">
               <div v-for="order in (timeslotList[selectedTimeslotId] as AdminTimeslotDeref)?.orders" :key="order.id">
                 <div v-if="order.user.toLowerCase().includes(orderSearch.toLowerCase())" class="align-center u-mx-1 my-1 l-flex-row l-items-main-center rounded-xl bg-gray-200 u-text-center">
                   <div class="flex l-grow l-items-cross-center l-items-main-center">
@@ -496,7 +496,7 @@ const factorise = (pizzas: number[]) => {
           >
             <div class="flex l-grow">
               <div
-                class="m-1 flex l-grow l-items-main-center u-text-center text-2xl text-black"
+                class="m-1 flex l-grow l-items-main-center u-text-center text-2xl"
                 :class="{
                   invisible: new Date(timeslotList[selectedTimeslotId]?.end) > new Date(),
                 }"
@@ -596,12 +596,12 @@ const factorise = (pizzas: number[]) => {
             :validations="v$_create.player_price"
           >
             <label for="player_price">
-              Prix pour les joueurs
+              Prix pour les joueur·euse·s
             </label>
             <input
               id="player_price"
               v-model="data_create.player_price"
-              aria-label="Prix pour les joueurs"
+              aria-label="Prix pour les joueur·euse·s"
               placeholder="0"
               required
               type="number"
@@ -750,7 +750,7 @@ const factorise = (pizzas: number[]) => {
     </template>
     <template #body>
       <p>Pseudo : {{ pseudo }} </p>
-      <p>Type de command : {{ orderTypeToString[selectedOrderType] }}</p>
+      <p>Type de commande : {{ orderTypeToString[selectedOrderType] }}</p>
       <p>Pizza{{ Object.values(pizzaQuantities).reduce((acc, val) => acc + val) > 1 ? 's' : '' }} :</p>
       <ul>
         <li v-for="(quantity, pizzaId) in pizzaQuantities" :key="pizzaId">

@@ -23,7 +23,7 @@ await fetchAllEvents();
         v-for="event in oldEvents"
         :key="event.id"
       >
-        <h2 class="u-text-center">
+        <h2 class="u-text-center u-mb-2">
           {{ event.name }} | {{ event.date_start.toLocaleDateString() }}
         </h2>
         <div

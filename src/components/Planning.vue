@@ -155,77 +155,74 @@ watch(() => props.link, fetchEvents);
 </script>
 
 <template>
-  <div class="event-schedule">
-    <div v-if="events.length === 0" class="u-text-center u-big-text">
-      ⌛ Le planning n'est pas encore disponible, revenez plus tard !
-    </div>
-    <div v-else class="calendar">
-      <div
-        v-if="canGoBack || canGoForward"
-        class="l-flex-row u-full-width u-mb-2 l-items-main-center u-gap-4"
+  <div v-if="events.length === 0" class="l-flex-column u-full-height u-text-center u-big-text">
+    <p>⌛ Le planning n'est pas encore disponible, revenez plus tard !</p>
+  </div>
+  <div v-else>
+    <div
+      v-if="canGoBack || canGoForward"
+      class="l-flex-row u-full-width u-mb-2 l-items-main-center u-gap-4"
+    >
+      <button
+        :disabled="!canGoBack"
+        class="c-text-btn"
+        type="button"
+        @click="goBack"
       >
-        <button
-          :disabled="!canGoBack"
-          class="c-text-btn"
-          type="button"
-          @click="goBack"
-        >
-          &lt; Jours précédents
-        </button>
-        <button
-          :disabled="!canGoForward"
-          class="c-text-btn"
-          type="button"
-          @click="goForward"
-        >
-          Jours suivants &gt;
-        </button>
-      </div>
-      <div>
-        <div
-          :class="`grid l-gap-2 grid-cols-${nbDays * 2 + 2}`"
-        >
-          <div class="flex u-full-width flex-col-reverse u-py-1">
-            <div v-for="hour in timeSlots.slice().reverse()" :key="hour" class="flex h-[60px] items-start justify-end text-xs text-gray-500">
-              <span class="u-mr-1">{{ hour.toString().padStart(2, '0') }}:00</span>
-            </div>
+        &lt; Jours précédents
+      </button>
+      <button
+        :disabled="!canGoForward"
+        class="c-text-btn"
+        type="button"
+        @click="goForward"
+      >
+        Jours suivants &gt;
+      </button>
+    </div>
+    <div>
+      <div
+        :class="`grid l-gap-2 grid-cols-${nbDays * 2 + 2}`"
+      >
+        <div class="flex u-full-width flex-col-reverse u-py-1">
+          <div v-for="hour in timeSlots.slice().reverse()" :key="hour" class="flex h-[60px] items-start justify-end text-xs text-gray-500">
+            <span class="u-mr-1">{{ hour.toString().padStart(2, '0') }}:00</span>
           </div>
-          <div v-for="day in visibleDays" :key="day.toISOString()" class="col-span-2 overflow-hidden u-rounded u-bg-bg-2">
-            <div class="u-bg-bg-3 u-p-2 u-text-center u-bold u-m-0">
-              {{ frenchDayFormatFromDate(day) }}
-            </div>
-            <div class="l-relative-position border-t border-gray-200" :style="{ height: `${60 * (24 - START_HOURE)}px` }">
-              <div
-                v-for="hour in timeSlots"
-                :key="hour"
-                class="l-absolute-position inset-x-0 border-t border-gray-500"
-                :style="{ top: `${((hour - START_HOURE) / (24 - START_HOURE)) * 100 - 0.04}%` }"
-              />
-              <button
-                v-for="event in getEventsForDay(day)"
-                :key="event.start.toISOString()"
-                :class="[
-                  'l-flex-column u-rounded u-text-center absolute cursor-pointer overflow-hidden u-p-1 text-xs transition-transform duration-200 hover:z-10',
-                  colors[
-                    event.id.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0)
-                    % colors.length
-                  ],
-                ]"
-                :style="getEventStyle(event, day)"
-                type="button"
-                @focus="focusedEvent = event.id"
-                @blur="focusedEvent = null"
-                @mouseenter="focusedEvent = event.id"
-                @mouseleave="focusedEvent = null"
-              >
-                <div class="u-bold">
-                  {{ format(event.start, 'HH:mm') }} - {{ format(event.end, 'HH:mm') }}
-                </div>
-                {{ event.summary }}
-              </button>
-            </div>
+        </div>
+        <div v-for="day in visibleDays" :key="day.toISOString()" class="col-span-2 overflow-hidden u-rounded u-bg-bg-2">
+          <div class="u-bg-bg-3 u-p-2 u-text-center u-bold u-m-0">
+            {{ frenchDayFormatFromDate(day) }}
           </div>
-          <div/>
+          <div class="l-relative-position border-t border-gray-200" :style="{ height: `${60 * (24 - START_HOURE)}px` }">
+            <div
+              v-for="hour in timeSlots"
+              :key="hour"
+              class="l-absolute-position inset-x-0 border-t border-gray-500"
+              :style="{ top: `${((hour - START_HOURE) / (24 - START_HOURE)) * 100 - 0.04}%` }"
+            />
+            <button
+              v-for="event in getEventsForDay(day)"
+              :key="event.start.toISOString()"
+              :class="[
+                'l-flex-column u-rounded u-text-center absolute cursor-pointer overflow-hidden u-p-1 text-xs transition-transform duration-200 hover:z-10',
+                colors[
+                  event.id.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0)
+                  % colors.length
+                ],
+              ]"
+              :style="getEventStyle(event, day)"
+              type="button"
+              @focus="focusedEvent = event.id"
+              @blur="focusedEvent = null"
+              @mouseenter="focusedEvent = event.id"
+              @mouseleave="focusedEvent = null"
+            >
+              <div class="u-bold">
+                {{ format(event.start, 'HH:mm') }} - {{ format(event.end, 'HH:mm') }}
+              </div>
+              {{ event.summary }}
+            </button>
+          </div>
         </div>
       </div>
     </div>

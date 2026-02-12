@@ -7,16 +7,16 @@ const { notifications } = storeToRefs(NotificationStore);
 const { removeNotification } = NotificationStore;
 </script>
 <template>
-  <div class="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 space-y-2">
+  <div class="notification-area l-flex-column l-items-cross-end l-gap-1 u-m-2">
     <TransitionGroup name="notification">
       <div
         v-for="notification in notifications"
         :key="notification.id"
-        class="flex max-w-sm l-items-cross-center justify-between l-gap-1 rounded-lg u-p-2 transition-all duration-300 ease-in-out"
+        class="notification l-flex-row l-items-cross-start l-gap-1"
         :class="{
-          'bg-red-500': notification.type === 'error',
-          'bg-green-500': notification.type === 'info',
-          'bg-orange-500': notification.type === 'warn',
+          'c-card-error': notification.type === 'error',
+          'c-card-correct': notification.type === 'info',
+          'c-card-warn': notification.type === 'warn',
         }"
       >
         <div>
@@ -24,7 +24,7 @@ const { removeNotification } = NotificationStore;
         </div>
         <button
           type="button"
-          class="rounded-full p-1 hover:bg-red-600"
+          class="c-image-btn"
           @click="removeNotification(notification.id)"
         >
           <fa-awesome-icon
@@ -37,13 +37,31 @@ const { removeNotification } = NotificationStore;
 </template>
 
 <style scoped>
+.notification-move,
 .notification-enter-active,
 .notification-leave-active {
   transition: all 0.3s ease;
 }
+
 .notification-enter-from,
 .notification-leave-to {
   opacity: 0;
   transform: translateY(30px);
+}
+
+.notification-leave-active {
+  position: absolute;
+}
+
+.notification-area {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  transform: translateX(0);
+  z-index: 100;
+}
+
+.notification {
+  max-width: 24rem;
 }
 </style>

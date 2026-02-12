@@ -115,7 +115,7 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
     </qrcode-stream>
 
     <div v-if="qrcodeData">
-      <p>Joueur : {{ qrcodeData.user }}</p>
+      <p>Joueur·euse : {{ qrcodeData.user }}</p>
       <p>Identité : {{ qrcodeData.identity }}</p>
       <p>Statut : {{ ticketStatus }}</p>
       <p>Tournois : {{ qrcodeData.tournament }}</p>
@@ -139,7 +139,7 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
       </div>
     </div>
     <div v-else class="u-mb-2 l-flex-column max-h-[100px] u-full-width l-gap-1">
-      <div class="flex l-gap-1 rounded-2xl bg-gray-500 p-1 u-text-center text-black">
+      <div class="flex l-gap-1 rounded-2xl bg-gray-500 p-1 u-text-center">
         <div class="l-flex-column">
           <fa-awesome-icon
             class="u-ml-1 l-grow"

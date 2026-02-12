@@ -6,16 +6,20 @@ import { frenchFormatFromDate } from '@/utils';
 
 const { md } = useContentStore();
 
-const props = defineProps<{
+defineProps<{
   tournament: EventTournamentDeref | PrivateTournament;
 }>();
 </script>
 
 <template>
+  <img
+    :src="tournament.logo"
+    class="c-background-image"
+    alt=""
+  >
   <section
     id="info"
-    :style="{ backgroundImage: `url(${props.tournament?.logo})` }"
-    class="grid grow grid-rows-[min-content_1fr] l-items-cross-center bg-gray-500 bg-cover bg-center bg-blend-multiply"
+    class="grid grow grid-rows-[min-content_1fr] l-items-cross-center"
   >
     <h2 class="font mx-auto w-3/4 u-py-2 u-text-center text-3xl u-bold">
       {{ tournament?.description }}
@@ -102,7 +106,7 @@ const props = defineProps<{
           <rect x="0" y="7.5" width="8" height="0.5" fill="#844A8F"/>
           <g v-if="tournament?.casters.length === 0">
             <text font-size="1">
-              <tspan x="4" y="3.5" text-anchor="middle">Aucun caster</tspan>
+              <tspan x="4" y="3.5" text-anchor="middle">Aucun·e caster</tspan>
               <tspan x="4" y="5" text-anchor="middle">pour ce tournoi</tspan>
             </text>
           </g>

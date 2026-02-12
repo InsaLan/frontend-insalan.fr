@@ -20,7 +20,7 @@ const modal_cgv = ref(false);
 
 <template>
   <div class="l-flex-columns l-items-cross-center u-m-text">
-    <div class="c-card-bg-2 u-p-4">
+    <div class="c-card-bg-2 u-p-4 u-full-width">
       <h2 class="u-m-0 u-mb-2">
         Votre panier
       </h2>
@@ -33,7 +33,7 @@ const modal_cgv = ref(false);
         <li
           v-for="item in cart"
           :key="item.product"
-          class="l-flex-row l-items-cross-center c-card-bg-3 u-big-text u-m-0"
+          class="l-flex-row l-items-cross-center c-card-bg-3 u-big-text u-m-0 u-full-width"
         >
           <div>{{ item.name }}</div>
           <div class="l-grow"/>

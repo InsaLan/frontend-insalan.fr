@@ -137,27 +137,24 @@ const editField = (field: string) => {
         <br>
         Prénom et Nom : <em>{{ user.first_name }} {{ user.last_name }}</em>
         <fa-awesome-icon
-          class="u-ml-1 c-image-btn"
+          class="c-image-btn c-inline-icon"
           icon="fa-solid fa-pencil"
-          size="xs"
           @click="editField('name')"
           @keydown="editField('name')"
         />
         <br>
         Email : <em>{{ user.email }}</em>
         <fa-awesome-icon
-          class="u-ml-1 c-image-btn"
+          class="c-image-btn c-inline-icon"
           icon="fa-solid fa-pencil"
-          size="xs"
           @click="editField('email')"
           @keydown="editField('email')"
         />
         <br>
         Mot de passe : <em class="u-color-text-2">**********</em>
         <fa-awesome-icon
-          class="u-ml-1 c-image-btn"
+          class="c-image-btn c-inline-icon"
           icon="fa-solid fa-pencil"
-          size="xs"
           @click="editField('password')"
           @keydown="editField('password')"
         />
@@ -166,7 +163,7 @@ const editField = (field: string) => {
       </div>
       <div
         v-if="cart.length > 0"
-        class="u-m-1 l-flex-row l-items-cross-center c-card-bg-3"
+        class="l-flex-row l-items-cross-center c-card-bg-3"
       >
         <div class="u-big-text u-text-left">
           Vous avez <b>{{ cart.length }}</b> article{{ cart.length !== 1 ? 's' : '' }} dans votre panier.
@@ -190,7 +187,7 @@ const editField = (field: string) => {
         Mes Équipes
       </h1>
       <div class="l-flex-column l-items-cross-center">
-        <div class="c-card-error-1 l-flex-row l-items-cross-center l-items-main-center u-py-1 u-m-1 u-big-text" v-if="Object.keys(inscriptions.unpaid).length">
+        <div v-if="Object.keys(inscriptions.unpaid).length" class="c-card-error l-flex-row l-items-cross-center l-items-main-center u-py-1 u-m-1 u-big-text">
           <fa-awesome-icon icon="fa-solid fa-warning"/>
           <div v-if="Object.keys(inscriptions.unpaid).length === 1">
             Vous avez une inscription non payée
@@ -208,26 +205,22 @@ const editField = (field: string) => {
           <div
             v-for="inscription in (inscriptions.ongoing as [string, PlayerRegistrationDeref | RegistrationDeref][])"
             :key="inscription[1].id"
-            class="c-card-bg-2 u-p-0 u-pb-2 l-flex-column l-grow l-items-main-center u-full-width"
+            class="c-card-bg-2 u-p-0 u-pb-2 l-flex-column l-items-main-center u-full-width u-full-height"
           >
-            <div
-              :class="{ ['hover:cursor-pointer']: inscription[1].ticket }"
-              @click="inscription[1].ticket && get_ticket_pdf(inscription[1].ticket)"
-              @keydown="inscription[1].ticket && get_ticket_pdf(inscription[1].ticket)"
-            >
+            <div class="l-grow">
               <img
                 :src="inscription[1].team.tournament.logo"
                 alt="image du tournoi"
                 class="c-thumbnail"
               />
-              <div
-                v-if="inscription[1].ticket"
-                class="l-flex-column l-grow l-items-main-center"
-              >
-                <p class="text-xs">
-                  Télecharger son billet
-                </p>
-              </div>
+            </div>
+            <div
+              v-if="inscription[1].ticket"
+              class="c-text-btn-secondary u-m-0 u-mx-2 u-color-text-2"
+              @click="inscription[1].ticket && get_ticket_pdf(inscription[1].ticket)"
+              @keydown="inscription[1].ticket && get_ticket_pdf(inscription[1].ticket)"
+            >
+              Télecharger son billet
             </div>
             <router-link
               class="c-text-btn-secondary u-m-0 u-mx-2 u-color-text-2"
@@ -290,9 +283,9 @@ const editField = (field: string) => {
             >
               Règlement du tournoi
             </router-link>
-            <b class="u-big-text u-mx-2">
-              {{ inscription[1].team.name }}
-            </b>
+            <div class="u-big-text u-mx-2">
+              {{ inscription[1].team.tournament.event.name }} - <b>{{ inscription[1].team.name }}</b>
+            </div>
             <router-link
               class="c-btn-primary"
               :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
@@ -332,9 +325,7 @@ const editField = (field: string) => {
               class="c-btn-primary"
               :to="`/tournament/private/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
             >
-              <div>
-                {{ (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
-              </div>
+              {{ (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
             </router-link>
           </div>
         </div>
