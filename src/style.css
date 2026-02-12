@@ -65,10 +65,10 @@
 
   --color-correct-1: #63ff92;
   --color-correct-2: #18632f;
+  --color-warn-1: #ffb363;
+  --color-warn-2: #633e17;
   --color-error-1: #fc7188;
   --color-error-2: #66212d;
-  
-  text-align: justify;
 }
 
 .light {
@@ -90,11 +90,14 @@ html {
   font-family: Exo2, Verdana, sans-serif;
   color: var(--color-text-1);
   background-color: var(--color-bg-1);
+  position: relative;
+  text-align: justify;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   * {
     animation: fade-in .2s ease-out;
+    transition: 150ms ease-in-out; /* This is just in case, but you should still set transitions manually if they're needed */
   }
 
   @keyframes fade-in {
@@ -136,27 +139,35 @@ html {
   min-height: 100vh;
 }
 
-.c-card-error-1, .c-card-bg-2, .c-card-bg-3 {
+.c-card-error, .c-card-warn, .c-card-correct, .c-card-bg-2, .c-card-bg-3 {
   border-radius: var(--radius);
   place-items: center;
   height: fit-content;
   width: fit-content;
   gap: 0.8rem;
+  padding: 1rem;
 }
 
 .c-card-bg-2 {
-  padding: 1rem;
   background-color: var(--color-bg-2);
 }
 
 .c-card-bg-3 {
-  padding: 1rem;
   background-color: var(--color-bg-3);
 }
 
-.c-card-error-1 {
-  padding: 1rem;
+.c-card-error {
   background-color: var(--color-error-1);
+  color: var(--color-light-text-1);
+}
+
+.c-card-warn {
+  background-color: var(--color-warn-1);
+  color: var(--color-light-text-1);
+}
+
+.c-card-correct {
+  background-color: var(--color-correct-1);
   color: var(--color-light-text-1);
 }
 
@@ -403,8 +414,13 @@ img {
   object-fit: contain;
 }
 
-.c-text-primary-1 {
-  color: var(--color-primary-1);
+.c-inline-icon {
+  display: inline-block;
+  width: .9em;
+  height: .9em;
+  margin-left: var(--base-margin);
+  margin-right: var(--base-margin);
+  vertical-align: -0.05em;
 }
 
 .c-link {
@@ -415,7 +431,7 @@ img {
 }
 
 .c-link:hover {
-  color: var(--color-primary-2);
+  color: var(--color-secondary-1);
 }
 
 h1 {
@@ -481,14 +497,6 @@ b, strong, .u-bold {
   animation: spinner-animation .6s infinite ease-in-out;
 }
 
-.c-thumbnail {
-  width: 100%;
-  aspect-ratio: 16/9;
-  object-fit: cover;
-  overflow: hidden;
-  border-radius: var(--radius);
-}
-
 @keyframes spinner-animation {
   0% {
     transform: translateX(-1.5rem) rotate(0deg);
@@ -523,6 +531,37 @@ b, strong, .u-bold {
   100% {
     transform: translateX(-1.5rem) rotate(180deg);
     background: var(--color-primary-1);
+  }
+}
+
+.c-thumbnail {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+
+.c-background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: 100%;
+  opacity: 0.15;
+  z-index: -1;
+  animation: fade-in-bg 0.2s ease-out;
+}
+
+@keyframes fade-in-bg {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.15;
   }
 }
 

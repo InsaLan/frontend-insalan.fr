@@ -23,7 +23,7 @@ const { username } = await verifMail(props);
 
 <template>
   <!-- Cas fonctionnel -->
-  <div v-if="MailVerified" class="u-m-body u-text-center u-big-text">
+  <div v-if="MailVerified" class="u-m-text u-text-center u-big-text">
     <h1>
       Création de compte
     </h1>
@@ -35,7 +35,7 @@ const { username } = await verifMail(props);
     </router-link>
   </div>
   <!-- Cas où erreur verif -->
-  <div v-else class="u-m-body u-text-center u-big-text">
+  <div v-else class="u-m-text u-text-center u-big-text">
     <h1>
       Création de compte
     </h1>

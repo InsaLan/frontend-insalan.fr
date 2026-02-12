@@ -22,6 +22,7 @@ const updateTopOffset = () => {
     const marginTop = parseFloat(style.marginTop);
     const marginBottom = parseFloat(style.marginBottom);
     topOffset.value = -(navContainer.offsetHeight + marginTop + marginBottom);
+    document.documentElement.style.setProperty('--top-offset', `${-topOffset.value}px`);
   }
 };
 
@@ -47,7 +48,7 @@ onUnmounted(() => {
         <Suspense timeout="0">
           <component :is="Component"/>
           <template #fallback>
-            <div class="l-flex-column l-items-main-center l-items-cross-center l-gap-2  u-full-height l-grow">
+            <div class="l-flex-column l-items-main-center l-items-cross-center l-gap-2 u-full-height l-grow">
               <div class="u-big-text">
                 Chargement...
               </div>

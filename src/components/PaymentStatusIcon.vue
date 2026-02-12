@@ -1,0 +1,24 @@
+<script setup lang="ts">
+import type { PlayerRegistration } from '@/models/registration';
+import { PaymentStatus } from '@/models/registration';
+
+defineProps<{
+  player: PlayerRegistration;
+}>();
+</script>
+
+<template>
+  <img
+    v-if="player.payment_status === PaymentStatus.PAID"
+    src="/src/assets/images/check_with_bg.svg"
+    alt="Logo validé"
+    class="inline-block size-5"
+    title="Ce·tte joueur·euse a payé"
+  />
+  <fa-awesome-icon
+    v-if="player.payment_status === PaymentStatus.LATER"
+    class="clock-icon size-5 rounded-full bg-white text-yellow-400"
+    icon="fa-solid fa-clock"
+    title="Ce·tte joueur·euse payera sur place"
+  />
+</template>

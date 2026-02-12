@@ -293,7 +293,7 @@ const kick_member = async (type: string, id: number) => {
           <div
             class="u-underline"
           >
-            Joueurs :
+            Joueur·euse·s :
           </div>
           <ul
             class="grid list-disc u-p-1 md:grid-cols-2"
@@ -369,7 +369,7 @@ const kick_member = async (type: string, id: number) => {
           <div
             class="u-underline"
           >
-            Remplaçants :
+            Remplaçant·e·s :
           </div>
           <ul
             class="grid list-disc u-p-1 md:grid-cols-2"

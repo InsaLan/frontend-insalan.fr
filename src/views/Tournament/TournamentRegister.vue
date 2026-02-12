@@ -190,8 +190,12 @@ const handleCloseTravelFormModal = () => {
 </script>
 
 <template>
+  <img
+    :src="tournament?.logo"
+    alt=""
+    class="c-background-image"
+  >
   <div
-    :style="{ backgroundImage: `url(${tournament?.logo})` }"
     class="flex h-min l-items-cross-center l-items-main-center bg-cover bg-center py-10 2xl:min-h-[calc(100vh_-_6rem)] 2xl:py-4"
   >
     <!-- Design 3-->
@@ -234,7 +238,6 @@ const handleCloseTravelFormModal = () => {
             <input
               id="team"
               v-model="register_form.team"
-              class="text-black"
               placeholder="Équipe 1"
               type="text"
               required
@@ -271,7 +274,6 @@ const handleCloseTravelFormModal = () => {
             <select
               id="teams"
               v-model="register_form.team"
-              class="text-black"
               required
             >
               <option value="" selected>
@@ -319,7 +321,7 @@ const handleCloseTravelFormModal = () => {
               <input
                 id="pwd"
                 v-model="register_form.password"
-                class="size-full text-black"
+                class="size-full"
                 :type="view_password ? 'text' : 'password'"
                 required
                 @blur="v$.password.$touch"
@@ -363,17 +365,16 @@ const handleCloseTravelFormModal = () => {
             <select
               id="role"
               v-model="register_form.role"
-              class="text-black"
               required
             >
               <option value="player">
-                Joueur
+                Joueur·euse
               </option>
               <option v-if="enableManager" value="manager">
                 Manager
               </option>
               <option value="substitute">
-                Remplaçant
+                Remplaçant·e
               </option>
             </select>
           </FormField>
