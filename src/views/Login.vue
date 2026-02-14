@@ -71,8 +71,7 @@ const openModal = () => {
             Je n'ai pas de compte
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              class="u-ml-1"
+              class="c-inline-icon"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

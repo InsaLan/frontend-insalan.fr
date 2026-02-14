@@ -82,8 +82,7 @@ const register_user = async () => {
             J'ai déjà un compte
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              class="u-ml-1"
+              class="c-inline-icon"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -121,7 +120,7 @@ const register_user = async () => {
               <input
                 id="username_register"
                 v-model="register_form.username"
-                placeholder="John doe"
+                placeholder="johndoe"
                 required
                 type="text"
                 @blur="v$.username.$touch()"

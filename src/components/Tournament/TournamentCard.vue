@@ -1,23 +1,33 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed, onMounted } from 'vue';
-import type { EventTournament, EventTournamentDeref } from '@/models/tournament';
+import type { EventTournament, EventTournamentDeref, PrivateTournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const tournamentStore = useTournamentStore();
 
 const props = defineProps<{
   id: number;
+  isPrivate: boolean;
 }>();
 
-const { getTournamentFull, getTournamentTeams } = tournamentStore;
-const { eventTournamentsList, eventsList } = storeToRefs(tournamentStore); // tourney_teams
-const tournament = computed<EventTournament | EventTournamentDeref | undefined>(
-  () => eventTournamentsList.value[props.id],
+const { getTournament, getPrivateTournament } = tournamentStore;
+const { eventTournamentsList, privateTournamentsList, eventsList } = storeToRefs(tournamentStore);
+const tournament = computed<EventTournament | EventTournamentDeref | PrivateTournament | undefined>(
+  () => {
+    if (props.isPrivate) {
+      return privateTournamentsList.value[props.id];
+    }
+    return eventTournamentsList.value[props.id];
+  },
 );
 const event_ongoing = computed(() => {
   if (tournament.value === undefined) {
     return false;
+  }
+
+  if (props.isPrivate || !('event' in tournament.value)) {
+    return true;
   }
 
   let event_id;
@@ -53,23 +63,26 @@ const event_ongoing = computed(() => {
 // );
 
 onMounted(async () => {
-  await getTournamentFull(props.id);
-  getTournamentTeams();
+  if (props.isPrivate) {
+    await getPrivateTournament(props.id);
+  } else {
+    await getTournament(props.id);
+  }
 });
 </script>
 <template>
-  <div v-if="tournament?.is_announced" class="l-flex-column l-items-cross-center c-card-bg-2 u-p-0 u-pb-2 l-gap-2 u-full-width">
+  <div v-if="isPrivate || (tournament && 'is_announced' in tournament && tournament.is_announced)" class="l-flex-column l-items-cross-center c-card-bg-2 u-p-0 l-gap-2 u-full-width">
     <img
       :alt="`Logo du ${tournament?.name}`"
       :src="tournament?.logo"
       class="c-thumbnail"
     />
-    <p class="u-big-text"> <!-- TODO: Add back progress bar from #846327e (can't be bothered during rebase) -->
+    <p class="u-big-text u-px-2 u-text-center">
       {{ tournament?.validated_teams }}/{{ tournament?.max_team_thresholds[tournament?.current_threshold_index] }}
-      Équipes | Cashprize:
-      {{ tournament?.cashprizes?.length !== 0 ? `${tournament?.cashprizes?.reduce((acc, val) => acc += Number(val), 0)} €` : "À venir" }}
+      Équipes
+      {{ !isPrivate ? tournament && 'cashprizes' in tournament && ` | Cashprize: ${tournament?.cashprizes?.length !== 0 ? `${tournament?.cashprizes?.reduce((acc, val) => acc += Number(val), 0)} €` : "À venir"}` : '' }}
     </p>
-    <div class="l-flex-row l-items-main-center l-items-cross-center l-gap-2">
+    <div class="l-flex-row l-items-main-center l-items-cross-center l-gap-2 u-px-2 u-pb-2">
       <router-link
         :to="`tournament/${tournament?.id as number}/info`"
         class="c-btn-bg-3"
@@ -77,7 +90,7 @@ onMounted(async () => {
         Plus d'infos
       </router-link>
       <button
-        v-if="Date.parse(tournament?.registration_open) > Date.now()"
+        v-if="tournament && 'registration_open' in tournament && Date.parse(tournament.registration_open) > Date.now()"
         type="button"
         class="c-btn-secondary"
         disabled
@@ -85,7 +98,7 @@ onMounted(async () => {
         Inscriptions à venir
       </button>
       <router-link
-        v-else-if="event_ongoing && Date.parse(tournament?.registration_close) > Date.now()"
+        v-else-if="event_ongoing && (isPrivate || (tournament && 'registration_close' in tournament && Date.parse(tournament.registration_close) > Date.now()))"
         :to="`tournament/${tournament?.id as number}/register`"
         class="c-btn-secondary"
       >

@@ -92,7 +92,7 @@ const { tourney_teams, soloGame } = storeToRefs(tournamentStore);
         </div>
       </div>
     </div>
-    <div v-if="tourney_teams?.waiting_validation_teams.length > 0">
+    <div v-if="tourney_teams?.waiting_validation_teams.length > 0" class="l-flex-column">
       <h1 class="u-m-0 u-mt-2">
         Équipes en attente du palier ({{ tourney_teams.waiting_validation_teams.length }})
       </h1>
