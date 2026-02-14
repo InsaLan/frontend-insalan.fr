@@ -25,7 +25,7 @@ await getOngoingEvents();
     <h1 class="u-my-1">
       Tournois
     </h1>
-    <div v-if="!tournaments_id" class="l-flex-column l-items-main-center">
+    <div v-if="!tournaments_id" class="l-flex-column l-items-cross-center u-m-text">
       Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !
     </div>
     <div class="u-m-main l-grid-4 l-gap-2 u-mb-2">

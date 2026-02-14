@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import PrivateTournamentCard from '@/components/Tournament/PrivateTournamentCard.vue';
 import TournamentCard from '@/components/Tournament/TournamentCard.vue';
 import { useTournamentStore } from '@/stores/tournament.store';
 
@@ -20,11 +19,12 @@ await getPrivateTournaments();
     <div v-if="!tournaments_id">
       Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !
     </div>
-    <div class="l-grid-3 l-gap-2">
+    <div class="l-grid-3 l-gap-2 u-full-width">
       <TournamentCard
         v-for="tournament in tournaments_id"
         :id="tournament"
         :key="tournament"
+        :is-private="false"
       />
     </div>
     <router-link
@@ -36,11 +36,12 @@ await getPrivateTournaments();
     <h1 v-if="Object.keys(privateTournamentsList).length > 0">
       Tournois privés
     </h1>
-    <div v-if="Object.keys(privateTournamentsList).length > 0" class="l-grid-3 l-gap-2">
-      <PrivateTournamentCard
+    <div v-if="Object.keys(privateTournamentsList).length > 0" class="l-grid-3 l-gap-2 u-full-width">
+      <TournamentCard
         v-for="tournament in privateTournamentsList"
+        :id="tournament.id"
         :key="tournament.id"
-        :tournament="tournament"
+        :is-private="true"
       />
     </div>
   </div>

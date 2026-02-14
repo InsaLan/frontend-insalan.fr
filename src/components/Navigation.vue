@@ -43,7 +43,6 @@ const burger_menu = ref(false);
 </script>
 <template>
   <div id="navcontainer" class="sticky top-4 z-[51] u-my-2 u-m-main">
-    <!-- TODO: Make navbar fixed height -->
     <nav id="navigation" class="c-card-bg-2 u-full-width">
       <div id="desktop" class="hidden u-full-height l-items-cross-center justify-around xl:flex">
         <router-link to="/">
@@ -240,7 +239,7 @@ const burger_menu = ref(false);
         </div>
       </div>
     </nav>
-    <div v-if="getContent('alert') && !$route.path.startsWith('/admin/')" class="c-card-error u-mt-1 l-flex-column l-items-cross-center u-px-2 u-py-1">
+    <div v-if="getContent('alert') && !$route.path.startsWith('/admin/')" class="c-card-error u-full-width u-mt-1 l-flex-column l-items-cross-center u-px-2 u-py-1">
       <Content name="alert"/>
     </div>
   </div>

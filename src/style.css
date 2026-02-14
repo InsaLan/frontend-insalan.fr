@@ -418,8 +418,8 @@ img {
   display: inline-block;
   width: .9em;
   height: .9em;
-  margin-left: var(--base-margin);
-  margin-right: var(--base-margin);
+  margin-left: calc(var(--base-margin) * 0.5);
+  margin-right: calc(var(--base-margin) * 0.5);
   vertical-align: -0.05em;
 }
 

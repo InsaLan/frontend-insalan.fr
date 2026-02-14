@@ -125,7 +125,7 @@ const event_ongoing = computed(() => {
         >
           {{ sections[selected_section].title }}
           <fa-awesome-icon
-            class="c-inline-icon"
+            class="c-inline-icon u-color-text-2"
             icon="fa-solid fa-chevron-up"
             :class="{ 'rotate-180': open_dropdown }"
           />
