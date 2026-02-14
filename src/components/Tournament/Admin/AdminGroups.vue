@@ -51,8 +51,21 @@ const open_modal = (type: string) => {
 };
 
 const bo_type = ref(BestofType.BO1);
+const play_all = ref(false);
+
+const edit_bo_type = (event: Event) => {
+  const value = Number((event.target as HTMLInputElement).value);
+  if (value > 0 && value % 2 === 0) {
+    bo_type.value = value + 1;
+    play_all.value = true;
+  } else {
+    bo_type.value = value;
+    play_all.value = false;
+  }
+}
+
 const create_group_matchs = async () => {
-  await createGroupMatchs(groups.map((group) => group.id), bo_type.value);
+  await createGroupMatchs(groups.map((group) => group.id), bo_type.value, play_all.value);
 
   modal_open.value = false;
   addNotification('Les matchs ont bien été créés.', 'info');
@@ -206,9 +219,9 @@ const delete_groups_matchs = async () => {
         </label>
         <select
           id="bo_type"
-          v-model="bo_type"
           name="bo_type"
           class="bg-theme-bg"
+          @click="edit_bo_type"
         >
           <option
             v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"
@@ -216,6 +229,13 @@ const delete_groups_matchs = async () => {
             :value="value"
           >
             {{ value === '0' ? 'Classement' : `BO ${value}` }}
+          </option>
+          <option
+            v-for="value in Object.keys(BestofType).map(Number).filter((v) => Number.isInteger(v) && v > 1)"
+            :key="value - 1"
+            :value="value - 1"
+          >
+            {{ `PA ${value}` }}
           </option>
         </select>
       </div>

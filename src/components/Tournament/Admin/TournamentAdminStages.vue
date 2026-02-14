@@ -110,12 +110,14 @@ const bracket_data = reactive({
   team_count: 0,
   bracket_type: BracketType.SINGLE,
   bo_type: BestofType.BO1,
+  play_all: false,
 });
 const bracket_rules = computed(() => ({
   name: { required },
   team_count: { required, between: between(2, validated_teams_count) },
   bracket_type: { required },
   bo_type: { required },
+  play_all: { required },
 }));
 
 const v_bracket$ = useVuelidate(bracket_rules, bracket_data, { $scope: false });
@@ -183,6 +185,7 @@ const swiss_data = reactive({
   bo_type: BestofType.BO1,
   auto_fill: false,
   team_count: 1,
+  play_all: false,
 });
 const swiss_rules = computed(() => ({
   name: { required, maxLength: maxLength(40) },
@@ -191,6 +194,7 @@ const swiss_rules = computed(() => ({
   bo_type: { required },
   auto_fill: { required },
   team_count: { required, between: between(1, validated_teams_count) },
+  play_all: { required },
 }));
 
 const v_swiss$ = useVuelidate(swiss_rules, swiss_data, { $scope: false });
@@ -227,6 +231,17 @@ const has_formats = computed(() => !(
   && tournament.swissRounds.length === 0
   && tournament.brackets.length === 0));
 const selected_format = ref('group');
+
+const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boolean }) => {
+  const value = Number((event.target as HTMLInputElement).value);
+  if (value > 0 && value % 2 === 0) {
+    data.bo_type = value + 1;
+    data.play_all = true;
+  } else {
+    data.bo_type = value;
+    data.play_all = false;
+  }
+}
 </script>
 
 <template>
@@ -585,11 +600,11 @@ const selected_format = ref('group');
             </label>
             <select
               id="bo_type"
-              v-model="bracket_data.bo_type"
               name="bo_type"
               class="ml-2 bg-theme-bg"
               :class="{ error: context.invalid }"
               @blur="v_bracket$.bo_type.$touch"
+              @click="(e) => edit_bo_type(e, bracket_data)"
             >
               <option
                 v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"
@@ -597,6 +612,13 @@ const selected_format = ref('group');
                 :value="value"
               >
                 {{ value === '0' ? 'Classement' : `BO ${value}` }}
+              </option>
+              <option
+                v-for="value in Object.keys(BestofType).map(Number).filter((v) => Number.isInteger(v) && v > 1)"
+                :key="value - 1"
+                :value="value - 1"
+              >
+                {{ `PA ${value}` }}
               </option>
             </select>
           </FormField>
@@ -807,11 +829,11 @@ const selected_format = ref('group');
             </label>
             <select
               id="bo_type"
-              v-model="swiss_data.bo_type"
               name="bo_type"
               class="ml-2 bg-theme-bg"
               :class="{ error: context.invalid }"
               @blur="v_swiss$.bo_type.$touch"
+              @click="(e) => edit_bo_type(e, swiss_data)"
             >
               <option
                 v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"
@@ -819,6 +841,13 @@ const selected_format = ref('group');
                 :value="value"
               >
                 {{ value === '0' ? 'Classement' : `BO ${value}` }}
+              </option>
+              <option
+                v-for="value in Object.keys(BestofType).map(Number).filter((v) => Number.isInteger(v) && v > 1)"
+                :key="value - 1"
+                :value="value - 1"
+              >
+                {{ `PA ${value}` }}
               </option>
             </select>
           </FormField>

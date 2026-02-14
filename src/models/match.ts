@@ -26,6 +26,7 @@ export interface BaseMatch {
   index_in_round: number;
   status: MatchStatus;
   bo_type: BestofType;
+  play_all: boolean;
 }
 
 export interface MatchType {
