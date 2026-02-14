@@ -658,7 +658,7 @@ export const useTournamentStore = defineStore('tournament', () => {
       {
         groups,
         bo_type,
-        play_all
+        play_all,
       },
       {
         withCredentials: true,

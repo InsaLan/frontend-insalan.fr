@@ -241,7 +241,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
     data.bo_type = value;
     data.play_all = false;
   }
-}
+};
 </script>
 
 <template>

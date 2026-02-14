@@ -111,7 +111,7 @@ const edit_bo_type = (event: Event) => {
     match_info.bo_type = value;
     match_info.play_all = false;
   }
-}
+};
 
 const v$ = useVuelidate(match_info_rules, match_info);
 

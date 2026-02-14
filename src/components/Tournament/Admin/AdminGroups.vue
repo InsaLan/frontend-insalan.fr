@@ -62,7 +62,7 @@ const edit_bo_type = (event: Event) => {
     bo_type.value = value;
     play_all.value = false;
   }
-}
+};
 
 const create_group_matchs = async () => {
   await createGroupMatchs(groups.map((group) => group.id), bo_type.value, play_all.value);
