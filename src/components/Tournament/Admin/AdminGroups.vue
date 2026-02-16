@@ -221,7 +221,7 @@ const delete_groups_matchs = async () => {
           id="bo_type"
           name="bo_type"
           class="bg-theme-bg"
-          @click="edit_bo_type"
+          @change="edit_bo_type"
         >
           <option
             v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"

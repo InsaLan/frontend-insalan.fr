@@ -604,7 +604,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
               class="ml-2 bg-theme-bg"
               :class="{ error: context.invalid }"
               @blur="v_bracket$.bo_type.$touch"
-              @click="(e) => edit_bo_type(e, bracket_data)"
+              @change="(e) => edit_bo_type(e, bracket_data)"
             >
               <option
                 v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"

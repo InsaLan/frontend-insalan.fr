@@ -193,7 +193,8 @@ const open_edition = () => {
           id="bo_type"
           name="bo_type"
           class="bg-cyan-900 py-1 pl-1"
-          @click.stop="edit_bo_type"
+          :value="(match.bo_type as number) - (match.play_all ? 1 : 0)"
+          @change.stop="edit_bo_type"
         >
           <option
             v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"
