@@ -26,7 +26,27 @@ const {
   swissFillRound,
 } = useTournamentStore();
 
-const roundCounts = computed(() => 2 * swiss.min_score - 1);
+const roundCounts = computed(() => {
+  if (swiss.min_score !== null) {
+    return 2 * swiss.min_score - 1;
+  }
+  if (swiss.round_count !== null) {
+    return swiss.round_count;
+  }
+
+  return 1;
+});
+
+const qualifying_round_idx = computed(() => {
+  if (swiss.min_score !== null) {
+    return swiss.min_score;
+  }
+  if (swiss.round_count != null) {
+    return swiss.round_count;
+  }
+
+  return 1;
+});
 
 const has_matchs = computed(() => swiss.matchs.length > 0);
 
@@ -202,13 +222,13 @@ const swiss_fill_round = async () => {
               class="bg-gray-500 text-center"
             >
               <div
-                v-if="Number(round_idx) <= swiss.min_score"
+                v-if="Number(round_idx) <= qualifying_round_idx"
               >
                 {{ Number(round_idx) - 1 - Number(score_group) }} - {{ score_group }}
               </div>
               <div v-else>
-                {{ swiss.min_score - 1 - Number(score_group) }} -
-                {{ Number(round_idx) - swiss.min_score + Number(score_group) }}
+                {{ qualifying_round_idx - 1 - Number(score_group) }} -
+                {{ Number(round_idx) - qualifying_round_idx + Number(score_group) }}
               </div>
             </div>
 

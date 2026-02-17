@@ -739,12 +739,13 @@ export const useTournamentStore = defineStore('tournament', () => {
     stage_id: number,
     data: {
       name: string;
-      min_score: number;
+      min_score: number | null;
       use_seeding: boolean;
       auto_fill: boolean;
       team_count: number;
       bo_type: BestofType;
       play_all: boolean;
+      round_count: number | null;
     },
   ) {
     await get_csrf();
