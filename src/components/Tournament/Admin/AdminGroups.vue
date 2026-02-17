@@ -52,6 +52,7 @@ const open_modal = (type: string) => {
 
 const bo_type = ref(BestofType.BO1);
 const play_all = ref(false);
+const round_count = ref(Math.max(...groups.map((g) => g.round_count)));
 
 const edit_bo_type = (event: Event) => {
   const value = Number((event.target as HTMLInputElement).value);
@@ -65,7 +66,7 @@ const edit_bo_type = (event: Event) => {
 };
 
 const create_group_matchs = async () => {
-  await createGroupMatchs(groups.map((group) => group.id), bo_type.value, play_all.value);
+  await createGroupMatchs(groups.map((group) => group.id), bo_type.value, play_all.value, round_count.value);
 
   modal_open.value = false;
   addNotification('Les matchs ont bien été créés.', 'info');
@@ -212,33 +213,49 @@ const delete_groups_matchs = async () => {
       Les matchs des poules vont être créés.
 
       <div
-        class="flex items-center gap-4 pt-2"
+        class="flex flex-col gap-4"
       >
-        <label for="bo_type">
-          Type de BO
-        </label>
-        <select
-          id="bo_type"
-          name="bo_type"
-          class="bg-theme-bg"
-          :value="bo_type"
-          @change="edit_bo_type"
+        <div
+          class="flex items-center gap-4 pt-2"
         >
-          <option
-            v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"
-            :key="value"
-            :value="value"
+          <label for="bo_type">
+            Type de BO
+          </label>
+          <select
+            id="bo_type"
+            name="bo_type"
+            class="bg-theme-bg"
+            :value="bo_type"
+            @change="edit_bo_type"
           >
-            {{ value === '0' ? 'Classement' : `BO ${value}` }}
-          </option>
-          <option
-            v-for="value in Object.keys(BestofType).map(Number).filter((v) => Number.isInteger(v) && v > 1)"
-            :key="value - 1"
-            :value="value - 1"
+            <option
+              v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"
+              :key="value"
+              :value="value"
+            >
+              {{ value === '0' ? 'Classement' : `BO ${value}` }}
+            </option>
+            <option
+              v-for="value in Object.keys(BestofType).map(Number).filter((v) => Number.isInteger(v) && v > 1)"
+              :key="value - 1"
+              :value="value - 1"
+            >
+              {{ `PA ${value}` }}
+            </option>
+          </select>
+        </div>
+        <div>
+          <label for="round_count">
+            Nombre de tours
+          </label>
+          <input
+            id="round_count"
+            v-model="round_count"
+            type="number"
+            class="ml-2 w-14 bg-inherit text-right"
+            aria-label="Number of rounds"
           >
-            {{ `PA ${value}` }}
-          </option>
-        </select>
+        </div>
       </div>
     </template>
     <template #buttons>

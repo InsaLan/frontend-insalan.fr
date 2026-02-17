@@ -140,6 +140,7 @@ const group_data = reactive({
   names: [''],
   use_seeding: false,
   auto_fill: false,
+  round_count: -1 as number | null,
 });
 
 const update_names = (event: Event) => {
@@ -162,6 +163,7 @@ const rules_group = computed(() => ({
   names: { minLength: minLength(group_data.count) },
   use_seeding: { required },
   auto_fill: { required },
+  round_count: { integer, required },
 }));
 
 const v_group$ = useVuelidate(rules_group, group_data, { $scope: false });
@@ -170,6 +172,10 @@ const add_groups = async () => {
   const is_valid = await v_group$.value.$validate();
 
   if (!is_valid) return;
+
+  if (group_data.round_count !== null && group_data.round_count < 0) {
+    group_data.round_count = null;
+  }
 
   const res = await createGroups(selected_stage.value, group_data);
 
@@ -515,7 +521,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             id="format_type"
             v-model="format_type"
             name="format_type"
-            class="bg-theme-bg"
+            class="ml-2 bg-theme-bg"
           >
             <option value="bracket">
               Arbre
@@ -671,7 +677,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
           <FormField
             v-slot="context"
             :validations="v_group$.names"
-            class="flex flex-col"
+            class="flex flex-col gap-2"
           >
             <label for="names">
               Noms des poules (Liste de noms séparées par des virgules)
@@ -727,6 +733,24 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
                 @blur="v_group$.use_seeding.$touch"
               >
             </div>
+          </FormField>
+          <FormField
+            v-slot="context"
+            :validations="v_group$.round_count"
+            class="flex gap-2"
+          >
+            <label for="group_round_count" class="max-w-80">
+              Nombre de tours (mettre un nombre négatif pour laisser le calcul automatique)
+            </label>
+            <input
+              id="group_round_count"
+              v-model="group_data.round_count"
+              type="number"
+              class="w-16 bg-inherit"
+              :class="{ error: context.invalid }"
+              aria-label="Number of rounds"
+              @blur="v_group$.round_count.$touch"
+            >
           </FormField>
         </div>
         <div
