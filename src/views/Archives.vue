@@ -42,14 +42,12 @@ await fetchAllEvents();
               'col-span-1 md:grid-cols-1 xl:col-span-2 xl:grid-cols-2 2xl:col-span-3 2xl:grid-cols-3': event.poster,
             }"
           >
-            <div
+            <TournamentCard
               v-for="tournament in event.tournaments"
+              :id="tournament"
               :key="tournament"
-            >
-              <TournamentCard
-                :id="tournament"
-              />
-            </div>
+              :is-private="false"
+            />
           </div>
         </div>
       </div>

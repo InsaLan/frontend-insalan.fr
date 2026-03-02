@@ -33,6 +33,7 @@ await getOngoingEvents();
         v-for="tournament in tournaments_id"
         :id="tournament"
         :key="tournament"
+        :is-private="false"
       />
     </div>
     <div class="u-mb-4 l-flex-column l-items-cross-center">

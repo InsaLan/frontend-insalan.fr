@@ -65,7 +65,7 @@ onMounted(async () => {
     </p>
     <div class="l-flex-row l-items-main-center l-items-cross-center l-gap-2 u-px-2 u-pb-2">
       <router-link
-        :to="`tournament/${tournament?.id as number}/info`"
+        :to="`tournament/${isPrivate ? 'private/' : ''}${tournament?.id as number}/info`"
         class="c-btn-bg-3"
       >
         Plus d'infos
@@ -80,7 +80,7 @@ onMounted(async () => {
       </button>
       <router-link
         v-else-if="event_ongoing && (isPrivate || (tournament && 'registration_close' in tournament && Date.parse(tournament.registration_close) > Date.now()))"
-        :to="`tournament/${tournament?.id as number}/register`"
+        :to="`tournament/${isPrivate ? 'private/' : ''}${tournament?.id as number}/register`"
         class="c-btn-secondary"
       >
         S'inscrire
