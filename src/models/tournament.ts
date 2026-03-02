@@ -4,6 +4,7 @@ import type { EventDeref } from '@/models/event';
 import type { Game } from '@/models/game';
 import type { Group } from '@/models/group';
 import type { SeatSlot } from '@/models/seats';
+import type { Stage } from '@/models/stage';
 import type { SwissRound } from '@/models/swiss';
 import type { Team } from '@/models/team';
 
@@ -22,6 +23,7 @@ interface BaseTournament {
   groups: Group[];
   brackets: Bracket[];
   swissRounds: SwissRound[];
+  stages: Stage[];
 }
 
 interface BaseEventTournament extends BaseTournament {

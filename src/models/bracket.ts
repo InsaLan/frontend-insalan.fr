@@ -18,6 +18,7 @@ export interface Bracket {
   winner: number;
   teams: number[];
   matchs: KnockoutMatch[];
+  stage?: number;
 }
 
 export interface KnockoutMatch extends Match {
