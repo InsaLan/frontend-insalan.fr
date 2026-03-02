@@ -19,7 +19,7 @@ const { removeNotification } = NotificationStore;
           'c-card-warn': notification.type === 'warn',
         }"
       >
-        <div>
+        <div class="u-text-left">
           {{ notification.message }}
         </div>
         <button
