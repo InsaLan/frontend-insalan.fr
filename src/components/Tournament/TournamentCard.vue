@@ -10,8 +10,8 @@ const props = defineProps<{
   id: number;
 }>();
 
-const { getTournament } = tournamentStore;
-const { eventTournamentsList, eventsList } = storeToRefs(tournamentStore);
+const { getTournament, getTournamentTeams } = tournamentStore;
+const { eventTournamentsList, eventsList, tourney_teams } = storeToRefs(tournamentStore);
 const tournament = computed<EventTournament | EventTournamentDeref | undefined>(
   () => eventTournamentsList.value[props.id],
 );
@@ -32,10 +32,30 @@ const event_ongoing = computed(() => {
   return event === undefined ? false : event.ongoing;
 });
 
+const thresholds = computed(() => tournament.value?.max_team_thresholds ?? [0]);
+const current_threshold_index = computed(() => tournament.value?.current_threshold_index ?? 0);
+
+const available_thresholds = computed(() => current_threshold_index.value < thresholds.value.length - 1);
+
+const max_teams = computed(() => {
+  if (tournament.value === undefined) { return 1; }
+
+  if (available_thresholds.value) {
+    return thresholds.value[current_threshold_index.value + 1];
+  }
+  return thresholds.value[current_threshold_index.value];
+});
+const max_validated_teams = computed(() => thresholds.value
+  .at(current_threshold_index.value) ?? 0);
+const validated_teams_proportion = computed(() => (max_validated_teams.value / max_teams.value) * 100);
+const is_threshold_full = computed(
+  () => tournament.value?.validated_teams === thresholds.value.at(current_threshold_index.value),
+);
+
 onMounted(async () => {
   await getTournament(props.id);
+  getTournamentTeams();
 });
-
 </script>
 <template>
   <div v-if="tournament?.is_announced" class="grid place-items-center gap-2 bg-cyan-900 shadow-lg">
@@ -45,8 +65,74 @@ onMounted(async () => {
       class="max-w-screen aspect-video text-clip"
     />
     <p class="text-lg">
-      {{ tournament?.validated_teams }}/{{ tournament?.max_team_thresholds[tournament?.current_threshold_index] }}
-      Équipes | Cashprize:
+      Équipes :
+    </p>
+    <div class="w-4/5">
+      <div class="relative flex h-6 w-full items-center justify-center rounded-2xl bg-white text-lg text-black">
+        <template
+          v-if="is_threshold_full && available_thresholds"
+        >
+          <div
+            class="tooltip-target z-[1] flex h-6 items-center justify-center rounded-s-2xl bg-green-600"
+            :style="{ width: `${validated_teams_proportion}%` }"
+            aria-describedby="validated_teams_tooltip"
+          >
+            {{ tournament?.validated_teams }}/{{ thresholds[current_threshold_index] }}
+            <span
+              id="validated_teams_tooltip"
+              role="tooltip"
+              class="tooltip-text invisible absolute top-8 rounded-md border border-white bg-theme-bg px-3 py-2 text-white opacity-0 transition duration-300"
+            >
+              {{ tournament?.validated_teams }}/{{ thresholds[current_threshold_index] }} équipes validées
+            </span>
+          </div>
+          <span
+            class="tooltip-target z-[1] flex justify-center"
+            :style="{ width: `${((thresholds[current_threshold_index + 1] - thresholds[current_threshold_index]) / max_teams) * 100}%` }"
+            aria-describedby="waiting_validation_teams_tooltip"
+          >
+            {{ tourney_teams.waiting_validation_teams.length }}/{{ thresholds[current_threshold_index + 1]
+              - thresholds[current_threshold_index] }}
+            <span
+              id="waiting_validation_teams_tooltip"
+              role="tooltip"
+              class="tooltip-text invisible absolute top-8 w-36 rounded-md border border-white bg-theme-bg px-3 py-2 text-center text-white opacity-0 transition duration-300"
+            >
+              {{ tourney_teams.waiting_validation_teams.length }}/{{ thresholds[current_threshold_index + 1]
+                - thresholds[current_threshold_index] }} en attente du palier
+            </span>
+          </span>
+          <!--  -->
+          <div
+            class="absolute left-0 h-6 rounded-2xl bg-blue-800 opacity-80"
+            :style="{ width: `${((tournament?.validated_teams + tourney_teams.waiting_validation_teams.length) / max_teams) * 100}%` }"
+          />
+        </template>
+        <template
+          v-else
+        >
+          <div
+            class="absolute left-0 h-6 rounded-2xl bg-green-600"
+            :style="{ width: `${(tournament?.validated_teams / max_validated_teams) * 100}%` }"
+          />
+          <span
+            class="tooltip-target z-[1] flex justify-center"
+            aria-describedby="validated_teams_tooltip"
+          >
+            {{ tournament?.validated_teams }}/{{ thresholds[current_threshold_index] }}
+            <span
+              id="validated_teams_tooltip"
+              role="tooltip"
+              class="tooltip-text invisible absolute top-8 rounded-md border border-white bg-theme-bg px-3 py-2 text-white opacity-0 transition duration-300"
+            >
+              {{ tournament?.validated_teams }}/{{ thresholds[current_threshold_index] }} équipes validées
+            </span>
+          </span>
+        </template>
+      </div>
+    </div>
+    <p class="text-lg">
+      Cashprize :
       {{ tournament?.cashprizes?.length !== 0 ? `${tournament?.cashprizes?.reduce((acc, val) => acc += Number(val), 0)} €` : "À venir" }}
     </p>
     <div class="mb-3 flex w-4/5 justify-center gap-3 text-center">
@@ -108,3 +194,21 @@ onMounted(async () => {
     </p>
   </div>
 </template>
+
+<style>
+  .tooltip-text::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    margin-left: -5px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent #2c292d transparent;
+  }
+
+  .tooltip-target:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+</style>
