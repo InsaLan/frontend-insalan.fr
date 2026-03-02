@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import PrivateTournamentCard from '@/components/Tournament/PrivateTournamentCard.vue';
 import TournamentCard from '@/components/Tournament/TournamentCard.vue';
 import { useTournamentStore } from '@/stores/tournament.store';
 
@@ -16,38 +15,33 @@ await getPrivateTournaments();
 </script>
 
 <template>
-  <div>
-    <h1 class="title">
-      Tournois
-    </h1>
-    <div v-if="!tournaments_id" class="flex justify-center">
+  <div class="l-flex-column l-items-cross-center u-m-main">
+    <div v-if="!tournaments_id">
       Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !
     </div>
-    <div class="mb-4 grid w-full gap-4 px-4 md:grid-cols-2 xl:grid-cols-4">
+    <div class="l-grid-3 l-gap-2 u-full-width">
       <TournamentCard
         v-for="tournament in tournaments_id"
         :id="tournament"
         :key="tournament"
+        :is-private="false"
       />
     </div>
-    <div class="mb-4 flex justify-center">
-      <router-link
-        to="/archives"
-        class="rounded bg-blue-800 p-2 text-[clamp(0.9rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-      >
-        Voir les anciennes éditions
-      </router-link>
-    </div>
-  </div>
-  <div v-if="Object.keys(privateTournamentsList).length > 0">
-    <h1 class="title">
+    <router-link
+      to="/archives"
+      class="u-my-2 c-btn-primary"
+    >
+      Voir les anciennes éditions
+    </router-link>
+    <h1 v-if="Object.keys(privateTournamentsList).length > 0">
       Tournois privés
     </h1>
-    <div class="mb-4 grid w-full gap-4 px-4 md:grid-cols-2 xl:grid-cols-4">
-      <PrivateTournamentCard
+    <div v-if="Object.keys(privateTournamentsList).length > 0" class="l-grid-3 l-gap-2 u-full-width">
+      <TournamentCard
         v-for="tournament in privateTournamentsList"
+        :id="tournament.id"
         :key="tournament.id"
-        :tournament="tournament"
+        :is-private="true"
       />
     </div>
   </div>

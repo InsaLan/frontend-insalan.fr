@@ -13,7 +13,7 @@ const { id, isPrivate } = defineProps<{
 
 const tournamentStore = useTournamentStore();
 const { getTournamentFull, getTournamentTeams, getPrivateTournament } = tournamentStore;
-const { tournament } = storeToRefs(tournamentStore);
+const { tournament, eventsList } = storeToRefs(tournamentStore);
 
 const open_dropdown = ref(false);
 
@@ -59,6 +59,7 @@ try {
     await getTournamentFull(id);
   }
   getTournamentTeams();
+  await tournamentStore.getOngoingEvents();
 } catch (err: unknown) {
   router.back();
 }
@@ -70,42 +71,89 @@ const admin_switch = computed(() => {
 
   return (route.name as string).replace('tournament_', 'tournament_admin_').split('-').at(0);
 });
+
+const event_ongoing = computed(() => {
+  if (isPrivate) {
+    return true;
+  }
+
+  if (tournament.value === undefined) {
+    return false;
+  }
+
+  if ('event' in tournament.value) {
+    let event_id;
+    if (typeof tournament.value.event === 'number') {
+      event_id = tournament.value.event;
+    } else {
+      event_id = tournament.value.event.id;
+    }
+
+    const event = eventsList.value[event_id];
+
+    return event === undefined ? false : event.ongoing;
+  }
+
+  return false;
+});
 </script>
 
 <template>
   <div
     v-if="tournament && (!('is_announced' in tournament) || tournament?.is_announced)"
-    class="flex min-h-[calc(100vh_-_6rem)] flex-col"
+    class="l-flex-column"
   >
-    <div class="py-2 text-center text-5xl font-bold text-white">
-      {{ tournament?.name }}
+    <div class="l-flex-row l-items-main-center l-items-cross-center l-gap-4 u-m-main">
+      <h1>
+        {{ tournament?.name }}
+      </h1>
+      <router-link
+        v-if="event_ongoing && (isPrivate || ('registration_close' in tournament && Date.parse(tournament.registration_close) > Date.now()))"
+        :to="isPrivate ? `/tournament/private/${id}/register` : `/tournament/${id}/register`"
+        class="c-btn-secondary"
+      >
+        S'inscrire
+      </router-link>
     </div>
 
-    <div class="sticky top-24 z-50">
-      <nav class="flex justify-center gap-10 bg-gray-500 py-3 sm:gap-16">
+    <div class="top-bar u-m-main">
+      <nav class="l-flex-row l-items-main-center l-gap-4 c-card-bg-2 u-full-width">
         <button
           type="button"
-          class="text-xl underline decoration-[#63d1ff] decoration-4 underline-offset-8 lg:hidden"
+          class="c-text-btn-secondary popup-btn"
           @click="open_dropdown = !open_dropdown"
         >
           {{ sections[selected_section].title }}
           <fa-awesome-icon
-            class="absolute mx-2 my-[0.6rem] transition duration-150 ease-in-out"
+            class="c-inline-icon u-color-text-2"
             icon="fa-solid fa-chevron-up"
-            size="2xs"
             :class="{ 'rotate-180': open_dropdown }"
           />
         </button>
         <div
-          :class="[open_dropdown ? 'flex border-y-2 border-white' : 'hidden']"
-          class="absolute z-10 max-h-[60vh] w-screen translate-y-10 flex-col items-center gap-2 overflow-scroll bg-gray-500 py-3 lg:static lg:z-0 lg:flex lg:w-auto lg:-translate-x-16 lg:translate-y-0 lg:flex-row lg:gap-4 lg:overflow-visible lg:py-0 xl:gap-10"
+          class="navigation"
         >
           <template v-for="(section, key) in sections" :key="key">
             <router-link
               v-if="section.is_available || (admin_mode && !['seatings', 'planning'].includes(key))"
               :to="{ name: `tournament_${admin_mode ? 'admin_' : ''}${key}` }"
-              :class="{ 'underline decoration-[#63d1ff] decoration-4 underline-offset-8': key === selected_section }"
-              class="text-xl underline-offset-8 hover:underline hover:decoration-[#63d1ff] hover:decoration-4"
+              :class="{ 'u-underline': key === selected_section }"
+              class="c-text-btn-secondary"
+              @click="open_dropdown = false"
+            >
+              {{ section.title }}
+            </router-link>
+          </template>
+        </div>
+        <div
+          :class="[open_dropdown ? 'c-card-bg-2 navigation-popup l-flex-column' : 'u-hidden']"
+        >
+          <template v-for="(section, key) in sections" :key="key">
+            <router-link
+              v-if="section.is_available || (admin_mode && !['seatings', 'planning'].includes(key))"
+              :to="{ name: `tournament_${admin_mode ? 'admin_' : ''}${key}` }"
+              :class="{ 'u-underline': key === selected_section }"
+              class="c-text-btn-secondary u-text-center"
               @click="open_dropdown = false"
             >
               {{ section.title }}
@@ -115,12 +163,8 @@ const admin_switch = computed(() => {
         <router-link
           v-if="isConnected && (user.groups.includes('Equipe Tournois') || user.groups.includes('Equipe Anim'))"
           :to="{ name: admin_switch }"
-          :class="{
-            'bg-red-800': !admin_mode,
-            'bg-blue-800': admin_mode,
-          }"
           type="button"
-          class="-my-1 rounded p-1 text-xl text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500 sm:absolute sm:right-5 sm:-mt-1"
+          class="c-btn-primary"
         >
           {{ admin_mode ? 'Mode Normal' : 'Mode Admin' }}
         </router-link>
@@ -133,7 +177,51 @@ const admin_switch = computed(() => {
       />
     </RouterView>
   </div>
-  <div v-else class="mt-6 text-center text-4xl">
+  <div v-else class="u-text-center u-big-text">
     Le tournoi que vous cherchez n'a pas encore été annoncé, revenez plus tard !
   </div>
 </template>
+
+<style scoped layer="override">
+.top-bar {
+  position: sticky;
+  top: calc(var(--top-offset, 8rem) - var(--base-margin));
+  z-index: 40;
+}
+
+@media (min-width: 70rem) {
+  .navigation {
+    z-index: 10;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .navigation-popup, .popup-btn {
+    display: none;
+  }
+}
+
+@media (max-width: 70rem) {
+  .navigation {
+    display: none;
+  }
+
+  .popup-btn {
+    transition: 150ms ease-in-out;
+  }
+
+  .navigation-popup {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    margin-top: var(--base-margin);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+}
+</style>

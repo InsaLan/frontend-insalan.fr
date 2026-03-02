@@ -155,79 +155,74 @@ watch(() => props.link, fetchEvents);
 </script>
 
 <template>
-  <div class="event-schedule font-sans">
-    <div v-if="events.length === 0" class="p-5 text-center">
-      Le planning n'est pas encore disponible, revenez plus tard !
-    </div>
-    <div v-else class="calendar">
-      <div
-        v-if="canGoBack || canGoForward"
-        class="mb-5 flex justify-between"
+  <div v-if="events.length === 0" class="l-flex-column u-full-height u-text-center u-big-text">
+    <p>⌛ Le planning n'est pas encore disponible, revenez plus tard !</p>
+  </div>
+  <div v-else>
+    <div
+      v-if="canGoBack || canGoForward"
+      class="l-flex-row u-full-width u-mb-2 l-items-main-center u-gap-4"
+    >
+      <button
+        :disabled="!canGoBack"
+        class="c-text-btn"
+        type="button"
+        @click="goBack"
       >
-        <button
-          :disabled="!canGoBack"
-          class="rounded bg-blue-500 px-4 py-2 text-black disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
-          type="button"
-          @click="goBack"
-        >
-          &lt; Jours précédents
-        </button>
-        <button
-          :disabled="!canGoForward"
-          class="rounded bg-blue-500 px-4 py-2 text-black disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
-          type="button"
-          @click="goForward"
-        >
-          Jours suivants &gt;
-        </button>
-      </div>
-      <div>
-        <div
-          :class="`grid gap-4 grid-cols-${nbDays * 2 + 2}`"
-        >
-          <div class="flex w-full flex-col-reverse py-2">
-            <div v-for="hour in timeSlots.slice().reverse()" :key="hour" class="flex h-[60px] items-start justify-end text-xs text-gray-500">
-              <span class="mr-2">{{ hour.toString().padStart(2, '0') }}:00</span>
-            </div>
+        &lt; Jours précédents
+      </button>
+      <button
+        :disabled="!canGoForward"
+        class="c-text-btn"
+        type="button"
+        @click="goForward"
+      >
+        Jours suivants &gt;
+      </button>
+    </div>
+    <div>
+      <div
+        :class="`grid l-gap-2 grid-cols-${nbDays * 2 + 2}`"
+      >
+        <div class="flex u-full-width flex-col-reverse u-py-1">
+          <div v-for="hour in timeSlots.slice().reverse()" :key="hour" class="flex h-[60px] items-start justify-end text-xs text-gray-500">
+            <span class="u-mr-1">{{ hour.toString().padStart(2, '0') }}:00</span>
           </div>
-          <div v-for="day in visibleDays" :key="day.toISOString()" class="col-span-2 overflow-hidden rounded border border-gray-200">
-            <h2 class="bg-gray-100 p-3 text-center text-sm font-bold text-black">
-              {{ frenchDayFormatFromDate(day) }}
-            </h2>
-            <div class="relative border-t border-gray-200" :style="{ height: `${60 * (24 - START_HOURE)}px` }">
-              <div
-                v-for="hour in timeSlots"
-                :key="hour"
-                class="absolute inset-x-0 border-t border-gray-500"
-                :style="{ top: `${((hour - START_HOURE) / (24 - START_HOURE)) * 100 - 0.04}%` }"
-              />
-              <button
-                v-for="event in getEventsForDay(day)"
-                :key="event.start.toISOString()"
-                :class="[
-                  'absolute flex cursor-pointer flex-col overflow-hidden rounded border border-black p-1 text-center text-xs text-white shadow-lg transition-transform duration-200 hover:z-10 hover:shadow-xl hover:ring hover:ring-blue-500 focus:z-10 focus:ring focus:ring-blue-500',
-                  colors[
-                    event.id.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0)
-                    % colors.length
-                  ],
-                ]"
-                :style="getEventStyle(event, day)"
-                type="button"
-                @focus="focusedEvent = event.id"
-                @blur="focusedEvent = null"
-                @mouseenter="focusedEvent = event.id"
-                @mouseleave="focusedEvent = null"
-              >
-                <div class="font-bold">
-                  {{ format(event.start, 'HH:mm') }} - {{ format(event.end, 'HH:mm') }}
-                </div>
-                <div class="mt-1">
-                  {{ event.summary }}
-                </div>
-              </button>
-            </div>
+        </div>
+        <div v-for="day in visibleDays" :key="day.toISOString()" class="col-span-2 overflow-hidden u-rounded u-bg-bg-2">
+          <div class="u-bg-bg-3 u-p-2 u-text-center u-bold u-m-0">
+            {{ frenchDayFormatFromDate(day) }}
           </div>
-          <div/>
+          <div class="l-relative-position border-t border-gray-200" :style="{ height: `${60 * (24 - START_HOURE)}px` }">
+            <div
+              v-for="hour in timeSlots"
+              :key="hour"
+              class="l-absolute-position inset-x-0 border-t border-gray-500"
+              :style="{ top: `${((hour - START_HOURE) / (24 - START_HOURE)) * 100 - 0.04}%` }"
+            />
+            <button
+              v-for="event in getEventsForDay(day)"
+              :key="event.start.toISOString()"
+              :class="[
+                'l-flex-column u-rounded u-text-center absolute cursor-pointer overflow-hidden u-p-1 text-xs transition-transform duration-200 hover:z-10',
+                colors[
+                  event.id.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0)
+                  % colors.length
+                ],
+              ]"
+              :style="getEventStyle(event, day)"
+              type="button"
+              @focus="focusedEvent = event.id"
+              @blur="focusedEvent = null"
+              @mouseenter="focusedEvent = event.id"
+              @mouseleave="focusedEvent = null"
+            >
+              <div class="u-bold">
+                {{ format(event.start, 'HH:mm') }} - {{ format(event.end, 'HH:mm') }}
+              </div>
+              {{ event.summary }}
+            </button>
+          </div>
         </div>
       </div>
     </div>

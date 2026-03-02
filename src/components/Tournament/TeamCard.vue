@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import PaymenStatusIcon from '@/components/PaymenStatusIcon.vue';
+import PaymentStatusIcon from '@/components/PaymentStatusIcon.vue';
 import type { PlayerRegistration } from '@/models/registration';
 import type { Team } from '@/models/team';
 import { useUserStore } from '@/stores/user.store';
@@ -14,32 +14,35 @@ defineProps<{
 </script>
 
 <template>
-  <div v-if="typeof team !== 'number'" class="overflow-hidden text-ellipsis rounded bg-cyan-500 p-4">
-    <h1 class="text-shadow text-center text-3xl font-black">
+  <div v-if="typeof team !== 'number'" class="c-card-bg-2 u-full-width u-full-height">
+    <div class="u-text-center u-big-text u-bold">
       {{ team.name }}
-      <img v-if="team.validated" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="inline-block size-6"/>
-    </h1>
-    <ul
-      class="ml-4 list-disc text-xl"
-    >
+      <img v-if="team.validated" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="c-inline-icon"/>
+    </div>
+    <ul>
       <li v-for="player in team.players" :key="((player as PlayerRegistration).user)">
-        <p>
-          {{ (player as PlayerRegistration).name_in_game }}
-          <PaymenStatusIcon :player="player as PlayerRegistration"/>
-        </p>
+        {{ (player as PlayerRegistration).name_in_game }}
+        <PaymentStatusIcon :player="player as PlayerRegistration"/>
       </li>
     </ul>
-    <p v-if="team.managers.length" class="text-2xl">
-      Managers : <em>{{ team.managers.join(', ') }}</em>
-    </p>
-    <div v-if="team.substitutes.length" class="text-2xl">
-      Remplaçant :
-      <ul class="ml-4 list-disc text-xl">
+    <div v-if="team.substitutes.length > 0">
+      <p class="u-big-text">
+        Remplaçant·e{{ team.substitutes.length > 1 ? '·s' : '' }} :
+      </p>
+      <ul>
         <li v-for="player in team.substitutes" :key="((player as PlayerRegistration).user)">
-          <p>
-            {{ (player as PlayerRegistration).name_in_game }}
-            <PaymenStatusIcon :player="player as PlayerRegistration"/>
-          </p>
+          {{ (player as PlayerRegistration).name_in_game }}
+          <PaymentStatusIcon :player="player as PlayerRegistration"/>
+        </li>
+      </ul>
+    </div>
+    <div v-if="team.managers.length > 0" class="u-big-text">
+      <p class="u-big-text">
+        Manager{{ team.managers.length > 1 ? 's' : '' }} :
+      </p>
+      <ul>
+        <li v-for="manager in team.managers" :key="manager">
+          {{ manager }}
         </li>
       </ul>
     </div>

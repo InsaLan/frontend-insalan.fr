@@ -241,28 +241,28 @@ const kick_member = async (type: string, id: number) => {
 <template>
   <div
     :style="{ backgroundImage: `url(${tournament?.logo})` }"
-    class="flex flex-1 flex-col items-center border-2 border-black bg-cover bg-center text-center text-white bg-blend-multiply"
+    class="l-flex-column l-grow l-items-cross-center border-2 border-black bg-cover bg-center u-text-center text-white bg-blend-multiply"
   >
     <h1
-      class="title w-full"
+      class="u-full-width"
     >
       {{ tournament?.name }}
     </h1>
 
     <div
-      class="my-5 mb-6 flex w-5/6 flex-col items-center justify-center rounded-2xl bg-[#144B61] md:w-3/4"
+      class="my-5 mb-6 l-flex-column w-5/6 l-items-cross-center l-items-main-center rounded-2xl bg-[#144B61] md:w-3/4"
     >
       <div
-        class="flex w-full flex-col justify-between border-b-2 border-black p-2 md:flex-row"
+        class="l-flex-column u-full-width justify-between border-b-2 border-black u-p-1 md:flex-row"
       >
-        <div class="flex items-center overflow-hidden">
+        <div class="flex l-items-cross-center overflow-hidden">
           <div
             class=" truncate text-3xl"
           >
             [{{ tournament?.game.short_name }}]
             {{ selected_team?.name }}
           </div>
-          <img v-if="selected_team.validated" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="m-2 inline-block size-6"/>
+          <img v-if="selected_team.validated" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="u-m-1 inline-block size-6"/>
         </div>
         <button
           v-if="
@@ -277,7 +277,7 @@ const kick_member = async (type: string, id: number) => {
               )
           "
           type="button"
-          class="center rounded bg-green-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+          class="center rounded bg-green-600 u-p-1 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
           @click="showModalTeamName = true"
           @keydown.enter="showModalTeamName = true"
         >
@@ -285,25 +285,25 @@ const kick_member = async (type: string, id: number) => {
         </button>
       </div>
       <div
-        class="flex w-full flex-col bg-[#116B8E]"
+        class="l-flex-column u-full-width bg-[#116B8E]"
       >
         <div
-          class="flex w-full flex-col justify-between border-b-2 border-black p-2"
+          class="l-flex-column u-full-width justify-between border-b-2 border-black u-p-1"
         >
           <div
-            class="underline"
+            class="u-underline"
           >
-            Joueurs :
+            Joueur·euse·s :
           </div>
           <ul
-            class="grid list-disc p-2 md:grid-cols-2"
+            class="grid list-disc u-p-1 md:grid-cols-2"
           >
             <li
               v-for="player in selected_team?.players as PlayerRegistration[]"
               :key="player.id"
-              class="mx-2 overflow-hidden text-justify"
+              class="u-mx-1 overflow-hidden u-text-justify"
             >
-              <div class="flex items-center">
+              <div class="flex l-items-cross-center">
                 <fa-awesome-icon
                   v-if="selected_team.captain === player.name_in_game"
                   class="m-1 size-4"
@@ -312,7 +312,7 @@ const kick_member = async (type: string, id: number) => {
                 <div class="truncate">
                   {{ player.name_in_game }}
                 </div>
-                <img v-if="player.payment_status === PaymentStatus.PAID" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="m-2 inline-block size-4"/>
+                <img v-if="player.payment_status === PaymentStatus.PAID" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="u-m-1 inline-block size-4"/>
                 <fa-awesome-icon
                   v-if="
                     player.payment_status !== PaymentStatus.PAID
@@ -339,22 +339,22 @@ const kick_member = async (type: string, id: number) => {
         </div>
         <div
           v-if="!(props.id in privateTournamentsList)"
-          class="flex w-full flex-col justify-between border-b-2 border-black p-2"
+          class="l-flex-column u-full-width justify-between border-b-2 border-black u-p-1"
         >
           <div
-            class="underline"
+            class="u-underline"
           >
             Managers :
           </div>
           <ul
-            class="grid list-disc p-2 md:grid-cols-2"
+            class="grid list-disc u-p-1 md:grid-cols-2"
           >
             <li
               v-for="manager in selected_team?.managers as String[]"
               :key="manager as string"
-              class="mx-2 overflow-hidden text-justify"
+              class="u-mx-1 overflow-hidden u-text-justify"
             >
-              <div class="flex items-center">
+              <div class="flex l-items-cross-center">
                 <div class="truncate">
                   {{ manager }}
                 </div>
@@ -364,26 +364,26 @@ const kick_member = async (type: string, id: number) => {
         </div>
         <div
           v-if="!(props.id in privateTournamentsList)"
-          class="flex w-full flex-col justify-between border-b-2 border-black p-2"
+          class="l-flex-column u-full-width justify-between border-b-2 border-black u-p-1"
         >
           <div
-            class="underline"
+            class="u-underline"
           >
-            Remplaçants :
+            Remplaçant·e·s :
           </div>
           <ul
-            class="grid list-disc p-2 md:grid-cols-2"
+            class="grid list-disc u-p-1 md:grid-cols-2"
           >
             <li
               v-for="substitute in selected_team?.substitutes as PlayerRegistration[]"
               :key="substitute.id"
-              class="mx-2 overflow-hidden text-justify"
+              class="u-mx-1 overflow-hidden u-text-justify"
             >
-              <div class="flex items-center">
+              <div class="flex l-items-cross-center">
                 <div class="truncate">
                   {{ substitute.name_in_game }}
                 </div>
-                <img v-if="substitute.payment_status === PaymentStatus.PAID" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="m-2 inline-block size-4"/>
+                <img v-if="substitute.payment_status === PaymentStatus.PAID" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="u-m-1 inline-block size-4"/>
                 <fa-awesome-icon
                   v-if="
                     substitute.payment_status !== PaymentStatus.PAID
@@ -408,10 +408,10 @@ const kick_member = async (type: string, id: number) => {
       </div>
       <div
         v-if="tournament && (!('event' in tournament) || (tournament as EventTournamentDeref)?.event.ongoing)"
-        class="flex w-full flex-col justify-between gap-2 border-t-2 border-black p-2 md:flex-row"
+        class="l-flex-column u-full-width justify-between l-gap-1 border-t-2 border-black u-p-1 md:flex-row"
       >
         <div
-          class="flex w-full flex-col items-start"
+          class="l-flex-column u-full-width items-start"
         >
           <button
             v-if="
@@ -425,7 +425,7 @@ const kick_member = async (type: string, id: number) => {
                 && !(props.id in privateTournamentsList)
             "
             type="button"
-            class="center size-full rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
+            class="center size-full rounded bg-red-600 u-p-1 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
             @click="showModalTeamPassword = true"
             @keydown.enter="showModalTeamPassword = true"
           >
@@ -433,32 +433,32 @@ const kick_member = async (type: string, id: number) => {
           </button>
         </div>
         <div
-          class="flex w-full flex-col items-center md:max-w-[33%]"
+          class="l-flex-column u-full-width l-items-cross-center md:max-w-[33%]"
         >
           <div
             v-if="team_registration?.[0] === 'player' || team_registration?.[0] === 'substitute'"
-            class="flex w-full max-w-full items-center justify-center rounded bg-blue-700 transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500 md:w-auto"
+            class="flex u-full-width max-w-full l-items-cross-center l-items-main-center rounded bg-blue-700 transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500 md:w-auto"
             @click.prevent="showModalNameInGame = true"
             @keydown.prevent="showModalNameInGame = true"
           >
-            <div class="m-2 overflow-hidden truncate">
+            <div class="u-m-1 overflow-hidden truncate">
               {{ (team_registration?.[1] as PlayerRegistrationDeref).name_in_game }}
             </div>
             <fa-awesome-icon
-              class="m-2 hover:cursor-pointer"
+              class="u-m-1 hover:cursor-pointer"
               icon="fa-solid fa-pencil"
             />
           </div>
         </div>
         <div
-          class="flex w-full flex-col items-end"
+          class="l-flex-column u-full-width items-end"
         >
           <button
             v-if="
               team_registration?.[1]?.payment_status !== PaymentStatus.PAID
             "
             type="button"
-            class="center size-full rounded bg-red-600 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
+            class="center size-full rounded bg-red-600 u-p-1 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:w-auto"
             @click="showModalLeaveTeam = true"
           >
             Quitter l'équipe
@@ -467,14 +467,14 @@ const kick_member = async (type: string, id: number) => {
       </div>
       <div
         v-else
-        class="m-2 w-full"
+        class="u-m-1 u-full-width"
       >
         Le tournoi est terminé et l'équipe ne peut plus être modifiée.
       </div>
     </div>
 
     <div
-      class="mb-6 flex w-5/6 flex-col items-center justify-center overflow-hidden rounded-2xl bg-[#144B61] md:w-3/4"
+      class="mb-6 l-flex-column w-5/6 l-items-cross-center l-items-main-center overflow-hidden rounded-2xl bg-[#144B61] md:w-3/4"
     >
       <Seating
         v-if="tournament && ('event' in tournament)"
@@ -485,218 +485,184 @@ const kick_member = async (type: string, id: number) => {
   </div>
 
   <Modal v-if="showModalNameInGame" @close="closeModalNameInGame">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Changer votre nom en jeu
-      </h3>
+      Changer votre nom en jeu
     </template>
     <template #body>
-      <form id="patch-user" class="mt-2" @submit.prevent="ValidateModalNameInGame">
+      <form id="patch-user" @submit.prevent="ValidateModalNameInGame">
         <FormField
-          v-slot="context"
           :validations="v$_name_in_game.name_in_game"
-          class="m-2 flex flex-col"
-          label="Nouveau Pseudo"
         >
+          <label for="name_in_game">
+            Nouveau Pseudo
+          </label>
           <input
+            id="name_in_game"
             v-model="data_name_in_game.name_in_game"
-            :class="{ error: context.invalid }"
             aria-label="Nouveau Pseudo"
-            class="border-2 bg-theme-bg"
             placeholder="Nouveau Pseudo"
             required
             type="text"
           />
         </FormField>
         <!-- hidden submit button with tailwind-->
-        <button class="hidden" type="submit"/>
+        <button class="u-hidden" type="submit"/>
       </form>
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="ValidateModalNameInGame"
-      >
-        Valider
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="closeModalNameInGame"
       >
         Annuler
       </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="ValidateModalNameInGame"
+      >
+        Valider
+      </button>
     </template>
   </Modal>
 
   <Modal v-if="showModalTeamName" @close="closeModalTeamName">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Changer le nom de l'équipe
-      </h3>
+      Changer le nom de l'équipe
     </template>
     <template #body>
-      <form id="patch-user" class="mt-2" @submit.prevent="ValidateModalTeamName">
+      <form id="patch-user" @submit.prevent="ValidateModalTeamName">
         <FormField
-          v-slot="context"
           :validations="v$_team_name.name"
-          class="m-2 flex flex-col"
-          label="Nouveau nom"
         >
+          <label for="name">
+            Nouveau nom
+          </label>
           <input
+            id="name"
             v-model="data_team_name.name"
-            :class="{ error: context.invalid }"
             aria-label="Nouveau nom"
-            class="border-2 bg-theme-bg"
             placeholder="Nouveau nom"
             required
             type="text"
           />
         </FormField>
         <!-- hidden submit button with tailwind-->
-        <button class="hidden" type="submit"/>
+        <button class="u-hidden" type="submit"/>
       </form>
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="ValidateModalTeamName"
-      >
-        Valider
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="closeModalTeamName"
       >
         Annuler
       </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="ValidateModalTeamName"
+      >
+        Valider
+      </button>
     </template>
   </Modal>
 
   <Modal v-if="showModalTeamPassword" @close="closeModalTeamPassword">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Changer le mot de passe de l'équipe
-      </h3>
+      Changer le mot de passe de l'équipe
     </template>
     <template #body>
-      <form id="patch-user" class="mt-2" @submit.prevent="ValidateModalTeamPassword">
+      <form id="patch-user" @submit.prevent="ValidateModalTeamPassword">
         <FormField
-          v-slot="context"
           :validations="v$_team_password.password"
-          class="m-2 flex flex-col"
-          label="Nouveau mot de passe"
         >
+          <label for="password">
+            Nouveau mot de passe
+          </label>
           <input
             v-model="data_team_password.password"
-            :class="{ error: context.invalid }"
             aria-label="Nouveau mot de passe"
-            class="border-2 bg-theme-bg"
             placeholder="Nouveau mot de passe"
             required
             type="text"
           />
         </FormField>
-        <!-- hidden submit button with tailwind-->
-        <button class="hidden" type="submit"/>
+        <button class="u-hidden" type="submit"/>
       </form>
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="ValidateModalTeamPassword"
-      >
-        Valider
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="closeModalTeamPassword"
       >
         Annuler
       </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="ValidateModalTeamPassword"
+      >
+        Valider
+      </button>
     </template>
   </Modal>
 
   <Modal v-if="showModalLeaveTeam" @close="showModalLeaveTeam = false">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Quiter l'équipe
-      </h3>
+      Quiter l'équipe
     </template>
     <template #body>
-      <div>
-        Êtes-vous sûr de vouloir quitter l'équipe ?
-        <br/>
-        Vous ne pourrez pas revenir dans l'équipe à moins d'être réinvité.
-      </div>
+      Êtes-vous sûr de vouloir quitter l'équipe ?
+      <br/><br/>
+      Vous ne pourrez pas revenir dans l'équipe à moins d'être réinvité.
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="leave_team(team_registration?.[0] || '', team_registration?.[1]?.id ?? 0); router.push('/me')"
-      >
-        Oui
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="showModalLeaveTeam = false"
       >
         Non
       </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="leave_team(team_registration?.[0] || '', team_registration?.[1]?.id ?? 0); router.push('/me')"
+      >
+        Oui
+      </button>
     </template>
   </Modal>
 
   <Modal v-if="showModalKickPlayer" @close="showModalKickPlayer = false">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Kick un joueur
-      </h3>
+      Expulsion d'un joueur
     </template>
     <template #body>
-      <div>
-        Êtes-vous sûr de vouloir kick "{{
-          kickregtype === "player"
-            ? (selected_team?.players as PlayerRegistration[]).find((player) => player.id === kickregid)?.name_in_game
-            : (selected_team?.substitutes as PlayerRegistration[]).find((sub) => sub.id === kickregid)?.name_in_game
-        }}" de l'équipe ?
-      </div>
+      Êtes-vous sûr de vouloir expulser "{{
+        kickregtype === "player"
+          ? (selected_team?.players as PlayerRegistration[]).find((player) => player.id === kickregid)?.name_in_game
+          : (selected_team?.substitutes as PlayerRegistration[]).find((sub) => sub.id === kickregid)?.name_in_game
+      }}" de l'équipe ?
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="kick_member(kickregtype, kickregid)"
-      >
-        Oui
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="showModalKickPlayer = false"
       >
         Non
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="kick_member(kickregtype, kickregid)"
+      >
+        Oui
       </button>
     </template>
   </Modal>

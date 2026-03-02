@@ -161,11 +161,11 @@ const create_round = async () => {
 
 <template>
   <div
-    class="m-4 flex flex-wrap justify-center gap-4 lg:m-8 lg:mb-0 lg:gap-16"
+    class="u-m-2 flex l-wrap l-items-main-center l-gap-2 lg:m-8 lg:mb-0 lg:gap-16"
   >
     <button
       type="button"
-      class="rounded p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+      class="rounded u-p-1 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
       :class="[has_swiss ? 'bg-red-500' : 'bg-blue-800']"
       @click="open_modal(has_swiss ? 'delete_swiss' : 'generate_swiss')"
     >
@@ -173,7 +173,7 @@ const create_round = async () => {
     </button>
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 u-p-1 u-bold transition duration-150 ease-in-out"
       :class="[has_swiss ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
       :disabled="!has_swiss"
       @click="open_create_round_modal"
@@ -182,7 +182,7 @@ const create_round = async () => {
     </button>
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 u-p-1 u-bold transition duration-150 ease-in-out"
       :class="[has_matchs ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
       :disabled="!has_matchs"
       @click="open_launch_round_modal"
@@ -191,7 +191,7 @@ const create_round = async () => {
     </button>
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 u-p-1 u-bold transition duration-150 ease-in-out"
       :class="[has_matchs && selected_matchs.size > 0 ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
       :disabled="!has_matchs || selected_matchs.size === 0"
       @click="launch_selected_matchs"
@@ -201,28 +201,28 @@ const create_round = async () => {
   </div>
 
   <div
-    class="m-2 flex flex-col items-center md:m-4 lg:m-8"
+    class="u-m-1 l-flex-column l-items-cross-center md:m-4 lg:m-8"
   >
     <div
       v-for="(swiss, swiss_idx) in tournament.swissRounds"
       :key="swiss_idx"
-      class="flex w-full overflow-x-auto pb-4"
+      class="flex u-full-width overflow-x-auto u-pb-2"
     >
       <div
         class="grid size-full gap-x-10 gap-y-5"
         :style="{ 'grid-template-columns': `repeat(${roundCounts[swiss_idx]}, minmax(18rem,1fr))` }"
       >
-        <h1
+        <div
           v-for="round_idx in roundCounts[swiss_idx]"
           :key="round_idx"
-          class="text-center text-3xl"
+          class="u-text-center text-3xl"
         >
           Tour {{ round_idx }}
-        </h1>
+        </div>
         <div
           v-for="(round_matchs, round_idx) in groupBy(swiss.matchs, 'round_number')"
           :key="round_idx"
-          class="flex flex-col gap-6"
+          class="l-flex-column gap-6"
         >
           <div
             v-for="(matchs, score_group) in groupBy(round_matchs, 'score_group')"
@@ -230,7 +230,7 @@ const create_round = async () => {
             class="border-2 border-gray-500"
           >
             <div
-              class="bg-gray-500 text-center"
+              class="bg-gray-500 u-text-center"
             >
               <div
                 v-if="Number(round_idx) <= swiss.min_score"
@@ -244,12 +244,12 @@ const create_round = async () => {
             </div>
 
             <div
-              class="flex flex-col items-center"
+              class="l-flex-column l-items-cross-center"
             >
               <div
                 v-for="match in matchs"
                 :key="match.id"
-                class="w-full"
+                class="u-full-width"
               >
                 <MatchCard
                   v-model="selected_matchs"
@@ -270,24 +270,15 @@ const create_round = async () => {
   <Modal
     v-if="modal_open && modal_type === 'generate_swiss'"
   >
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3
-        class="text-white-900 text-base font-semibold leading-6"
-      >
-        Génération la ronde suisse
-      </h3>
+      Génération la ronde suisse
     </template>
     <template #body>
       <form
         id="generate_swiss_form"
-        class="m-4 flex flex-col gap-4"
         @submit.prevent="generate_swiss"
       >
         <FormField
-          v-slot="context"
           :validations="v$.min_score"
         >
           <label for="min_score">
@@ -299,13 +290,10 @@ const create_round = async () => {
             type="number"
             name="min_score"
             aria-label="Score for qualification"
-            class="ml-2 bg-inherit"
-            :class="{ error: context.invalid }"
             @blur="v$.min_score.$touch"
           />
         </FormField>
         <FormField
-          v-slot="context"
           :validations="v$.use_seeding"
         >
           <label for="seeding">
@@ -314,15 +302,12 @@ const create_round = async () => {
           <input
             id="seeding"
             v-model="swiss_data.use_seeding"
-            :class="{ error: context.invalid }"
             aria-label="Use team seeding"
-            class="ml-2 bg-inherit"
             type="checkbox"
             @blur="v$.use_seeding.$touch"
           >
         </FormField>
         <FormField
-          v-slot="context"
           :validations="v$.bo_type"
         >
           <label for="bo_type">
@@ -332,8 +317,6 @@ const create_round = async () => {
             id="bo_type"
             v-model="swiss_data.bo_type"
             name="bo_type"
-            class="ml-2 bg-inherit"
-            :class="{ error: context.invalid }"
             @blur="v$.bo_type.$touch"
           >
             <option
@@ -345,23 +328,23 @@ const create_round = async () => {
             </option>
           </select>
         </FormField>
-        <button class="hidden" type="submit"/>
+        <button class="u-hidden" type="submit"/>
       </form>
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-        type="button"
-        @click="generate_swiss"
-      >
-        Créer la ronde suisse
-      </button>
-      <button
-        class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="modal_open = false;"
       >
         Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="button"
+        @click="generate_swiss"
+      >
+        Créer la ronde suisse
       </button>
     </template>
   </Modal>
@@ -370,50 +353,40 @@ const create_round = async () => {
     v-if="modal_open && modal_type === 'delete_swiss'"
   >
     <template #title>
-      <h3
-        class="text-white-900 text-base font-semibold leading-6"
-      >
-        Supprimer la ronde suisse
-      </h3>
+      Supprimer la ronde suisse
     </template>
     <template #body>
       La ronde suisse va être supprimée ainsi que les matchs qui lui sont liés.
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-        type="button"
-        @click="delete_swiss"
-      >
-        Valider
-      </button>
-      <button
-        class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="modal_open = false;"
       >
         Annuler
       </button>
+      <button
+        class="c-btn-secondary"
+        type="button"
+        @click="delete_swiss"
+      >
+        Valider
+      </button>
     </template>
   </Modal>
 
   <Modal v-if="modal_open && modal_type === 'launch_round'">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 class="text-white-900 text-base font-semibold leading-6">
-        Lancer les matchs d'un tour
-      </h3>
+      Lancer les matchs d'un tour
     </template>
     <template #body>
       <form
         id="create_groups_form"
-        class="m-4 flex flex-col gap-4"
+        class="u-m-2 l-flex-column l-gap-2"
         @submit.prevent="launch_round_matchs"
       >
         <FormField
-          v-slot="context"
           :validations="v_round$.round_to_launch"
         >
           <label for="round">
@@ -425,8 +398,6 @@ const create_round = async () => {
             type="number"
             name="round"
             aria-label="Round number"
-            class="ml-2 bg-inherit"
-            :class="{ error: context.invalid }"
             @blur="v_round$.round_to_launch.$touch"
           >
         </FormField>
@@ -434,43 +405,35 @@ const create_round = async () => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-        type="button"
-        @click="launch_round_matchs"
-      >
-        Lancer le tour
-      </button>
-      <button
-        class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="modal_open = false;"
       >
         Annuler
       </button>
+      <button
+        class="c-btn-secondary"
+        type="button"
+        @click="launch_round_matchs"
+      >
+        Lancer le tour
+      </button>
     </template>
   </Modal>
 
   <Modal v-if="modal_open && modal_type === 'create_round'">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 class="text-white-900 text-base font-semibold leading-6">
-        Générer les matchs d'un tour.
-        <br>
-        Les résultats du tour précédant vont être utilisés pour produire les nouveaux matchs.
-        <br>
-        Les rencontres au sein d'un même groupe de score sont déterminé aléatoirement.
-      </h3>
+      Générer les matchs d'un tour
     </template>
     <template #body>
+      Les résultats du tour précédant vont être utilisés pour produire les nouveaux matchs.
+      <br><br>
+      Les rencontres au sein d'un même groupe de score sont déterminé aléatoirement.
       <form
         id="create_groups_form"
-        class="m-4 flex flex-col gap-4"
         @submit.prevent="create_round"
       >
         <FormField
-          v-slot="context"
           :validations="v_create_round$.round_to_create"
         >
           <label for="round">
@@ -482,8 +445,6 @@ const create_round = async () => {
             type="number"
             name="round"
             aria-label="Round number"
-            class="ml-2 bg-inherit"
-            :class="{ error: context.invalid }"
             @blur="v_create_round$.round_to_create.$touch"
           >
         </FormField>
@@ -491,18 +452,18 @@ const create_round = async () => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-        type="button"
-        @click="create_round"
-      >
-        Générer le tour
-      </button>
-      <button
-        class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="modal_open = false;"
       >
         Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="button"
+        @click="create_round"
+      >
+        Générer le tour
       </button>
     </template>
   </Modal>
