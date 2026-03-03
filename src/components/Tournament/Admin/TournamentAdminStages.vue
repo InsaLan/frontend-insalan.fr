@@ -186,22 +186,26 @@ const add_groups = async () => {
 
 const swiss_data = reactive({
   name: '',
-  min_score: 0,
+  min_score: 1 as number | null,
   use_seeding: false,
   bo_type: BestofType.BO1,
   auto_fill: false,
   team_count: 1,
   play_all: false,
+  round_count: 1 as number | null,
 });
 const swiss_rules = computed(() => ({
   name: { required, maxLength: maxLength(40) },
-  min_score: { integer, required, minValue: minValue(1) },
+  min_score: { integer, minValue: minValue(1) },
   use_seeding: { required },
   bo_type: { required },
   auto_fill: { required },
   team_count: { required, between: between(1, validated_teams_count) },
   play_all: { required },
+  round_count: { integer, minValue: minValue(1) },
 }));
+
+const use_round_count = ref(false);
 
 const v_swiss$ = useVuelidate(swiss_rules, swiss_data, { $scope: false });
 
@@ -209,6 +213,12 @@ const add_swiss = async () => {
   const is_valid = await v_swiss$.value.$validate();
 
   if (!is_valid) return;
+
+  if (use_round_count.value) {
+    swiss_data.min_score = null;
+  } else {
+    swiss_data.round_count = null;
+  }
 
   const res = await createSwiss(selected_stage.value, swiss_data);
 
@@ -795,11 +805,44 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
           <FormField
             v-slot="context"
             :validations="v_swiss$.min_score"
+            class="flex flex-col items-center gap-y-2"
           >
-            <label for="min_score">
-              Score de qualification
-            </label>
+            <div
+              class="flex items-center gap-x-3"
+            >
+              <label for="min_score" :class="{ 'opacity-50': use_round_count }">
+                Score de qualification
+              </label>
+              <button
+                type="button"
+                class="relative inline-block h-5 w-10 cursor-pointer overflow-hidden rounded-xl bg-blue-700"
+              >
+                <label for="use_round_count_checkbox" class="hidden"/>
+                <input
+                  id="use_round_count_checkbox"
+                  v-model="use_round_count"
+                  type="checkbox"
+                  class="input_use_round_count absolute inset-0 z-10 m-0 size-full opacity-0"
+                >
+                <div class="use_round_count_indicator absolute left-1 top-1 size-3 rounded-full bg-white transition-transform"/>
+              </button>
+              <label for="round_count" :class="{ 'opacity-60': !use_round_count }">
+                Nombre de tours
+              </label>
+            </div>
             <input
+              v-if="use_round_count"
+              id="round_count"
+              v-model="swiss_data.round_count"
+              type="number"
+              name="round_count"
+              aria-label="Number of rounds"
+              class="ml-2 bg-inherit"
+              :class="{ error: context.invalid }"
+              @blur="v_swiss$.round_count.$touch"
+            />
+            <input
+              v-else
               id="min_score"
               v-model="swiss_data.min_score"
               type="number"
@@ -899,3 +942,9 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
     </template>
   </Modal>
 </template>
+
+<style>
+  .input_use_round_count:checked ~ .use_round_count_indicator {
+    transform: translate(20px, 0);
+  }
+</style>
