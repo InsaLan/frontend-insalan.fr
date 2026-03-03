@@ -583,6 +583,7 @@ export const useTournamentStore = defineStore('tournament', () => {
       names: string[];
       use_seeding: boolean;
       auto_fill: boolean;
+      round_count: number | null;
     },
   ): Promise<boolean> {
     await get_csrf();
@@ -648,7 +649,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     return true;
   }
 
-  async function createGroupMatchs(groups: number[], bo_type: BestofType, play_all: boolean) {
+  async function createGroupMatchs(groups: number[], bo_type: BestofType, play_all: boolean, round_count: number) {
     await get_csrf();
 
     // groups.push(15);
@@ -659,6 +660,7 @@ export const useTournamentStore = defineStore('tournament', () => {
         groups,
         bo_type,
         play_all,
+        round_count,
       },
       {
         withCredentials: true,
