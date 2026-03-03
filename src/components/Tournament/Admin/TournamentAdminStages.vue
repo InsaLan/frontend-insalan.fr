@@ -110,12 +110,14 @@ const bracket_data = reactive({
   team_count: 0,
   bracket_type: BracketType.SINGLE,
   bo_type: BestofType.BO1,
+  play_all: false,
 });
 const bracket_rules = computed(() => ({
   name: { required },
   team_count: { required, between: between(2, validated_teams_count) },
   bracket_type: { required },
   bo_type: { required },
+  play_all: { required },
 }));
 
 const v_bracket$ = useVuelidate(bracket_rules, bracket_data, { $scope: false });
@@ -138,6 +140,7 @@ const group_data = reactive({
   names: [''],
   use_seeding: false,
   auto_fill: false,
+  round_count: -1 as number | null,
 });
 
 const update_names = (event: Event) => {
@@ -160,6 +163,7 @@ const rules_group = computed(() => ({
   names: { minLength: minLength(group_data.count) },
   use_seeding: { required },
   auto_fill: { required },
+  round_count: { integer, required },
 }));
 
 const v_group$ = useVuelidate(rules_group, group_data, { $scope: false });
@@ -168,6 +172,10 @@ const add_groups = async () => {
   const is_valid = await v_group$.value.$validate();
 
   if (!is_valid) return;
+
+  if (group_data.round_count !== null && group_data.round_count < 0) {
+    group_data.round_count = null;
+  }
 
   const res = await createGroups(selected_stage.value, group_data);
 
@@ -178,20 +186,26 @@ const add_groups = async () => {
 
 const swiss_data = reactive({
   name: '',
-  min_score: 0,
+  min_score: 1 as number | null,
   use_seeding: false,
   bo_type: BestofType.BO1,
   auto_fill: false,
   team_count: 1,
+  play_all: false,
+  round_count: 1 as number | null,
 });
 const swiss_rules = computed(() => ({
   name: { required, maxLength: maxLength(40) },
-  min_score: { integer, required, minValue: minValue(1) },
+  min_score: { integer, minValue: minValue(1) },
   use_seeding: { required },
   bo_type: { required },
   auto_fill: { required },
   team_count: { required, between: between(1, validated_teams_count) },
+  play_all: { required },
+  round_count: { integer, minValue: minValue(1) },
 }));
+
+const use_round_count = ref(false);
 
 const v_swiss$ = useVuelidate(swiss_rules, swiss_data, { $scope: false });
 
@@ -199,6 +213,12 @@ const add_swiss = async () => {
   const is_valid = await v_swiss$.value.$validate();
 
   if (!is_valid) return;
+
+  if (use_round_count.value) {
+    swiss_data.min_score = null;
+  } else {
+    swiss_data.round_count = null;
+  }
 
   const res = await createSwiss(selected_stage.value, swiss_data);
 
@@ -227,6 +247,17 @@ const has_formats = computed(() => !(
   && tournament.swissRounds.length === 0
   && tournament.brackets.length === 0));
 const selected_format = ref('group');
+
+const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boolean }) => {
+  const value = Number((event.target as HTMLInputElement).value);
+  if (value > 0 && value % 2 === 0) {
+    data.bo_type = value + 1;
+    data.play_all = true;
+  } else {
+    data.bo_type = value;
+    data.play_all = false;
+  }
+};
 </script>
 
 <template>
@@ -500,7 +531,7 @@ const selected_format = ref('group');
             id="format_type"
             v-model="format_type"
             name="format_type"
-            class="bg-theme-bg"
+            class="ml-2 bg-theme-bg"
           >
             <option value="bracket">
               Arbre
@@ -585,11 +616,12 @@ const selected_format = ref('group');
             </label>
             <select
               id="bo_type"
-              v-model="bracket_data.bo_type"
               name="bo_type"
               class="ml-2 bg-theme-bg"
+              :value="bracket_data.bo_type"
               :class="{ error: context.invalid }"
               @blur="v_bracket$.bo_type.$touch"
+              @change="(e) => edit_bo_type(e, bracket_data)"
             >
               <option
                 v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"
@@ -597,6 +629,13 @@ const selected_format = ref('group');
                 :value="value"
               >
                 {{ value === '0' ? 'Classement' : `BO ${value}` }}
+              </option>
+              <option
+                v-for="value in Object.keys(BestofType).map(Number).filter((v) => Number.isInteger(v) && v > 1)"
+                :key="value - 1"
+                :value="value - 1"
+              >
+                {{ `PA ${value}` }}
               </option>
             </select>
           </FormField>
@@ -648,7 +687,7 @@ const selected_format = ref('group');
           <FormField
             v-slot="context"
             :validations="v_group$.names"
-            class="flex flex-col"
+            class="flex flex-col gap-2"
           >
             <label for="names">
               Noms des poules (Liste de noms séparées par des virgules)
@@ -705,6 +744,24 @@ const selected_format = ref('group');
               >
             </div>
           </FormField>
+          <FormField
+            v-slot="context"
+            :validations="v_group$.round_count"
+            class="flex gap-2"
+          >
+            <label for="group_round_count" class="max-w-80">
+              Nombre de tours (mettre un nombre négatif pour laisser le calcul automatique)
+            </label>
+            <input
+              id="group_round_count"
+              v-model="group_data.round_count"
+              type="number"
+              class="w-16 bg-inherit"
+              :class="{ error: context.invalid }"
+              aria-label="Number of rounds"
+              @blur="v_group$.round_count.$touch"
+            >
+          </FormField>
         </div>
         <div
           v-if="format_type === 'swiss'"
@@ -748,11 +805,44 @@ const selected_format = ref('group');
           <FormField
             v-slot="context"
             :validations="v_swiss$.min_score"
+            class="flex flex-col items-center gap-y-2"
           >
-            <label for="min_score">
-              Score de qualification
-            </label>
+            <div
+              class="flex items-center gap-x-3"
+            >
+              <label for="min_score" :class="{ 'opacity-50': use_round_count }">
+                Score de qualification
+              </label>
+              <button
+                type="button"
+                class="relative inline-block h-5 w-10 cursor-pointer overflow-hidden rounded-xl bg-blue-700"
+              >
+                <label for="use_round_count_checkbox" class="hidden"/>
+                <input
+                  id="use_round_count_checkbox"
+                  v-model="use_round_count"
+                  type="checkbox"
+                  class="input_use_round_count absolute inset-0 z-10 m-0 size-full opacity-0"
+                >
+                <div class="use_round_count_indicator absolute left-1 top-1 size-3 rounded-full bg-white transition-transform"/>
+              </button>
+              <label for="round_count" :class="{ 'opacity-60': !use_round_count }">
+                Nombre de tours
+              </label>
+            </div>
             <input
+              v-if="use_round_count"
+              id="round_count"
+              v-model="swiss_data.round_count"
+              type="number"
+              name="round_count"
+              aria-label="Number of rounds"
+              class="ml-2 bg-inherit"
+              :class="{ error: context.invalid }"
+              @blur="v_swiss$.round_count.$touch"
+            />
+            <input
+              v-else
               id="min_score"
               v-model="swiss_data.min_score"
               type="number"
@@ -807,11 +897,12 @@ const selected_format = ref('group');
             </label>
             <select
               id="bo_type"
-              v-model="swiss_data.bo_type"
               name="bo_type"
               class="ml-2 bg-theme-bg"
+              :value="swiss_data.bo_type"
               :class="{ error: context.invalid }"
               @blur="v_swiss$.bo_type.$touch"
+              @click="(e) => edit_bo_type(e, swiss_data)"
             >
               <option
                 v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"
@@ -819,6 +910,13 @@ const selected_format = ref('group');
                 :value="value"
               >
                 {{ value === '0' ? 'Classement' : `BO ${value}` }}
+              </option>
+              <option
+                v-for="value in Object.keys(BestofType).map(Number).filter((v) => Number.isInteger(v) && v > 1)"
+                :key="value - 1"
+                :value="value - 1"
+              >
+                {{ `PA ${value}` }}
               </option>
             </select>
           </FormField>
@@ -844,3 +942,9 @@ const selected_format = ref('group');
     </template>
   </Modal>
 </template>
+
+<style>
+  .input_use_round_count:checked ~ .use_round_count_indicator {
+    transform: translate(20px, 0);
+  }
+</style>

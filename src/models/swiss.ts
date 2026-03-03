@@ -5,10 +5,11 @@ export interface SwissRound {
   id: number;
   name: string;
   tournament: number;
-  min_score: number;
+  min_score: number | null;
   teams: Team[];
   matchs: SwissMatch[];
   stage?: number;
+  round_count: number | null;
 }
 
 export interface SwissSeeding {

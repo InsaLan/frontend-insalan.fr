@@ -71,6 +71,7 @@ const match_info = reactive({
     }
     return acc;
   }, { 0: 0 } as Record<number, number>),
+  play_all: match.play_all,
 });
 const match_info_rules = computed(() => ({
   bo_type: { required },
@@ -83,6 +84,7 @@ const match_info_rules = computed(() => ({
     };
     return res;
   }, {} as Record<number, { required: ValidationRule; between: ValidationRule }>),
+  play_all: { required },
 }));
 
 const reset = () => {
@@ -97,6 +99,18 @@ const reset = () => {
     }
     return acc;
   }, { 0: 0 } as Record<number, number>);
+  match_info.play_all = match.play_all;
+};
+
+const edit_bo_type = (event: Event) => {
+  const value = Number((event.target as HTMLInputElement).value);
+  if (value > 0 && value % 2 === 0) {
+    match_info.bo_type = value + 1;
+    match_info.play_all = true;
+  } else {
+    match_info.bo_type = value;
+    match_info.play_all = false;
+  }
 };
 
 const v$ = useVuelidate(match_info_rules, match_info);
@@ -170,17 +184,17 @@ const open_edition = () => {
       <span
         v-if="!edit_mode"
       >
-        {{ match.bo_type === BestofType.RANKING ? 'Cls' : `BO ${match.bo_type}` }}
+        {{ match.bo_type === BestofType.RANKING ? 'Cls' : (match.play_all ? `PA ${match.bo_type}` : `BO ${match.bo_type}`) }}
       </span>
       <span
         v-else
       >
         <select
           id="bo_type"
-          v-model="match_info.bo_type"
           name="bo_type"
           class="bg-cyan-900 py-1 pl-1"
-          @click.stop
+          :value="(match.bo_type as number) - (match.play_all ? 1 : 0)"
+          @change.stop="edit_bo_type"
         >
           <option
             v-for="value in Object.keys(BestofType).filter((v) => Number.isInteger(Number(v)))"
@@ -188,6 +202,13 @@ const open_edition = () => {
             :value="value"
           >
             {{ value === '0' ? 'Cls' : `BO ${value}` }}
+          </option>
+          <option
+            v-for="value in Object.keys(BestofType).map(Number).filter((v) => Number.isInteger(v) && v > 1)"
+            :key="value - 1"
+            :value="value - 1"
+          >
+            {{ `PA ${value}` }}
           </option>
         </select>
       </span>
