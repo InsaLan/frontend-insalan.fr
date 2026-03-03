@@ -53,12 +53,13 @@ export const useUserStore = defineStore('user', () => {
    * response(), function continue and MailVerified is set on true
    * If one (or both) values are incorrect, an error is returned and catch by the
    * classic error catcher, stopping the function : MailVerified stays on false */
-  async function verifMail(props: { idname: string; idtoken: string }) {
+  async function verifMail(props: { idname: string; idtoken: string }): Promise<{ username: string }> {
     // I set
     MailVerified.value = false;
-    await axios.get(`/user/confirm/${props.idname}/${props.idtoken}/`);
+    const response = await axios.get<{ username: string }>(`/user/confirm/${props.idname}/${props.idtoken}/`);
     // Active only if the API Call doesn't return an error
     MailVerified.value = true;
+    return response.data;
   }
 
   async function signin(
