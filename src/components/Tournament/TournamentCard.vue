@@ -10,7 +10,7 @@ const props = defineProps<{
   id: number;
 }>();
 
-const { getTournament, getTournamentTeams } = tournamentStore;
+const { getTournamentFull, getTournamentTeams } = tournamentStore;
 const { eventTournamentsList, eventsList, tourney_teams } = storeToRefs(tournamentStore);
 const tournament = computed<EventTournament | EventTournamentDeref | undefined>(
   () => eventTournamentsList.value[props.id],
@@ -53,7 +53,7 @@ const is_threshold_full = computed(
 );
 
 onMounted(async () => {
-  await getTournament(props.id);
+  await getTournamentFull(props.id);
   getTournamentTeams();
 });
 </script>
