@@ -200,7 +200,7 @@ const swiss_rules = computed(() => ({
   use_seeding: { required },
   bo_type: { required },
   auto_fill: { required },
-  team_count: { required, between: between(1, validated_teams_count) },
+  team_count: { required, minValue: minValue(1) },
   play_all: { required },
   round_count: { integer, minValue: minValue(1) },
 }));
