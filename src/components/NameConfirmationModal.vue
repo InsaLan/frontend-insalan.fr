@@ -61,7 +61,7 @@ const validateModal = async () => {
     <template #body>
       Nous avons besoin de votre nom pour vérifier votre identité à l'entrée
       <form>
-        <FormField :validations="v$.first_name" class="l-flex-column">
+        <FormField :validations="v$.first_name">
           <label for="first_name">
             Prénom
           </label>
@@ -73,7 +73,7 @@ const validateModal = async () => {
             @blur="v$.first_name.$touch"
           />
         </FormField>
-        <FormField :validations="v$.last_name" class="l-flex-column">
+        <FormField :validations="v$.last_name">
           <label for="last_name">
             Nom
           </label>

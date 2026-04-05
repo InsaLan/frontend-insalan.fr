@@ -125,7 +125,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
         v-for="timeslot in Object.values(timeslotList).filter((timeslot) => timeslots_id.includes(timeslot.id))"
         v-else
         :key="timeslot.id"
-        class="l-flex-column overflow-hidden rounded hover:cursor-pointer"
+        class="l-flex-column l-overflow-hidden rounded hover:cursor-pointer"
         :class="{
           'bg-cyan-900': timeslotExportList[timeslot.id].length > 0,
           'bg-gray-500': timeslotExportList[timeslot.id].length === 0,

@@ -8,17 +8,18 @@ defineProps<{
 </script>
 
 <template>
-  <img
+  <fa-awesome-icon
     v-if="player.payment_status === PaymentStatus.PAID"
-    src="/src/assets/images/check_with_bg.svg"
-    alt="Logo validé"
-    class="inline-block size-5"
+    alt="Icone correct"
+    icon="fa-solid fa-circle-check"
+    class="c-inline-icon u-color-correct-1"
     title="Ce·tte joueur·euse a payé"
   />
   <fa-awesome-icon
     v-if="player.payment_status === PaymentStatus.LATER"
-    class="clock-icon size-5 rounded-full bg-white text-yellow-400"
+    alt="Icone horloge"
     icon="fa-solid fa-clock"
-    title="Ce·tte joueur·euse payera sur place"
+    class="c-inline-icon u-color-warn-1"
+    title="Ce·tte joueur·euse paiera sur place"
   />
 </template>

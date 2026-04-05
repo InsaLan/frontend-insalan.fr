@@ -136,28 +136,40 @@ const editField = (field: string) => {
         Pseudo : <em>{{ user.username }}</em>
         <br>
         Prénom et Nom : <em>{{ user.first_name }} {{ user.last_name }}</em>
-        <fa-awesome-icon
+        <button
+          type="button"
+          title="Changer le prénom et nom"
           class="c-image-btn c-inline-icon"
-          icon="fa-solid fa-pencil"
           @click="editField('name')"
-          @keydown="editField('name')"
-        />
+        >
+          <fa-awesome-icon
+            icon="fa-solid fa-pencil"
+          />
+        </button>
         <br>
         Email : <em>{{ user.email }}</em>
-        <fa-awesome-icon
+        <button
+          type="button"
+          title="Changer l'email"
           class="c-image-btn c-inline-icon"
-          icon="fa-solid fa-pencil"
           @click="editField('email')"
-          @keydown="editField('email')"
-        />
+        >
+          <fa-awesome-icon
+            icon="fa-solid fa-pencil"
+          />
+        </button>
         <br>
         Mot de passe : <em class="u-color-text-2">**********</em>
-        <fa-awesome-icon
+        <button
+          type="button"
+          title="Changer le mot de passe"
           class="c-image-btn c-inline-icon"
-          icon="fa-solid fa-pencil"
           @click="editField('password')"
-          @keydown="editField('password')"
-        />
+        >
+          <fa-awesome-icon
+            icon="fa-solid fa-pencil"
+          />
+        </button>
         <br>
         Rôle : <em :class="{ ['u-color-secondary-1']: role === 'dev' }">{{ role === 'joueur' ? 'joueur·euse' : role }}</em>
       </div>
@@ -214,14 +226,14 @@ const editField = (field: string) => {
                 class="c-thumbnail"
               />
             </div>
-            <div
+            <button
               v-if="inscription[1].ticket"
+              type="button"
               class="c-text-btn-secondary u-m-0 u-mx-2 u-color-text-2"
               @click="inscription[1].ticket && get_ticket_pdf(inscription[1].ticket)"
-              @keydown="inscription[1].ticket && get_ticket_pdf(inscription[1].ticket)"
             >
               Télecharger son billet
-            </div>
+            </button>
             <router-link
               class="c-text-btn-secondary u-m-0 u-mx-2 u-color-text-2"
               :to="`/tournament/${inscription[1].team.tournament.id}/rules`"
@@ -238,8 +250,9 @@ const editField = (field: string) => {
               >
                 {{ (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
               </router-link>
-              <div
+              <button
                 v-if="(inscriptions.unpaid as Record<string, boolean>)[inscription[1].id]"
+                type="button"
                 class="c-btn-secondary"
                 @click.prevent="
                   (
@@ -248,16 +261,9 @@ const editField = (field: string) => {
                       inscription[1].team.tournament as unknown as EventTournament, inscription[0],
                     )
                   )"
-                @keydown.prevent="
-                  (
-                    modal_payment = true,
-                    addRegistrationToCart(
-                      inscription[1].team.tournament as unknown as EventTournament, inscription[0],
-                    )
-                  )"
               >
                 Terminer l'inscription
-              </div>
+              </button>
             </div>
           </div>
         </div>

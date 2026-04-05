@@ -19,7 +19,7 @@ const modal_cgv = ref(false);
 </script>
 
 <template>
-  <div class="l-flex-columns l-items-cross-center u-m-text">
+  <div class="l-flex-column l-items-cross-center u-m-text u-full-height l-items-main-center">
     <div class="c-card-bg-2 u-p-4 u-full-width">
       <h2 class="u-m-0 u-mb-2">
         Votre panier
@@ -57,14 +57,13 @@ const modal_cgv = ref(false);
         />
         <label for="terms">
           J'ai lu et j'accepte
+          <a
+            class="c-link"
+            href="#"
+            @click="modal_cgv = true"
+            @keydown.enter="modal_cgv = true"
+          >les conditions générales de vente</a>.
         </label>
-        <div
-          class="c-link"
-          @click="modal_cgv = true"
-          @keydown.enter="modal_cgv = true"
-        >
-          les conditions générales de vente.
-        </div>
       </div>
 
       <div class="l-flex-row l-items-main-end u-mt-4 l-gap-2">

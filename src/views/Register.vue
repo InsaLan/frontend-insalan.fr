@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
 import {
-  computed, reactive, ref,
+  computed, onMounted, reactive, ref,
 } from 'vue';
+import { useRouter } from 'vue-router';
 import Content from '@/components/Content.vue';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
@@ -24,7 +25,9 @@ const show_modal_cgu = (event: MouseEvent | KeyboardEvent) => {
   }
 };
 
-const { signin } = useUserStore();
+const router = useRouter();
+
+const { signin, isConnected } = useUserStore();
 // Register form validation
 const register_form = reactive({
   username: '',
@@ -64,10 +67,15 @@ const register_user = async () => {
   }
 };
 
+onMounted(async () => {
+  if (isConnected) {
+    await router.push('/me');
+  }
+});
 </script>
 
 <template>
-  <div class="l-flex-column l-items-cross-center u-m-text">
+  <div class="l-flex-column l-items-cross-center l-items-main-center u-full-height u-m-text">
     <div class="l-flex-column l-items-cross-center c-card-bg-2 u-p-4">
       <div class="l-flex-column l-items-cross-center u-mb-2">
         <h1 class="u-m-0">

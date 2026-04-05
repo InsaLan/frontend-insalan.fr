@@ -7,6 +7,7 @@ import {
 import { useRoute, useRouter } from 'vue-router';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
+import PasswordInput from '@/components/PasswordInput.vue';
 import TravelFormModal from '@/components/Tournament/TravelFormModal.vue';
 import type { Team } from '@/models/team';
 import type { EventTournament, EventTournamentDeref } from '@/models/tournament';
@@ -142,14 +143,6 @@ const payment = async () => {
   modal_payment.value = true;
 };
 
-const generate_password = () => {
-  const symboles = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const values = new Uint8Array(8);
-  crypto.getRandomValues(values);
-  register_form.password = '';
-  values.forEach((v) => { register_form.password += symboles[v % 62]; });
-};
-
 const create = ref(true);
 
 const router = useRouter();
@@ -181,8 +174,6 @@ if ('team' in query) {
 
 const host = import.meta.env.VITE_WEBSITE_HOST as string;
 
-const view_password = ref<boolean>(false);
-
 const handleCloseTravelFormModal = () => {
   openTravelFormModal.value = false;
   open_modal.value = true;
@@ -195,202 +186,176 @@ const handleCloseTravelFormModal = () => {
     alt=""
     class="c-background-image"
   >
-  <div
-    class="flex h-min l-items-cross-center l-items-main-center bg-cover bg-center py-10 2xl:min-h-[calc(100vh_-_6rem)] 2xl:py-4"
-  >
-    <!-- Design 3-->
-    <div class="w-11/12 md:w-9/12 2xl:w-1/2">
-      <div class="text-shadow bg-[#63d1ff] u-py-4 u-text-center text-6xl u-bold text-white">
+  <div class="l-flex-column l-items-cross-center l-items-main-center u-full-height">
+    <div
+      class="l-flex-column l-items-cross-center l-items-main-center c-card-bg-2 u-p-4 u-m-text"
+    >
+      <h1 class="u-m-0">
         Inscription {{ tournament?.name }}
-      </div>
-      <div class="flex hover:cursor-pointer">
+      </h1>
+      <div class="l-flex-row u-mb-1">
         <button
-          :class="{ 'bg-slate-500 shadow-inner': !create }"
-          class="u-full-width bg-[#2c292d] u-py-1 u-text-center text-2xl"
+          :class="{ active: create }"
+          class="switch-btn"
           type="button"
           @click="create = true"
         >
           Créer une équipe
         </button>
         <button
-          :class="{ 'bg-slate-500 shadow-inner': create }"
-          class="u-full-width bg-[#2c292d] u-py-1 u-text-center text-2xl"
+          :class="{ active: !create }"
+          class="switch-btn"
           type="button"
           @click="create = false"
         >
           Rejoindre une équipe
         </button>
       </div>
-      <div class="l-flex-column bg-[#2c292d] u-p-4">
-        <form
-          id="register_form"
-          class="grid gap-x-14 gap-y-2 sm:grid-cols-2"
-          @submit.prevent="create ? register_team() : register_player()"
+      <form
+        id="register_form"
+        class="u-full-width"
+        @submit.prevent="create ? register_team() : register_player()"
+      >
+        <div
+          :class="soloGame ? 'l-flex-column' : 'l-grid-2'"
+          class="l-horizontal-gap-4 l-vertical-gap-2"
         >
-          <FormField
-            v-if="create && !soloGame"
-            :validations="v$.team"
-            class="l-flex-column u-big-text"
-          >
-            <label for="team">
-              Nom de l'équipe
-            </label>
-            <input
-              id="team"
-              v-model="register_form.team"
-              placeholder="Équipe 1"
-              type="text"
-              required
-              @blur="v$.team.$touch"
-            />
-          </FormField>
-          <FormField
-            v-else-if="create && soloGame"
-            :validations="v$.name_in_game"
-            class="l-flex-column u-big-text"
-          >
-            <label for="name_in_game">
-              Pseudo en jeu
-            </label>
-            <input
-              id="name_in_game"
-              v-model="register_form.name_in_game"
-              class="text-black disabled:opacity-75"
-              :disabled="register_form.role === 'manager'"
-              placeholder="Pseudo"
-              type="text"
-              required
-              @blur="v$.name_in_game.$touch"
-            />
-          </FormField>
-          <FormField
-            v-else
-            :validations="v$.team"
-            class="l-flex-column u-big-text"
-          >
-            <label for="teams">
-              Équipe
-            </label>
-            <select
-              id="teams"
-              v-model="register_form.team"
-              required
+          <div class="l-flex-column l-gap-2">
+            <FormField
+              v-if="create && !soloGame"
+              :validations="v$.team"
+              class="l-flex-column"
             >
-              <option value="" selected>
-                Sélectionner une équipe
-              </option>
-              <option v-for="(team, idx) in (tournament?.teams as Team[])" :key="idx" :value="team.name" :idx="idx">
-                {{ team.name }}
-              </option>
-            </select>
-          </FormField>
-          <div v-if="create && soloGame"/> <!-- for padding -->
-          <FormField
-            v-else
-            :validations="v$.name_in_game"
-            class="l-flex-column u-big-text"
-          >
-            <label for="name_in_game">
-              Pseudo en jeu
-            </label>
-            <input
-              id="name_in_game"
-              v-model="register_form.name_in_game"
-              class="text-black disabled:opacity-75"
-              :disabled="register_form.role === 'manager'"
-              placeholder="Pseudo"
-              type="text"
-              required
-              @blur="v$.name_in_game.$touch"
-            />
-          </FormField>
-          <FormField
-            v-if="
-              isPrivate && privateTournamentsList[id].password
-                || !(isPrivate)
-            "
-            :validations="v$.password"
-            class="l-flex-column u-big-text"
-          >
-            <label for="pwd">
-              {{ isPrivate ? 'Mot de passe du tournoi' : 'Mot de passe de l\'équipe' }}
-            </label>
-            <div
-              class="l-relative-position flex size-full l-items-cross-center"
-            >
+              <label for="team">
+                Nom de l'équipe
+              </label>
               <input
+                id="team"
+                v-model="register_form.team"
+                placeholder="Équipe 1"
+                type="text"
+                required
+                @blur="v$.team.$touch"
+              />
+            </FormField>
+            <FormField
+              v-else-if="create && soloGame"
+              :validations="v$.name_in_game"
+              class="l-flex-column"
+            >
+              <label for="name_in_game">
+                Pseudo en jeu
+              </label>
+              <input
+                id="name_in_game"
+                v-model="register_form.name_in_game"
+                :disabled="register_form.role === 'manager'"
+                placeholder="Pseudo"
+                type="text"
+                required
+                @blur="v$.name_in_game.$touch"
+              />
+            </FormField>
+            <FormField
+              v-else
+              :validations="v$.team"
+              class="l-flex-column"
+            >
+              <label for="teams">
+                Équipe
+              </label>
+              <select
+                id="teams"
+                v-model="register_form.team"
+                required
+              >
+                <option value="" selected>
+                  Sélectionner une équipe
+                </option>
+                <option v-for="(team, idx) in (tournament?.teams as Team[])" :key="idx" :value="team.name" :idx="idx">
+                  {{ team.name }}
+                </option>
+              </select>
+            </FormField>
+            <FormField
+              v-if="!(create && soloGame)"
+              :validations="v$.name_in_game"
+              class="l-flex-column"
+            >
+              <label for="name_in_game">
+                Pseudo en jeu
+              </label>
+              <input
+                id="name_in_game"
+                v-model="register_form.name_in_game"
+                :disabled="register_form.role === 'manager'"
+                placeholder="Pseudo"
+                type="text"
+                required
+                @blur="v$.name_in_game.$touch"
+              />
+            </FormField>
+          </div>
+          <div class="l-flex-column l-gap-2">
+            <FormField
+              v-if="
+                isPrivate && privateTournamentsList[id].password
+                  || !(isPrivate)
+              "
+              :validations="v$.password"
+              class="l-flex-column"
+            >
+              <label for="pwd">
+                {{ isPrivate ? 'Mot de passe du tournoi' : 'Mot de passe de l\'équipe' }}
+              </label>
+              <PasswordInput
                 id="pwd"
                 v-model="register_form.password"
-                class="size-full"
-                :type="view_password ? 'text' : 'password'"
-                required
-                @blur="v$.password.$touch"
+                :on-blur="v$.password.$touch"
+                :generate-password="!isPrivate && create"
+                :required="true"
               />
-              <button
-                v-if="!(isPrivate)"
-                type="button"
-                class="l-absolute-position right-8 top-1 z-10 size-8"
-                @click="generate_password"
-              >
-                <fa-awesome-icon
-                  v-if="create"
-                  icon="fa-solid fa-arrows-rotate"
-                  title="Générer un mot de passe"
-                  style="color: black;"
-                />
-              </button>
-              <button
-                type="button"
-                class="l-absolute-position right-1 top-1 z-10 size-8"
-                @click="view_password = !view_password"
-              >
-                <fa-awesome-icon
-                  :icon="['fas', view_password ? 'eye-slash' : 'eye']"
-                  title="Voir le mot de passe"
-                  style="color: black;"
-                />
-              </button>
-            </div>
-          </FormField>
-          <FormField
-            v-if="
-              !isPrivate
-            "
-            :validations="v$.role"
-            class="l-flex-column u-big-text"
-          >
-            <label for="role">
-              Rôle dans l'équipe
-            </label>
-            <select
-              id="role"
-              v-model="register_form.role"
-              required
+            </FormField>
+            <FormField
+              v-if="
+                !isPrivate
+              "
+              :validations="v$.role"
+              class="l-flex-column"
             >
-              <option value="player">
-                Joueur·euse
-              </option>
-              <option v-if="enableManager" value="manager">
-                Manager
-              </option>
-              <option value="substitute">
-                Remplaçant·e
-              </option>
-            </select>
-          </FormField>
-        </form>
-
-        <span class="my-3 u-text-center text-4xl">Rappel du Règlement</span>
-        <ul class="my-5 list-inside list-disc text-2xl">
+              <label for="role">
+                Rôle dans l'équipe
+              </label>
+              <select
+                id="role"
+                v-model="register_form.role"
+                required
+              >
+                <option value="player">
+                  Joueur·euse
+                </option>
+                <option v-if="enableManager" value="manager">
+                  Manager
+                </option>
+                <option value="substitute">
+                  Remplaçant·e
+                </option>
+              </select>
+            </FormField>
+          </div>
+        </div>
+        <!-- <h2>Rappel du Règlement</h2>
+        <ul class="list-inside list-disc">
           <li>Pas d'insulte</li>
           <li>Apporter son propre matériel <b>filaire </b></li>
-        </ul>
+        </ul> -->
+
         <FormField
           :validations="v$.accept_rules"
-          class="l-flex-column self-center text-3xl"
+          class="l-flex-column"
         >
           <div
-            class="flex u-full-width l-items-cross-center l-items-main-center l-gap-1"
+            class="l-flex-row u-full-width l-items-cross-center l-items-main-center l-gap-1"
           >
             <input
               id="check"
@@ -398,43 +363,25 @@ const handleCloseTravelFormModal = () => {
               type="checkbox"
               required
             />
-            <label for="check"> J'accepte les <router-link :to="`/tournament/${isPrivate ? 'private/' : ''}${tournament?.id}/rules`" target="_blank" class="text-[#63d1ff]">règles du tournoi</router-link></label>
+            <label for="check"> J'accepte les <router-link :to="`/tournament/${isPrivate ? 'private/' : ''}${tournament?.id}/rules`" target="_blank" class="c-link">règles du tournoi <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/></router-link></label>
           </div>
         </FormField>
-      </div>
-      <div class="flex l-items-main-center bg-[#63d1ff] p-5">
+
         <button
-          v-if="create"
-          class="rounded border-solid bg-green-600 p-3 text-3xl md:w-5/12"
-          :class="{
-            'opacity-60': (tournament?.validated_teams ?? 0) >= (
-              tournament?.max_team_thresholds[
-                tournament?.max_team_thresholds.length - 1
-              ] ?? 0
-            ),
-          }"
-          type="button"
-          :disabled="(tournament?.validated_teams ?? 0)
+          class="c-btn-secondary"
+          type="submit"
+          :disabled="create && (tournament?.validated_teams ?? 0)
             >= (tournament?.max_team_thresholds[
               tournament?.max_team_thresholds.length - 1
             ] ?? 0)"
-          @click="register_team"
         >
           {{
-            (tournament?.validated_teams ?? 0) >= (tournament?.max_team_thresholds[
+            create ? ((tournament?.validated_teams ?? 0) >= (tournament?.max_team_thresholds[
               tournament?.max_team_thresholds.length - 1
-            ] ?? 0) ? 'Inscriptions complètes' : 'Créer l\'équipe'
+            ] ?? 0) ? 'Inscriptions complètes' : 'Créer l\'équipe') : 'Rejoindre l\'équipe'
           }}
         </button>
-        <button
-          v-else
-          class="rounded border-solid bg-green-600 p-3 text-3xl md:w-5/12"
-          type="button"
-          @click="register_player"
-        >
-          Rejoindre
-        </button>
-      </div>
+      </form>
     </div>
   </div>
 
@@ -520,3 +467,18 @@ const handleCloseTravelFormModal = () => {
     :close-modal="handleCloseTravelFormModal"
   />
 </template>
+
+<style scoped>
+.switch-btn {
+  color: var(--color-text-2);
+  cursor: pointer;
+  transition: color 0.2s;
+  font-size: clamp(1.2rem, 3.5vw, 1.6rem);
+  font-weight: bold;
+  margin: 1rem;
+}
+
+.switch-btn:hover, .switch-btn.active {
+  color: var(--color-text-1);
+}
+</style>

@@ -160,7 +160,7 @@ const closeModal = () => {
         >
           <div
             id="tooltip"
-            class="z-1 fixed hidden max-w-60 l-items-cross-center l-items-main-center overflow-hidden rounded-lg border border-black bg-gray-600 u-p-1 text-white"
+            class="z-1 fixed hidden max-w-60 l-items-cross-center l-items-main-center l-overflow-hidden rounded-lg border border-black bg-gray-600 u-p-1 text-white"
           >
             <div v-if="hoveredTeamSlotName" class="truncate">
               Équipe : <strong class="text-blue-500">
@@ -172,7 +172,7 @@ const closeModal = () => {
             </template>
           </div>
           <div
-            class="grid overflow-hidden"
+            class="grid l-overflow-hidden"
             TournamentDeref
             :style="{
               gridTemplateColumns: `repeat(${maxX + 1}, minmax(0, 1fr))`,

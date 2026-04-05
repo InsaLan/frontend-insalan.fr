@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
-import { computed, reactive, ref } from 'vue';
+import {
+  computed, onMounted, reactive, ref,
+} from 'vue';
+import { useRouter } from 'vue-router';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
 import { useUserStore } from '@/stores/user.store';
 import { email, required } from '@/support/locales/errors.fr';
 
-const { ask_reset_password, login } = useUserStore();
+const { ask_reset_password, login, isConnected } = useUserStore();
+
+const router = useRouter();
 
 // Register form validation
 const login_form = reactive({
@@ -53,10 +58,15 @@ const openModal = () => {
   modal_open.value = true;
 };
 
+onMounted(async () => {
+  if (isConnected) {
+    await router.push('/me');
+  }
+});
 </script>
 
 <template>
-  <div class="l-flex-column l-items-cross-center u-m-text">
+  <div class="l-flex-column l-items-cross-center l-items-main-center u-full-height u-m-text">
     <div class="l-flex-column l-items-cross-center c-card-bg-2 u-p-4">
       <div class="l-flex-column l-items-cross-center u-mb-2">
         <h1 class="u-m-0">
@@ -94,7 +104,7 @@ const openModal = () => {
           <input
             id="username"
             v-model="login_form.username"
-            placeholder="John doe"
+            placeholder="johndoe"
             type="text"
             @blur="v$.username.$touch"
           />

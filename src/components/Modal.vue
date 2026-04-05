@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getCurrentInstance } from 'vue';
+import { getCurrentInstance, onMounted, onUnmounted } from 'vue';
 
 const instance = getCurrentInstance();
 
@@ -12,8 +12,17 @@ const emit = defineEmits(['close']);
 const close = () => {
   if (closable) {
     emit('close');
+    document.body.style.overflow = '';
   }
 };
+
+onMounted(() => {
+  document.body.style.overflow = 'hidden';
+});
+
+onUnmounted(() => {
+  document.body.style.overflow = '';
+});
 </script>
 
 <template>

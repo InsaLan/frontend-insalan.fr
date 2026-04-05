@@ -5,7 +5,7 @@ const buildYear = BUILD_YEAR;
 </script>
 
 <template>
-  <div class="l-flex-row page-corners u-full-width">
+  <div class="l-flex-row page-corners u-full-width little-negative-top-margin">
     <svg
       viewBox="0 0 100 100"
       version="1.1"
@@ -143,5 +143,9 @@ const buildYear = BUILD_YEAR;
   height: auto;
   max-height: 4rem;
   max-width: 100%;
+}
+
+.little-negative-top-margin {
+  margin-top: calc(-1 * var(--base-margin));
 }
 </style>

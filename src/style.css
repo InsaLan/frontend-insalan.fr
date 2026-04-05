@@ -2,25 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 
+/*
   === Style du site InsaLan ===
-  
+
   Ce fichier définit les classes CSS globales utilisées dans tout le frontend.
-  
+
   Les fichiers individuels peuvent aussi définir des classes CSS spécifiques à
   leurs composants, dans la balise <style scoped>. Pas de style inline avec
-  style="..." directement dans le HTML (sauf éventuellement pour les fichiers SVG).
+  style="..." directement dans le HTML (sauf éventuellement pour les fichiers SVG
+  et le style généré dynamiquement par JS avec :style).
 
   *Toutes* les couleurs sont définies ici, en tant que variables CSS. Elles
   peuvent être utilisées dans les classes globales ou locales.
-  
+
   Les classes globales suivent une convention de nommage stricte :
    - `c-` : composants (boutons, cartes, etc.)
    - `l-` : layout (flexbox, grid, etc.)
    - `u-` : utilitaires (marges, paddings, etc.)
-  
+
   Il est possible de styler les éléments HTML directement (genre sans classe,
   avec `input {}`, `b {}`...) ce qui est plus propre quand c'est possible.
+
+  Il n'y a pas de contrainte sur l'ordre des classes dans les éléments, car ce
+  serait chiant.
 */
 
 :root {
@@ -418,9 +422,16 @@ img {
   display: inline-block;
   width: .9em;
   height: .9em;
-  margin-left: calc(var(--base-margin) * 0.5);
-  margin-right: calc(var(--base-margin) * 0.5);
+  margin-left: .35em;
+  margin-right: .35em;
   vertical-align: -0.05em;
+}
+
+/* Make FontAwesome icons scale properly inside .c-inline-icon components */
+.c-inline-icon > .svg-inline--fa {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .c-link {
@@ -449,6 +460,7 @@ h1 {
 h2 {
   font-size: clamp(1.4rem, 2vw, 1.7rem);
   font-family: Exo2-Bold, Exo2, Verdana, sans-serif;
+  text-align: left;
   margin-top: .5rem;
   margin-bottom: .5rem;
   line-height: 2rem;
@@ -478,7 +490,7 @@ b, strong, .u-bold {
   .u-underline {
     animation: fade-in .2s ease-out, draw-underline .2s ease-in-out;
   }
-  
+
   @keyframes draw-underline {
     0% {
       background-size: 0% 0.06em;
@@ -553,7 +565,7 @@ b, strong, .u-bold {
   height: 100%;
   opacity: 0.15;
   z-index: -1;
-  animation: fade-in-bg 0.2s ease-out;
+  animation: fade-in-bg 0.2s ease;
 }
 
 @keyframes fade-in-bg {
@@ -753,6 +765,10 @@ b, strong, .u-bold {
   position: absolute;
 }
 
+.l-gap-0 {
+  gap: 0;
+}
+
 .l-gap-1 {
   gap: var(--base-margin);
 }
@@ -793,6 +809,10 @@ b, strong, .u-bold {
   overflow: auto;
 }
 
+.l-overflow-hidden {
+  overflow: hidden;
+}
+
 .u-hidden {
   display: none;
 }
@@ -819,6 +839,10 @@ b, strong, .u-bold {
 
 .u-color-correct-1 {
   color: var(--color-correct-1);
+}
+
+.u-color-warn-1 {
+  color: var(--color-warn-1);
 }
 
 .u-color-error-1 {
@@ -863,6 +887,11 @@ b, strong, .u-bold {
 
 .u-text-right {
   text-align: right;
+}
+
+.u-small-text {
+  font-size: .75rem;
+  line-height: .8rem;
 }
 
 .u-big-text {
@@ -960,6 +989,32 @@ b, strong, .u-bold {
   margin: 0;
 }
 
+.u-mx-0 {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.u-my-0 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.u-mt-0 {
+  margin-top: 0;
+}
+
+.u-mb-0 {
+  margin-bottom: 0;
+}
+
+.u-ml-0 {
+  margin-left: 0;
+}
+
+.u-mr-0 {
+  margin-right: 0;
+}
+
 .u-m-1 {
   margin: var(--base-margin);
 }
@@ -1052,6 +1107,32 @@ b, strong, .u-bold {
 
 .u-p-0 {
   padding: 0;
+}
+
+.u-px-0 {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.u-py-0 {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.u-pt-0 {
+  padding-top: 0;
+}
+
+.u-pb-0 {
+  padding-bottom: 0;
+}
+
+.u-pl-0 {
+  padding-left: 0;
+}
+
+.u-pr-0 {
+  padding-right: 0;
 }
 
 .u-p-1 {

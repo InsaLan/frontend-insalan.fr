@@ -46,6 +46,14 @@ onMounted(() => {
     const marginBottom = parseFloat(style.marginBottom);
     topOffset.value = navContainer.offsetHeight + marginTop + marginBottom;
   }
+
+  const video = document.getElementById('hero');
+
+  window.addEventListener('scroll', () => {
+    if (video) {
+      video.style.setProperty('--scroll', `${Math.min(window.scrollY / (window.innerHeight * 0.4), 1)}`);
+    }
+  });
 });
 
 const scrollPastHero = () => {
@@ -58,7 +66,7 @@ const scrollPastHero = () => {
 
 <template>
   <div id="hero" class="l-relative-position l-flex-column l-items-cross-center l-items-main-center h-screen">
-    <div class="l-absolute-position l-flex-row u-full-width u-full-height l-items-cross-center l-items-main-center rounded-bottom">
+    <div id="video" class="l-absolute-position l-flex-row u-full-width u-full-height l-items-cross-center l-items-main-center rounded-bottom">
       <iframe
         :src="`https://www.youtube.com/embed/${n === 112 ? 'dQw4w9WgXcQ' : video_id}?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&rel=0&enablejsapi=1&playlist=${n === 112 ? 'dQw4w9WgXcQ' : video_id}${n !== 112 && `&end=${video_end}`}`"
         allowfullscreen
@@ -98,6 +106,7 @@ const scrollPastHero = () => {
 <style scoped layer="override">
 .h-screen {
   height: 100vh;
+  object-fit: cover;
 }
 
 .video {
@@ -109,8 +118,8 @@ const scrollPastHero = () => {
 }
 
 .rounded-bottom {
-  border-bottom-left-radius: var(--radius);
-  border-bottom-right-radius: var(--radius);
+  border-bottom-left-radius: calc(var(--scroll) * var(--radius));
+  border-bottom-right-radius: calc(var(--scroll) * var(--radius));
   overflow: hidden;
 }
 

@@ -17,7 +17,13 @@ defineProps<{
   <div v-if="typeof team !== 'number'" class="c-card-bg-2 u-full-width u-full-height">
     <div class="u-text-center u-big-text u-bold">
       {{ team.name }}
-      <img v-if="team.validated" src="/src/assets/images/check_with_bg.svg" alt="Logo validé" class="c-inline-icon"/>
+      <fa-awesome-icon
+        v-if="team.validated"
+        alt="Icone correct"
+        icon="fa-solid fa-check"
+        class="c-inline-icon u-color-correct-1"
+        title="Cette équipe a été validée"
+      />
     </div>
     <ul>
       <li v-for="player in team.players" :key="((player as PlayerRegistration).user)">
