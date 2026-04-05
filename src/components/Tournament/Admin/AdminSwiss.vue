@@ -166,14 +166,14 @@ const swiss_fill_round = async () => {
   >
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 c-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+      class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
       @click="open_fill_round_modal"
     >
       Générer un tour
     </button>
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 c-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out"
       :class="[has_matchs ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
       :disabled="!has_matchs"
       @click="open_launch_round_modal"
@@ -182,7 +182,7 @@ const swiss_fill_round = async () => {
     </button>
     <button
       type="button"
-      class="rounded bg-blue-800 p-2 c-bold transition duration-150 ease-in-out"
+      class="rounded bg-blue-800 p-2 u-bold transition duration-150 ease-in-out"
       :class="[has_matchs && selected_matchs.size > 0 ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
       :disabled="!has_matchs || selected_matchs.size === 0"
       @click="launch_selected_matchs"

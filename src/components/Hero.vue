@@ -52,13 +52,14 @@ const scrollPastHero = () => {
 
 <template>
   <div id="hero" class="relative flex items-center justify-center h-screen">
-    <div class="absolute -z-10 flex size-full items-center justify-center u-rounded-bottom">
+    <div class="absolute flex size-full items-center justify-center rounded-bottom">
       <iframe
         :src="trailer_embed"
         allowfullscreen
         class="aspect-video min-h-full grow object-cover blur-md"
         frameborder="0"
         title="Trailer InsaLan"
+        inert
       />
     </div>
     <div
@@ -66,10 +67,10 @@ const scrollPastHero = () => {
       :style="{ top: `${topOffset * 0.35}px` }"
     >
       <img alt="logo InsaLan" class="w-[32rem]" src="../assets/images/logo_wide.png">
-      <h1 class="text-shadow text-center text-6xl c-bold text-white">
+      <h1 class="text-shadow u-bold text-center text-6xl">
         {{ eventText }}
       </h1>
-      <div id="next" class="mt-2 hero-btn" @click="scrollPastHero()" @keydown="scrollPastHero()">
+      <div id="next" class="u-mt-2 hero-btn" @click="scrollPastHero()" @keydown="scrollPastHero()">
         <svg
           aria-hidden="true"
           fill="none"
@@ -90,7 +91,7 @@ const scrollPastHero = () => {
 </template>
 
 <style scoped layer="override">
-.u-rounded-bottom {
+.rounded-bottom {
   border-bottom-left-radius: var(--radius);
   border-bottom-right-radius: var(--radius);
   overflow: hidden;

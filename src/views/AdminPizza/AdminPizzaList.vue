@@ -157,7 +157,7 @@ await fetchAllPizzas();
     </template>
     <template #body>
       <p class="mt-2 max-w-sm">
-        Voulez-vous supprimer la pizza <span class="c-underline">{{ pizzaToDelete.name }}</span> ?
+        Voulez-vous supprimer la pizza <span class="u-underline">{{ pizzaToDelete.name }}</span> ?
         <br/>
         <br/>
         Ne supprimez pas une pizza qui pourrait être commandée dans un créneau en cours.

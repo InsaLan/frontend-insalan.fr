@@ -145,7 +145,7 @@ const register_user = async () => {
             type="checkbox"
           >
           <label class="text-white" for="accept">J'accepte les <a
-            class="text-gray-400 c-underline decoration-dashed"
+            class="text-gray-400 u-underline decoration-dashed"
             href="#"
             @click="show_modal_cgu"
             @keydown.enter="show_modal_cgu"
