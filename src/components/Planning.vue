@@ -23,7 +23,7 @@ const props = defineProps<{
 
 const events = ref<Event[]>([]);
 const currentDate = ref(new Date());
-const focusedEvent = ref<string | null>(null);
+const columnGroups = ref<Event[][][]>([]);
 
 const getTotalInterval = computed(() => {
   if (events.value.length === 0) {
@@ -40,16 +40,18 @@ const nbDays = computed(() => {
 });
 
 const colors = [
-  'bg-blue-700',
-  'bg-green-700',
-  'bg-red-700',
-  'bg-purple-700',
-  'bg-pink-700',
-  'bg-indigo-700',
-  'bg-gray-700',
-  'bg-emerald-700',
-  'bg-fuchsia-700',
+  'oklch(0.8 0.1 0)',
+  'oklch(0.8 0.1 45)',
+  'oklch(0.8 0.1 90)',
+  'oklch(0.8 0.1 135)',
+  'oklch(0.8 0.1 180)',
+  'oklch(0.8 0.1 225)',
+  'oklch(0.8 0.1 270)',
+  'oklch(0.8 0.1 315)',
 ];
+
+const eventsOverlap = (e: Event, f: Event) => (e.start <= f.start && e.end > f.start)
+  || (e.start >= f.start && e.start < f.end);
 
 const fetchEvents = async () => {
   if (!props.link) {
@@ -82,6 +84,36 @@ const fetchEvents = async () => {
   } else {
     currentDate.value = events.value[0].start;
   }
+
+  // Find all groups of overlapping events
+  const eventGroups: Event[][] = [];
+  events.value.forEach((event) => {
+    const overlappingGroup = eventGroups.find((group) => group.some(
+      (e) => eventsOverlap(event, e),
+    ));
+
+    if (overlappingGroup) {
+      overlappingGroup.push(event);
+    } else {
+      eventGroups.push([event]);
+    }
+  });
+
+  // Place events into columns
+  eventGroups.forEach((group) => {
+    const columns: Event[][] = [];
+    group.forEach((event) => {
+      const column = columns.find((col) => !col.some(
+        (e) => eventsOverlap(event, e),
+      ));
+      if (column) {
+        column.push(event);
+      } else {
+        columns.push([event]);
+      }
+    });
+    columnGroups.value.push(columns);
+  });
 };
 
 const visibleDays = computed<Date[]>(() => {
@@ -132,19 +164,26 @@ const getEventStyle = (event: Event, day: Date) => {
   // if there are multiple events at the same time, we need to adjust the width
   let width = 100;
   let left = 0;
-  if (focusedEvent.value !== event.id) {
-    const sameStartEvents = getEventsForDay(day).filter(
-      (e) => e.start.getTime() === event.start.getTime(),
-    );
-    width = 100 / sameStartEvents.length;
-    left = sameStartEvents.indexOf(event) * width;
-  }
+  // const sameStartEvents = getEventsForDay(day).filter(
+  //   (e) => eventsOverlap(event, e),
+  // );
+  // width = 100 / sameStartEvents.length;
+  // left = sameStartEvents.indexOf(event) * width;
+  columnGroups.value.forEach((columns) => {
+    columns.forEach((column, columnIndex) => {
+      if (column.includes(event)) {
+        width = 100 / columns.length;
+        left = columnIndex * width;
+      }
+    });
+  });
 
   return {
-    top: `${(startMinutes / totalMinutes) * 100 + offset}%`,
-    height: `${(durationMinutes / totalMinutes) * 100 - 2 * offset}%`,
+    top: `${(startMinutes / totalMinutes) * 100 + offset * 0.75}%`,
+    height: `${(durationMinutes / totalMinutes) * 100}%`,
     left: `${left}%`,
     width: `${width}%`,
+    'background-color': colors[event.id.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0) % colors.length],
   };
 };
 
@@ -155,81 +194,97 @@ watch(() => props.link, fetchEvents);
 </script>
 
 <template>
-  <div class="event-schedule font-sans">
-    <div v-if="events.length === 0" class="p-5 text-center">
-      Le planning n'est pas encore disponible, revenez plus tard !
-    </div>
-    <div v-else class="calendar">
-      <div
-        v-if="canGoBack || canGoForward"
-        class="mb-5 flex justify-between"
+  <div v-if="events.length === 0" class="l-flex-column u-full-height u-text-center u-big-text">
+    <p>⌛ Le planning n'est pas encore disponible, revenez plus tard !</p>
+  </div>
+  <div v-else>
+    <div
+      v-if="canGoBack || canGoForward"
+      class="l-flex-row u-full-width u-mb-2 l-items-main-center u-gap-4"
+    >
+      <button
+        :disabled="!canGoBack"
+        class="c-text-btn"
+        type="button"
+        @click="goBack"
       >
-        <button
-          :disabled="!canGoBack"
-          class="rounded bg-blue-500 px-4 py-2 text-black disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
-          type="button"
-          @click="goBack"
-        >
-          &lt; Jours précédents
-        </button>
-        <button
-          :disabled="!canGoForward"
-          class="rounded bg-blue-500 px-4 py-2 text-black disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
-          type="button"
-          @click="goForward"
-        >
-          Jours suivants &gt;
-        </button>
-      </div>
-      <div>
-        <div
-          :class="`grid gap-4 grid-cols-${nbDays * 2 + 2}`"
-        >
-          <div class="flex w-full flex-col-reverse py-2">
-            <div v-for="hour in timeSlots.slice().reverse()" :key="hour" class="flex h-[60px] items-start justify-end text-xs text-gray-500">
-              <span class="mr-2">{{ hour.toString().padStart(2, '0') }}:00</span>
-            </div>
+        &lt; Jours précédents
+      </button>
+      <button
+        :disabled="!canGoForward"
+        class="c-text-btn"
+        type="button"
+        @click="goForward"
+      >
+        Jours suivants &gt;
+      </button>
+    </div>
+    <div>
+      <div
+        class="l-gap-2"
+        :style="{ display: 'grid', 'grid-template-columns': `repeat(${nbDays * 2 + 2}, minmax(0,1fr))` }"
+      >
+        <div class="u-full-width u-py-1 times-container u-mr-1">
+          <div v-for="hour in timeSlots.slice().reverse()" :key="hour" class="times u-small-text u-color-text-2">
+            {{ hour.toString().padStart(2, '0') }}:00
           </div>
-          <div v-for="day in visibleDays" :key="day.toISOString()" class="col-span-2 overflow-hidden rounded border border-gray-200">
-            <h2 class="bg-gray-100 p-3 text-center text-sm font-bold text-black">
-              {{ frenchDayFormatFromDate(day) }}
-            </h2>
-            <div class="relative border-t border-gray-200" :style="{ height: `${60 * (24 - START_HOURE)}px` }">
-              <div
-                v-for="hour in timeSlots"
-                :key="hour"
-                class="absolute inset-x-0 border-t border-gray-500"
-                :style="{ top: `${((hour - START_HOURE) / (24 - START_HOURE)) * 100 - 0.04}%` }"
-              />
-              <button
-                v-for="event in getEventsForDay(day)"
-                :key="event.start.toISOString()"
-                :class="[
-                  'absolute flex cursor-pointer flex-col overflow-hidden rounded border border-black p-1 text-center text-xs text-white shadow-lg transition-transform duration-200 hover:z-10 hover:shadow-xl hover:ring hover:ring-blue-500 focus:z-10 focus:ring focus:ring-blue-500',
-                  colors[
-                    event.id.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0)
-                    % colors.length
-                  ],
-                ]"
-                :style="getEventStyle(event, day)"
-                type="button"
-                @focus="focusedEvent = event.id"
-                @blur="focusedEvent = null"
-                @mouseenter="focusedEvent = event.id"
-                @mouseleave="focusedEvent = null"
-              >
-                <div class="font-bold">
+        </div>
+        <div v-for="day in visibleDays" :key="day.toISOString()" class="u-rounded day u-bg-bg-2 l-overflow-hidden">
+          <div class="u-bg-bg-3 u-p-2 u-text-center u-bold">
+            {{ frenchDayFormatFromDate(day) }}
+          </div>
+          <div class="l-relative-position" :style="{ height: `${60 * (24 - START_HOURE)}px` }">
+            <div
+              v-for="hour in timeSlots"
+              :key="hour"
+              class="l-absolute-position u-full-width top-border"
+              :style="{ top: `${((hour - START_HOURE) / (24 - START_HOURE)) * 100 - 0.04}%` }"
+            />
+            <div
+              v-for="event in getEventsForDay(day)"
+              :key="event.start.toISOString()"
+              class="l-flex-column u-rounded u-text-center u-p-1 u-color-always-dark l-absolute-position u-small-text l-overflow-hidden"
+              :style="getEventStyle(event, day)"
+            >
+              <div class="l-flex-column l-items-main-center event-text u-full-height">
+                <div>
                   {{ format(event.start, 'HH:mm') }} - {{ format(event.end, 'HH:mm') }}
                 </div>
-                <div class="mt-1">
+                <div class="u-bold">
                   {{ event.summary }}
                 </div>
-              </button>
+              </div>
             </div>
           </div>
-          <div/>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.top-border {
+  border-top-width: 2px;
+  border-color: var(--color-bg-1);
+}
+
+.day {
+  grid-column: span 2 / span 2;
+}
+
+.event-text {
+  max-height: 44px;
+}
+
+.times-container {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.times {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  height: 60px;
+}
+</style>

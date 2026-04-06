@@ -17,36 +17,43 @@ await getOngoingEvents();
 </script>
 
 <template>
-  <div>
-    <section class="h-min">
-      <Hero :event="event"/>
-    </section>
-    <Content id="main_page" name="main_page"/>
-    <section>
-      <div class="title my-2 text-white">
-        Tournois
-      </div>
-      <div v-if="!tournaments_id" class="flex justify-center">
-        Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !
-      </div>
-      <div class="mb-4 grid w-full gap-4 px-4 md:grid-cols-2 xl:grid-cols-4">
-        <TournamentCard
-          v-for="tournament in tournaments_id"
-          :id="tournament"
-          :key="tournament"
-        />
-      </div>
-      <div class="mb-4 flex justify-center">
-        <router-link
-          to="/archives"
-          class="rounded bg-blue-800 p-2 text-[clamp(0.9rem,2vw,1.25rem)] font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-        >
-          Voir les anciennes éditions
-        </router-link>
-      </div>
+  <section class="h-min">
+    <Hero :event="event"/>
+  </section>
+  <Content id="main_page" name="main_page" class="u-m-text"/>
+  <section>
+    <h1 class="u-my-1">
+      Tournois
+    </h1>
+    <div v-if="!tournaments_id" class="l-flex-column l-items-cross-center u-m-text">
+      Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !
+    </div>
+    <div class="u-m-main l-grid-4 l-gap-2 u-mb-2">
+      <TournamentCard
+        v-for="tournament in tournaments_id"
+        :id="tournament"
+        :key="tournament"
+        :is-private="false"
+      />
+    </div>
+    <div class="u-mb-4 l-flex-column l-items-cross-center">
+      <router-link
+        to="/tournament"
+        class="c-btn-primary"
+      >
+        Voir tous les tournois
+      </router-link>
+    </div>
+    <div class="l-grid-2 u-m-double-text l-horizontal-gap-4">
       <Content name="Horaire"/>
-      <Content name="parti_public"/>
-    </section>
-    <Partners/>
-  </div>
+      <Content name="partie_public"/>
+    </div>
+  </section>
+  <Partners/>
 </template>
+
+<style scoped layer="override">
+.h-min {
+  height: min-content;
+}
+</style>

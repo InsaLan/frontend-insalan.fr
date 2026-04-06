@@ -36,17 +36,17 @@ const qualifying_round_idx = computed(() => {
 
   <div class="mx-4 flex flex-col gap-8 overflow-auto py-4">
     <div class="grid size-full gap-x-10 gap-y-5" :style="{ 'grid-template-columns': `repeat(${roundCount}, minmax(18rem, 1fr))` }">
-      <h1
+      <div
         v-for="round_idx in roundCount"
         :key="round_idx"
-        class="text-center text-3xl"
+        class="u-text-center text-3xl"
       >
         Tour {{ round_idx }}
-      </h1>
+      </div>
       <div
         v-for="(round_matchs, round_idx) in groupBy(swiss.matchs, 'round_number')"
         :key="round_idx"
-        class="flex flex-col gap-6"
+        class="l-flex-column gap-6"
       >
         <div
           v-for="(matchs, score_group) in groupBy(round_matchs, 'score_group')"
@@ -54,7 +54,7 @@ const qualifying_round_idx = computed(() => {
           class="border-2 border-gray-500"
         >
           <div
-            class="bg-gray-500 text-center"
+            class="bg-gray-500 u-text-center"
           >
             <div
               v-if="Number(round_idx) <= qualifying_round_idx"
@@ -68,12 +68,12 @@ const qualifying_round_idx = computed(() => {
           </div>
 
           <div
-            class="flex flex-col items-center"
+            class="l-flex-column l-items-cross-center"
           >
             <div
               v-for="match in matchs"
               :key="match.id"
-              class="w-full"
+              class="u-full-width"
             >
               <MatchCard
                 :match="match"

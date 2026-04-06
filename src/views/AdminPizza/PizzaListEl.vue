@@ -11,36 +11,36 @@ defineProps<{
 <template>
   <div
     :key="pizza.id"
-    class="grid-layout grid gap-2 rounded bg-cyan-900 p-2 hover:bg-cyan-800"
+    class="c-card-bg-2 grid-layout l-gap-1 grid rounded u-full-width"
   >
     <img
       v-if="pizza.image"
       :src="pizza.image"
       :alt="`${pizza.name} image`"
-      class="aspect-video w-20 border-r border-white object-cover pr-2"
+      class="pizza-thumb u-rounded"
     >
     <div
       v-if="!pizza.image"
-      class="flex aspect-video w-20 items-center justify-center border-r border-white pr-2"
+      class="flex aspect-video w-20 l-items-cross-center l-items-main-center border-r border-white u-pr-1"
     >
       <fa-awesome-icon icon="fa-pizza-slice" class="size-8"/>
     </div>
-    <div class="flex items-center overflow-x-hidden border-r border-white pr-2">
+    <div class="flex l-items-cross-center overflow-x-hidden border-r border-white u-pr-1">
       <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
         {{ pizza.name }}
       </p>
     </div>
-    <div class="hidden items-center overflow-x-hidden border-r border-white pr-2 sm:flex">
+    <div class="hidden l-items-cross-center overflow-x-hidden border-r border-white u-pr-1 sm:flex">
       <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
         {{ pizza.ingredients.join(', ') }}
       </p>
     </div>
-    <div class="hidden items-center overflow-x-hidden border-r border-white pr-2 lg:flex">
+    <div class="hidden l-items-cross-center overflow-x-hidden border-r border-white u-pr-1 lg:flex">
       <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
         {{ pizza.allergens.join(', ') }}
       </p>
     </div>
-    <div class="flex items-center gap-2">
+    <div class="flex l-items-cross-center l-gap-1">
       <button
         type="button"
         class="size-8 rounded bg-green-600 hover:bg-green-500"
@@ -60,3 +60,11 @@ defineProps<{
     </div>
   </div>
 </template>
+
+<style scoped>
+.pizza-thumb {
+  width: 5rem;
+  height: 3rem;
+  object-fit: cover;
+}
+</style>

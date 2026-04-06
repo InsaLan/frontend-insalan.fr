@@ -85,7 +85,7 @@ export const useUserStore = defineStore('user', () => {
       withCredentials: true,
     });
 
-    addNotification(`Un email de confirmation vous a été envoyé a ${email} pour confirmer votre compte`, 'info');
+    addNotification(`Un email a été envoyé à ${email} pour confirmer votre compte`, 'info');
   }
 
   async function fetchUser() {
@@ -113,7 +113,7 @@ export const useUserStore = defineStore('user', () => {
 
       await fetchUser();
       isConnected.value = true;
-      addNotification(`Bienvenue ${username}`, 'info');
+      addNotification(`Bienvenue, ${username}`, 'info');
       connectionTimestamp.value = Date.now();
       await router.push('/me');
     } catch (err) {
@@ -130,7 +130,7 @@ export const useUserStore = defineStore('user', () => {
       },
       withCredentials: true,
     });
-    addNotification(`Un email de confirmation vous a été envoyé a ${email} pour réinitialiser votre compte`, 'info');
+    addNotification(`Un email a été envoyé à ${email} pour réinitialiser votre compte`, 'info');
   }
 
   async function reset_password(username: string, token: string, password: string, password_confirm: string) {
@@ -276,7 +276,7 @@ export const useUserStore = defineStore('user', () => {
       > import.meta.env.VITE_SESSION_COOKIE_AGE * 1000
     ) {
       await logout();
-      await router.push('/register');
+      await router.push('/login');
       addNotification('Votre session a expiré, veuillez vous reconnecter', 'error');
     }
   }

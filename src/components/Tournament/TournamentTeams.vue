@@ -17,23 +17,23 @@ const { tourney_teams, soloGame } = storeToRefs(tournamentStore);
 </script>
 
 <template>
-  <section id="teams">
-    <h1 v-if="props.tournament?.teams.length === 0" class="mt-6 text-center text-4xl">
-      Aucune équipe inscrite
-    </h1>
-    <div v-if="tourney_teams?.validated_teams.length > 0">
-      <h1 class="title">
+  <section id="teams" class="u-mx-2">
+    <div v-if="props.tournament?.teams.length === 0" class="u-my-4 u-text-center u-big-text">
+      Aucune équipe inscrite.
+    </div>
+    <div v-if="tourney_teams?.validated_teams.length > 0" class="l-flex-column">
+      <h1 class="u-m-0 u-mt-2">
         Équipes validées (
         {{ tourney_teams.validated_teams.length }}/{{ props.tournament.max_team_thresholds[
           props.tournament.current_threshold_index
         ] }}
         )
       </h1>
-      <span class="mb-4 block text-center text-sm text-gray-600 dark:text-gray-400">
+      <span class="u-text-center u-color-text-2 u-mb-2">
         Les équipes validées ont rempli toutes les conditions pour participer au tournoi.
         Si votre équipe apparaît ici, félicitations !
       </span>
-      <div class="grid gap-4 p-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div class="l-grid-4 l-gap-2">
         <TeamCard
           v-for="team in tourney_teams.validated_teams"
           :key="team.id"
@@ -47,7 +47,7 @@ const { tourney_teams, soloGame } = storeToRefs(tournamentStore);
           props.tournament.current_threshold_index + 1
             < props.tournament.max_team_thresholds.length
         "
-        class="mt-4 text-center"
+        class="u-mt-2 u-text-center"
       >
         <p>
           Prochain palier :
@@ -61,7 +61,7 @@ const { tourney_teams, soloGame } = storeToRefs(tournamentStore);
           équipes validées
         </p>
         <label
-          class="sr-only mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+          class="sr-only u-mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
           for="team-progress"
         >
           Progression vers le prochain palier :
@@ -92,15 +92,15 @@ const { tourney_teams, soloGame } = storeToRefs(tournamentStore);
         </div>
       </div>
     </div>
-    <div v-if="tourney_teams?.waiting_validation_teams.length > 0">
-      <h1 class="title">
+    <div v-if="tourney_teams?.waiting_validation_teams.length > 0" class="l-flex-column">
+      <h1 class="u-m-0 u-mt-2">
         Équipes en attente du palier ({{ tourney_teams.waiting_validation_teams.length }})
       </h1>
-      <span class="mb-4 block text-center text-sm text-gray-600 dark:text-gray-400">
+      <span class="u-mb-2 u-text-center u-color-text-2">
         Les équipes en attente du palier ont rempli les conditions minimales mais
         doivent attendre que le prochain palier d'équipe soit atteint pour être validées.
       </span>
-      <div class="grid gap-4 p-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div class="l-grid-4 l-gap-2">
         <TeamCard
           v-for="team in tourney_teams.waiting_validation_teams"
           :key="team.id"
@@ -108,18 +108,18 @@ const { tourney_teams, soloGame } = storeToRefs(tournamentStore);
         />
       </div>
     </div>
-    <div v-if="tourney_teams?.non_validated_teams.length > 0">
-      <h1 class="title">
+    <div v-if="tourney_teams?.non_validated_teams.length > 0" class="l-flex-column">
+      <h1 class="u-m-0 u-mt-2">
         Équipes en cours de validation ({{ tourney_teams.non_validated_teams.length }})
       </h1>
-      <span class="mb-4 block text-center text-sm text-gray-600 dark:text-gray-400">
+      <span class="u-mb-2 u-text-center u-color-text-2">
         Les équipes en cours de validation n'ont pas encore rempli les conditions nécessaires
         pour participer au tournoi.
         <br/>
         Pour être validées, il faut que la moitié des membres
         de l'équipe aient payé leur inscription.
       </span>
-      <div class="grid gap-4 p-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div class="l-grid-4 l-gap-2">
         <TeamCard
           v-for="team in tourney_teams.non_validated_teams"
           :key="team.id"

@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia';
 import {
   computed, reactive, ref,
 } from 'vue';
-import placeholder from '@/assets/images/logo_home.png';
+import placeholder from '@/assets/images/empty_pp.webp';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
@@ -122,299 +122,217 @@ const editField = (field: string) => {
 </script>
 
 <template>
-  <div class="ml-1 flex flex-col md:flex-row">
-    <div id="profile" class="mb-3 items-center md:w-2/6">
-      <h1 class="m-3 text-center text-4xl font-bold">
+  <div class="u-m-main me-grid l-gap-2">
+    <div id="profile" class="l-flex-column l-items-cross-center c-card-bg-2 u-full-width">
+      <h2 class="u-text-center">
         Mon compte
-      </h1>
-      <div class="myr-2 place-center flex flex-col justify-between md:place-items-center md:justify-items-center">
-        <div class="my-2 flex flex-col place-items-center justify-items-center md:flex-row">
-          <div class="m-2 flex place-items-center justify-items-center">
-            <a>
-              <img
-                :src="user.image ? user.image : placeholder"
-                alt="image de profile"
-                class="m-2 max-h-full w-16 max-w-full rounded-full hover:blur-sm"
-              />
-            </a>
-          </div>
-          <div>
-            <p class="text-xl">
-              Pseudo : <em>{{ user.username }}</em>
-            </p>
-            <p class="text-xl">
-              Prénom et Nom : <em>{{ user.first_name }} {{ user.last_name }}</em>
-              <fa-awesome-icon
-                class="ml-2 hover:cursor-pointer hover:text-blue-600"
-                icon="fa-solid fa-pencil"
-                size="2xs"
-                @click="editField('name')"
-                @keydown="editField('name')"
-              />
-            </p>
-            <p class="text-xl">
-              Email : <em>{{ user.email }}</em>
-              <fa-awesome-icon
-                class="ml-2 hover:cursor-pointer hover:text-blue-600"
-                icon="fa-solid fa-pencil"
-                size="2xs"
-                @click="editField('email')"
-                @keydown="editField('email')"
-              />
-            </p>
-            <p class="text-xl">
-              Mot de passe : <em>**********</em>
-              <fa-awesome-icon
-                class="ml-2 hover:cursor-pointer hover:text-blue-600"
-                icon="fa-solid fa-pencil"
-                size="2xs"
-                @click="editField('password')"
-                @keydown="editField('password')"
-              />
-            </p>
-            <div class="flex place-items-center justify-items-center">
-              <p class="text-xl">
-                Rôle :
-              </p>
-              <div class="text-md m-1 flex w-16 justify-around rounded bg-blue-700 p-1">
-                <svg
-                  v-if="role === 'dev'"
-                  class="size-6"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                {{ role === 'joueur' ? 'joueur·euse' : role }}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          v-if="cart.length > 0"
-          class="m-2 flex items-center justify-between gap-4 rounded-lg bg-cyan-900 p-4"
+      </h2>
+      <img
+        :src="user.image ? user.image : placeholder"
+        alt="Image de profil"
+        class="profile"
+      />
+      <div class="u-text-left u-big-text">
+        Pseudo : <em>{{ user.username }}</em>
+        <br>
+        Prénom et Nom : <em>{{ user.first_name }} {{ user.last_name }}</em>
+        <button
+          type="button"
+          title="Changer le prénom et nom"
+          class="c-image-btn c-inline-icon"
+          @click="editField('name')"
         >
-          <div>
-            <h2 class="text-xl">
-              Vous avez <span class="text-2xl font-bold text-green-600">{{ cart.length }}</span> article{{ cart.length !== 1 ? 's' : '' }} dans votre panier
-            </h2>
-          </div>
-          <router-link
-            class="rounded bg-green-600 px-4 py-2 font-bold text-white transition-colors duration-200 hover:bg-green-700"
-            to="/cart"
-          >
-            Voir le panier
-          </router-link>
-        </div>
-        <!--div class="myr-2 ml-1">
-          <button
-          @click="delete_account()" class="center rounded transition duration-150 ease-in-out p-2 font-bold
-           text-white bg-red-600 hover:ring hover:ring-pink-500" style="display: flex; align-items: center;">
-           Supprimer son compte</button>
-        </div-->
+          <fa-awesome-icon
+            icon="fa-solid fa-pencil"
+          />
+        </button>
+        <br>
+        Email : <em>{{ user.email }}</em>
+        <button
+          type="button"
+          title="Changer l'email"
+          class="c-image-btn c-inline-icon"
+          @click="editField('email')"
+        >
+          <fa-awesome-icon
+            icon="fa-solid fa-pencil"
+          />
+        </button>
+        <br>
+        Mot de passe : <em class="u-color-text-2">**********</em>
+        <button
+          type="button"
+          title="Changer le mot de passe"
+          class="c-image-btn c-inline-icon"
+          @click="editField('password')"
+        >
+          <fa-awesome-icon
+            icon="fa-solid fa-pencil"
+          />
+        </button>
+        <br>
+        Rôle : <em :class="{ ['u-color-secondary-1']: role === 'dev' }">{{ role === 'joueur' ? 'joueur·euse' : role }}</em>
       </div>
+      <div
+        v-if="cart.length > 0"
+        class="l-flex-row l-items-cross-center c-card-bg-3"
+      >
+        <div class="u-big-text u-text-left">
+          Vous avez <b>{{ cart.length }}</b> article{{ cart.length !== 1 ? 's' : '' }} dans votre panier.
+        </div>
+        <router-link
+          class="c-btn-secondary"
+          to="/cart"
+        >
+          Voir le panier
+        </router-link>
+      </div>
+      <!-- <button
+        @click="delete_account()" class="c-btn-error"
+      >
+        Supprimer son compte
+      </button> -->
       <TournamentMeCard v-if="ongoing_match !== null" :ongoing-match="ongoing_match"/>
     </div>
-    <div class="hidden h-auto w-[2px] bg-white sm:block"/>
-    <div id="team" class="md:w-4/6">
-      <h1 class="m-3 text-center text-4xl font-bold">
+    <div id="team">
+      <h1 class="u-m-1 u-text-center">
         Mes Équipes
       </h1>
-      <!--div>
-        <div class="bg-red-900 rounded-xl text-center m-2 text-xl" v-if="Object.keys(inscriptions.unpaid).length">
-          <h2 class="mx-5 text-xl" v-if="Object.keys(inscriptions.unpaid).length === 1">
-            <fa-awesome-icon size="xs" icon="fa-solid fa-warning" />  Vous avez une inscription non payée
-            <fa-awesome-icon size="xs" icon="fa-solid fa-warning" /> </h2>
-          <h2 class="mx-5 text-xl" v-else>
-            <fa-awesome-icon size="xs" icon="fa-solid fa-warning" />  Vous avez des inscriptions non payées
-            <fa-awesome-icon size="xs" icon="fa-solid fa-warning" /> </h2>
+      <div class="l-flex-column l-items-cross-center">
+        <div v-if="Object.keys(inscriptions.unpaid).length" class="c-card-error l-flex-row l-items-cross-center l-items-main-center u-py-1 u-m-1 u-big-text">
+          <fa-awesome-icon icon="fa-solid fa-warning"/>
+          <div v-if="Object.keys(inscriptions.unpaid).length === 1">
+            Vous avez une inscription non payée
+          </div>
+          <div v-else>
+            Vous avez des inscriptions non payées
+          </div>
         </div>
-      </div-->
-      <div v-if="(inscriptions.ongoing as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="m-4">
-        <h1 class="text-xl">
-          Edition Actuelle
-        </h1>
-        <div class="m-1 grid gap-3 md:grid-cols-3">
+      </div>
+      <div v-if="(inscriptions.ongoing as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="u-mt-2">
+        <h2 class="u-m-2">
+          Édition Actuelle
+        </h2>
+        <div class="l-grid-2 l-gap-2">
           <div
             v-for="inscription in (inscriptions.ongoing as [string, PlayerRegistrationDeref | RegistrationDeref][])"
             :key="inscription[1].id"
-            :class="{ /*[`bg-red-900`]: inscriptions.unpaid[inscription.team.id]*/ }"
-            class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
+            class="c-card-bg-2 u-p-0 u-pb-2 l-flex-column l-items-main-center u-full-width u-full-height"
           >
-            <div class="block">
-              <div class="flex flex-1 flex-col justify-center">
-                <div class="m-2 flex flex-row items-stretch justify-center gap-2">
-                  <router-link
-                    class="center flex flex-1 items-center justify-center rounded bg-green-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
-                    :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
-                  >
-                    <div>
-                      {{ (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
-                    </div>
-                  </router-link>
-                  <div
-                    v-if="(inscriptions.unpaid as Record<string, boolean>)[inscription[1].id]"
-                    class="center flex flex-1 items-center justify-center rounded bg-red-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
-                    @click.prevent="
-                      (
-                        modal_payment = true,
-                        addRegistrationToCart(
-                          inscription[1].team.tournament as unknown as EventTournament, inscription[0],
-                        )
-                      )"
-                    @keydown.prevent="
-                      (
-                        modal_payment = true,
-                        addRegistrationToCart(
-                          inscription[1].team.tournament as unknown as EventTournament, inscription[0],
-                        )
-                      )"
-                  >
-                    <div>
-                      Terminer l'inscription
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="hidden flex-col md:block">
-              <router-link
-                class="mt-auto text-zinc-400"
-                :to="`/tournament/${inscription[1].team.tournament.id}/rules`"
-              >
-                Règlement du tournoi
-              </router-link>
-            </div>
-            <div
-              :class="{ ['hover:cursor-pointer']: inscription[1].ticket }"
-              @click="inscription[1].ticket && get_ticket_pdf(inscription[1].ticket)"
-              @keydown="inscription[1].ticket && get_ticket_pdf(inscription[1].ticket)"
-            >
+            <div class="l-grow">
               <img
                 :src="inscription[1].team.tournament.logo"
                 alt="image du tournoi"
-                class="size-32 max-w-full overflow-hidden"
-                style="width: 100%; object-fit: cover;"
+                class="c-thumbnail"
               />
-              <div
-                v-if="inscription[1].ticket"
-                class="m-1 flex flex-1 flex-col justify-center"
-              >
-                <p class="text-xs">
-                  Télecharger son billet
-                </p>
-              </div>
             </div>
-            <div
-              class="m-1 flex flex-1 flex-col justify-center"
+            <button
+              v-if="inscription[1].ticket"
+              type="button"
+              class="c-text-btn-secondary u-m-0 u-mx-2 u-color-text-2"
+              @click="inscription[1].ticket && get_ticket_pdf(inscription[1].ticket)"
             >
-              <p class="text-xl">
-                {{ inscription[1].team.name }}
-              </p>
+              Télecharger son billet
+            </button>
+            <router-link
+              class="c-text-btn-secondary u-m-0 u-mx-2 u-color-text-2"
+              :to="`/tournament/${inscription[1].team.tournament.id}/rules`"
+            >
+              Règlement du tournoi
+            </router-link>
+            <b class="u-big-text u-mx-2">
+              {{ inscription[1].team.name }}
+            </b>
+            <div class="l-flex-row l-grow l-items-main-center l-items-cross-center l-gap-2 u-mx-2">
+              <router-link
+                class="c-btn-primary"
+                :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
+              >
+                {{ (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
+              </router-link>
+              <button
+                v-if="(inscriptions.unpaid as Record<string, boolean>)[inscription[1].id]"
+                type="button"
+                class="c-btn-secondary"
+                @click.prevent="
+                  (
+                    modal_payment = true,
+                    addRegistrationToCart(
+                      inscription[1].team.tournament as unknown as EventTournament, inscription[0],
+                    )
+                  )"
+              >
+                Terminer l'inscription
+              </button>
             </div>
           </div>
         </div>
       </div>
-      <div v-if="(inscriptions.past as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="m-4">
-        <h1 class="text-xl">
-          Autres Editions
-        </h1>
-        <div class="m-1 grid gap-3 md:grid-cols-3">
-          <router-link
+      <div v-if="(inscriptions.past as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="u-mt-2">
+        <h2 class="u-m-2">
+          Autres Éditions
+        </h2>
+        <div class="l-grid-2 l-gap-2">
+          <div
             v-for="inscription in (inscriptions.past as [string, PlayerRegistrationDeref | RegistrationDeref][])"
             :key="inscription[1].id"
-            :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
-            class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
+            class="c-card-bg-2 u-p-0 u-pb-2 l-flex-column l-grow l-items-main-center u-full-width"
           >
-            <div class="my-1 hidden md:block">
-              <div class="m-1 flex h-8 flex-1 flex-col justify-center">
-                <div>
-                  <router-link
-                    class="center rounded bg-green-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-                    :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
-                  >
-                    {{ (inscription[1].team.players[0] === user.id || inscription[0] === 'manager') ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
-                  </router-link>
-                </div>
-              </div>
-            </div>
-            <div class="hidden flex-col md:block">
-              <router-link
-                class="mt-auto text-zinc-400"
-                :to="`/tournament/${inscription[1].team.tournament.id}/rules`"
-              >
-                Règlement du tournoi
-              </router-link>
-            </div>
             <img
               :src="inscription[1].team.tournament.logo"
               alt="image du tournoi"
-              class="size-32 max-w-full overflow-hidden"
-              style="width: 100%; object-fit: cover;"
+              class="c-thumbnail"
             />
-            <div class="m-1 flex flex-1 flex-col justify-center">
-              <p class="text-xl">
-                {{ inscription[1].team.name }}
-              </p>
+            <router-link
+              class="c-text-btn-secondary u-m-0 u-mx-2 u-color-text-2"
+              :to="`/tournament/${inscription[1].team.tournament.id}/rules`"
+            >
+              Règlement du tournoi
+            </router-link>
+            <div class="u-big-text u-mx-2">
+              {{ inscription[1].team.tournament.event.name }} - <b>{{ inscription[1].team.name }}</b>
             </div>
-          </router-link>
+            <router-link
+              class="c-btn-primary"
+              :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
+            >
+              {{ (inscription[1].team.players[0] === user.id || inscription[0] === 'manager') ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
+            </router-link>
+          </div>
         </div>
       </div>
-      <div v-if="(inscriptions.private_regs as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="m-4">
-        <h1 class="text-xl">
+      <div v-if="(inscriptions.private_regs as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="u-mt-2">
+        <h2 class="u-m-2">
           Tournois secondaires
-        </h1>
-        <div class="m-1 grid gap-3 md:grid-cols-3">
+        </h2>
+        <div class="l-grid-2 l-gap-2">
           <div
             v-for="inscription in (
               inscriptions.private_regs as [string, PlayerRegistrationDeref | RegistrationDeref][]
             )"
             :key="inscription[1].id"
-            :class="{ /*[`bg-red-900`]: inscriptions.unpaid[inscription.team.id]*/ }"
-            class="container flex max-w-xs flex-col-reverse break-words bg-cyan-900 text-center"
+            class="c-card-bg-2 u-p-0 u-pb-2 l-flex-column l-grow l-items-main-center u-full-width"
           >
-            <div class="block">
-              <div class="flex flex-1 flex-col justify-center">
-                <div class="m-2 flex flex-row items-stretch justify-center gap-2">
-                  <router-link
-                    class="center flex flex-1 items-center justify-center rounded bg-green-600 p-2 font-bold text-white transition duration-150 ease-in-out hover:cursor-pointer hover:ring hover:ring-pink-500"
-                    :to="`/tournament/private/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
-                  >
-                    <div>
-                      {{ (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
-                    </div>
-                  </router-link>
-                </div>
-              </div>
-            </div>
-            <div class="hidden flex-col md:block">
-              <router-link
-                class="mt-auto text-zinc-400"
-                :to="`/tournament/${inscription[1].team.tournament.id}/rules`"
-              >
-                Règlement du tournoi
-              </router-link>
-            </div>
             <img
               :src="inscription[1].team.tournament.logo"
               alt="image du tournoi"
-              class="size-32 max-w-full overflow-hidden"
-              style="width: 100%; object-fit: cover;"
+              class="c-thumbnail"
             />
-            <div
-              class="m-1 flex flex-1 flex-col justify-center"
+            <router-link
+              class="c-text-btn-secondary u-m-0 u-mx-2 u-color-text-2"
+              :to="`/tournament/private/${inscription[1].team.tournament.id}/rules`"
             >
-              <p class="text-xl">
-                {{ inscription[1].team.tournament.name }}
-              </p>
-            </div>
+              Règlement du tournoi
+            </router-link>
+            <b class="u-big-text u-mx-2">
+              {{ inscription[1].team.tournament.name }}
+            </b>
+            <router-link
+              class="c-btn-primary"
+              :to="`/tournament/private/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
+            >
+              {{ (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
+            </router-link>
           </div>
         </div>
       </div>
@@ -422,163 +340,181 @@ const editField = (field: string) => {
   </div>
 
   <Modal v-if="showModal" @close="closeModal">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        {{ title }}
-      </h3>
+      {{ title }}
     </template>
     <template #body>
-      <form id="patch-user" class="mt-2" @submit.prevent="validateModal">
-        <div v-if="focus === 'name'" id="name">
-          <FormField
-            v-slot="context"
-            :validations="v$_name.first_name"
-            class="m-2 flex flex-col"
-            label="Nouveau Prénom"
-          >
-            <input
-              v-model="data_name.first_name"
-              :class="{ error: context.invalid }"
-              aria-label="Nouveau Prénom"
-              class="border-2 bg-theme-bg"
-              placeholder="John"
-              required
-              type="text"
-              @blur="v$_name.first_name.$touch"
-            />
-          </FormField>
-          <FormField v-slot="context" :validations="v$_name.last_name" class="m-2 flex flex-col" label="Nouveau Nom">
-            <input
-              v-model="data_name.last_name"
-              :class="{ error: context.invalid }"
-              aria-label="Nouveau Nom"
-              class="border-2 bg-theme-bg"
-              placeholder="Doe"
-              required
-              type="text"
-              @blur="v$_name.last_name.$touch"
-            />
-          </FormField>
-        </div>
+      <form id="patch-user" @submit.prevent="validateModal">
+        <FormField
+          v-if="focus === 'name'"
+          :validations="v$_name.first_name"
+        >
+          <label for="prenom">
+            Nouveau Prénom
+          </label>
+          <input
+            id="prenom"
+            v-model="data_name.first_name"
+            aria-label="Nouveau Prénom"
+            placeholder="John"
+            required
+            type="text"
+            @blur="v$_name.first_name.$touch"
+          />
+        </FormField>
+        <FormField
+          v-if="focus === 'name'"
+          :validations="v$_name.last_name"
+        >
+          <label for="nom">
+            Nouveau Nom
+          </label>
+          <input
+            id="nom"
+            v-model="data_name.last_name"
+            aria-label="Nouveau Nom"
+            placeholder="Doe"
+            required
+            type="text"
+            @blur="v$_name.last_name.$touch"
+          />
+        </FormField>
 
-        <div v-if="focus === 'email'" id="email">
-          <FormField v-slot="context" :validations="v$_email.email" class="m-2 flex flex-col" label="Email">
-            <input
-              v-model="data_email.email"
-              :class="{ error: context.invalid }"
-              aria-label="Email"
-              class="border-2 bg-theme-bg"
-              placeholder="john-doe@gmail.com"
-              required
-              type="text"
-              @blur="v$_email.email.$touch"
-            />
-          </FormField>
-        </div>
+        <FormField
+          v-if="focus === 'email'"
+          :validations="v$_email.email"
+        >
+          <label for="email">
+            Nouvel email
+          </label>
+          <input
+            id="email"
+            v-model="data_email.email"
+            aria-label="Email"
+            placeholder="john-doe@gmail.com"
+            required
+            type="text"
+            @blur="v$_email.email.$touch"
+          />
+        </FormField>
 
-        <div v-if="focus === 'password'" id="password">
-          <FormField
-            v-slot="context"
-            :validations="v$_password.new_password"
-            class="m-2 flex flex-col"
-            label="Nouveau mot de passe"
-          >
-            <PasswordInput
-              v-model="data_password.new_password"
-              :error="context.invalid"
-              aria-label="Nouveau mot de passe"
-              placeholder="Nouveau mot de passe"
-              required
-              :on-blur="v$_password.new_password.$touch"
-            />
-          </FormField>
-          <FormField
-            v-slot="context"
-            :validations="v$_password.password_validation"
-            class="m-2 flex flex-col"
-            label="Confirmer le mot de passe"
-          >
-            <PasswordInput
-              v-model="data_password.password_validation"
-              :error="context.invalid"
-              aria-label="Confirmer le mot de passe"
-              placeholder="Confirmer le mot de passe"
-              required
-              :on-blur="v$_password.password_validation.$touch"
-            />
-          </FormField>
-          <FormField
-            v-slot="context"
-            :validations="v$_password.current_password"
-            class="m-2 flex flex-col"
-            label="Mot de passe actuel"
-          >
-            <PasswordInput
-              v-model="data_password.current_password"
-              :error="context.invalid"
-              aria-label="mot de passe actuel"
-              placeholder="Mot de passe actuel"
-              required
-              :on-blur="v$_password.current_password.$touch"
-            />
-          </FormField>
-        </div>
+        <FormField
+          v-if="focus === 'password'"
+          :validations="v$_password.current_password"
+        >
+          <label for="current_password">
+            Mot de passe actuel
+          </label>
+          <PasswordInput
+            id="current_password"
+            v-model="data_password.current_password"
+            aria-label="mot de passe actuel"
+            placeholder="Mot de passe actuel"
+            required
+            :on-blur="v$_password.current_password.$touch"
+          />
+        </FormField>
+        <FormField
+          v-if="focus === 'password'"
+          :validations="v$_password.new_password"
+        >
+          <label for="new_password">
+            Nouveau mot de passe
+          </label>
+          <PasswordInput
+            id="new_password"
+            v-model="data_password.new_password"
+            aria-label="Nouveau mot de passe"
+            placeholder="Nouveau mot de passe"
+            required
+            :on-blur="v$_password.new_password.$touch"
+          />
+        </FormField>
+        <FormField
+          v-if="focus === 'password'"
+          :validations="v$_password.password_validation"
+        >
+          <label for="repeat_password">
+            Confirmer le nouveau mot de passe
+          </label>
+          <PasswordInput
+            id="repeat_password"
+            v-model="data_password.password_validation"
+            aria-label="Confirmer le nouveau mot de passe"
+            placeholder="Confirmer le nouveau mot de passe"
+            required
+            :on-blur="v$_password.password_validation.$touch"
+          />
+        </FormField>
         <!-- hidden submit button with tailwind-->
-        <button class="hidden" type="submit"/>
+        <button class="u-hidden" type="submit"/>
       </form>
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="validateModal"
-      >
-        Valider
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="closeModal"
       >
         Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="validateModal"
+      >
+        Valider
       </button>
     </template>
   </Modal>
 
   <!-- Simple modal with a loading text for the payment -->
   <Modal v-if="modal_payment">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="open_modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Paiement
-      </h3>
+      Paiement
     </template>
     <template #body>
-      <div class="p-4 text-justify">
-        Votre inscription a été ajoutée au panier
-        <br>
-        Vous pouvez retrouver votre panier depuis votre compte
-      </div>
+      Votre inscription a été ajoutée au panier.
+      <br><br>
+      Vous pouvez retrouver votre panier depuis votre compte.
     </template>
     <template #buttons>
-      <router-link
-        class="my-1 inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mx-4 sm:mt-0 sm:w-auto"
-        :to="`/cart`"
-      >
-        Aller au panier
-      </router-link>
       <button
-        class="my-1 inline-flex w-full justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mx-4 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="modal_payment = false"
       >
         Rester sur cette page
       </button>
+      <router-link
+        class="c-btn-secondary"
+        :to="`/cart`"
+      >
+        Aller au panier
+      </router-link>
     </template>
   </Modal>
 </template>
+
+<style scoped>
+@media (max-width: 70rem) {
+  .me-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 70rem) {
+  .me-grid {
+    display: grid;
+    grid-template-columns: 25rem 1fr;
+  }
+}
+
+.profile {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 9999px;
+  background-color: var(--color-bg-3);
+}
+</style>

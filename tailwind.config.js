@@ -9,12 +9,5 @@ export default {
       pattern: /grid-cols-\d+/,
     },
   ],
-  theme: {
-    extend: {
-      colors: {
-        'theme-bg': '#2C292D',
-      },
-    },
-  },
   plugins: [require('@tailwindcss/forms')],
 };

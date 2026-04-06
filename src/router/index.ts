@@ -53,6 +53,10 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/Register.vue'),
   },
   {
+    path: '/login',
+    component: () => import('@/views/Login.vue'),
+  },
+  {
     path: '/tournament/:private(private)?/:id(\\d+)',
     component: () => import('@/views/Tournament/TournamentDetail.vue'),
     props: (route) => ({ id: Number(route.params.id), isPrivate: route.params.private === 'private' }),
@@ -173,7 +177,7 @@ const routes: RouteRecordRaw[] = [
         !isConnected
         || (!user.is_superuser && !user.is_staff)
         // Restrict route from loading on desktop
-        || window.innerWidth > 768
+        // || window.innerWidth > 768
       ) ? { path: '/' } : true;
     },
   },

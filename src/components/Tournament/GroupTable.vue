@@ -160,7 +160,7 @@ watchEffect(() => {
     style="text-shadow: black 0 0 2px;"
   >
     <div
-      class="grid grid-cols-[1fr,3fr,1fr] items-center rounded-t bg-cyan-500 py-2 text-center text-3xl"
+      class="grid grid-cols-[1fr,3fr,1fr] l-items-cross-center rounded-t bg-cyan-500 u-py-1 u-text-center text-3xl"
     >
       <div/>
       <template v-if="!edit_mode">
@@ -176,7 +176,7 @@ watchEffect(() => {
             @click="open_edit"
           />
           <fa-awesome-icon
-            class="ml-2 text-red-500 hover:cursor-pointer hover:text-red-700"
+            class="u-ml-1 text-red-500 hover:cursor-pointer hover:text-red-700"
             icon="fa-solid fa-trash-can"
             size="2xs"
             title="Supprimer la poule"
@@ -188,7 +188,7 @@ watchEffect(() => {
         <input
           id="group_name"
           v-model="group_data.name"
-          class="bg-inherit p-0 text-center text-3xl"
+          class="bg-inherit p-0 u-text-center text-3xl"
           style="text-shadow: black 0 0 2px;"
           type="text"
           name="group_name"
@@ -196,7 +196,7 @@ watchEffect(() => {
         >
         <div>
           <fa-awesome-icon
-            class="px-2 text-green-700 hover:cursor-pointer hover:text-green-900"
+            class="u-px-1 text-green-700 hover:cursor-pointer hover:text-green-900"
             icon="fa-solid fa-save"
             size="sm"
             title="Sauvegarder la poule"
@@ -215,28 +215,28 @@ watchEffect(() => {
 
     <div
       v-if="v$.$invalid"
-      class="bg-red-500 text-center"
+      class="bg-red-500 u-text-center"
     >
       {{ v$.$errors.at(0)?.$message }}
     </div>
 
     <div
-      class="grid items-center justify-center gap-y-2 p-2 text-center text-xl"
+      class="grid l-items-cross-center l-items-main-center gap-y-2 u-p-1 u-text-center u-big-text"
       :class="[editable && isAdmin ? 'grid-cols-[1fr,3fr,1fr]' : 'grid-cols-[4fr,1fr]']"
     >
       <div
         v-if="editable && isAdmin"
-        class="flex h-full items-center justify-center border-b-2 text-2xl"
+        class="flex u-full-height l-items-cross-center l-items-main-center border-b-2 text-2xl"
       >
         Seed
       </div>
       <div
-        class="flex h-full items-center justify-center border-b-2 text-2xl"
+        class="flex u-full-height l-items-cross-center l-items-main-center border-b-2 text-2xl"
       >
         Équipes
       </div>
       <div
-        class="border-b-2 py-2 text-2xl"
+        class="border-b-2 u-py-1 text-2xl"
       >
         Score
         <p
@@ -259,7 +259,7 @@ watchEffect(() => {
             {{ group.seeding ? group.seeding[team_id] : 0 }}
           </div>
           <div
-            class="truncate px-2"
+            class="truncate u-px-1"
           >
             {{
               get_validated_team_by_id(team_id)?.name
@@ -286,7 +286,7 @@ watchEffect(() => {
               v-model.number="group_data.seeding[group_data.teams[idx - 1]]"
               type="number"
               name="seed"
-              class="w-10 bg-inherit p-1 text-center"
+              class="w-10 bg-inherit p-1 u-text-center"
               :class="{ error: v$.seeding[group_data.teams[idx - 1]].$error }"
               style="appearance: textfield;"
               @blur="v$.seeding[group_data.teams[idx - 1]].$touch"
@@ -299,7 +299,7 @@ watchEffect(() => {
               id="select_team"
               v-model="group_data.teams[idx - 1]"
               name="select_team"
-              class="w-full truncate bg-cyan-900 py-1 pl-1"
+              class="u-full-width truncate bg-cyan-900 py-1 pl-1"
               @blur="v$.teams.$touch"
             >
               <option :value="0">
@@ -323,7 +323,7 @@ watchEffect(() => {
               v-model.number="group_data.tiebreak_scores[group_data.teams[idx - 1]]"
               type="number"
               name="seed"
-              class="w-10 bg-inherit p-1 text-center"
+              class="w-10 bg-inherit p-1 u-text-center"
               :class="{ error: v$.tiebreak_scores[group_data.teams[idx - 1]].$error }"
               style="appearance: textfield;"
               @blur="v$.tiebreak_scores[group_data.teams[idx - 1]].$touch"
@@ -336,27 +336,25 @@ watchEffect(() => {
 
   <Modal v-if="modal_open">
     <template #title>
-      <h3>
-        Suppression de la {{ group.name }}
-      </h3>
+      Suppression de la {{ group.name }}
     </template>
     <template #body>
       La {{ group.name }} va être supprimée ainsi que tous les matchs qui lui sont liés.
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-        type="button"
-        @click="delete_group(true)"
-      >
-        Valider
-      </button>
-      <button
-        class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="modal_open = false;"
       >
         Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="button"
+        @click="delete_group(true)"
+      >
+        Valider
       </button>
     </template>
   </Modal>
