@@ -869,6 +869,14 @@ b, strong, .u-bold {
   background-color: var(--color-bg-3);
 }
 
+.u-bg-primary-1 {
+  background-color: var(--color-primary-1);
+}
+
+.u-bg-secondary-1 {
+  background-color: var(--color-secondary-1);
+}
+
 .u-rounded {
   border-radius: var(--radius);
 }

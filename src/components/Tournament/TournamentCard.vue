@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed, onMounted } from 'vue';
+import type { Team } from '@/models/team';
 import type { EventTournament, EventTournamentDeref, PrivateTournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
@@ -11,8 +12,10 @@ const props = defineProps<{
   isPrivate: boolean;
 }>();
 
-const { getTournament, getPrivateTournament } = tournamentStore;
-const { eventTournamentsList, privateTournamentsList, eventsList } = storeToRefs(tournamentStore);
+const { getTournamentFull, getPrivateTournament } = tournamentStore;
+const {
+  eventTournamentsList, privateTournamentsList, eventsList,
+} = storeToRefs(tournamentStore);
 const tournament = computed<EventTournament | EventTournamentDeref | PrivateTournament | undefined>(
   () => {
     if (props.isPrivate) {
@@ -42,31 +45,45 @@ const event_ongoing = computed(() => {
   return event === undefined ? false : event.ongoing;
 });
 
-// const thresholds = computed(() => tournament.value?.max_team_thresholds ?? [0]);
-// const current_threshold_index = computed(() => tournament.value?.current_threshold_index ?? 0);
+const thresholds = computed(() => tournament.value?.max_team_thresholds ?? [0]);
+const current_threshold_index = computed(() => tournament.value?.current_threshold_index ?? 0);
+const validated_teams = computed(() => tournament.value?.validated_teams ?? 0);
 
-// const available_thresholds = computed(() => current_threshold_index.value < thresholds.value.length - 1);
+const available_thresholds = computed(() => current_threshold_index.value < thresholds.value.length - 1);
 
-// const max_teams = computed(() => {
-//   if (tournament.value === undefined) { return 1; }
+const max_teams = computed(() => {
+  if (tournament.value === undefined) { return 1; }
 
-//   if (available_thresholds.value) {
-//     return thresholds.value[current_threshold_index.value + 1];
-//   }
-//   return thresholds.value[current_threshold_index.value];
-// });
-// const max_validated_teams = computed(() => thresholds.value
-//   .at(current_threshold_index.value) ?? 0);
-// const validated_teams_proportion = computed(() => (max_validated_teams.value / max_teams.value) * 100);
-// const is_threshold_full = computed(
-//   () => tournament.value?.validated_teams === thresholds.value.at(current_threshold_index.value),
-// );
+  if (available_thresholds.value) {
+    return thresholds.value[current_threshold_index.value + 1];
+  }
+  return thresholds.value[current_threshold_index.value];
+});
+const max_validated_teams = computed(() => thresholds.value
+  .at(current_threshold_index.value) ?? 0);
+const validated_teams_proportion = computed(() => (max_validated_teams.value / max_teams.value) * 100);
+const is_threshold_full = computed(
+  () => tournament.value?.validated_teams === thresholds.value.at(current_threshold_index.value),
+);
+const waiting_validation_teams_count = computed(() => {
+  const teams = tournament.value?.teams;
+  if (!Array.isArray(teams) || teams.length === 0 || typeof teams[0] === 'number') {
+    return 0;
+  }
+
+  return (teams as Team[]).reduce((count, team) => {
+    if (!team.validated && team.is_waiting_for_threshold) {
+      return count + 1;
+    }
+    return count;
+  }, 0);
+});
 
 onMounted(async () => {
   if (props.isPrivate) {
     await getPrivateTournament(props.id);
   } else {
-    await getTournament(props.id);
+    await getTournamentFull(props.id);
   }
 });
 </script>
@@ -77,10 +94,74 @@ onMounted(async () => {
       :src="tournament?.logo"
       class="c-thumbnail"
     />
-    <p class="u-big-text u-px-2 u-text-center">
-      {{ tournament?.validated_teams }}/{{ tournament?.max_team_thresholds[tournament?.current_threshold_index] }}
-      Équipes
-      {{ !isPrivate ? tournament && 'cashprizes' in tournament && ` | Cashprize: ${tournament?.cashprizes?.length !== 0 ? `${tournament?.cashprizes?.reduce((acc, val) => acc += Number(val), 0)} €` : "À venir"}` : '' }}
+    <!-- <p class="u-big-text">
+      Équipes :
+    </p> -->
+    <div class="u-full-width u-px-4">
+      <div class="l-relative-position l-flex-row u-full-width l-items-main-center l-itmes-cross-center u-rounded u-bg-bg-1 u-big-text">
+        <template
+          v-if="is_threshold_full && available_thresholds"
+        >
+          <div
+            class="tooltip-target u-rounded u-bg-primary-1"
+            :style="{ width: `${validated_teams_proportion}%` }"
+            aria-describedby="validated_teams_tooltip"
+          >
+            {{ validated_teams }}/{{ thresholds[current_threshold_index] }}
+            <span
+              id="validated_teams_tooltip"
+              role="tooltip"
+              class="tooltip-text"
+            >
+              {{ validated_teams }}/{{ thresholds[current_threshold_index] }} équipes validées
+            </span>
+          </div>
+          <span
+            class="tooltip-target"
+            :style="{ width: `${((thresholds[current_threshold_index + 1] - thresholds[current_threshold_index]) / max_teams) * 100}%` }"
+            aria-describedby="waiting_validation_teams_tooltip"
+          >
+            {{ waiting_validation_teams_count }}/{{ thresholds[current_threshold_index + 1]
+              - thresholds[current_threshold_index] }}
+            <span
+              id="waiting_validation_teams_tooltip"
+              role="tooltip"
+              class="tooltip-text"
+            >
+              {{ waiting_validation_teams_count }}/{{ thresholds[current_threshold_index + 1]
+                - thresholds[current_threshold_index] }} en attente du palier
+            </span>
+          </span>
+          <div
+            class="progress-bar u-bg-secondary-1"
+            :style="{ width: `${((validated_teams + waiting_validation_teams_count) / max_teams) * 100}%` }"
+          />
+        </template>
+        <template
+          v-else
+        >
+          <div
+            class="progress-bar u-bg-primary-1"
+            :style="{ width: `${(validated_teams / max_validated_teams) * 100}%` }"
+          />
+          <span
+            class="tooltip-target u-full-width"
+            aria-describedby="validated_teams_tooltip"
+          >
+            {{ tournament?.validated_teams }}/{{ thresholds[current_threshold_index] }}
+            <span
+              id="validated_teams_tooltip"
+              role="tooltip"
+              class="tooltip-text"
+            >
+              {{ tournament?.validated_teams }}/{{ thresholds[current_threshold_index] }} équipes validées
+            </span>
+          </span>
+        </template>
+      </div>
+    </div>
+    <p v-if="!isPrivate" class="u-big-text">
+      {{ !isPrivate ? tournament && 'cashprizes' in tournament && `Cashprize: ${tournament?.cashprizes?.length !== 0 ? `${tournament?.cashprizes?.reduce((acc, val) => acc += Number(val), 0)} €` : "À venir"}` : '' }}
     </p>
     <div class="l-flex-row l-items-main-center l-items-cross-center l-gap-2 u-px-2 u-pb-2">
       <router-link
@@ -149,25 +230,57 @@ onMounted(async () => {
       </g>
     </svg>
     <p class="u-text-center u-big-text u-py-2">
-      Le tournoi sera annoncé prochainement !
+      Ce tournoi sera annoncé prochainement !
     </p>
   </div>
 </template>
 
-<style>
-  .tooltip-text::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    bottom: 100%;
-    margin-left: -5px;
-    border-width: 6px;
-    border-style: solid;
-    border-color: transparent transparent #2c292d transparent;
-  }
+<style scoped>
+.progress-bar {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  border-radius: var(--radius);
+}
 
-  .tooltip-target:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
-  }
+.tooltip-text {
+  position: absolute;
+  top: 3rem;
+  opacity: 0;
+  visibility: hidden;
+  border-radius: var(--radius);
+  background-color: var(--color-bg-3);
+  padding: 0.5rem 0.75rem;
+  max-width: 11rem;
+  text-align: center;
+}
+
+.tooltip-text::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  margin-left: -5px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent transparent var(--color-bg-3) transparent;
+}
+
+.tooltip-target {
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.tooltip-target:hover .tooltip-text {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tooltip-target:hover .tooltip-text:hover {
+  opacity: 0;
+  visibility: hidden;
+}
 </style>
