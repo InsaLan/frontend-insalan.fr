@@ -281,7 +281,7 @@ const closeModal = () => {
             Pour modifier votre placement, rendez-vous sur la page de votre équipe, accessible depuis
             <router-link
               to="/me"
-              class="text-blue-500 u-underline"
+              class="c-link"
             >
               la page "Mon compte"
             </router-link>

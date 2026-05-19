@@ -254,6 +254,7 @@ const toggleBurgerMenu = () => {
             v-if="role === 'dev' || role === 'staff'"
             class="u-mx-1 u-py-1 c-text-btn-secondary u-text-center"
             :to="{ path: '/admin/scan' }"
+            @click="toggleBurgerMenu()"
           >
             Scan billets
           </router-link>

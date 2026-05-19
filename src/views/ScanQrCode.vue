@@ -24,7 +24,7 @@ const search = ref('');
 function paintOutline([detectedCode]: DetectedBarcode[], ctx: CanvasRenderingContext2D) {
   const [firstPoint, ...otherPoints] = detectedCode.cornerPoints;
 
-  ctx.strokeStyle = 'red';
+  ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-secondary-1').trim() || 'red';
 
   ctx.beginPath();
   ctx.moveTo(firstPoint.x, firstPoint.y);
@@ -120,21 +120,21 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
       <p>Statut : {{ ticketStatus }}</p>
       <p>Tournois : {{ qrcodeData.tournament }}</p>
       <p>Equipe : {{ qrcodeData.team }}</p>
-      <div class="mb-6 flex gap-7">
-        <button
-          v-if="qrcodeData.status === TicketStatus.VALID"
-          type="button"
-          class="form-btn"
-          @click="validate"
-        >
-          Valider
-        </button>
+      <div class="u-mb-2 l-flex-row l-gap-2">
         <button
           type="button"
-          class="form-btn bg-red-600"
+          class="c-btn-bg-2"
           @click="cancel"
         >
           Annuler
+        </button>
+        <button
+          v-if="qrcodeData.status === TicketStatus.VALID"
+          type="button"
+          class="c-btn-secondary"
+          @click="validate"
+        >
+          Valider
         </button>
       </div>
     </div>
@@ -156,10 +156,10 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
           {{ unpaidRegistration.filter((registration) => registration.user.includes(search))[0]?.user }} :
           {{ unpaidRegistration.filter((registration) => registration.user.includes(search))[0]?.team }}
         </div>
-        <div class="flex l-items-main-center">
+        <div class="l-flex-row l-items-main-center">
           <button
             type="button"
-            class="form-btn"
+            class="c-btn-secondary"
             @click="
               validate_registration(
                 unpaidRegistration.filter((registration) => registration.user.includes(search))[0]?.type,
@@ -173,7 +173,7 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
           </button>
         </div>
       </div>
-      <div v-else-if="search" class="rounded-2xl bg-red-500 u-text-center">
+      <div v-else-if="search" class="c-card-error u-p-0 u-px-1 u-text-center u-full-width">
         Aucune inscription trouvée
       </div>
     </div>
