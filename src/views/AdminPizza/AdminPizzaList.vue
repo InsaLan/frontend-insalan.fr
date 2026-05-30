@@ -2,11 +2,11 @@
 
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
+import PizzaModal from '@/components/AdminPizza/PizzaModal.vue';
 import Modal from '@/components/Modal.vue';
+import PizzaCard from '@/components/PizzaCard.vue';
 import type { Pizza } from '@/models/pizza';
 import { usePizzaStore } from '@/stores/pizza.store';
-import PizzaListEl from '@/views/AdminPizza/PizzaListEl.vue';
-import PizzaModal from '@/views/AdminPizza/PizzaModal.vue';
 
 const pizzaStore = usePizzaStore();
 const { pizzaList } = storeToRefs(pizzaStore);
@@ -94,38 +94,15 @@ await fetchAllPizzas();
         aria-label="Rechercher"
         type="text"
         placeholder="Rechercher"
-        class="border-2 bg-theme-bg"
       >
     </form>
   </div>
-  <div class="mb-6 l-flex-column l-gap-1 u-px-2">
-    <div class="c-card-bg-2 grid-layout grid l-gap-1 rounded u-full-width">
-      <div class="flex w-20 l-items-cross-center overflow-x-hidden u-pr-1">
-        <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
-          Image
-        </p>
-      </div>
-      <div class="flex l-items-cross-center overflow-x-hidden u-pr-1">
-        <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
-          Nom
-        </p>
-      </div>
-      <div class="hidden l-items-cross-center overflow-x-hidden u-pr-1 sm:flex">
-        <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
-          Ingrédients
-        </p>
-      </div>
-      <div class="hidden l-items-cross-center overflow-x-hidden u-pr-1 lg:flex">
-        <p class="overflow-x-hidden text-ellipsis whitespace-nowrap">
-          Allergènes
-        </p>
-      </div>
-    </div>
-    <PizzaListEl
+  <div class="u-mb-2 u-px-2 u-full-width l-gap-2 l-grid-4">
+    <PizzaCard
       v-for="pizza in pizzaList"
+      :id="pizza.id"
       :key="pizza.id"
-      :class="{ hidden: !formatSearch(pizza.name).includes(formattedPizzaSearch) }"
-      :pizza="pizza"
+      :class="{ 'u-hidden': !formatSearch(pizza.name).includes(formattedPizzaSearch) }"
       :on-edit="handleEditPizza"
       :on-delete="handleRemovePizza"
     />
@@ -146,13 +123,13 @@ await fetchAllPizzas();
     :close="handlePizzaCreateModalClose"
   />
 
-  <Modal v-if="pizzaToDelete">
+  <Modal v-if="pizzaToDelete" @close="closeDeleteConfirmModal">
     <template #title>
       Supprimer une pizza
     </template>
     <template #body>
-      <p class="u-mt-1 max-w-sm">
-        Voulez-vous supprimer la pizza <span class="u-underline">{{ pizzaToDelete.name }}</span> ?
+      <p>
+        Voulez-vous supprimer la pizza <strong>{{ pizzaToDelete.name }}</strong> ?
         <br/>
         <br/>
         <em>Ne supprimez pas une pizza qui pourrait être commandée dans un créneau en cours.</em>

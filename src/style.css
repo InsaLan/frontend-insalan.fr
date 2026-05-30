@@ -8,9 +8,11 @@
   Ce fichier définit les classes CSS globales utilisées dans tout le frontend.
 
   Les fichiers individuels peuvent aussi définir des classes CSS spécifiques à
-  leurs composants, dans la balise <style scoped>. Pas de style inline avec
+  leurs composants, dans la balise <style scoped>. Ne définissez pas de classe
+  dans style.css si elle ne servira qu'une fois. Pas de style inline avec
   style="..." directement dans le HTML (sauf éventuellement pour les fichiers SVG
-  et le style généré dynamiquement par JS avec :style).
+  et le style généré dynamiquement par JS avec :style, et autres cas très
+  particuliers).
 
   *Toutes* les couleurs sont définies ici, en tant que variables CSS. Elles
   peuvent être utilisées dans les classes globales ou locales.
@@ -21,10 +23,21 @@
    - `u-` : utilitaires (marges, paddings, etc.)
 
   Il est possible de styler les éléments HTML directement (genre sans classe,
-  avec `input {}`, `b {}`...) ce qui est plus propre quand c'est possible.
+  avec `input {}`, `b {}`...) ce qui est plus propre quand c'est possible. Mais
+  attention à ne pas styler des éléments de manière non-générique qui pourrait
+  casser d'autres usages courants.
 
-  Il n'y a pas de contrainte sur l'ordre des classes dans les éléments, car ce
-  serait chiant.
+  De manière générale, la plupart des classes dont vous devriez avoir besoin sont
+  déjà définies ici. Donc demandez vous bien avant de créer une nouvelle classe
+  si elle a vraiment besoin d'être globale.
+
+  Quand vous faites du frontend, respectez la charte graphique au maximum,
+  définissez un minimum de nouvelles classes (globales ou locales) et examinez
+  bien d'autres parties du frontend existantes qui ressemblent à ce que vous
+  essayez de faire. Je sais que ça a l'air chiant, mais c'est ce qu'il faut pour
+  avoir du code propre et un design cohérent.
+
+  Il n'y a pas de contrainte particulière sur l'ordre des classes dans les éléments.
 */
 
 :root {
@@ -92,6 +105,7 @@
 
 html {
   font-family: Exo2, Verdana, sans-serif;
+  font-optical-sizing: auto;
   color: var(--color-text-1);
   background-color: var(--color-bg-1);
   position: relative;
@@ -99,7 +113,7 @@ html {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  * {
+  div * {
     animation: fade-in .2s ease-out;
     transition: 150ms ease-in-out; /* This is just in case, but you should still set transitions manually if they're needed */
   }
@@ -118,22 +132,15 @@ html {
 
 @font-face {
   font-family: Exo2;
-  src: url(./assets/fonts/exo2/Exo2-Regular.ttf);
-}
-
-@font-face {
-  font-family: Exo2-Bold;
-  src: url(./assets/fonts/exo2/Exo2-Bold.ttf);
-}
-
-@font-face {
-  font-family: Exo2-ExtraBold;
-  src: url(./assets/fonts/exo2/Exo2-ExtraBold.ttf);
+  src: url(./assets/fonts/exo2/Exo2-Variable.ttf) format('truetype-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
   font-family: OpenMoji;
-  src: URL(./assets/fonts/openmoji/OpenMoji-Color.SVG.ttf) format('truetype');
+  src: url(./assets/fonts/openmoji/OpenMoji-Color.SVG.ttf) format('truetype');
 }
 
 #app {
@@ -181,7 +188,7 @@ html {
 .c-btn-bg-3,
 .c-btn-error {
   font-size: clamp(0.9rem, 2vw, 1.15rem);
-  font-weight: bold;
+  font-weight: 600;
   border-radius: var(--radius);
   padding: 0.75rem 1rem;
   transition: background-color 0.2s;
@@ -250,7 +257,7 @@ html {
   cursor: pointer;
   transition: color 0.1s;
   font-size: clamp(0.9rem, 2vw, 1.15rem);
-  font-weight: bold;
+  font-weight: 600;
   margin: .5rem;
 }
 
@@ -351,6 +358,29 @@ textarea {
   width: 100%;
 }
 
+input[type="file"] {
+  border: none;
+  font-size: clamp(0.9rem, 2vw, 1.15rem);
+}
+
+input[type="file"]::file-selector-button {
+  font-size: clamp(0.9rem, 2vw, 1.15rem);
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  margin-right: 0.9rem;
+  background-color: var(--color-primary-1);
+  color: var(--color-light-text-1);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background-color: var(--color-primary-2);
+  color: var(--color-dark-text-1);
+}
+
 /* input[type="text"]:invalid,
 input[type="password"]:invalid,
 input[type="email"]:invalid,
@@ -447,7 +477,7 @@ img {
 
 h1 {
   font-size: 2.6em;
-  font-family: Exo2-Bold, Exo2, Verdana, sans-serif;
+  font-weight: 800;
   text-align: center;
   color: var(--color-secondary-1);
   display: flex;
@@ -459,8 +489,8 @@ h1 {
 
 h2 {
   font-size: clamp(1.4rem, 2vw, 1.7rem);
-  font-family: Exo2-Bold, Exo2, Verdana, sans-serif;
-  text-align: left;
+  font-weight: 700;
+  /* text-align: left; */
   margin-top: .5rem;
   margin-bottom: .5rem;
   line-height: 2rem;
@@ -474,8 +504,12 @@ li {
   margin-left: 1.2rem;
 }
 
-b, strong, .u-bold {
-  font-family: Exo2-Bold, Exo2, Verdana, sans-serif;
+.u-regular {
+  font-weight: 400;
+}
+
+strong, .u-bold {
+  font-weight: 700;
 }
 
 .u-underline {
@@ -489,6 +523,7 @@ b, strong, .u-bold {
 @media (prefers-reduced-motion: no-preference) {
   .u-underline {
     animation: fade-in .2s ease-out, draw-underline .2s ease-in-out;
+    transition: none;
   }
 
   @keyframes draw-underline {
@@ -595,6 +630,8 @@ b, strong, .u-bold {
   flex: 1 1 0;
 }
 
+/* If you need other kinds of alignment than these, either use empty l-grow divs or add a file-specific class */
+
 .l-items-main-start {
   justify-content: flex-start;
 }
@@ -694,14 +731,14 @@ b, strong, .u-bold {
   }
 }
 
-@media (min-width: 80rem) and (max-width: 110rem) {
+@media (min-width: 80rem) and (max-width: 120rem) {
   .l-grid-4 {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
   }
 }
 
-@media (min-width: 110rem) {
+@media (min-width: 120rem) {
   .l-grid-4 {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -736,21 +773,21 @@ b, strong, .u-bold {
   }
 }
 
-@media (min-width: 85rem) and (max-width: 110rem) {
+@media (min-width: 85rem) and (max-width: 120rem) {
   .l-grid-6 {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
   }
 }
 
-@media (min-width: 110rem) and (max-width: 130rem) {
+@media (min-width: 120rem) and (max-width: 145rem) {
   .l-grid-6 {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
   }
 }
 
-@media (min-width: 130rem) {
+@media (min-width: 145rem) {
   .l-grid-6 {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
@@ -902,15 +939,19 @@ b, strong, .u-bold {
   line-height: .8rem;
 }
 
+.u-normal-text { /* This can be useful when using a button component, which normally has bigger text */
+  font-size: 1rem;
+}
+
 .u-big-text {
   font-size: 1.25rem;
 }
 
 .u-huge-text {
-  font-size: clamp(3rem, 6vw, 4rem);
+  font-size: clamp(2.5rem, 6vw, 4rem);
 }
 
-.u-text-indent p {
+.u-text-indent p, p.u-text-indent {
   text-indent: 3rem;
 }
 

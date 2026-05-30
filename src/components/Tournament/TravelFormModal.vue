@@ -66,7 +66,7 @@ const handleSubmit = async () => {
     </template>
     <template #body>
       Ce formulaire est facultatif, mais votre réponse nous serait très utile !
-      En partageant <b>anonymement</b> votre ville de départ et le moyen
+      En partageant <strong>anonymement</strong> votre ville de départ et le moyen
       de transport que vous comptez utiliser pour venir à la LAN, vous nous aidez à mieux
       estimer l’impact environnemental de l’évènement et à l’améliorer chaque année. Merci d’avance !
       <form class="u-mt-2" @submit.prevent="handleSubmit">

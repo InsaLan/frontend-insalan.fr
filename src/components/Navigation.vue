@@ -75,7 +75,7 @@ const toggleBurgerMenu = () => {
             v-for="(item, i) in items"
             :key="i"
             :to="{ path: item.url }"
-            :class="$route.path === item.url ? 'u-underline c-text-btn-secondary' : 'c-text-btn-secondary'"
+            :class="$route.path.startsWith(item.url) ? 'u-underline c-text-btn-secondary' : 'c-text-btn-secondary'"
           >
             {{ item.text }}
           </router-link>
@@ -97,9 +97,9 @@ const toggleBurgerMenu = () => {
             class="admin-group l-relative-position u-mr-2"
           >
             <div
-              class="u-big-text"
+              class="admin-text"
             >
-              Admin
+              <span :class="$route.path.startsWith('/admin') ? 'u-underline' : ''"> Admin </span>
               <fa-awesome-icon
                 class="u-ml-1 u-color-text-2 admin-group-rotate"
                 icon="fa-chevron-up"
@@ -109,11 +109,35 @@ const toggleBurgerMenu = () => {
               class="admin-panel c-card-bg-3 l-absolute-position l-flex-column admin-group-show u-text-left"
             >
               <div
+                v-if="role === 'dev' || role === 'staff'"
+                class="l-flex-column u-full-width"
+              >
+                <div
+                  class="u-bold u-color-text-2 u-big-text"
+                >
+                  Staff :
+                </div>
+                <a
+                  class="c-text-btn-secondary"
+                  :href="`${apiUrl}/admin/`"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Panel Admin <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
+                </a>
+                <router-link
+                  class="c-text-btn-secondary"
+                  :to="{ path: '/admin/scan' }"
+                >
+                  Scan billets
+                </router-link>
+              </div>
+              <div
                 v-if="user?.groups.includes('Equipe Bouffe')"
                 class="l-flex-column u-full-width"
               >
                 <div
-                  class="u-bold u-color-text-2"
+                  class="u-bold u-color-text-2 u-big-text"
                 >
                   Team Bouffe :
                 </div>
@@ -135,24 +159,6 @@ const toggleBurgerMenu = () => {
                 >
                   Menu pizza
                 </router-link>
-              </div>
-              <div
-                v-if="role === 'dev' || role === 'staff'"
-                class="l-flex-column u-full-width"
-              >
-                <div
-                  class="u-bold u-color-text-2"
-                >
-                  Backend :
-                </div>
-                <a
-                  class="c-text-btn-secondary"
-                  :href="`${apiUrl}/admin/`"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Panel Admin <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
-                </a>
               </div>
             </div>
           </div>
@@ -237,10 +243,11 @@ const toggleBurgerMenu = () => {
             </button>
           </div>
         </div>
+        <!-- TODO: fix: this pushes the whole page down when expanding -->
         <div
           v-if="burger_menu"
           :class="['animated-burger', 'l-flex-column', 'l-overflow-auto', { closing: isClosingMenu }]"
-        > <!-- TODO: fix: this pushes the whole page down when expanding -->
+        >
           <a
             v-if="role === 'dev' || role === 'staff'"
             class="u-mx-1 u-py-1 c-text-btn-secondary u-text-center"
@@ -348,7 +355,7 @@ const toggleBurgerMenu = () => {
   justify-content: space-around;
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1300px) {
   .desktop-only {
     display: none;
   }
@@ -365,7 +372,7 @@ const toggleBurgerMenu = () => {
   }
 }
 
-@media (min-width: 1281px) {
+@media (min-width: 1300px) {
   .desktop-only {
     display: flex;
   }
@@ -392,6 +399,12 @@ const toggleBurgerMenu = () => {
 }
 
 .admin-panel {
-  min-width: 12rem;
+  min-width: 13rem;
+}
+
+.admin-text {
+  font-size: clamp(0.9rem, 2vw, 1.15rem);
+  font-weight: 600;
+  cursor: default;
 }
 </style>

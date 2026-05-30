@@ -20,50 +20,52 @@ const modal_cgv = ref(false);
 
 <template>
   <div class="l-flex-column l-items-cross-center u-m-text u-full-height l-items-main-center">
-    <div class="c-card-bg-2 u-p-4 u-full-width">
-      <h2 class="u-m-0 u-mb-2">
+    <div class="c-card-bg-2 u-full-width">
+      <h2 class="u-m-1 u-mb-2">
         Votre panier
       </h2>
 
-      <div v-if="cart.length === 0" class="u-py-4 u-text-center u-big-text">
-        Votre panier est vide.
-      </div>
+      <div class="u-px-2 l-flex-column">
+        <div v-if="cart.length === 0" class="u-py-4 u-text-center u-big-text">
+          Votre panier est vide.
+        </div>
 
-      <ul v-else class="l-flex-column l-gap-1 u-p-1">
-        <li
-          v-for="item in cart"
-          :key="item.product"
-          class="l-flex-row l-items-cross-center c-card-bg-3 u-big-text u-m-0 u-full-width"
+        <ul v-else class="l-flex-column l-gap-1 u-py-1">
+          <li
+            v-for="item in cart"
+            :key="item.product"
+            class="l-flex-row l-items-cross-center c-card-bg-3 u-big-text u-m-0 u-full-width"
+          >
+            <div>{{ item.name }}</div>
+            <div class="l-grow"/>
+            <strong>{{ item.price.toFixed(2) }} €</strong>
+          </li>
+        </ul>
+
+        <div v-if="cart.length > 0" class="u-pt-2 u-text-right u-big-text">
+          Total: <strong>{{ totalPrice.toFixed(2) }} €</strong>
+        </div>
+
+        <!-- Terms and conditions of sale -->
+        <div
+          v-if="cart.length > 0"
+          class="u-mt-4 l-gap-1 l-flex-row l-items-cross-center l-items-main-end"
         >
-          <div>{{ item.name }}</div>
-          <div class="l-grow"/>
-          <b>{{ item.price.toFixed(2) }} €</b>
-        </li>
-      </ul>
-
-      <div v-if="cart.length > 0" class="u-pt-2 u-text-right u-big-text">
-        Total: <b>{{ totalPrice.toFixed(2) }} €</b>
-      </div>
-
-      <!-- Terms and conditions of sale -->
-      <div
-        v-if="cart.length > 0"
-        class="u-mt-4 l-gap-1 l-flex-row l-items-cross-center l-items-main-end"
-      >
-        <input
-          id="terms"
-          v-model="hasReadTerms"
-          type="checkbox"
-        />
-        <label for="terms">
-          J'ai lu et j'accepte
-          <a
-            class="c-link"
-            href="#"
-            @click="modal_cgv = true"
-            @keydown.enter="modal_cgv = true"
-          >les conditions générales de vente</a>.
-        </label>
+          <input
+            id="terms"
+            v-model="hasReadTerms"
+            type="checkbox"
+          />
+          <label for="terms">
+            J'ai lu et j'accepte
+            <a
+              class="c-link"
+              href="#"
+              @click="modal_cgv = true"
+              @keydown.enter="modal_cgv = true"
+            >les conditions générales de vente</a>.
+          </label>
+        </div>
       </div>
 
       <div class="l-flex-row l-items-main-end u-mt-4 l-gap-2">

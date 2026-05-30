@@ -8,6 +8,8 @@ const pizzaStore = usePizzaStore();
 
 const props = defineProps<{
   id: number;
+  onEdit?: (pizza: Pizza) => void;
+  onDelete?: (pizza: Pizza) => void;
 }>();
 
 const { pizzaList } = storeToRefs(pizzaStore);
@@ -21,14 +23,36 @@ const pizza = computed<Pizza | undefined>(() => pizzaList.value[props.id]);
       :src="pizza?.image"
       class="pizza-thumbnail u-full-width u-rounded"
     />
-    <div class="l-flex-column l-items-cross-center l-items-main-center u-full-width u-px-2 l-grow">
-      <p class="u-mb-1 u-text-center u-big-text u-bold">
-        {{ pizza?.name }}
-      </p>
-      <p class="u-text-center">
-        <b>Ingrédients :</b> {{ pizza?.ingredients.join(', ') }}<br>
-        <b>Allergènes :</b> {{ pizza?.allergens.join(', ') }}
-      </p>
+    <div class="l-flex-row l-items-cross-center u-full-width u-px-2 l-grow l-gap-1">
+      <div class="l-flex-column l-items-cross-center l-items-main-center u-full-width l-grow">
+        <p class="u-mb-1 u-text-center u-big-text u-bold">
+          {{ pizza?.name }}
+        </p>
+        <p class="u-text-center">
+          <strong>Ingrédients :</strong> {{ pizza?.ingredients.join(', ') }}<br>
+          <strong>Allergènes :</strong> {{ pizza?.allergens.join(', ') }}
+        </p>
+      </div>
+      <div v-if="onEdit || onDelete" class="l-flex-column l-gap-1 u-big-text l-items-cross-center">
+        <button
+          v-if="onEdit"
+          type="button"
+          class="c-image-btn"
+          title="Modifier"
+          @click="onEdit?.(pizza!)"
+        >
+          <fa-awesome-icon icon="fa-pen-to-square"/>
+        </button>
+        <button
+          v-if="onDelete"
+          type="button"
+          class="c-image-btn u-color-error-1"
+          title="Supprimer"
+          @click="onDelete?.(pizza!)"
+        >
+          <fa-awesome-icon icon="fa-trash-can"/>
+        </button>
+      </div>
     </div>
   </div>
 </template>

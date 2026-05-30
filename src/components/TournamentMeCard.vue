@@ -138,32 +138,28 @@ const gameSpecificData = computed(() => {
 </script>
 
 <template>
-  <div id="ongoing_match">
-    <div class="m-3 u-text-center text-4xl font-bold">
+  <div id="ongoing_match" class="c-card-bg-3 u-full-width l-flex-column l-gap-2 u-text-center">
+    <h2>
       Partie en cours
+    </h2>
+    <div>
+      <span v-for="(team, team_id, index) in ongoingMatch.teams" :key="team_id">
+        {{ team }}<span v-if="index < Object.keys(ongoingMatch.teams).length - 1"> / </span>
+      </span>
     </div>
-    <div class="u-mx-2 flex flex-col justify-around rounded-md bg-cyan-900">
-      <div class="flex u-full-width flex-col divide-y">
-        <div v-for="team, team_id in ongoingMatch.teams" :key="team_id" class="u-mx-1 u-p-2">
-          <p class="truncate u-big-text font-bold">
-            {{ team }}
-          </p>
-        </div>
-      </div>
-      <div v-if="gameSpecificData" class="u-m-1 border-t border-cyan-700 bg-cyan-800 u-p-1">
-        <p class="u-mb-1 text-lg font-semibold">
-          {{ gameSpecificData.title }}
+    <div v-if="gameSpecificData" class="l-flex-column l-gap-2">
+      <p class="u-big-text">
+        {{ gameSpecificData.title }}
+      </p>
+      <div>
+        <p v-for="item in gameSpecificData.items" :key="item.label">
+          {{ item.label }}: {{ item.value }}
         </p>
-        <div class="space-y-1 font-mono text-sm">
-          <p v-for="item in gameSpecificData.items" :key="item.label">
-            {{ item.label }}: {{ item.value }}
-          </p>
-        </div>
       </div>
-      <button type="button" class="u-full-width rounded-b-md bg-red-700 u-p-1 duration-100 hover:bg-red-400" @click="openScoreModal()">
-        Terminer la partie manuellement
-      </button>
     </div>
+    <button type="button" class="c-btn-secondary u-full-width" @click="openScoreModal()">
+      Terminer la partie manuellement
+    </button>
   </div>
 
   <Modal v-if="modal_enter_score">
@@ -188,7 +184,7 @@ const gameSpecificData = computed(() => {
             @blur="v$_time_game.score[id].$touch"
           />
         </FormField>
-        <!-- hidden submit button with tailwind-->
+        <!-- hidden submit button -->
         <button class="u-hidden" type="submit"/>
       </form>
       <p v-if="invalid_score.length > 0" class="u-color-error-1">
@@ -239,7 +235,7 @@ const gameSpecificData = computed(() => {
         <p v-if="invalid_score.length > 0" class="u-color-error-1">
           {{ invalid_score }}
         </p>
-        <!-- hidden submit button with tailwind-->
+        <!-- hidden submit button -->
         <button class="u-hidden" type="submit"/>
       </form>
     </template>

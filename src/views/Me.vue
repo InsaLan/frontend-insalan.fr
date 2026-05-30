@@ -178,7 +178,7 @@ const editField = (field: string) => {
         class="l-flex-row l-items-cross-center c-card-bg-3"
       >
         <div class="u-big-text u-text-left">
-          Vous avez <b>{{ cart.length }}</b> article{{ cart.length !== 1 ? 's' : '' }} dans votre panier.
+          Vous avez <strong>{{ cart.length }}</strong> article{{ cart.length !== 1 ? 's' : '' }} dans votre panier.
         </div>
         <router-link
           class="c-btn-secondary"
@@ -240,9 +240,9 @@ const editField = (field: string) => {
             >
               Règlement du tournoi
             </router-link>
-            <b class="u-big-text u-mx-2">
+            <strong class="u-big-text u-mx-2">
               {{ inscription[1].team.name }}
-            </b>
+            </strong>
             <div class="l-flex-row l-grow l-items-main-center l-items-cross-center l-gap-2 u-mx-2">
               <router-link
                 class="c-btn-primary"
@@ -290,7 +290,7 @@ const editField = (field: string) => {
               Règlement du tournoi
             </router-link>
             <div class="u-big-text u-mx-2">
-              {{ inscription[1].team.tournament.event.name }} - <b>{{ inscription[1].team.name }}</b>
+              {{ inscription[1].team.tournament.event.name }} - <strong>{{ inscription[1].team.name }}</strong>
             </div>
             <router-link
               class="c-btn-primary"
@@ -324,9 +324,9 @@ const editField = (field: string) => {
             >
               Règlement du tournoi
             </router-link>
-            <b class="u-big-text u-mx-2">
+            <strong class="u-big-text u-mx-2">
               {{ inscription[1].team.tournament.name }}
-            </b>
+            </strong>
             <router-link
               class="c-btn-primary"
               :to="`/tournament/private/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"

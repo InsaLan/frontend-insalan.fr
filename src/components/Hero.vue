@@ -6,19 +6,11 @@ import { useContentStore } from '@/stores/content.store';
 const contentStore = useContentStore();
 const { getConstant } = contentStore;
 
-// const d = new Date();
-// const n = d.getDay() * 100 + d.getMonth() * 3;
-
 interface Props {
   event?: Event;
 }
 
 const props = defineProps<Props>();
-
-// Youtube video ID to play (found in the URL after v=)
-// const video_id = 'Bxi-4XEANbE';
-// How many seconds to play the video before looping
-// const video_end = 34;
 
 const eventText = computed(() => {
   if (props.event === undefined) {
@@ -67,15 +59,8 @@ const scrollPastHero = () => {
 <template>
   <div id="hero" class="l-relative-position l-flex-column l-items-cross-center l-items-main-center h-screen">
     <div id="video" class="l-absolute-position l-flex-row u-full-width u-full-height l-items-cross-center l-items-main-center rounded-bottom">
-      <!-- <iframe
-        :src="`https://www.youtube.com/embed/${n === 112 ? 'dQw4w9WgXcQ' : video_id}?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&rel=0&enablejsapi=1&playlist=${n === 112 ? 'dQw4w9WgXcQ' : video_id}${n !== 112 && `&end=${video_end}`}`"
-        allowfullscreen
-        class="video"
-        title="Trailer InsaLan"
-        inert
-      /> -->
       <!-- gif made with `magick -delay 3 -loop 0 *.png bg.gif` in a folder of all the frames (named sequentially) -->
-      <img src="../assets/images/bg.gif" alt="Background video" class="video">
+      <img src="../assets/images/bg.gif" alt="Background video" loading="lazy" class="video">
     </div>
     <div
       class="u-mx-2 l-relative-position l-flex-column l-items-cross-center"
@@ -116,7 +101,7 @@ const scrollPastHero = () => {
   min-height: 100%;
   flex-grow: 1;
   object-fit: cover;
-  filter: blur(8px);
+  filter: blur(10px);
 }
 
 .rounded-bottom {

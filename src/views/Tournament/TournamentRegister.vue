@@ -347,7 +347,7 @@ const handleCloseTravelFormModal = () => {
         <!-- <h2>Rappel du Règlement</h2>
         <ul class="list-inside list-disc">
           <li>Pas d'insulte</li>
-          <li>Apporter son propre matériel <b>filaire </b></li>
+          <li>Apporter son propre matériel <strong>filaire </strong></li>
         </ul> -->
 
         <FormField

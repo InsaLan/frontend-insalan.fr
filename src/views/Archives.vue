@@ -10,7 +10,8 @@ const { oldEvents } = storeToRefs(tournamentStore);
 await fetchAllEvents();
 </script>
 
-<template> <!-- TODO : fix weird flicker when refreshing -->
+<!-- TODO : fix weird flicker when refreshing -->
+<template>
   <div class="u-m-main">
     <h1>
       Archives

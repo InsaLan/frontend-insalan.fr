@@ -99,7 +99,7 @@ const event_ongoing = computed(() => {
 <template>
   <div
     v-if="tournament && (!('is_announced' in tournament) || tournament?.is_announced)"
-    class="l-flex-column"
+    class="l-flex-column u-full-height"
   >
     <div class="l-flex-row l-items-main-center l-items-cross-center l-gap-4 u-m-main">
       <h1>

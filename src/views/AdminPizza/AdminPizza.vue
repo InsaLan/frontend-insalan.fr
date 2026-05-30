@@ -708,11 +708,11 @@ const factorise = (pizzas: number[]) => {
       Supprimer un créneau
     </template>
     <template #body>
-      Vous allez suppimer le créneau du {{
-        frenchFormatFromDate(new Date(timeslotList[selectedDelete].delivery_time))
-      }}
-      <br/>
-      ainsi que les {{ (timeslotList[selectedDelete] as AdminTimeslotDeref).orders.length }} commandes associées.
+      Vous allez suppimer le créneau du
+      <strong>{{ frenchFormatFromDate(new Date(timeslotList[selectedDelete].delivery_time)) }}</strong>
+      ainsi que les
+      <strong>{{ (timeslotList[selectedDelete] as AdminTimeslotDeref).orders.length }}</strong>
+      commandes associées.
       <br/>
       <br/>
       <em>Ne supprimez pas un créneau terminé, les données seront perdues.</em>

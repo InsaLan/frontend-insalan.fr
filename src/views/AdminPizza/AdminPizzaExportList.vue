@@ -98,112 +98,96 @@ Object.values(timeslotList.value).forEach((timeslot) => {
 </script>
 
 <template>
-  <h1>
-    Liste des exports
-  </h1>
-  <div class="mb-6 u-mt-1 l-flex-column u-px-2">
-    <div v-if="timeslots_id.length === 0" class="flex l-items-main-center text-2xl">
+  <div class="u-pb-2 l-flex-column u-m-main u-full-height">
+    <h1>
+      Liste des exports
+    </h1>
+    <div v-if="timeslots_id.length === 0" class="u-text-center u-big-text">
       Il n'y a pas de créneau de commande.
     </div>
     <div
       v-else
-      class="l-flex-column l-gap-1"
+      class="l-flex-column l-gap-1 l-grow"
     >
-      <!-- Loading spinner -->
       <div
         v-if="loading"
-        class="flex l-items-main-center"
+        class="l-flex-column l-items-main-center l-items-cross-center l-gap-2 l-grow"
       >
-        <div class="l-flex-column u-full-width l-grow l-items-cross-center l-items-main-center gap-5">
-          <div class="text-2xl">
-            Chargement...
-          </div>
-          <div role="status" aria-hidden="true" class="c-spinner"/>
+        <div class="u-big-text">
+          Chargement...
         </div>
+        <div role="status" aria-hidden="true" class="c-spinner"/>
       </div>
+
       <div
         v-for="timeslot in Object.values(timeslotList).filter((timeslot) => timeslots_id.includes(timeslot.id))"
         v-else
         :key="timeslot.id"
-        class="l-flex-column l-overflow-hidden rounded hover:cursor-pointer"
-        :class="{
-          'bg-cyan-900': timeslotExportList[timeslot.id].length > 0,
-          'bg-gray-500': timeslotExportList[timeslot.id].length === 0,
-        }"
+        class="l-flex-column c-card-bg-2 u-full-width"
+        :class="{ 'u-color-text-2': timeslotExportList[timeslot.id].length === 0 }"
       >
         <div
-          class="flex select-none l-items-cross-center l-gap-1 u-p-1"
-          :class="{
-            'hover:bg-cyan-800': timeslotExportList[timeslot.id].length > 0,
-            'hover:bg-gray-400': timeslotExportList[timeslot.id].length === 0,
-          }"
-          @click="timeslotsExpand[timeslot.id] = !timeslotsExpand[timeslot.id]"
-          @keydown.enter="timeslotsExpand[timeslot.id] = !timeslotsExpand[timeslot.id]"
+          class="l-flex-row l-items-cross-center l-gap-1 u-full-width"
         >
-          <div class="flex size-8 l-items-cross-center l-items-main-center text-2xl">
-            <fa-awesome-icon icon="fa-caret-right" :class="{ 'rotate-90': timeslotsExpand[timeslot.id] }"/>
-          </div>
-          <div
+          <button
+            type="button"
+            class="u-big-text"
+            :class="{ 'c-image-btn': timeslotExportList[timeslot.id].length !== 0 }"
+            title="Afficher les exports du créneau"
+            :disabled="timeslotExportList[timeslot.id].length === 0"
+            @click="timeslotsExpand[timeslot.id] = !timeslotsExpand[timeslot.id]"
+            @keydown.enter="timeslotsExpand[timeslot.id] = !timeslotsExpand[timeslot.id]"
+          >
+            <fa-awesome-icon icon="fa-chevron-right" :class="{ rotate: timeslotsExpand[timeslot.id] }"/>
+          </button>
+          <button
             v-if="timeslotExportList[timeslot.id].length > 0"
-            class="flex size-8 l-items-cross-center l-items-main-center text-2xl"
-            @click.stop="exportOrders(timeslot.id)"
+            type="button"
+            class="u-big-text c-image-btn"
+            title="Exporter les commandes du créneau"
+            @click="exportOrders(timeslot.id)"
             @keydown.enter="exportOrders(timeslot.id)"
           >
-            <fa-awesome-icon icon="fa-download" class="text-white"/>
-          </div>
-          <div class="m-0 grow">
-            Créneau {{ frenchFormatFromDate(new Date(timeslot.delivery_time)) }}
-          </div>
-          <div>
-            Export{{ timeslotExportList[timeslot.id].length > 1 ? 's' : '' }}  : {{ timeslotExportList[timeslot.id].length }}
-          </div>
+            <fa-awesome-icon icon="fa-download"/>
+          </button>
+          Créneau {{ frenchFormatFromDate(new Date(timeslot.delivery_time)) }}
+          <div class="l-grow"/>
+          {{ timeslotExportList[timeslot.id].length }} export{{ timeslotExportList[timeslot.id].length > 1 ? 's' : '' }}
         </div>
-        <div
-          v-if="timeslotExportList[timeslot.id].length === 0"
-          class="flex l-items-cross-center l-items-main-center p-3"
-          :class="{ hidden: !timeslotsExpand[timeslot.id] }"
-        >
-          Aucun export n'a été effectué pour ce créneau.
-        </div>
-        <div
+        <button
           v-for="timeslotExport in timeslotExportList[timeslot.id]"
           :key="timeslotExport.id"
-          class="u-ml-2 hover:bg-cyan-800"
-          :class="{ hidden: !timeslotsExpand[timeslot.id] }"
+          type="button"
+          class="c-btn-bg-2 u-full-width l-flex-row l-items-cross-center l-gap-1 u-regular u-normal-text"
+          :class="{ 'u-hidden': !timeslotsExpand[timeslot.id] }"
+          title="Télécharger l'export"
           @click="downloadTimeslotDetails(timeslotExport.id)"
           @keydown.enter="downloadTimeslotDetails(timeslotExport.id)"
         >
-          <div class="flex select-none l-items-cross-center l-gap-1 u-p-1">
-            <div class="flex size-8 l-items-cross-center px-3">
-              <fa-awesome-icon icon="fa-file"/>
-            </div>
-            <div class="m-0">
-              Export {{ frenchFormatFromDate(new Date(timeslotExport.created_at)) }}
-            </div>
-            <div class="m-0 grow">
-              | ({{ Object.values(timeslotExport.orders).reduce((acc, nb) => acc + nb, 0) }} pizzas)
-            </div>
-            <button
-              type="button"
-              class="size-8 rounded bg-red-600 hover:bg-red-500"
-              title="Supprimer"
-              @click.stop="exportToDelete = timeslotExport"
-            >
-              <fa-awesome-icon icon="fa-trash-can"/>
-            </button>
-          </div>
-        </div>
+          <fa-awesome-icon icon="fa-file"/>
+          <strong> Export {{ frenchFormatFromDate(new Date(timeslotExport.created_at)) }} </strong>
+          ({{ Object.values(timeslotExport.orders).reduce((acc, nb) => acc + nb, 0) }} pizza{{ Object.values(timeslotExport.orders).reduce((acc, nb) => acc + nb, 0) > 1 ? 's' : '' }})
+          <div class="l-grow"/>
+          <button
+            type="button"
+            class="c-image-btn u-color-error-1 u-big-text"
+            title="Supprimer"
+            @click.stop="exportToDelete = timeslotExport"
+          >
+            <fa-awesome-icon icon="fa-trash-can"/>
+          </button>
+        </button>
       </div>
-      <div class="flex l-items-cross-center l-items-main-center space-x-2">
+      <div class="l-flex-row l-items-cross-center l-items-main-center l-gap-1 u-big-text u-mt-2">
         <button
           type="button"
-          class="rounded-md border border-gray-300 bg-white px-3 u-py-1 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
+          class="c-image-btn"
           :disabled="page === 1"
+          title="Page précédente"
           @click="changePage(page - 1)"
         >
           <fa-awesome-icon
-            class="group-hover:rotate-180"
-            icon="fa-arrow-left"
+            icon="fa-chevron-left"
           />
         </button>
 
@@ -211,36 +195,38 @@ Object.values(timeslotList.value).forEach((timeslot) => {
           <button
             v-if="typeof _page === 'number'"
             type="button"
-            class="rounded-md px-3 u-py-1 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            :class="_page === page ? 'bg-indigo-600 text-white' : 'text-gray-700 bg-white border border-gray-300 hover:bg-gray-50'"
+            class="c-image-btn u-px-1"
+            :disabled="_page === page"
+            :title="`Page ${_page}`"
             @click="changePage(_page)"
           >
             {{ _page }}
           </button>
-          <span v-else class="px-3 u-py-1 text-gray-500">...</span>
+          <span v-else class="u-color-text-2 u-px-1">...</span>
         </template>
 
         <button
           type="button"
-          class="rounded-md border border-gray-300 bg-white px-3 u-py-1 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
+          class="c-image-btn"
           :disabled="page >= max_pages"
+          title="Page suivante"
           @click="changePage(page + 1)"
         >
           <fa-awesome-icon
-            class="group-hover:rotate-180"
-            icon="fa-arrow-right"
+            icon="fa-chevron-right"
           />
         </button>
       </div>
     </div>
   </div>
 
-  <Modal v-if="exportToDelete">
+  <Modal v-if="exportToDelete" @close="closeConfirmDeleteModal">
     <template #title>
       Supprimer un export
     </template>
     <template #body>
-      Voulez-vous supprimer l'export du <span class="u-underline">{{ frenchFormatFromDate(new Date(exportToDelete.created_at)) }}</span> ?
+      Voulez-vous supprimer l'export du
+      <strong>{{ frenchFormatFromDate(new Date(exportToDelete.created_at)) }}</strong> ?
     </template>
     <template #buttons>
       <button
@@ -260,3 +246,10 @@ Object.values(timeslotList.value).forEach((timeslot) => {
     </template>
   </Modal>
 </template>
+
+<style scoped>
+.rotate {
+  transform: rotate(90deg);
+  transition: transform 150ms ease-in-out;
+}
+</style>

@@ -14,9 +14,6 @@ const { getContent } = contentStore;
 
 <template>
   <!-- we trust this HTML content -->
-  <!-- eslint-disable -->
-  <section
-    v-html="getContent(props.name)"
-  >
-  </section>
+  <!-- eslint-disable-next-line vue/no-v-html -->
+  <section v-html="getContent(props.name)"/>
 </template>

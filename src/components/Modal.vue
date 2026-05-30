@@ -30,7 +30,7 @@ onUnmounted(() => {
     <div class="backdrop l-absolute-position" @click="close" @keyup="close"/>
 
     <div class="modal-card c-card-bg-2 l-relative-position l-flex-column l-gap-2 u-full-width">
-      <div class="l-flex-row l-items-cross-center l-gap-2 u-full-width u-text-left u-pl-2">
+      <div class="l-flex-row l-items-cross-center l-gap-2 u-full-width u-text-left u-pl-1">
         <slot name="icon"/>
         <h2 class="l-grow u-m-1 u-mr-2">
           <slot name="title">

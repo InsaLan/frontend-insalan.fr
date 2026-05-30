@@ -44,7 +44,7 @@ export interface ScorePatch {
   times: number[];
 }
 export interface OngoingMatch extends BaseMatch {
-  teams: { [id: string]: [name: string] };
+  teams: { [id: string]: string };
   match_type: MatchType;
   game: Game;
   api_data: Record<string, unknown>;

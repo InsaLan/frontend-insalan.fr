@@ -98,7 +98,6 @@ const delete_stage = async (stage_id: number) => {
   if (res) addNotification('La phase a bien été supprimée.', 'info');
 
   delete_stage_id.value = 0;
-  // eslint-disable-next-line prefer-destructuring
   selected_stage.value = tournament.stages.at(0)?.id ?? 0;
 };
 

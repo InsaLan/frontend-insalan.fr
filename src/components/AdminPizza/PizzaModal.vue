@@ -80,13 +80,15 @@ const handleImageChange = (event: Event) => {
             placeholder="Ajouter un allergène"
           />
         </FormField>
-        <label for="pizza-image">Image</label>
-        <input
-          id="pizza-image"
-          accept="image/*"
-          :onchange="handleImageChange"
-          type="file"
-        />
+        <div class="l-flex-column">
+          <label for="pizza-image">Image</label>
+          <input
+            id="pizza-image"
+            accept="image/*"
+            :onchange="handleImageChange"
+            type="file"
+          />
+        </div>
       </form>
     </template>
     <template #buttons>
