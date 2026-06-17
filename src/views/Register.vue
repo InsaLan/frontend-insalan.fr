@@ -75,9 +75,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="l-flex-column l-items-cross-center l-items-main-center u-full-height u-m-text">
-    <div class="l-flex-column l-items-cross-center c-card-bg-2 u-p-4">
-      <div class="l-flex-column l-items-cross-center u-mb-2">
+  <div class="l-flex-column l-cross-center l-main-center u-full-height u-m-text">
+    <div class="l-flex-column l-cross-center c-card-bg-2 u-p-4">
+      <div class="l-flex-column l-cross-center u-mb-2">
         <h1 class="u-m-0">
           S'enregistrer
         </h1>
@@ -85,7 +85,7 @@ onMounted(async () => {
           to="/login"
         >
           <div
-            class="l-flex-row l-items-cross-center c-text-btn u-m-0"
+            class="l-flex-row l-cross-center c-text-btn u-m-0"
           >
             J'ai déjà un compte
             <svg
@@ -167,7 +167,7 @@ onMounted(async () => {
             </FormField>
           </div>
         </div>
-        <FormField :validations="v$.accept_cgu" class="l-flex-row l-items-main-center l-items-cross-center" required>
+        <FormField :validations="v$.accept_cgu" class="l-flex-row l-main-center l-cross-center" required>
           <input
             id="accept"
             v-model="register_form.accept_cgu"

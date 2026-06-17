@@ -7,12 +7,12 @@ const { notifications } = storeToRefs(NotificationStore);
 const { removeNotification } = NotificationStore;
 </script>
 <template>
-  <div class="notification-area l-flex-column l-items-cross-end l-gap-1 u-m-2">
+  <div class="notification-area l-flex-column l-cross-end l-gap-1 u-m-2">
     <TransitionGroup name="notification">
       <div
         v-for="notification in notifications"
         :key="notification.id"
-        class="notification l-flex-row l-items-cross-start l-gap-1"
+        class="notification l-flex-row l-cross-start l-gap-1"
         :class="{
           'c-card-error': notification.type === 'error',
           'c-card-correct': notification.type === 'info',
@@ -24,6 +24,7 @@ const { removeNotification } = NotificationStore;
         </div>
         <button
           type="button"
+          title="Fermer la notification"
           class="c-image-btn"
           @click="removeNotification(notification.id)"
         >

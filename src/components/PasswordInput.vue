@@ -42,9 +42,9 @@ const onGeneratePassword = (): void => {
 
 <template>
   <div
-    class="l-flex-row l-items-cross-center"
+    class="l-flex-row l-cross-center"
   >
-    <div class="password-field l-flex-row l-items-cross-center">
+    <div class="password-field l-flex-row l-cross-center">
       <input
         :id="id"
         :value="modelValue"
@@ -56,17 +56,17 @@ const onGeneratePassword = (): void => {
         @blur="onBlur"
       />
 
-      <div class="password-actions l-flex-row l-items-cross-center">
+      <div class="password-actions l-flex-row l-cross-center">
         <button
           v-if="generatePassword && generatePassword === true"
           type="button"
           class="action-btn c-image-btn"
-          title="Generer un mot de passe"
+          title="Générer un mot de passe"
           @click="onGeneratePassword"
         >
           <fa-awesome-icon
             class="icon"
-            icon="fa-solid fa-arrows-rotate"
+            icon="fa-arrows-rotate"
           />
         </button>
 
@@ -78,7 +78,7 @@ const onGeneratePassword = (): void => {
         >
           <fa-awesome-icon
             class="icon"
-            :icon="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
+            :icon="showPassword ? 'fa-eye-slash' : 'fa-eye'"
           />
         </button>
       </div>

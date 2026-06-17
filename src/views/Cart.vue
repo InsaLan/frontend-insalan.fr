@@ -19,7 +19,7 @@ const modal_cgv = ref(false);
 </script>
 
 <template>
-  <div class="l-flex-column l-items-cross-center u-m-text u-full-height l-items-main-center">
+  <div class="l-flex-column l-cross-center u-m-text u-full-height l-main-center">
     <div class="c-card-bg-2 u-full-width">
       <h2 class="u-m-1 u-mb-2">
         Votre panier
@@ -34,7 +34,7 @@ const modal_cgv = ref(false);
           <li
             v-for="item in cart"
             :key="item.product"
-            class="l-flex-row l-items-cross-center c-card-bg-3 u-big-text u-m-0 u-full-width"
+            class="l-flex-row l-cross-center c-card-bg-3 u-big-text u-m-0 u-full-width"
           >
             <div>{{ item.name }}</div>
             <div class="l-grow"/>
@@ -49,7 +49,7 @@ const modal_cgv = ref(false);
         <!-- Terms and conditions of sale -->
         <div
           v-if="cart.length > 0"
-          class="u-mt-4 l-gap-1 l-flex-row l-items-cross-center l-items-main-end"
+          class="u-mt-4 l-gap-1 l-flex-row l-cross-center l-main-end"
         >
           <input
             id="terms"
@@ -68,7 +68,7 @@ const modal_cgv = ref(false);
         </div>
       </div>
 
-      <div class="l-flex-row l-items-main-end u-mt-4 l-gap-2">
+      <div class="l-flex-row l-main-end u-mt-4 l-gap-2">
         <button
           class="c-btn-error"
           type="button"

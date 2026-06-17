@@ -66,7 +66,7 @@ const toggleBurgerMenu = () => {
 
   <div id="navcontainer" class="navcontainer u-my-2 u-m-main">
     <nav id="navigation" class="navcard c-card-bg-2 u-full-width">
-      <div id="desktop" class="desktop-only u-full-height l-flex-row l-items-cross-center">
+      <div id="desktop" class="desktop-only u-full-height l-flex-row l-cross-center">
         <router-link to="/">
           <img alt="Logo InsaLan" class="logo c-image-btn" src="@/assets/images/logo_home.png"/>
         </router-link>
@@ -90,7 +90,7 @@ const toggleBurgerMenu = () => {
         </div>
         <div
           v-else
-          class="l-flex-row l-items-cross-center l-gap-2"
+          class="l-flex-row l-cross-center l-gap-2"
         >
           <div
             v-if="role === 'dev' || role === 'staff'"
@@ -99,7 +99,7 @@ const toggleBurgerMenu = () => {
             <div
               class="admin-text"
             >
-              <span :class="$route.path.startsWith('/admin') ? 'u-underline' : ''"> Admin </span>
+              <span :class="$route.path.startsWith('/admin') ? 'u-underline' : ''">Admin</span>
               <fa-awesome-icon
                 class="u-ml-1 u-color-text-2 admin-group-rotate"
                 icon="fa-chevron-up"
@@ -123,7 +123,7 @@ const toggleBurgerMenu = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Panel Admin <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
+                  Panel admin <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
                 </a>
                 <router-link
                   class="c-text-btn-secondary"
@@ -151,7 +151,7 @@ const toggleBurgerMenu = () => {
                   class="c-text-btn-secondary"
                   to="/admin/pizza/list"
                 >
-                  Liste des Pizzas
+                  Liste des pizzas
                 </router-link>
                 <router-link
                   class="c-text-btn-secondary"
@@ -184,12 +184,12 @@ const toggleBurgerMenu = () => {
           { burgered: burger_menu },
         ]"
       >
-        <div id="top" class="l-flex-row l-items-cross-center">
+        <div id="top" class="l-flex-row l-cross-center">
           <router-link to="/">
             <img alt="Logo InsaLan" class="logo c-image-btn u-mx-1" src="@/assets/images/logo_home.png"/>
           </router-link>
           <div class="l-grow"/>
-          <div class="l-flex-row l-items-cross-center l-gap-2 u-p-1 u-ml-1">
+          <div class="l-flex-row l-cross-center l-gap-2 u-p-1 u-ml-1">
             <div v-if="!isConnected">
               <router-link
                 class="c-btn-primary"
@@ -198,7 +198,7 @@ const toggleBurgerMenu = () => {
                 S'identifier
               </router-link>
             </div>
-            <div v-else class="l-flex-row l-items-cross-center l-gap-1">
+            <div v-else class="l-flex-row l-cross-center l-gap-1">
               <router-link
                 class="c-text-btn-secondary u-text-center"
                 to="/me"
@@ -255,7 +255,7 @@ const toggleBurgerMenu = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Panel Admin <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
+            Panel admin <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
           </a>
           <router-link
             v-if="role === 'dev' || role === 'staff'"
@@ -278,7 +278,7 @@ const toggleBurgerMenu = () => {
         </div>
       </div>
     </nav>
-    <div v-if="getContent('alert') && !$route.path.startsWith('/admin/')" class="c-card-error u-full-width u-mt-1 l-flex-column l-items-cross-center u-px-2 u-py-1">
+    <div v-if="getContent('alert') && !$route.path.startsWith('/admin/')" class="c-card-error u-full-width u-mt-1 l-flex-column l-cross-center u-px-2 u-py-1">
       <Content name="alert"/>
     </div>
   </div>

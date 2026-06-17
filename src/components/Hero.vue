@@ -57,13 +57,13 @@ const scrollPastHero = () => {
 </script>
 
 <template>
-  <div id="hero" class="l-relative-position l-flex-column l-items-cross-center l-items-main-center h-screen">
-    <div id="video" class="l-absolute-position l-flex-row u-full-width u-full-height l-items-cross-center l-items-main-center rounded-bottom">
+  <div id="hero" class="l-relative-position l-flex-column l-cross-center l-main-center h-screen">
+    <div id="video" class="l-absolute-position l-flex-row u-full-width u-full-height l-cross-center l-main-center rounded-bottom">
       <!-- gif made with `magick -delay 3 -loop 0 *.png bg.gif` in a folder of all the frames (named sequentially) -->
       <img src="../assets/images/bg.gif" alt="Background video" loading="lazy" class="video">
     </div>
     <div
-      class="u-mx-2 l-relative-position l-flex-column l-items-cross-center"
+      class="u-mx-2 l-relative-position l-flex-column l-cross-center"
       :style="{ top: `${topOffset * 0.35}px` }"
     >
       <img alt="logo InsaLan" class="logo" src="../assets/images/logo_wide.png">
@@ -90,7 +90,7 @@ const scrollPastHero = () => {
   </div>
 </template>
 
-<style scoped layer="override">
+<style scoped>
 .h-screen {
   height: 100vh;
   object-fit: cover;

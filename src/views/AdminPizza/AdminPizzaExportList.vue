@@ -111,7 +111,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
     >
       <div
         v-if="loading"
-        class="l-flex-column l-items-main-center l-items-cross-center l-gap-2 l-grow"
+        class="l-flex-column l-main-center l-cross-center l-gap-2 l-grow"
       >
         <div class="u-big-text">
           Chargement...
@@ -127,7 +127,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
         :class="{ 'u-color-text-2': timeslotExportList[timeslot.id].length === 0 }"
       >
         <div
-          class="l-flex-row l-items-cross-center l-gap-1 u-full-width"
+          class="l-flex-row l-cross-center l-gap-1 u-full-width u-pr-1"
         >
           <button
             type="button"
@@ -158,7 +158,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
           v-for="timeslotExport in timeslotExportList[timeslot.id]"
           :key="timeslotExport.id"
           type="button"
-          class="c-btn-bg-2 u-full-width l-flex-row l-items-cross-center l-gap-1 u-regular u-normal-text"
+          class="c-btn-bg-2 u-full-width l-flex-row l-cross-center l-gap-1 u-regular u-normal-text"
           :class="{ 'u-hidden': !timeslotsExpand[timeslot.id] }"
           title="Télécharger l'export"
           @click="downloadTimeslotDetails(timeslotExport.id)"
@@ -178,7 +178,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
           </button>
         </button>
       </div>
-      <div class="l-flex-row l-items-cross-center l-items-main-center l-gap-1 u-big-text u-mt-2">
+      <div class="l-flex-row l-cross-center l-main-center l-gap-1 u-big-text u-mt-2">
         <button
           type="button"
           class="c-image-btn"

@@ -123,7 +123,7 @@ const editField = (field: string) => {
 
 <template>
   <div class="u-m-main me-grid l-gap-2">
-    <div id="profile" class="l-flex-column l-items-cross-center c-card-bg-2 u-full-width">
+    <div id="profile" class="l-flex-column l-cross-center c-card-bg-2 u-full-width">
       <h2 class="u-text-center">
         Mon compte
       </h2>
@@ -138,12 +138,12 @@ const editField = (field: string) => {
         Prénom et Nom : <em>{{ user.first_name }} {{ user.last_name }}</em>
         <button
           type="button"
-          title="Changer le prénom et nom"
+          title="Changer le prénom et le nom"
           class="c-image-btn c-inline-icon"
           @click="editField('name')"
         >
           <fa-awesome-icon
-            icon="fa-solid fa-pencil"
+            icon="fa-pencil"
           />
         </button>
         <br>
@@ -155,7 +155,7 @@ const editField = (field: string) => {
           @click="editField('email')"
         >
           <fa-awesome-icon
-            icon="fa-solid fa-pencil"
+            icon="fa-pencil"
           />
         </button>
         <br>
@@ -167,7 +167,7 @@ const editField = (field: string) => {
           @click="editField('password')"
         >
           <fa-awesome-icon
-            icon="fa-solid fa-pencil"
+            icon="fa-pencil"
           />
         </button>
         <br>
@@ -175,7 +175,7 @@ const editField = (field: string) => {
       </div>
       <div
         v-if="cart.length > 0"
-        class="l-flex-row l-items-cross-center c-card-bg-3"
+        class="l-flex-row l-cross-center c-card-bg-3"
       >
         <div class="u-big-text u-text-left">
           Vous avez <strong>{{ cart.length }}</strong> article{{ cart.length !== 1 ? 's' : '' }} dans votre panier.
@@ -190,7 +190,7 @@ const editField = (field: string) => {
       <!-- <button
         @click="delete_account()" class="c-btn-error"
       >
-        Supprimer son compte
+        Supprimer le compte
       </button> -->
       <TournamentMeCard v-if="ongoing_match !== null" :ongoing-match="ongoing_match"/>
     </div>
@@ -198,9 +198,9 @@ const editField = (field: string) => {
       <h1 class="u-m-1 u-text-center">
         Mes Équipes
       </h1>
-      <div class="l-flex-column l-items-cross-center">
-        <div v-if="Object.keys(inscriptions.unpaid).length" class="c-card-error l-flex-row l-items-cross-center l-items-main-center u-py-1 u-m-1 u-big-text">
-          <fa-awesome-icon icon="fa-solid fa-warning"/>
+      <div class="l-flex-column l-cross-center">
+        <div v-if="Object.keys(inscriptions.unpaid).length" class="c-card-error l-flex-row l-cross-center l-main-center u-py-1 u-m-1 u-big-text">
+          <fa-awesome-icon icon="fa-warning"/>
           <div v-if="Object.keys(inscriptions.unpaid).length === 1">
             Vous avez une inscription non payée
           </div>
@@ -217,7 +217,7 @@ const editField = (field: string) => {
           <div
             v-for="inscription in (inscriptions.ongoing as [string, PlayerRegistrationDeref | RegistrationDeref][])"
             :key="inscription[1].id"
-            class="c-card-bg-2 u-p-0 u-pb-2 l-flex-column l-items-main-center u-full-width u-full-height"
+            class="c-card-bg-2 u-p-0 u-pb-2 l-flex-column l-main-center u-full-width u-full-height"
           >
             <div class="l-grow">
               <img
@@ -243,7 +243,7 @@ const editField = (field: string) => {
             <strong class="u-big-text u-mx-2">
               {{ inscription[1].team.name }}
             </strong>
-            <div class="l-flex-row l-grow l-items-main-center l-items-cross-center l-gap-2 u-mx-2">
+            <div class="l-flex-row l-grow l-main-center l-cross-center l-gap-2 u-mx-2">
               <router-link
                 class="c-btn-primary"
                 :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
@@ -276,7 +276,7 @@ const editField = (field: string) => {
           <div
             v-for="inscription in (inscriptions.past as [string, PlayerRegistrationDeref | RegistrationDeref][])"
             :key="inscription[1].id"
-            class="c-card-bg-2 u-p-0 u-pb-2 l-flex-column l-grow l-items-main-center u-full-width"
+            class="c-card-bg-2 u-p-0 u-pb-2 l-flex-column l-grow l-main-center u-full-width"
           >
             <img
               :src="inscription[1].team.tournament.logo"
@@ -311,7 +311,7 @@ const editField = (field: string) => {
               inscriptions.private_regs as [string, PlayerRegistrationDeref | RegistrationDeref][]
             )"
             :key="inscription[1].id"
-            class="c-card-bg-2 u-p-0 u-pb-2 l-flex-column l-grow l-items-main-center u-full-width"
+            class="c-card-bg-2 u-p-0 u-pb-2 l-flex-column l-grow l-main-center u-full-width"
           >
             <img
               :src="inscription[1].team.tournament.logo"

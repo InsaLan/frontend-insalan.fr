@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Preflight est un ensemble de règles CSS qui "réinitialisent" les styles par défaut des navigateurs */
+@import "./preflight.css";
 
 /*
   === Style du site InsaLan ===
@@ -112,6 +111,11 @@ html {
   text-align: justify;
 }
 
+*, *:before, *:after {
+  box-sizing: border-box;
+  border-width: 0;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   div * {
     animation: fade-in .2s ease-out;
@@ -139,6 +143,14 @@ html {
 }
 
 @font-face {
+  font-family: SourceCodePro;
+  src: url(./assets/fonts/sourceCodePro/sourceCodePro-Variable.ttf) format('truetype-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: OpenMoji;
   src: url(./assets/fonts/openmoji/OpenMoji-Color.SVG.ttf) format('truetype');
 }
@@ -148,6 +160,25 @@ html {
   flex: 1 1 0;
   flex-direction: column;
   min-height: 100vh;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: SourceCodePro, monospace, monospace;
+}
+
+.c-frame {
+  border-radius: var(--radius);
+  border: 0.15rem solid var(--color-text-3);
+  padding: 1rem;
+  width: fit-content;
+  height: fit-content;
+}
+
+.c-highlighted {
+  box-shadow: 0 0 0 0.15rem var(--color-primary-1);
 }
 
 .c-card-error, .c-card-warn, .c-card-correct, .c-card-bg-2, .c-card-bg-3 {
@@ -296,14 +327,17 @@ form {
   gap: calc(var(--base-margin) * 2);
 }
 
-label {
-  margin-bottom: 0.1rem;
+input:disabled,
+input[type="checkbox"]:disabled,
+label:has(+ input:disabled) {
+  color: var(--color-text-2);
 }
 
 button[type="submit"] {
   align-self: center;
 }
 
+/* TODO: fix there are too many damn borders around checkboxes when you check em */
 input[type="checkbox"] {
   /* Add if not using autoprefixer */
   -webkit-appearance: none;
@@ -356,6 +390,13 @@ textarea {
   color: var(--color-text-1);
   transition: border-color 0.2s, background-color 0.2s;
   width: 100%;
+}
+
+/* Add back the up/down buttons for number fields */
+input[type="number"] {
+  -webkit-appearance: auto;
+  -moz-appearance: auto;
+  appearance: auto;
 }
 
 input[type="file"] {
@@ -444,6 +485,17 @@ select:focus {
   background-color: var(--color-bg-3);
 }
 
+/* This could maybe be done a little bit more cleanly */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: var(--base-margin) var(--base-margin);
+}
+
+th {
+  text-align:center;
+}
+
 img {
   object-fit: contain;
 }
@@ -452,8 +504,8 @@ img {
   display: inline-block;
   width: .9em;
   height: .9em;
-  margin-left: .35em;
-  margin-right: .35em;
+  margin-left: .2em;
+  margin-right: .2em;
   vertical-align: -0.05em;
 }
 
@@ -600,11 +652,18 @@ strong, .u-bold {
   height: 100%;
   opacity: 0.15;
   z-index: -1;
-  animation: fade-in-bg 0.2s ease;
+  animation: fade-in-bg 0.6s ease;
+}
+
+.u-blurry {
+  filter: blur(14px);
 }
 
 @keyframes fade-in-bg {
   0% {
+    opacity: 0;
+  }
+  50% { /* Gross ass solution because the layout can be a bit wonky when it's loading and I don't care anymore */
     opacity: 0;
   }
   100% {
@@ -632,27 +691,27 @@ strong, .u-bold {
 
 /* If you need other kinds of alignment than these, either use empty l-grow divs or add a file-specific class */
 
-.l-items-main-start {
+.l-main-start {
   justify-content: flex-start;
 }
 
-.l-items-main-center {
+.l-main-center {
   justify-content: center;
 }
 
-.l-items-main-end {
+.l-main-end {
   justify-content: flex-end;
 }
 
-.l-items-cross-start {
+.l-cross-start {
   align-items: flex-start;
 }
 
-.l-items-cross-center {
+.l-cross-center {
   align-items: center;
 }
 
-.l-items-cross-end {
+.l-cross-end {
   align-items: flex-end;
 }
 
@@ -666,6 +725,10 @@ strong, .u-bold {
 
 .l-justify-end {
   justify-items: flex-end;
+}
+
+.l-grid-arbitrary {
+  display:grid
 }
 
 @media (max-width: 70rem) {

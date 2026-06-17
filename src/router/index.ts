@@ -84,6 +84,9 @@ const routes: RouteRecordRaw[] = [
         path: 'stages',
         component: () => import('@/components/Tournament/TournamentStages.vue'),
         name: 'tournament_stages',
+        props: {
+          admin: false,
+        },
       },
       {
         path: 'planning',
@@ -123,8 +126,11 @@ const routes: RouteRecordRaw[] = [
           },
           {
             path: 'stages',
-            component: () => import('@/components/Tournament/Admin/TournamentAdminStages.vue'),
+            component: () => import('@/components/Tournament/TournamentStages.vue'),
             name: 'tournament_admin_stages',
+            props: {
+              admin: true,
+            },
           },
           {
             path: 'planning',

@@ -17,14 +17,14 @@ const pizza = computed<Pizza | undefined>(() => pizzaList.value[props.id]);
 
 </script>
 <template>
-  <div class="c-card-bg-2 u-p-0 u-pb-2 l-flex-column l-items-cross-center u-full-height u-full-width">
+  <div class="c-card-bg-2 u-p-0 u-pb-2 l-flex-column l-cross-center u-full-height u-full-width">
     <img
       :alt="`Image de ${pizza?.name}`"
       :src="pizza?.image"
       class="pizza-thumbnail u-full-width u-rounded"
     />
-    <div class="l-flex-row l-items-cross-center u-full-width u-px-2 l-grow l-gap-1">
-      <div class="l-flex-column l-items-cross-center l-items-main-center u-full-width l-grow">
+    <div class="l-flex-row l-cross-center u-full-width u-px-2 l-grow l-gap-1">
+      <div class="l-flex-column l-cross-center l-main-center u-full-width l-grow">
         <p class="u-mb-1 u-text-center u-big-text u-bold">
           {{ pizza?.name }}
         </p>
@@ -33,7 +33,7 @@ const pizza = computed<Pizza | undefined>(() => pizzaList.value[props.id]);
           <strong>Allergènes :</strong> {{ pizza?.allergens.join(', ') }}
         </p>
       </div>
-      <div v-if="onEdit || onDelete" class="l-flex-column l-gap-1 u-big-text l-items-cross-center">
+      <div v-if="onEdit || onDelete" class="l-flex-column l-gap-1 u-big-text l-cross-center">
         <button
           v-if="onEdit"
           type="button"
@@ -60,7 +60,6 @@ const pizza = computed<Pizza | undefined>(() => pizzaList.value[props.id]);
 <style scoped>
 .pizza-thumbnail {
   aspect-ratio: 16 / 9;
-  height: 13rem;
   object-fit: cover;
 }
 </style>

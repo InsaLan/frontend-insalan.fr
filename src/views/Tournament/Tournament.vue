@@ -15,7 +15,7 @@ await getPrivateTournaments();
 </script>
 
 <template>
-  <div class="l-flex-column l-items-cross-center u-m-main">
+  <div class="l-flex-column l-cross-center u-m-main">
     <div v-if="!tournaments_id">
       Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !
     </div>

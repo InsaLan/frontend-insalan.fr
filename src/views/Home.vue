@@ -17,7 +17,7 @@ await getOngoingEvents();
 </script>
 
 <template>
-  <section class="h-min">
+  <section>
     <Hero :event="event"/>
   </section>
   <Content id="main_page" name="main_page" class="u-m-text"/>
@@ -25,7 +25,7 @@ await getOngoingEvents();
     <h1 class="u-my-1">
       Tournois
     </h1>
-    <div v-if="!tournaments_id" class="l-flex-column l-items-cross-center u-m-text">
+    <div v-if="!tournaments_id" class="l-flex-column l-cross-center u-m-text">
       Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !
     </div>
     <div class="u-m-main l-grid-4 l-gap-2 u-mb-2">
@@ -36,7 +36,7 @@ await getOngoingEvents();
         :is-private="false"
       />
     </div>
-    <div class="u-mb-4 l-flex-column l-items-cross-center">
+    <div class="u-mb-4 l-flex-column l-cross-center">
       <router-link
         to="/tournament"
         class="c-btn-primary"
@@ -51,9 +51,3 @@ await getOngoingEvents();
   </section>
   <Partners/>
 </template>
-
-<style scoped layer="override">
-.h-min {
-  height: min-content;
-}
-</style>

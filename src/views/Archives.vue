@@ -32,7 +32,7 @@ await fetchAllEvents();
           :class="{
             rtl: index % 2 === 1,
             'main-grid': event.poster && event.tournaments && event.tournaments?.length > 0,
-            'l-flex-column u-full-width l-items-cross-center': !event.poster || !event.tournaments || event.tournaments?.length === 0,
+            'l-flex-column u-full-width l-cross-center': !event.poster || !event.tournaments || event.tournaments?.length === 0,
           }"
         >
           <img

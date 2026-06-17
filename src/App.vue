@@ -48,7 +48,7 @@ onUnmounted(() => {
         <Suspense timeout="0">
           <component :is="Component"/>
           <template #fallback>
-            <div class="l-flex-column l-items-main-center l-items-cross-center l-gap-2 u-full-height l-grow">
+            <div class="l-flex-column l-main-center l-cross-center l-gap-2 u-full-height l-grow">
               <div class="u-big-text">
                 Chargement...
               </div>

@@ -18,6 +18,8 @@ import { between, integer, required } from '@/support/locales/errors.fr';
 const { group, editable = false } = defineProps<{
   group: Group;
   editable?: boolean;
+  onDetail?: () => void;
+  onBack?: () => void;
 }>();
 
 const TournamentStore = useTournamentStore();
@@ -156,196 +158,222 @@ watchEffect(() => {
 <template>
   <div
     v-bind="$attrs"
-    class="rounded bg-cyan-900 font-black shadow-md"
-    style="text-shadow: black 0 0 2px;"
+    class="c-card-bg-2 l-flex-column l-gap-1"
   >
     <div
-      class="grid grid-cols-[1fr,3fr,1fr] l-items-cross-center rounded-t bg-cyan-500 u-py-1 u-text-center text-3xl"
+      class="l-flex-row l-cross-center l-gap-1 c-card-bg-3 u-full-width u-text-center u-big-text"
     >
-      <div/>
       <template v-if="!edit_mode">
-        {{ group.name }}
-        <div
-          v-if="editable"
+        <button
+          v-if="onBack"
+          type="button"
+          title="Retour"
+          @click="onBack()"
         >
           <fa-awesome-icon
-            class="hover:cursor-pointer hover:text-gray-500"
-            icon="fa-solid fa-pencil"
-            size="2xs"
+            class="c-image-btn"
+            icon="fa-chevron-left"
+          />
+        </button>
+        <h2 class="u-m-0">
+          {{ group.name }}
+        </h2>
+        <div class="l-grow"/>
+        <template
+          v-if="editable"
+        >
+          <button
+            type="button"
             title="Éditer la poule"
             @click="open_edit"
-          />
-          <fa-awesome-icon
-            class="u-ml-1 text-red-500 hover:cursor-pointer hover:text-red-700"
-            icon="fa-solid fa-trash-can"
-            size="2xs"
+          >
+            <fa-awesome-icon
+              class="c-image-btn"
+              icon="fa-pencil"
+            />
+          </button>
+          <button
+            type="button"
             title="Supprimer la poule"
             @click="delete_group(false)"
+          >
+            <fa-awesome-icon
+              class="c-image-btn u-color-error-1 u-mr-0"
+              icon="fa-trash-can"
+            />
+          </button>
+        </template>
+        <button
+          v-if="onDetail"
+          type="button"
+          title="Détails"
+          @click="onDetail()"
+        >
+          <fa-awesome-icon
+            class="c-image-btn"
+            icon="fa-chevron-right"
           />
-        </div>
+        </button>
       </template>
       <template v-else>
         <input
           id="group_name"
           v-model="group_data.name"
-          class="bg-inherit p-0 u-text-center text-3xl"
-          style="text-shadow: black 0 0 2px;"
           type="text"
           name="group_name"
-          :size="group_data.name.length"
         >
-        <div>
+        <button
+          type="button"
+          title="Sauvegarder la poule"
+          :disabled="v$.$invalid"
+          @click="edit_group"
+        >
           <fa-awesome-icon
-            class="u-px-1 text-green-700 hover:cursor-pointer hover:text-green-900"
-            icon="fa-solid fa-save"
-            size="sm"
-            title="Sauvegarder la poule"
-            @click="edit_group"
+            class="c-image-btn c-inline-icon"
+            icon="fa-save"
           />
+        </button>
+        <button
+          type="button"
+          title="Annuler les changements"
+          @click="edit_mode = false; reset()"
+        >
           <fa-awesome-icon
-            class="text-red-500 hover:cursor-pointer hover:text-red-700"
-            icon="fa-solid fa-xmark"
-            size="sm"
-            title="Annuler"
-            @click="edit_mode = false; reset()"
+            class="c-image-btn c-inline-icon u-color-error-1 u-mr-0"
+            icon="fa-xmark"
           />
-        </div>
+        </button>
       </template>
     </div>
 
     <div
       v-if="v$.$invalid"
-      class="bg-red-500 u-text-center"
+      class="c-card-error u-p-0 u-px-1 u-text-center u-full-width"
     >
       {{ v$.$errors.at(0)?.$message }}
     </div>
 
-    <div
-      class="grid l-items-cross-center l-items-main-center gap-y-2 u-p-1 u-text-center u-big-text"
-      :class="[editable && isAdmin ? 'grid-cols-[1fr,3fr,1fr]' : 'grid-cols-[4fr,1fr]']"
-    >
-      <div
-        v-if="editable && isAdmin"
-        class="flex u-full-height l-items-cross-center l-items-main-center border-b-2 text-2xl"
-      >
-        Seed
-      </div>
-      <div
-        class="flex u-full-height l-items-cross-center l-items-main-center border-b-2 text-2xl"
-      >
-        Équipes
-      </div>
-      <div
-        class="border-b-2 u-py-1 text-2xl"
-      >
-        Score
-        <p
-          class="text-sm"
-        >
-          (tiebreak)
-        </p>
-      </div>
+    <table class="u-text-center">
+      <thead>
+        <tr>
+          <th v-if="editable && isAdmin">
+            Seed
+          </th>
+          <th>
+            Équipe
+          </th>
+          <th>
+            Score
+            <br>
+            <span class="u-normal-text u-regular">
+              (tiebreak)
+            </span>
+          </th>
+        </tr>
+      </thead>
 
-      <template
-        v-if="!edit_mode"
-      >
+      <tbody>
         <template
-          v-for="score, team_id in group.scores"
-          :key="team_id"
+          v-if="!edit_mode"
         >
-          <div
-            v-if="editable && isAdmin"
+          <tr
+            v-for="score, team_id in group.scores"
+            :key="team_id"
           >
-            {{ group.seeding ? group.seeding[team_id] : 0 }}
-          </div>
-          <div
-            class="truncate u-px-1"
-          >
-            {{
-              get_validated_team_by_id(team_id)?.name
-            }}
-          </div>
-          <div>
-            {{ score }} {{ group.tiebreak_scores[team_id] !== 0 ? `(${Intl.NumberFormat('fr-FR', { signDisplay: 'always' }).format(group.tiebreak_scores[team_id])})` : (editable && isAdmin) ? '(0)' : '' }}
-          </div>
-        </template>
-      </template>
-
-      <template
-        v-else
-      >
-        <template
-          v-for="idx in group_data.teams.length"
-          :key="group_data.teams[idx - 1]"
-        >
-          <div
-            v-if="editable && isAdmin"
-          >
-            <input
-              id="seed"
-              v-model.number="group_data.seeding[group_data.teams[idx - 1]]"
-              type="number"
-              name="seed"
-              class="w-10 bg-inherit p-1 u-text-center"
-              :class="{ error: v$.seeding[group_data.teams[idx - 1]].$error }"
-              style="appearance: textfield;"
-              @blur="v$.seeding[group_data.teams[idx - 1]].$touch"
-            />
-          </div>
-          <div
-            class="flex min-w-0"
-          >
-            <select
-              id="select_team"
-              v-model="group_data.teams[idx - 1]"
-              name="select_team"
-              class="u-full-width truncate bg-cyan-900 py-1 pl-1"
-              @blur="v$.teams.$touch"
+            <td
+              v-if="editable && isAdmin"
             >
-              <option :value="0">
-                TBD
-              </option>
-              <option
-                v-for="team in validated_teams.filter(
-                  (team: Team) => !group_data.teams.includes(team.id) || team.id === group_data.teams[idx - 1],
-                )"
-                :key="team.id"
-                :value="team.id"
-              >
-                {{ team.name }}
-              </option>
-            </select>
-          </div>
-          <div>
-            {{ group.scores[group_data.teams[idx - 1]] ?? 0 }}
-            (<input
-              id="seed"
-              v-model.number="group_data.tiebreak_scores[group_data.teams[idx - 1]]"
-              type="number"
-              name="seed"
-              class="w-10 bg-inherit p-1 u-text-center"
-              :class="{ error: v$.tiebreak_scores[group_data.teams[idx - 1]].$error }"
-              style="appearance: textfield;"
-              @blur="v$.tiebreak_scores[group_data.teams[idx - 1]].$touch"
-            />)
-          </div>
+              {{ group.seeding ? group.seeding[team_id] : 0 }}
+            </td>
+            <td
+              class="truncate u-px-1"
+            >
+              {{
+                get_validated_team_by_id(team_id)?.name
+              }}
+            </td>
+            <td>
+              {{ score }} {{ group.tiebreak_scores[team_id] !== 0 ? `(${Intl.NumberFormat('fr-FR', { signDisplay: 'always' }).format(group.tiebreak_scores[team_id])})` : (editable && isAdmin) ? '(0)' : '' }}
+            </td>
+          </tr>
         </template>
-      </template>
-    </div>
+
+        <template
+          v-else
+        >
+          <tr
+            v-for="idx in group_data.teams.length"
+            :key="group_data.teams[idx - 1]"
+          >
+            <td
+              v-if="editable && isAdmin"
+              class="not-too-wide"
+            >
+              <input
+                id="seed"
+                v-model.number="group_data.seeding[group_data.teams[idx - 1]]"
+                type="number"
+                name="seed"
+                @blur="v$.seeding[group_data.teams[idx - 1]].$touch"
+              />
+            </td>
+            <td
+              class="not-too-wide"
+            >
+              <select
+                id="select_team"
+                v-model="group_data.teams[idx - 1]"
+                name="select_team"
+                @blur="v$.teams.$touch"
+              >
+                <option :value="0">
+                  TBD
+                </option>
+                <option
+                  v-for="team in validated_teams.filter(
+                    (team: Team) => !group_data.teams.includes(team.id) || team.id === group_data.teams[idx - 1],
+                  )"
+                  :key="team.id"
+                  :value="team.id"
+                >
+                  {{ team.name }}
+                </option>
+              </select>
+            </td>
+            <td
+              class="l-flex-row l-cross-center"
+            >
+              {{ group.scores[group_data.teams[idx - 1]] ?? 0 }}
+              (<input
+                id="seed"
+                v-model.number="group_data.tiebreak_scores[group_data.teams[idx - 1]]"
+                type="number"
+                name="seed"
+                class="not-too-wide"
+                @blur="v$.tiebreak_scores[group_data.teams[idx - 1]].$touch"
+              />)
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
   </div>
 
-  <Modal v-if="modal_open">
+  <Modal
+    v-if="modal_open"
+    @close="modal_open = false"
+  >
     <template #title>
-      Suppression de la {{ group.name }}
+      Suppression de {{ group.name }}
     </template>
     <template #body>
-      La {{ group.name }} va être supprimée ainsi que tous les matchs qui lui sont liés.
+      La poule <strong>{{ group.name }}</strong> va être supprimée ainsi que tous les matchs qui lui sont liés.
     </template>
     <template #buttons>
       <button
         class="c-btn-bg-3"
         type="button"
-        @click="modal_open = false;"
+        @click="modal_open = false"
       >
         Annuler
       </button>
@@ -359,3 +387,9 @@ watchEffect(() => {
     </template>
   </Modal>
 </template>
+
+<style scoped>
+  .not-too-wide {
+    max-width: 12rem;
+  }
+</style>

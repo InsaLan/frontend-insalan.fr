@@ -66,9 +66,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="l-flex-column l-items-cross-center l-items-main-center u-full-height u-m-text">
-    <div class="l-flex-column l-items-cross-center c-card-bg-2 u-p-4">
-      <div class="l-flex-column l-items-cross-center u-mb-2">
+  <div class="l-flex-column l-cross-center l-main-center u-full-height u-m-text">
+    <div class="l-flex-column l-cross-center c-card-bg-2 u-p-4">
+      <div class="l-flex-column l-cross-center u-mb-2">
         <h1 class="u-m-0">
           Se connecter
         </h1>
@@ -76,7 +76,7 @@ onMounted(async () => {
           to="/register"
         >
           <div
-            class="l-flex-row l-items-cross-center c-text-btn u-m-0"
+            class="l-flex-row l-cross-center c-text-btn u-m-0"
           >
             Je n'ai pas de compte
             <svg

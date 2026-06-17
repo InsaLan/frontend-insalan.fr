@@ -38,11 +38,11 @@ const buildYear = BUILD_YEAR;
     </svg>
   </div>
   <section class="u-bg-bg-2 footer-grid">
-    <div class="reseaux u-m-1 l-flex-column l-items-cross-center l-items-main-center l-justify-center">
+    <div class="reseaux u-m-1 l-flex-column l-cross-center l-main-center l-justify-center">
       <div class="reseaux-text u-text-center u-big-text">
         Réseaux
       </div>
-      <div class="l-flex-row u-full-width l-items-cross-center l-items-main-center l-gap-1">
+      <div class="l-flex-row u-full-width l-cross-center l-main-center l-gap-1">
         <a class="icon-size c-image-btn" href="https://www.instagram.com/insalan_officiel" target="_blank" rel="noopener noreferrer">
           <img src="/src/assets/images/instagram.svg" alt="Logo Instagram">
         </a>
@@ -57,20 +57,20 @@ const buildYear = BUILD_YEAR;
         </a>
       </div>
     </div>
-    <div class="centre l-flex-column l-items-main-center">
-      <div class="u-my-1 l-flex-column l-items-main-center u-text-center">
-        <p>
+    <div class="centre l-flex-column l-main-center">
+      <div class="u-my-1 l-flex-column l-main-center u-text-center">
+        <!-- <p>
           Sitemap
-        </p>
+        </p> -->
         <p>
           InsaLan 2023 - {{ buildYear }}
         </p>
         <p>
-          Code & design: équipe Dev
+          Code & design: équipe Sysrez - Dev
         </p>
       </div>
     </div>
-    <div class="insa u-my-1 u-mr-2 l-flex-row l-items-cross-center l-items-main-center l-justify-center">
+    <div class="insa u-my-1 u-mr-2 l-flex-row l-cross-center l-main-center l-justify-center">
       <a href="https://aeir.insa-rennes.fr" target="_blank" rel="noopener noreferrer">
         <img
           alt="Logo de l'AEIR"

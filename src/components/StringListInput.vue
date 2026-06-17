@@ -39,7 +39,7 @@ const editEl = (index: number) => {
     <div v-for="(el, i) in modelValue" :key="i" class="l-flex-row c-btn-bg-3 nopad">
       <button
         type="button"
-        class="l-flex-row l-items-cross-center u-pl-1"
+        class="l-flex-row l-cross-center u-pl-1"
         title="Modifier"
         @click="editEl(i)"
       >
@@ -57,7 +57,7 @@ const editEl = (index: number) => {
       </button>
     </div>
   </div>
-  <div class="l-flex-row l-items-cross-center">
+  <div class="l-flex-row l-cross-center">
     <input
       :id="id"
       v-model="newElement"
@@ -73,7 +73,7 @@ const editEl = (index: number) => {
       :disabled="newElement ? false : true"
       @click="addElement"
     >
-      <fa-awesome-icon class="check" icon="fa-check"/>
+      <fa-awesome-icon class="check" icon="fa-plus"/>
     </button>
   </div>
 </template>

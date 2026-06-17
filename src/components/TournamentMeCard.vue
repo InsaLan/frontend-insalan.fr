@@ -151,11 +151,9 @@ const gameSpecificData = computed(() => {
       <p class="u-big-text">
         {{ gameSpecificData.title }}
       </p>
-      <div>
-        <p v-for="item in gameSpecificData.items" :key="item.label">
-          {{ item.label }}: {{ item.value }}
-        </p>
-      </div>
+      <p v-for="item in gameSpecificData.items" :key="item.label">
+        {{ item.label }}: {{ item.value }}
+      </p>
     </div>
     <button type="button" class="c-btn-secondary u-full-width" @click="openScoreModal()">
       Terminer la partie manuellement

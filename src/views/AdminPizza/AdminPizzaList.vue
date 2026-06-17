@@ -76,9 +76,9 @@ await fetchAllPizzas();
 
 <template>
   <h1>
-    Liste des Pizzas
+    Liste des pizzas
   </h1>
-  <div class="u-m-2 l-flex-row l-gap-1 l-items-cross-center">
+  <div class="u-m-2 l-flex-row l-gap-1 l-cross-center">
     <button
       type="button"
       class="c-btn-primary"

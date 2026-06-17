@@ -13,7 +13,6 @@ module.exports = defineConfig({
     {
       files: ['*.vue', '*.ts'],
       extends: [
-        'plugin:tailwindcss/recommended',
         'plugin:vue/vue3-recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
         '@vue/eslint-config-airbnb-with-typescript',
@@ -52,7 +51,6 @@ module.exports = defineConfig({
           ],
         }],
         'simple-import-sort/exports': 'error',
-        'tailwindcss/no-custom-classname': 'off',
 
         // TypeScript rules
         // https://typescript-eslint.io/rules/#extension-rules
@@ -95,6 +93,10 @@ module.exports = defineConfig({
         'vue/max-len': ['error', 120],
       },
     },
+    // {
+    //   files: ['*.css'],
+    //   parser: false,
+    // },
   ],
   reportUnusedDisableDirectives: true,
 });

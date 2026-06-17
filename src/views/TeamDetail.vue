@@ -242,21 +242,21 @@ const kick_member = async (type: string, id: number) => {
 <template>
   <img
     :src="tournament?.logo"
-    class="c-background-image"
+    class="c-background-image u-blurry"
     alt=""
   >
-  <h1>
+  <h1 class="u-mt-1 u-mb-4">
     {{ tournament?.name }}
   </h1>
 
-  <div class="l-flex-column l-items-cross-center l-gap-2 u-mb-4 u-m-text">
+  <div class="l-flex-column l-cross-center l-gap-2 u-mb-4 u-m-text">
     <div
-      class="l-flex-column l-items-cross-center l-items-main-center c-card-bg-2 u-full-width"
+      class="l-flex-column l-cross-center l-main-center c-card-bg-2 u-full-width"
     >
       <div
         class="l-flex-row u-full-width u-p-1"
       >
-        <h2 class="l-flex-row l-items-cross-center">
+        <h2 class="l-flex-row l-cross-center">
           [{{ tournament?.game.short_name }}]
           {{ selected_team?.name }}
           <button
@@ -278,22 +278,27 @@ const kick_member = async (type: string, id: number) => {
             @keydown.enter="showModalTeamName = true"
           >
             <fa-awesome-icon
-              icon="fa-solid fa-pencil"
+              icon="fa-pencil"
             />
           </button>
-          <img v-if="selected_team.validated" src="/src/assets/images/check.svg" alt="Logo validé" class="c-inline-icon"/>
+          <fa-awesome-icon
+            v-if="selected_team.validated"
+            icon="fa-circle-check"
+            class="c-inline-icon u-color-correct-1"
+            title="Équipe validée"
+          />
         </h2>
         <div class="l-grow"/>
         <button
           v-if="team_registration?.[0] === 'player' || team_registration?.[0] === 'substitute'"
           type="button"
-          class="c-btn-bg-3 l-flex-row l-items-cross-center"
+          class="c-btn-bg-3 l-flex-row l-cross-center"
           @click="showModalNameInGame = true"
         >
           {{ (team_registration?.[1] as PlayerRegistrationDeref).name_in_game }}
           <fa-awesome-icon
             class="c-inline-icon u-mr-0"
-            icon="fa-solid fa-pencil"
+            icon="fa-pencil"
           />
         </button>
       </div>
@@ -305,18 +310,18 @@ const kick_member = async (type: string, id: number) => {
         >
           <span class="u-big-text">Joueur·euse·s :</span>
           <div
-            class="l-grid-3 u-p-1 l-gap-1"
+            class="l-grid-3 u-pt-1 l-gap-1"
           >
             <div
               v-for="player in selected_team?.players as PlayerRegistration[]"
               :key="player.id"
-              class="c-card-bg-3 l-gap-0 u-full-width u-full-height l-flex-row l-items-cross-center"
+              class="c-card-bg-3 l-gap-0 u-full-width u-full-height l-flex-row l-cross-center u-big-text"
             >
               {{ player.name_in_game }}
               <fa-awesome-icon
                 v-if="selected_team.captain === player.name_in_game"
                 class="c-inline-icon u-mr-0"
-                icon="fa-solid fa-crown"
+                icon="fa-crown"
                 title="Capitaine de l'équipe"
               />
               <PaymentStatusIcon :player="player as PlayerRegistration"/>
@@ -343,7 +348,7 @@ const kick_member = async (type: string, id: number) => {
                 @click="kickregtype = 'player'; kickregid = player.id; showModalKickPlayer = true"
               >
                 <fa-awesome-icon
-                  icon="fa-solid fa-hammer"
+                  icon="fa-hammer"
                 />
               </button>
             </div>
@@ -355,12 +360,12 @@ const kick_member = async (type: string, id: number) => {
         >
           <span class="u-big-text">Managers :</span>
           <ul
-            class="l-grid-3 u-p-1 l-gap-1"
+            class="l-grid-3 u-pt-1 l-gap-1"
           >
             <li
               v-for="manager in selected_team?.managers as String[]"
               :key="manager as string"
-              class="c-card-bg-3 l-gap-0 u-full-width u-full-height l-flex-row l-items-cross-center"
+              class="c-card-bg-3 l-gap-0 u-full-width u-full-height l-flex-row l-cross-center u-big-text"
             >
               {{ manager }}
             </li>
@@ -372,12 +377,12 @@ const kick_member = async (type: string, id: number) => {
         >
           <span class="u-big-text">Remplaçant·e·s :</span>
           <div
-            class="l-grid-3 u-p-1 l-gap-1"
+            class="l-grid-3 u-pt-1 l-gap-1"
           >
             <div
               v-for="substitute in selected_team?.substitutes as PlayerRegistration[]"
               :key="substitute.id"
-              class="c-card-bg-3 l-gap-0 u-full-width u-full-height l-flex-row l-items-cross-center"
+              class="c-card-bg-3 l-gap-0 u-full-width u-full-height l-flex-row l-cross-center u-big-text"
             >
               {{ substitute.name_in_game }}
               <PaymentStatusIcon :player="substitute as PlayerRegistration"/>
@@ -400,7 +405,7 @@ const kick_member = async (type: string, id: number) => {
                 @click="kickregtype = 'substitue'; kickregid = substitute.id; showModalKickPlayer = true"
               >
                 <fa-awesome-icon
-                  icon="fa-solid fa-hammer"
+                  icon="fa-hammer"
                 />
               </button>
             </div>
@@ -408,8 +413,12 @@ const kick_member = async (type: string, id: number) => {
         </div>
       </div>
       <div
-        v-if="tournament && (!('event' in tournament) || (tournament as EventTournamentDeref)?.event.ongoing)"
-        class="l-flex-row u-full-width l-items-main-end l-gap-2 u-p-1"
+        v-if="tournament && (!('event' in tournament) || (tournament as EventTournamentDeref)?.event.ongoing) && ((team_registration?.[0] === 'manager'
+          || (
+            team_registration?.[0] === 'player'
+            && selected_team?.captain === (team_registration?.[1] as PlayerRegistrationDeref)?.name_in_game
+          )) || team_registration?.[1]?.payment_status !== PaymentStatus.PAID)"
+        class="l-flex-row u-full-width l-main-end l-gap-2 u-p-1"
       >
         <button
           v-if="
@@ -440,7 +449,7 @@ const kick_member = async (type: string, id: number) => {
         </button>
       </div>
       <div
-        v-else
+        v-else-if="!(tournament && (!('event' in tournament) || (tournament as EventTournamentDeref)?.event.ongoing))"
         class="u-mb-1 u-mx-1 u-full-width u-big-text u-text-center"
       >
         Le tournoi est terminé et l'équipe ne peut plus être modifiée.
@@ -449,7 +458,7 @@ const kick_member = async (type: string, id: number) => {
 
     <div
       v-if="tournament && ('event' in tournament)"
-      class="l-flex-column l-items-cross-center l-items-main-center c-card-bg-2 u-full-width"
+      class="l-flex-column l-cross-center l-main-center c-card-bg-2 u-full-width"
     >
       <Seating
         :tournament="tournament as EventTournamentDeref"

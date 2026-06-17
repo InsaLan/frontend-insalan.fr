@@ -34,7 +34,7 @@ enum OrderType {
 }
 
 const orderTypeToString = {
-  [OrderType.PUBLIC]: 'Publique',
+  [OrderType.PUBLIC]: 'Public',
   [OrderType.PLAYER]: 'Joueur·euse',
   [OrderType.STAFF]: 'Staff',
 };
@@ -296,116 +296,97 @@ const factorise = (pizzas: number[]) => {
 };
 </script>
 <template>
-  <div v-if="timeslotList && Object.keys(timeslotList).length > 0" class="l-flex-column l-grow">
+  <div v-if="timeslotList && Object.keys(timeslotList).length > 0" class="l-flex-column l-cross-center u-px-2 u-pb-2">
     <div
-      class="l-absolute-position z-10 flex w-screen rounded-xl u-text-center text-3xl hover:cursor-pointer"
-      :class="{ 'bg-black': extend }"
+      v-if="extend"
+      class="backdrop l-absolute-position"
+      @click="extend = false"
+      @keyup="extend = false"
+    />
+
+    <button
+      class="c-btn-bg-2"
+      type="button"
+      @click="extend = !extend"
+    >
+      Créneau {{ frenchFormatFromDate(new Date(timeslotList[selectedTimeslotId]?.delivery_time)) }}
+      <fa-awesome-icon
+        class="c-inline-icon u-mr-0"
+        icon="fa-chevron-down"
+      />
+    </button>
+    <div
+      class="ontop l-absolute-position u-text-center c-card-bg-3 u-p-0 l-gap-0"
+      :class="{ 'u-hidden': !extend }"
       @click="extend = !extend"
       @keydown.enter="extend = !extend"
     >
-      <div class="l-grow">
-        <div
-          v-for="timeslot in timeslotList"
-          :key="timeslot.id"
-          class="l-flex-row hover:cursor-pointer"
-          :class="{ hidden: !extend }"
-          @click="selectedTimeslotId = timeslot.id"
-          @keydown.enter="selectedTimeslotId = timeslot.id"
-        >
-          <div class="u-m-1 l-grow">
-            Créneau {{ frenchFormatFromDate(new Date(timeslot.delivery_time)) }}
-            <fa-awesome-icon
-              class="u-ml-1 text-red-500"
-              icon="fa-trash-can"
-              @click.stop="showDeleteModal = true; selectedDelete = timeslot.id"
-            />
-          </div>
-        </div>
-        <div class="l-flex-row hover:cursor-pointer" :class="{ hidden: !extend }">
-          <div
-            class="u-m-1 l-grow"
-            @click="openModal"
-            @keydown.enter="openModal"
-          >
-            Ajouter un créneau
-            <fa-awesome-icon
-              class="u-ml-1"
-              icon="fa-circle-plus"
-            />
-          </div>
-        </div>
-      </div>
-      <div>
-        <div
-          class="m-2
-          hover:cursor-pointer"
+      <button
+        v-for="timeslot in timeslotList"
+        :key="timeslot.id"
+        type="button"
+        class="c-btn-bg-3 l-flex-row l-cross-center u-full-width"
+        @click="selectedTimeslotId = timeslot.id"
+      >
+        Créneau {{ frenchFormatFromDate(new Date(timeslot.delivery_time)) }}
+        <div class="l-grow"/>
+        <button
+          type="button"
+          title="Supprimer le créneau"
+          @click="showDeleteModal = true; selectedDelete = timeslot.id"
         >
           <fa-awesome-icon
-            v-if="extend"
-            class="u-ml-1"
-            icon="fa-chevron-up"
+            class="c-image-btn u-color-error-1 c-inline-icon u-mr-0 u-ml-1"
+            icon="fa-trash-can"
           />
-          <fa-awesome-icon
-            v-else
-            class="u-ml-1"
-            icon="fa-chevron-down"
-          />
-        </div>
-      </div>
-    </div>
-    <div
-      class="flex w-screen rounded-xl bg-black u-text-center text-3xl"
-    >
-      <div class="u-m-1 l-grow">
-        Créneau {{ frenchFormatFromDate(new Date(timeslotList[selectedTimeslotId]?.delivery_time)) }}
-      </div>
-      <div
-        class="u-m-1"
+        </button>
+      </button>
+      <button
+        type="button"
+        class="c-btn-secondary u-full-width"
+        @click="openModal"
+        @keydown.enter="openModal"
       >
         <fa-awesome-icon
-          v-if="extend"
-          class="u-ml-1"
-          icon="fa-chevron-up"
+          class="c-inline-icon"
+          icon="fa-circle-plus"
         />
-        <fa-awesome-icon
-          v-else
-          class="u-ml-1"
-          icon="fa-chevron-down"
-        />
-      </div>
+        Ajouter un créneau
+      </button>
     </div>
-    <div class="u-m-1 l-flex-column l-grow gap-5 md:flex-row" :class="{ blur: extend }">
-      <div class="l-flex-column l-grow">
-        <h1 class="u-my-1 u-text-center text-white">
-          Liste des Pizzas disponibles
-        </h1>
-        <form id="add_pizza" class="l-flex-column l-grow gap-5">
-          <div class="flex l-gap-1 rounded-2xl bg-gray-500 p-1 u-text-center">
-            <div class="l-flex-column">
-              <fa-awesome-icon
-                class="u-ml-1 l-grow"
-                icon="fa-magnifying-glass"
-              />
-            </div>
-            <div class="l-grow">
-              <label for="searchPizza" class="sr-only">Rechercher une pizza</label>
-              <input id="searchPizza" v-model="pizzaSearch" type="text" class="u-full-width rounded-xl border-2 border-black bg-gray-300 p-0 u-text-center" placeholder="Rechercher une pizza"/>
-            </div>
-          </div>
-          <div class="grow overflow-y-auto bg-gray-300 u-text-center md:h-px">
-            <div v-for="pizzaId in timeslotList[selectedTimeslotId]?.pizza" :key="pizzaId" class="l-flex-row justify-between">
-              <div :class="{ hidden: !pizzaList[pizzaId]?.name.toLowerCase().includes(pizzaSearch.toLowerCase()) }" class="flex l-grow border-b-2 border-black">
-                <label :for="`pizzaQuantity-${pizzaId}`" class="l-flex-column l-grow l-items-main-center">
-                  {{ pizzaList[pizzaId]?.name }}: {{ pizzaList[pizzaId]?.ingredients.join(', ') }}
+    <div class="desktop-only-row u-mt-2 l-grow l-gap-2 u-full-width">
+      <div class="l-flex-column l-gap-2 c-card-bg-2 u-full-width">
+        <h2 class="u-text-center u-m-0">
+          Nouvelle commande
+        </h2>
+        <div
+          v-if="new Date(timeslotList[selectedTimeslotId]?.end) < new Date()"
+          class="u-text-center c-card-error u-full-width"
+        >
+          <fa-awesome-icon
+            class="c-inline-icon"
+            icon="fa-warning"
+          />
+          <strong>L'heure de fin de commande est dépassée</strong>
+        </div>
+        <form id="add_pizza" class="l-flex-column l-gap-2 u-full-width">
+          <label for="searchPizza" class="sr-only">Rechercher une pizza</label>
+          <input id="searchPizza" v-model="pizzaSearch" type="text" placeholder="Rechercher une pizza"/>
+          <div class="l-flex-column l-gap-1 reasonable-height">
+            <div v-for="pizzaId in timeslotList[selectedTimeslotId]?.pizza" :key="pizzaId">
+              <div v-if="pizzaList[pizzaId]?.name.toLowerCase().includes(pizzaSearch.toLowerCase())" class="l-flex-row l-cross-center l-gap-1">
+                <label :for="`pizzaQuantity-${pizzaId}`" :title="pizzaList[pizzaId]?.ingredients.join(', ')" class="u-big-text">
+                  {{ pizzaList[pizzaId]?.name }}
                 </label>
-                <input :id="`pizzaQuantity-${pizzaId}`" type="number" class="w-20 border-0 bg-gray-300 u-text-center" :value="0" min="0" @wheel="handleWheel"/>
+                <div class="l-grow"/>
+                <input :id="`pizzaQuantity-${pizzaId}`" type="number" class="number-width" :value="0" min="0" max="99" @wheel="handleWheel"/>
               </div>
             </div>
           </div>
-          <div class="l-flex-column rounded-2xl bg-gray-500 u-text-center md:flex-row">
+          <div class="desktop-only-row u-text-center l-gap-1">
             <div class="l-grow">
               <label for="paymentMethod" class="sr-only">Payment Method</label>
-              <select id="paymentMethod" v-model="selectedPaymentMethod" class="u-m-1 rounded-xl bg-gray-300 p-0 u-pl-1 u-pr-4 text-left">
+              <select id="paymentMethod" v-model="selectedPaymentMethod">
                 <option value="default" selected>
                   Choisir un moyen de paiement
                 </option>
@@ -416,93 +397,71 @@ const factorise = (pizzas: number[]) => {
             </div>
             <div class="l-grow">
               <label for="order-type" class="sr-only">Type de commande</label>
-              <select id="order-type" v-model="selectedOrderType" class="u-m-1 rounded-xl bg-gray-300 p-0 u-pl-1 u-pr-4 text-left">
+              <select id="order-type" v-model="selectedOrderType">
                 <option v-for="type in OrderType" :key="type" :value="type">
                   {{ orderTypeToString[type] }}
                 </option>
               </select>
             </div>
-            <div class="flex l-grow">
+            <div class="l-grow">
               <label for="InputPseudo" class="sr-only">Input Text</label>
-              <input id="InputPseudo" v-model="pseudo" type="text" class="u-m-1 l-grow rounded-xl border-2 border-black bg-gray-300 p-0 u-text-center" placeholder="Pseudo"/>
+              <input id="InputPseudo" v-model="pseudo" type="text" placeholder="Pseudo"/>
             </div>
-            <div class="flex l-items-main-center">
-              <button type="submit" class="u-m-1 w-20 l-grow rounded-xl bg-green-600 p-0 u-text-center text-white" @click.prevent="validatePizza">
-                Ajouter
-              </button>
-            </div>
+            <button type="submit" class="c-btn-secondary" @click.prevent="validatePizza">
+              Ajouter
+            </button>
           </div>
         </form>
       </div>
-      <div class="l-flex-column l-grow">
-        <h1 class="u-my-1 rounded-xl u-text-center text-white" :class="{ 'bg-red-600': pizzaCount >= timeslotList[selectedTimeslotId]?.pizza_max }">
+      <div class="l-flex-column l-gap-2 c-card-bg-2 u-full-width">
+        <h2 class="u-text-center u-m-0">
           Commandes : {{ pizzaCount }} /
           {{ timeslotList[selectedTimeslotId]?.pizza_max }}
-          <fa-awesome-icon
-            class="u-ml-1 hover:cursor-pointer"
-            icon="fa-download"
+          <button
+            type="button"
+            title="Exporter les commandes"
             @click="exportOrders(selectedTimeslotId)"
-            @keydown.enter="exportOrders(selectedTimeslotId)"
-          />
-        </h1>
-        <div class="l-flex-column l-grow gap-5">
-          <div class="flex l-gap-1 rounded-2xl bg-gray-500 p-1 u-text-center">
-            <div class="l-flex-column">
-              <fa-awesome-icon
-                class="u-ml-1 l-grow"
-                icon="fa-magnifying-glass"
-              />
-            </div>
-            <div class="l-grow">
-              <label for="searchPizza" class="sr-only">Rechercher une commande</label>
-              <input id="searchPizza" v-model="orderSearch" type="text" class="u-full-width rounded-xl border-2 border-black bg-gray-300 p-0 u-text-center" placeholder="Rechercher une commande"/>
-            </div>
-          </div>
-          <div class="l-flex-column l-grow">
-            <div class="flex bg-gray-500 u-text-center text-2xl">
-              <div class="l-grow">
-                pseudo
-              </div>
-              <div class="l-grow">
-                pizza
-              </div>
-              <div class="l-grow">
-                récupéré
-              </div>
-            </div>
-            <div class="l-flex-column grow overflow-y-auto bg-gray-300 md:h-px">
-              <div v-for="order in (timeslotList[selectedTimeslotId] as AdminTimeslotDeref)?.orders" :key="order.id">
-                <div v-if="order.user.toLowerCase().includes(orderSearch.toLowerCase())" class="align-center u-mx-1 my-1 l-flex-row l-items-main-center rounded-xl bg-gray-200 u-text-center">
-                  <div class="flex l-grow l-items-cross-center l-items-main-center">
-                    {{ order.user }}
-                  </div>
-                  <div class="l-grow text-left">
-                    {{ factorise(order.pizza) }}
-                  </div>
-                  <div class="l-flex-column l-grow l-items-cross-center">
-                    <label for="isTakenCheckbox-{{ order.id }}" class="l-flex-column l-grow l-items-main-center">
-                      <input id="isTakenCheckbox-{{ order.id }}" type="checkbox" class="size-5 bg-gray-300" :value="order.delivered" :checked="order.delivered" @change="patchOrder(selectedTimeslotId, order.id, !order.delivered)"/>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="l-flex-column rounded-2xl bg-gray-500 u-text-center md:flex-row"
-            :class="{
-              'bg-red-600': new Date(timeslotList[selectedTimeslotId]?.end) < new Date(),
-            }"
           >
-            <div class="flex l-grow">
-              <div
-                class="m-1 flex l-grow l-items-main-center u-text-center text-2xl"
-                :class="{
-                  invisible: new Date(timeslotList[selectedTimeslotId]?.end) > new Date(),
-                }"
-              >
-                L'heure de fin de commande est dépassée
-                <div class="invisible border-2 border-red-600 u-p-2"/>
+            <fa-awesome-icon
+              class="c-inline-icon c-image-btn"
+              icon="fa-download"
+            />
+          </button>
+        </h2>
+        <div
+          v-if="pizzaCount > timeslotList[selectedTimeslotId]?.pizza_max"
+          class="u-text-center c-card-error u-full-width"
+        >
+          <fa-awesome-icon
+            class="c-inline-icon"
+            icon="fa-warning"
+          />
+          <strong>Le nombre maximum de pizzas a été dépassé</strong>
+        </div>
+        <label for="searchPizza" class="sr-only">Rechercher une commande</label>
+        <input id="searchPizza" v-model="orderSearch" type="text" placeholder="Rechercher une commande"/>
+        <div class="l-flex-row u-text-center u-big-text c-card-bg-3 u-full-width u-bold">
+          <div class="l-grow">
+            Pseudo
+          </div>
+          <div class="l-grow">
+            Pizza(s)
+          </div>
+          <div class="l-grow">
+            Récupéré ?
+          </div>
+        </div>
+        <div class="l-flex-column l-gap-1 u-full-width reasonable-height">
+          <div v-for="order in (timeslotList[selectedTimeslotId] as AdminTimeslotDeref)?.orders" :key="order.id">
+            <div v-if="order.user.toLowerCase().includes(orderSearch.toLowerCase())" class="l-flex-row l-cross-center u-text-center u-big-text">
+              <div class="l-grow">
+                {{ order.user }}
+              </div>
+              <div class="l-grow">
+                {{ factorise(order.pizza) }}
+              </div>
+              <div class="l-flex-row l-grow l-main-center">
+                <input id="isTakenCheckbox-{{ order.id }}" type="checkbox" class="size-5" :value="order.delivered" :checked="order.delivered" @change="patchOrder(selectedTimeslotId, order.id, !order.delivered)"/>
               </div>
             </div>
           </div>
@@ -510,27 +469,20 @@ const factorise = (pizzas: number[]) => {
       </div>
     </div>
   </div>
-  <div v-else class="">
-    <div
-      class="flex w-screen rounded-xl bg-black u-text-center text-3xl hover:cursor-pointer"
+  <div v-else class="l-flex-column l-cross-center u-py-2">
+    <button
+      type="button"
+      class="c-btn-secondary"
+      @click="openModal"
+      @keydown.enter="openModal"
     >
-      <div class="l-grow">
-        <div class="l-flex-row hover:cursor-pointer">
-          <div
-            class="u-m-1 l-grow"
-            @click="openModal"
-            @keydown.enter="openModal"
-          >
-            Ajouter un créneau
-            <fa-awesome-icon
-              class="u-ml-1"
-              icon="fa-circle-plus"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="mt-6 u-text-center text-4xl">
+      <fa-awesome-icon
+        class="c-inline-icon"
+        icon="fa-circle-plus"
+      />
+      Ajouter un créneau
+    </button>
+    <div class="u-m-text u-my-2 u-text-center u-big-text">
       Il n'y a pas de créneau de commande
     </div>
   </div>
@@ -749,16 +701,21 @@ const factorise = (pizzas: number[]) => {
       Résumé de la commande
     </template>
     <template #body>
-      <p>Pseudo : {{ pseudo }} </p>
-      <p>Type de commande : {{ orderTypeToString[selectedOrderType] }}</p>
-      <p>Pizza{{ Object.values(pizzaQuantities).reduce((acc, val) => acc + val) > 1 ? 's' : '' }} :</p>
-      <ul>
-        <li v-for="(quantity, pizzaId) in pizzaQuantities" :key="pizzaId">
-          - {{ quantity }} x {{ pizzaList[pizzaId].name }}
-        </li>
-      </ul>
-      <p>Méthode de paiement : {{ PAYMENT_METHODS[selectedPaymentMethod as Payment] }}</p>
-      <p>Total : {{ totalPrice }} €</p>
+      <p>Pseudo : <strong>{{ pseudo }}</strong> </p>
+      <p>Type de commande : <strong>{{ orderTypeToString[selectedOrderType] }}</strong></p>
+      <p v-if="Object.values(pizzaQuantities).reduce((acc, val) => acc + val) <= 1">
+        Pizza : <strong>{{ pizzaList[Number(Object.keys(pizzaQuantities)[0])]?.name }}</strong>
+      </p>
+      <p v-else>
+        Pizzas :
+        <ul>
+          <li v-for="(quantity, pizzaId) in pizzaQuantities" :key="pizzaId">
+            <strong>{{ quantity }} x {{ pizzaList[pizzaId].name }}</strong>
+          </li>
+        </ul>
+      </p>
+      <p>Méthode de paiement : <strong>{{ PAYMENT_METHODS[selectedPaymentMethod as Payment] }}</strong></p>
+      <p>Total : <strong>{{ totalPrice }} €</strong></p>
     </template>
     <template #buttons>
       <button
@@ -778,4 +735,40 @@ const factorise = (pizzas: number[]) => {
     </template>
   </Modal>
 </template>
+
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
+
+<style scoped>
+.backdrop {
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  transition: opacity 0.2s;
+}
+
+.ontop {
+  z-index: 10;
+}
+
+.number-width {
+  width: 6rem;
+}
+
+.reasonable-height { /* yeah I could have done something cleaner, but I don't really care actually */
+  overflow-y: scroll;
+  max-height: 30vh;
+}
+
+@media (max-width: 50rem) {
+  .desktop-only-row {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 50rem) {
+  .desktop-only-row {
+    display: flex;
+    flex-direction: row;
+  }
+}
+</style>

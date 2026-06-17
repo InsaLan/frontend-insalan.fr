@@ -97,7 +97,7 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
 </script>
 
 <template>
-  <div class="u-m-main u-pb-2 l-flex-column l-items-cross-center l-items-main-center l-gap-2 u-full-height">
+  <div class="u-m-main u-pb-2 l-flex-column l-cross-center l-main-center l-gap-2 u-full-height">
     <div class="camera u-rounded">
       <qrcode-stream
         :paused="paused"
@@ -115,7 +115,7 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
           <fa-awesome-icon
             :class="torchActive ? 'u-color-text-1' : 'u-color-text-3'"
             class="u-m-2 u-huge-text"
-            icon="fa-solid fa-bolt"
+            icon="fa-bolt"
           />
         </button>
       </qrcode-stream>
@@ -131,7 +131,7 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
             Tournoi : {{ qrcodeData.tournament }} <br/>
             Équipe : {{ qrcodeData.team }}
           </p>
-          <div class="l-flex-row l-items-main-center l-items-cross-center l-gap-2 u-full-width">
+          <div class="l-flex-row l-main-center l-cross-center l-gap-2 u-full-width">
             <button
               type="button"
               class="c-btn-bg-3"

@@ -195,12 +195,12 @@ watch(() => props.link, fetchEvents);
 
 <template>
   <div v-if="events.length === 0" class="l-flex-column u-full-height u-text-center u-big-text">
-    <p>⌛ Le planning n'est pas encore disponible, revenez plus tard !</p>
+    <p>Le planning n'est pas encore disponible, revenez plus tard !</p>
   </div>
   <div v-else>
     <div
       v-if="canGoBack || canGoForward"
-      class="l-flex-row u-full-width u-mb-2 l-items-main-center u-gap-4"
+      class="l-flex-row u-full-width u-mb-2 l-main-center u-gap-4"
     >
       <button
         :disabled="!canGoBack"
@@ -246,7 +246,7 @@ watch(() => props.link, fetchEvents);
               class="l-flex-column u-rounded u-text-center u-p-1 u-color-always-dark l-absolute-position u-small-text l-overflow-hidden"
               :style="getEventStyle(event, day)"
             >
-              <div class="l-flex-column l-items-main-center event-text u-full-height">
+              <div class="l-flex-column l-main-center event-text u-full-height">
                 <div>
                   {{ format(event.start, 'HH:mm') }} - {{ format(event.end, 'HH:mm') }}
                 </div>

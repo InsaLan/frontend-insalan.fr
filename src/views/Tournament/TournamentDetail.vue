@@ -101,8 +101,8 @@ const event_ongoing = computed(() => {
     v-if="tournament && (!('is_announced' in tournament) || tournament?.is_announced)"
     class="l-flex-column u-full-height"
   >
-    <div class="l-flex-row l-items-main-center l-items-cross-center l-gap-4 u-m-main">
-      <h1>
+    <div class="l-flex-row l-main-center l-cross-center l-gap-4 u-m-main">
+      <h1 class="u-my-1">
         {{ tournament?.name }}
       </h1>
       <router-link
@@ -114,8 +114,8 @@ const event_ongoing = computed(() => {
       </router-link>
     </div>
 
-    <div class="top-bar u-m-main">
-      <nav class="l-flex-row l-items-main-center l-gap-4 c-card-bg-2 u-full-width">
+    <div class="top-bar u-m-main u-my-2">
+      <nav class="l-flex-row l-main-center l-gap-4 c-card-bg-2 u-full-width">
         <button
           type="button"
           class="c-text-btn-secondary popup-btn"
@@ -124,7 +124,7 @@ const event_ongoing = computed(() => {
           {{ sections[selected_section].title }}
           <fa-awesome-icon
             class="c-inline-icon u-color-text-2"
-            icon="fa-solid fa-chevron-up"
+            icon="fa-chevron-up"
             :class="{ 'rotate-180': open_dropdown }"
           />
         </button>
@@ -162,7 +162,7 @@ const event_ongoing = computed(() => {
           v-if="isConnected && (user.groups.includes('Equipe Tournois') || user.groups.includes('Equipe Anim'))"
           :to="{ name: admin_switch }"
           type="button"
-          class="c-btn-primary"
+          class="c-btn-bg-3"
         >
           {{ admin_mode ? 'Mode Normal' : 'Mode Admin' }}
         </router-link>
@@ -180,7 +180,7 @@ const event_ongoing = computed(() => {
   </div>
 </template>
 
-<style scoped layer="override">
+<style scoped>
 .top-bar {
   position: sticky;
   top: calc(var(--top-offset, 8rem) - var(--base-margin));

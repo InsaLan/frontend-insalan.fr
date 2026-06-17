@@ -6,8 +6,8 @@ const store = useContentStore();
 </script>
 
 <template>
-  <div class="l-flex-column l-items-main-center u-full-height">
-    <h1>
+  <div class="l-flex-column l-main-center u-full-height">
+    <h1 class="u-mt-2">
       L'association InsaLan
     </h1>
     <Content

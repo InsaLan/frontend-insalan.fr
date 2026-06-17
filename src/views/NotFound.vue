@@ -1,5 +1,5 @@
 <template>
-  <div class="u-m-text l-flex-column l-items-cross-center">
+  <div class="u-m-text l-flex-column l-cross-center">
     <h1>
       404
     </h1>
@@ -10,7 +10,7 @@
       La page que vous cherchez n'existe pas ou a été supprimée. Si vous pensez que ce message est une erreur,
       n'hésitez pas à nous contacter.
     </p>
-    <div class="u-my-4 l-flex-column l-items-cross-center">
+    <div class="u-my-4 l-flex-column l-cross-center">
       <router-link
         to="/"
         class="c-btn-primary"

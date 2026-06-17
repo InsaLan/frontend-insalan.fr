@@ -184,13 +184,13 @@ const handleCloseTravelFormModal = () => {
   <img
     :src="tournament?.logo"
     alt=""
-    class="c-background-image"
+    class="c-background-image u-blurry"
   >
-  <div class="l-flex-column l-items-cross-center l-items-main-center u-full-height">
+  <div class="l-flex-column l-cross-center l-main-center u-full-height">
     <div
-      class="l-flex-column l-items-cross-center l-items-main-center c-card-bg-2 u-p-4 u-m-text"
+      class="l-flex-column l-cross-center l-main-center c-card-bg-2 u-p-4 u-m-text"
     >
-      <h1 class="u-m-0">
+      <h1 class="u-my-0 u-mx-2">
         Inscription {{ tournament?.name }}
       </h1>
       <div class="l-flex-row u-mb-1">
@@ -352,19 +352,14 @@ const handleCloseTravelFormModal = () => {
 
         <FormField
           :validations="v$.accept_rules"
-          class="l-flex-column"
         >
-          <div
-            class="l-flex-row u-full-width l-items-cross-center l-items-main-center l-gap-1"
-          >
-            <input
-              id="check"
-              v-model="register_form.accept_rules"
-              type="checkbox"
-              required
-            />
-            <label for="check"> J'accepte les <router-link :to="`/tournament/${isPrivate ? 'private/' : ''}${tournament?.id}/rules`" target="_blank" class="c-link">règles du tournoi <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/></router-link></label>
-          </div>
+          <label for="check"> J'accepte les <router-link :to="`/tournament/${isPrivate ? 'private/' : ''}${tournament?.id}/rules`" target="_blank" class="c-link">règles du tournoi <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/></router-link></label>
+          <input
+            id="check"
+            v-model="register_form.accept_rules"
+            type="checkbox"
+            required
+          />
         </FormField>
 
         <button

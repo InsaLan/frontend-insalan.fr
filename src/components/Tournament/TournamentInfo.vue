@@ -15,11 +15,11 @@ defineProps<{
   <!-- TODO: fix image "snaps" -->
   <img
     :src="tournament.logo"
-    class="c-background-image blurry"
+    class="c-background-image u-blurry"
     alt=""
   >
 
-  <div class="u-mt-4 u-mb-2 l-flex-column l-items-cross-center u-full-height">
+  <section id="info" class="u-mt-2 u-mb-2 l-flex-column l-cross-center u-full-height">
     <p v-if="tournament?.description !== ''" class="u-big-text u-m-text">
       {{ tournament?.description }}
     </p>
@@ -29,25 +29,50 @@ defineProps<{
         && 'manager_price_online' in tournament
         && 'cashprizes' in tournament
         && 'casters' in tournament"
-      class="u-big-text l-grow"
+      class="u-full-width"
     >
-      <h1>Cashprizes</h1>
-      <div class="l-flex-row l-items-main-center u-huge-text u-text-center u-mx-1">
-        <div class="l-flex-column l-items-cross-center">
-          <div class="massive">
-            🥇
+      <h2 class="u-text-center">
+        Cashprizes
+      </h2>
+      <div class="not-desktop-only">
+        <div class="l-flex-row l-main-center u-huge-text u-text-center u-mx-1">
+          <div class="l-flex-column l-cross-center">
+            <div class="massive">
+              🥇
+            </div>
+            {{ tournament?.cashprizes.length === 0 ? "À venir" : `${Number(tournament?.cashprizes[0])} €` }}
           </div>
-          {{ tournament?.cashprizes.length === 0 ? "À venir" : `${Number(tournament?.cashprizes[0])} €` }}
+        </div>
+        <div class="l-flex-row even u-huge-text u-text-center l-gap-4">
+          <div class="l-flex-column l-cross-center">
+            <div class="massive">
+              🥈
+            </div>
+            {{ tournament?.cashprizes.length === 0 ? "À venir" : `${Number(tournament?.cashprizes[1])} €` }}
+          </div>
+          <div class="l-flex-column l-cross-center">
+            <div class="massive">
+              🥉
+            </div>
+            {{ tournament?.cashprizes.length === 0 ? "À venir" : `${Number(tournament?.cashprizes[2])} €` }}
+          </div>
         </div>
       </div>
-      <div class="l-flex-row even u-huge-text u-text-center">
-        <div>
+
+      <div class="desktop-only u-full-width u-huge-text u-mb-4 u-mt-2 u-px-4">
+        <div class="l-flex-column l-cross-center u-mt-4">
           <div class="massive">
             🥈
           </div>
           {{ tournament?.cashprizes.length === 0 ? "À venir" : `${Number(tournament?.cashprizes[1])} €` }}
         </div>
-        <div>
+        <div class="l-flex-column l-cross-center">
+          <div class="massive">
+            🥇
+          </div>
+          {{ tournament?.cashprizes.length === 0 ? "À venir" : `${Number(tournament?.cashprizes[0])} €` }}
+        </div>
+        <div class="l-flex-column l-cross-center u-mt-4">
           <div class="massive">
             🥉
           </div>
@@ -55,8 +80,10 @@ defineProps<{
         </div>
       </div>
 
-      <div class="u-m-double-text">
-        <h1>Format</h1>
+      <div class="u-m-double-text u-mb-4">
+        <h2 class="u-text-center">
+          Format
+        </h2>
 
         <div class="double-info u-text-center">
           <div class="very-big-text">
@@ -69,7 +96,7 @@ defineProps<{
             </div>
           </div>
 
-          <div class="c-card-bg-3">
+          <div class="c-card-bg-2 u-big-text">
             <h2 class="u-mt-0">
               Prix
             </h2>
@@ -83,21 +110,26 @@ defineProps<{
         </div>
       </div>
 
-      <div class="u-m-double-text u-pb-4">
-        <h1>Casters</h1>
+      <div
+        v-if="tournament?.casters.length > 0"
+        class="u-m-double-text"
+      >
+        <h2 class="u-text-center">
+          Casters
+        </h2>
 
         <div class="double-info">
           <div
             v-for="(caster, i) in tournament?.casters"
             :key="i"
-            class="c-card-bg-3 u-p-0 u-m-1"
+            class="c-card-bg-2 u-p-0 u-m-1"
           >
             <div
-              class="l-items-cross-center"
+              class="l-cross-center"
               :class="i % 2 === 1 ? 'caster-row-reverse' : 'l-flex-row'"
             >
               <img :src="caster.image" alt="" class="u-rounded caster-img"/>
-              <div class="u-px-4 u-py-2 l-flex-column l-items-main-center l-gap-2">
+              <div class="u-px-4 u-py-2 l-flex-column l-main-center l-gap-2">
                 <h2 class="u-m-0">
                   {{ caster.name }}
                 </h2>
@@ -109,9 +141,9 @@ defineProps<{
           </div>
         </div>
       </div>
-      <h2 class="u-text-center u-mt-2 u-mb-4">
+      <div class="u-text-center u-pt-2 u-my-4">
         {{ tournament?.event.name }}
-      </h2>
+      </div>
     </div>
     <div v-else class="l-grow">
       <p class="u-my-4 u-m-text">
@@ -139,14 +171,10 @@ defineProps<{
     <p v-if="tournament?.description_bottom !== ''" class="u-m-text u-text-center u-pt-4">
       <em>{{ tournament?.description_bottom }}</em>
     </p>
-  </div>
+  </section>
 </template>
 
 <style scoped>
-.blurry {
-  filter: blur(14px);
-}
-
 .even {
   justify-content: space-evenly;
 }
@@ -198,5 +226,23 @@ defineProps<{
 
 .very-big-text {
   font-size: 1.75rem;
+}
+
+@media (max-width: 1300px) {
+  .desktop-only {
+    display: none;
+  }
+}
+
+@media (min-width: 1300px) {
+  .desktop-only {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+
+  .not-desktop-only {
+    display: none;
+  }
 }
 </style>

@@ -59,7 +59,7 @@ const handleSubmit = async () => {
 <template>
   <Modal>
     <template #icon>
-      <fa-awesome-icon class="u-color-correct-1" icon="fa-solid fa-leaf"/>
+      <fa-awesome-icon class="u-color-correct-1" icon="fa-leaf"/>
     </template>
     <template #title>
       Estimation de l’impact environnemental de la LAN

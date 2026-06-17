@@ -3,9 +3,7 @@ import { useVuelidate } from '@vuelidate/core';
 import { computed, ref } from 'vue';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
-import MatchCard from '@/components/Tournament/MatchCard.vue';
 import type { Group } from '@/models/group';
-import { MatchTypeEnum } from '@/models/match';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
 import {
@@ -13,6 +11,8 @@ import {
   integer,
   required,
 } from '@/support/locales/errors.fr';
+
+import GroupDetail from '../GroupDetail.vue';
 
 const { groups } = defineProps<{
   groups: Group[];
@@ -25,7 +25,6 @@ const { addNotification } = NotificationStore;
 
 const tournamentStore = useTournamentStore();
 const {
-  get_matchs_per_round,
   launchMatchs,
 } = tournamentStore;
 
@@ -70,8 +69,6 @@ const launch_round_matchs = async () => {
   modal_open.value = false;
 };
 
-const max_round = computed(() => Math.max(0, ...groups.map((group) => group.round_count)));
-
 const selected_matchs = ref(new Set<number>());
 
 const launch_selected_matchs = async () => {
@@ -101,22 +98,22 @@ const launch_selected_matchs = async () => {
 
 <template>
   <div
-    class="u-m-2 flex l-wrap l-items-main-center l-gap-2 lg:mb-0 lg:gap-8"
+    class="l-flex-row l-wrap l-main-center l-gap-2"
   >
     <button
       type="button"
-      class="rounded bg-blue-800 u-p-1 u-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
+      class="c-btn-bg-2"
       @click="show_groups_matchs = false"
     >
       <fa-awesome-icon
-        icon="fa-solid fa-arrow-left"
+        icon="fa-chevron-left"
+        class="c-inline-icon u-ml-0"
       />
       Gérer les poules
     </button>
     <button
       type="button"
-      class="rounded bg-blue-800 u-p-1 u-bold transition duration-150 ease-in-out"
-      :class="[!has_matchs ? '-z-10 opacity-60' : 'hover:ring hover:ring-pink-500']"
+      class="c-btn-bg-2"
       :disabled="!has_matchs"
       @click="open_launch_round_modal"
     >
@@ -124,8 +121,7 @@ const launch_selected_matchs = async () => {
     </button>
     <button
       type="button"
-      class="rounded bg-blue-800 u-p-1 u-bold transition duration-150 ease-in-out"
-      :class="[!has_matchs || selected_matchs.size === 0 ? '-z-10 opacity-60' : 'hover:ring hover:ring-pink-500']"
+      class="c-btn-bg-2"
       :disabled="!has_matchs || selected_matchs.size === 0 "
       @click="launch_selected_matchs"
     >
@@ -134,55 +130,15 @@ const launch_selected_matchs = async () => {
   </div>
 
   <div
-    class="u-m-1 flex l-items-main-center md:m-4 xl:m-8"
+    class="l-overflow-auto l-flex-column l-gap-2 u-full-width"
   >
-    <div
-      class="overflow-x-auto"
-    >
-      <div
-        class="grid"
-        :style="{ 'grid-template-columns': `6rem repeat(${max_round}, 18rem)` }"
-      >
-        <span class="border-b-2 border-r-2 u-p-1 u-text-center u-big-text">
-          Poule
-        </span>
-        <div
-          v-for="round in max_round"
-          :key="round"
-          class="border-b-2 border-r u-text-center u-big-text"
-        >
-          Tour {{ round }}
-        </div>
-        <template
-          v-for="group in groups"
-          :key="group.id"
-        >
-          <div
-            class="flex l-items-cross-center l-items-main-center text-wrap border-b border-r-2 u-big-text"
-          >
-            {{ group.name }}
-          </div>
-          <div
-            v-for="round in max_round"
-            :key="round"
-            class="border-b border-r"
-          >
-            <div class="flex l-wrap justify-around p-1">
-              <MatchCard
-                v-for="match in get_matchs_per_round(group.matchs).reverse()[round - 1]"
-                :key="match.id"
-                v-model="selected_matchs"
-                :match="match"
-                :match-type="{ type: MatchTypeEnum.GROUP, id: match.group }"
-                :editable="true"
-                :selectable="true"
-                class="grow"
-              />
-            </div>
-          </div>
-        </template>
-      </div>
-    </div>
+    <GroupDetail
+      v-for="group in groups"
+      :key="group.id"
+      v-model="selected_matchs"
+      :group="group"
+      :admin="true"
+    />
   </div>
 
   <Modal v-if="modal_open && modal_type === 'launch_round'">

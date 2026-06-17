@@ -9,8 +9,10 @@ const props = defineProps<{
 </script>
 
 <template>
-  <Seating
-    :tournament="props.tournament"
-    :team="null"
-  />
+  <div class="u-m-main">
+    <Seating
+      :tournament="props.tournament"
+      :team="null"
+    />
+  </div>
 </template>
