@@ -14,7 +14,6 @@ const store = useContentStore();
       class="u-m-text l-flex-column l-gap-4 u-text-indent u-mb-4"
       name="Association"
     />
-    <!-- TODO: fix this loading weirdly -->
     <img
       aria-hidden="true"
       :src="store.getFile('lan')"

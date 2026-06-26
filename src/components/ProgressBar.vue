@@ -10,8 +10,6 @@ defineProps<{
 }>();
 </script>
 
-// TODO: make the text inside the progress bar adapt its color to the background per-pixel (couldn't figure out how to do it with pure CSS)
-
 <template>
   <div class="l-relative-position l-flex-row u-full-width u-full-height l-main-center l-cross-center u-rounded u-big-text" :class="`u-bg-bg-${bgColorLevel ?? 1}`">
     <template

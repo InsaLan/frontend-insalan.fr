@@ -243,7 +243,6 @@ const toggleBurgerMenu = () => {
             </button>
           </div>
         </div>
-        <!-- TODO: fix: this pushes the whole page down when expanding -->
         <div
           v-if="burger_menu"
           :class="['animated-burger', 'l-flex-column', 'l-overflow-auto', { closing: isClosingMenu }]"

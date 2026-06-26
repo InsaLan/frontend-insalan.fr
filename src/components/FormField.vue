@@ -12,7 +12,7 @@ const errors = computed(() => props.validations.$errors.at(0));
 <template>
   <div :class="$attrs.class || 'field-layout'">
     <slot :errors="errors" :invalid="invalid"/>
-    <span v-if="invalid" class="c-card-error u-p-0 u-px-1 u-text-center u-full-width">{{ errors?.$message }}</span> <!-- TODO: position this absolutely -->
+    <span v-if="invalid" class="c-card-error u-p-0 u-px-1 u-text-center u-full-width">{{ errors?.$message }}</span>
   </div>
 </template>
 

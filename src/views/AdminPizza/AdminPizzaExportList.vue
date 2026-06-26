@@ -154,29 +154,32 @@ Object.values(timeslotList.value).forEach((timeslot) => {
           <div class="l-grow"/>
           {{ timeslotExportList[timeslot.id].length }} export{{ timeslotExportList[timeslot.id].length > 1 ? 's' : '' }}
         </div>
-        <button
+        <div
           v-for="timeslotExport in timeslotExportList[timeslot.id]"
           :key="timeslotExport.id"
           type="button"
-          class="c-btn-bg-2 u-full-width l-flex-row l-cross-center l-gap-1 u-regular u-normal-text"
+          class="c-card-bg-3 u-p-0 u-full-width l-flex-row l-cross-center l-gap-1 u-regular u-normal-text"
           :class="{ 'u-hidden': !timeslotsExpand[timeslot.id] }"
           title="Télécharger l'export"
-          @click="downloadTimeslotDetails(timeslotExport.id)"
-          @keydown.enter="downloadTimeslotDetails(timeslotExport.id)"
         >
-          <fa-awesome-icon icon="fa-file"/>
-          <strong> Export {{ frenchFormatFromDate(new Date(timeslotExport.created_at)) }} </strong>
-          ({{ Object.values(timeslotExport.orders).reduce((acc, nb) => acc + nb, 0) }} pizza{{ Object.values(timeslotExport.orders).reduce((acc, nb) => acc + nb, 0) > 1 ? 's' : '' }})
-          <div class="l-grow"/>
           <button
             type="button"
-            class="c-image-btn u-color-error-1 u-big-text"
+            class="c-btn-bg-3 l-grow l-flex-row l-cross-center l-gap-1 u-regular u-normal-text"
+            @click="downloadTimeslotDetails(timeslotExport.id)"
+          >
+            <fa-awesome-icon icon="fa-file"/>
+            <strong> Export {{ frenchFormatFromDate(new Date(timeslotExport.created_at)) }} </strong>
+            ({{ Object.values(timeslotExport.orders).reduce((acc, nb) => acc + nb, 0) }} pizza{{ Object.values(timeslotExport.orders).reduce((acc, nb) => acc + nb, 0) > 1 ? 's' : '' }})
+          </button>
+          <button
+            type="button"
+            class="c-image-btn u-color-error-1 u-big-text u-mr-2"
             title="Supprimer"
             @click.stop="exportToDelete = timeslotExport"
           >
             <fa-awesome-icon icon="fa-trash-can"/>
           </button>
-        </button>
+        </div>
       </div>
       <div class="l-flex-row l-cross-center l-main-center l-gap-1 u-big-text u-mt-2">
         <button

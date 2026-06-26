@@ -7,8 +7,6 @@ import type { Team, TeamDeref } from '@/models/team';
 import type { EventTournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
-// TODO: fix the awful performance of this component and the jittery ass tooltip
-
 const tournamentStore = useTournamentStore();
 
 const {

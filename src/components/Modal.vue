@@ -7,7 +7,9 @@ const instance = getCurrentInstance();
 
 const closable = !!instance?.vnode.props?.onClose;
 
-const emit = defineEmits(['close']);
+const emit = defineEmits<{
+  (e: 'close'): void;
+}>();
 
 const close = () => {
   if (closable) {

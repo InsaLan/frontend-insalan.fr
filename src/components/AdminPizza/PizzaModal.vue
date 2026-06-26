@@ -11,7 +11,10 @@ const props = defineProps<{
   title: string;
   pizza?: Pizza;
   validate: (name: string, ingredients: string[], allergens: string[], image: File | null) => Promise<boolean>;
-  close: () => void;
+}>();
+
+const emit = defineEmits<{
+  (e: 'close'): void;
 }>();
 
 const dataPizza = reactive({
@@ -33,7 +36,7 @@ const validate = async () => {
   if (!isValid) return;
 
   if (await props.validate(dataPizza.name, dataPizza.ingredients, dataPizza.allergens, pizzaImage.value)) {
-    props.close();
+    emit('close');
   }
 };
 
@@ -46,7 +49,7 @@ const handleImageChange = (event: Event) => {
 </script>
 
 <template>
-  <Modal @close="props.close">
+  <Modal @close="emit('close')">
     <template #title>
       {{ title }}
     </template>
@@ -95,7 +98,7 @@ const handleImageChange = (event: Event) => {
       <button
         class="c-btn-bg-3"
         type="button"
-        @click="props.close"
+        @click="emit('close')"
       >
         Annuler
       </button>

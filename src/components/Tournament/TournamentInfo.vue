@@ -12,7 +12,6 @@ defineProps<{
 </script>
 
 <template>
-  <!-- TODO: fix image "snaps" -->
   <img
     :src="tournament.logo"
     class="c-background-image u-blurry"

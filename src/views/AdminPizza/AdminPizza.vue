@@ -321,26 +321,30 @@ const factorise = (pizzas: number[]) => {
       @click="extend = !extend"
       @keydown.enter="extend = !extend"
     >
-      <button
+      <div
         v-for="timeslot in timeslotList"
         :key="timeslot.id"
         type="button"
-        class="c-btn-bg-3 l-flex-row l-cross-center u-full-width"
-        @click="selectedTimeslotId = timeslot.id"
+        class="l-flex-row l-cross-center u-full-width"
       >
-        Créneau {{ frenchFormatFromDate(new Date(timeslot.delivery_time)) }}
-        <div class="l-grow"/>
+        <button
+          type="button"
+          class="c-btn-bg-3 l-grow u-text-left"
+          @click="selectedTimeslotId = timeslot.id"
+        >
+          Créneau {{ frenchFormatFromDate(new Date(timeslot.delivery_time)) }}
+        </button>
         <button
           type="button"
           title="Supprimer le créneau"
           @click="showDeleteModal = true; selectedDelete = timeslot.id"
         >
           <fa-awesome-icon
-            class="c-image-btn u-color-error-1 c-inline-icon u-mr-0 u-ml-1"
+            class="c-image-btn u-color-error-1 c-inline-icon u-mr-2"
             icon="fa-trash-can"
           />
         </button>
-      </button>
+      </div>
       <button
         type="button"
         class="c-btn-secondary u-full-width"
@@ -383,9 +387,9 @@ const factorise = (pizzas: number[]) => {
               </div>
             </div>
           </div>
-          <div class="desktop-only-row u-text-center l-gap-1">
+          <div class="desktop-only-row l-cross-end u-text-center l-gap-1">
             <div class="l-grow">
-              <label for="paymentMethod" class="sr-only">Payment Method</label>
+              <label for="paymentMethod">Méthode de paiement</label>
               <select id="paymentMethod" v-model="selectedPaymentMethod">
                 <option value="default" selected>
                   Choisir un moyen de paiement
@@ -396,7 +400,7 @@ const factorise = (pizzas: number[]) => {
               </select>
             </div>
             <div class="l-grow">
-              <label for="order-type" class="sr-only">Type de commande</label>
+              <label for="order-type">Type de commande</label>
               <select id="order-type" v-model="selectedOrderType">
                 <option v-for="type in OrderType" :key="type" :value="type">
                   {{ orderTypeToString[type] }}
@@ -404,7 +408,7 @@ const factorise = (pizzas: number[]) => {
               </select>
             </div>
             <div class="l-grow">
-              <label for="InputPseudo" class="sr-only">Input Text</label>
+              <label for="InputPseudo">Pseudo</label>
               <input id="InputPseudo" v-model="pseudo" type="text" placeholder="Pseudo"/>
             </div>
             <button type="submit" class="c-btn-secondary" @click.prevent="validatePizza">
@@ -616,7 +620,6 @@ const factorise = (pizzas: number[]) => {
             <label for="pizza_selection">
               Sélection de pizzas
             </label>
-            <!-- TODO: Fix this it's like really bad -->
             <multiselect
               id="pizza_selection"
               v-model="data_create.pizza_selection"
@@ -706,14 +709,14 @@ const factorise = (pizzas: number[]) => {
       <p v-if="Object.values(pizzaQuantities).reduce((acc, val) => acc + val) <= 1">
         Pizza : <strong>{{ pizzaList[Number(Object.keys(pizzaQuantities)[0])]?.name }}</strong>
       </p>
-      <p v-else>
+      <div v-else>
         Pizzas :
         <ul>
           <li v-for="(quantity, pizzaId) in pizzaQuantities" :key="pizzaId">
             <strong>{{ quantity }} x {{ pizzaList[pizzaId].name }}</strong>
           </li>
         </ul>
-      </p>
+      </div>
       <p>Méthode de paiement : <strong>{{ PAYMENT_METHODS[selectedPaymentMethod as Payment] }}</strong></p>
       <p>Total : <strong>{{ totalPrice }} €</strong></p>
     </template>

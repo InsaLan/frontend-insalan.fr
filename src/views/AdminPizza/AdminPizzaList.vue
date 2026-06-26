@@ -113,14 +113,14 @@ await fetchAllPizzas();
     title="Modifier une pizza"
     :pizza="pizzaToEdit"
     :validate="handlePizzaEditModalValidate"
-    :close="handlePizzaEditModalClose"
+    @close="handlePizzaEditModalClose"
   />
 
   <PizzaModal
     v-if="showCreatePizzaModal"
     title="Créer une pizza"
     :validate="handlePizzaCreateModalValidate"
-    :close="handlePizzaCreateModalClose"
+    @close="handlePizzaCreateModalClose"
   />
 
   <Modal v-if="pizzaToDelete" @close="closeDeleteConfirmModal">
