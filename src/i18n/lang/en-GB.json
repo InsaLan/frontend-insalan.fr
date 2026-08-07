@@ -1,0 +1,86 @@
+{
+  "content": {
+    "home": {
+      "title-tournament": "Tournaments",
+      "no-tournament": "No tournament is occurring or coming, come back later!",
+      "see-all-tournament": "See all tournaments"
+    },
+    "Navigation": {
+      "home": "Home",
+      "association": "Association",
+      "tournament": "Tournament",
+      "info": "Practical information",
+      "eat": "Eat",
+      "schedule": "Schedule",
+      "login": "Login",
+      "staff": "Staff:",
+      "admin-panel": "Admin panel",
+      "ticket-scan": "Ticket scan",
+      "eating-team": "Food Squad:",
+      "eating-export-list": "Export list",
+      "eating-pizza-list": "Pizza list",
+      "eating-pizza": "Pizza menu",
+      "me": "My account",
+      "logout": "Logout",
+      "label-locale-selector": "Change language"
+    },
+    "Footer": {
+      "socials": "Socials",
+      "credits": "Code & design: Sysrez - dev team"
+    },
+    "NameConfirmationModal": {
+      "title": "Confirm your name",
+      "description": "We need your name to verify your identity at the entrance",
+      "firstname": "First name",
+      "lastname": "Last name",
+      "confirm": "Confirm"
+    },
+    "Login": {
+      "login": "Login",
+      "no-account": "I don't have an account",
+      "username": "Username",
+      "password": "Password",
+      "submit": "Login",
+      "forgotPassword?": "Forgot your password ?",
+      "forgotPassword": "Password forgotten",
+      "email": "Email",
+      "cancel": "Cancel",
+      "validate": "Submit",
+      "signin": "Sign in",
+      "alreadyExists": "I already have an account",
+      "passwordConfirm": "Confirm your password",
+      "cgu": "Term of Service",
+      "acceptCgu": "I accept the {0} of the InsaLan"
+    },
+    "ValidationErrors": {
+      "invalidEmail": "Must be a valid email address",
+      "missingField": "Required field",
+      "noCGU": "Please accept the TOS of the InsaLan",
+      "noRules": "Please accept the tournament rules",
+      "shortPassword": "Length must be greater than {min}",
+      "longPassword": "Length must be shorter than {max}",
+      "valueBetween": "Value must be between {min} and {max}",
+      "valueSuperior": "Value must be greater than {min}",
+      "valueLower": "Value must be lower than {max}",
+      "notInteger": "Value must be a relative integer"
+    },
+    "Schedule": {
+      "unavailable": "Schedule is not yet available, come back later!",
+      "previousDay": "Previous day",
+      "nextDay": "Next day"
+    },
+    "Error": {
+      "title404": "Invalid Page",
+      "description404": "The page you are searching for doesn't exist or was deleted. If you think this message is an error, please do contact us",
+      "backToHome": "Home page"
+    },
+    "Archive": {
+      "title": "Archives",
+      "noArchives": "No archives are available for now, come back later!"
+    },
+    "Association": {
+      "title": "The InsaLan association"
+    }
+  }
+}
+
