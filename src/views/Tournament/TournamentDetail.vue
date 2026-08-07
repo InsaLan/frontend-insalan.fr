@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import type { EventTournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
@@ -24,14 +25,15 @@ interface TournamentDetailSection {
 
 const userStore = useUserStore();
 const { isConnected, user } = storeToRefs(userStore);
+const { t } = useI18n();
 
 const sections = computed<Record<string, TournamentDetailSection>>(() => ({
-  info: { title: 'Informations', is_available: true },
-  teams: { title: 'Équipes', is_available: true },
-  seatings: { title: 'Placement', is_available: 'seatslots' in (tournament.value as EventTournamentDeref) },
-  stages: { title: 'Phases', is_available: true },
-  planning: { title: 'Planning', is_available: 'planning_file' in (tournament.value as EventTournamentDeref) },
-  rules: { title: 'Règlement', is_available: true },
+  info: { title: t('content.TournamentDetail.informations'), is_available: true },
+  teams: { title: t('content.TournamentDetail.teams'), is_available: true },
+  seatings: { title: t('content.TournamentDetail.seatings'), is_available: 'seatslots' in (tournament.value as EventTournamentDeref) },
+  stages: { title: t('content.TournamentDetail.stages'), is_available: true },
+  planning: { title: t('content.TournamentDetail.planning'), is_available: 'planning_file' in (tournament.value as EventTournamentDeref) },
+  rules: { title: t('content.TournamentDetail.rules'), is_available: true },
 }));
 
 const router = useRouter();
@@ -110,7 +112,7 @@ const event_ongoing = computed(() => {
         :to="isPrivate ? `/tournament/private/${id}/register` : `/tournament/${id}/register`"
         class="c-btn-secondary"
       >
-        S'inscrire
+        {{ $t('content.TournamentDetail.register') }}
       </router-link>
     </div>
 
@@ -164,7 +166,7 @@ const event_ongoing = computed(() => {
           type="button"
           class="c-btn-bg-3"
         >
-          {{ admin_mode ? 'Mode Normal' : 'Mode Admin' }}
+          {{ admin_mode ? $t('content.TournamentDetail.normalMode') : $t('content.TournamentDetail.adminMode') }}
         </router-link>
       </nav>
     </div>
@@ -176,7 +178,7 @@ const event_ongoing = computed(() => {
     </RouterView>
   </div>
   <div v-else class="u-text-center u-big-text">
-    Le tournoi que vous cherchez n'a pas encore été annoncé, revenez plus tard !
+    {{ $t('content.TournamentDetail.notAnnounced') }}
   </div>
 </template>
 
