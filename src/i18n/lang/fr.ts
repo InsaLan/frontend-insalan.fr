@@ -80,6 +80,9 @@ const fr: Locale = {
       title: 'Archives',
       noArchives: "Aucune archive n'est disponible pour le moment, revenez plus tard !",
     },
+    Association: {
+      title: "l'association InsaLan",
+    },
   },
 };
 

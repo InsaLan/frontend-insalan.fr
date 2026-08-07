@@ -80,6 +80,9 @@ const en: Locale = {
       title: 'Archives',
       noArchives: 'No archives are available for now, come back later!',
     },
+    Association: {
+      title: 'The InsaLan association',
+    },
   },
 };
 

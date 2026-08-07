@@ -78,5 +78,8 @@ export type Locale = {
       title: string;
       noArchives: string;
     };
+    Association: {
+      title: string;
+    };
   };
 };
