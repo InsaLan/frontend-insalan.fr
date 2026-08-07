@@ -52,7 +52,7 @@ const fr: Locale = {
       alreadyExists: 'J\'ai déjà un compte',
       passwordConfirm: 'Répéter mot de passe',
       cgu: 'Conditions générales d\'utilisation',
-      acceptCgu: 'J\'accepte les <a class="c-link" href="#" \\@click="show_modal_cgu" \\@keydown.enter="show_modal_cgu">CGU</a> de l\'InsaLan',
+      acceptCgu: 'J\'accepte les {0} de l\'InsaLan',
     },
     ValidationErrors: {
       invalidEmail: 'Doit être une adresse email valide',

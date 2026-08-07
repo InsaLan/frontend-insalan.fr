@@ -174,8 +174,14 @@ onMounted(async () => {
             class="u-mr-1"
             type="checkbox"
           >
-          <!-- eslint-disable-next-line vue/no-v-html-->
-          <label for="accept" v-html=" $t('content.Login.acceptCgu') "/>
+          <i18n-t keypath="content.Login.acceptCgu" tag="label" for="accept">
+            <a
+              class="c-link"
+              href="#"
+              @click="show_modal_cgu"
+              @keydown.enter="show_modal_cgu"
+            >{{ $t('content.Login.cgu') }}</a>
+          </i18n-t>
         </FormField>
         <button class="c-btn-primary" type="submit">
           {{ $t('content.Login.signin') }}

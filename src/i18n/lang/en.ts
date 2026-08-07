@@ -52,7 +52,7 @@ const en: Locale = {
       alreadyExists: 'I already have an account',
       passwordConfirm: 'Confirm your password',
       cgu: 'Term of Service',
-      acceptCgu: 'I accept the <a class="c-link" href="#" \\@click="show_modal_cgu" \\@keydown.enter="show_modal_cgu">TOS</a> of the InsaLan',
+      acceptCgu: 'I accept the {0} of the InsaLan',
     },
     ValidationErrors: {
       invalidEmail: 'Must be a valid email address',
