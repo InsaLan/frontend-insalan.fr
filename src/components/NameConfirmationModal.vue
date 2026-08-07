@@ -56,14 +56,14 @@ const validateModal = async () => {
 <template>
   <Modal v-if="modal_open">
     <template #title>
-      Confirmez votre nom
+      {{ $t('content.name-confirmation-modal.title') }}
     </template>
     <template #body>
-      Nous avons besoin de votre nom pour vérifier votre identité à l'entrée
+      {{ $t('content.name-confirmation-modal.description') }}
       <form>
         <FormField :validations="v$.first_name">
           <label for="first_name">
-            Prénom
+            {{ $t('content.name-confirmation-modal.firstname') }}
           </label>
           <input
             id="first_name"
@@ -75,7 +75,7 @@ const validateModal = async () => {
         </FormField>
         <FormField :validations="v$.last_name">
           <label for="last_name">
-            Nom
+            {{ $t('content.name-confirmation-modal.lastname') }}
           </label>
           <input
             id="last_name"
@@ -93,7 +93,7 @@ const validateModal = async () => {
         type="submit"
         @click="validateModal"
       >
-        Confirmer
+        {{ $t('content.name-confirmation-modal.validate') }}
       </button>
     </template>
   </Modal>

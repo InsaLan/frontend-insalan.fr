@@ -1,5 +1,4 @@
 import type { Locale } from './locale-type';
-import association from "@/views/Association.vue";
 
 const en: Locale = {
   content: {
@@ -25,6 +24,17 @@ const en: Locale = {
       'eating-pizza': 'Pizza menu',
       me: 'My account',
       logout: 'Logout',
+    },
+    Footer: {
+      socials: 'Socials',
+      credits: 'Code & design: Sysrez - dev team',
+    },
+    NameConfirmationModal: {
+      title: 'Confirm your name',
+      description: 'We need your name to verify your identity at the entrance',
+      firstname: 'First name',
+      lastname: 'Last name',
+      confirm: 'Confirm',
     },
   },
 };

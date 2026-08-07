@@ -25,6 +25,17 @@ const fr: Locale = {
       me: 'Mon compte',
       logout: 'Se déconnecter',
     },
+    Footer: {
+      socials: 'Réseaux',
+      credits: 'Code & design\u00A0: équipe Sysrez - Dev',
+    },
+    NameConfirmationModal: {
+      title: 'Confirmez votre nom',
+      description: "Nous avons besoin de votre nom pour vérifier votre identité à l'entrée",
+      firstname: 'Prénom',
+      lastname: 'Nom',
+      confirm: 'Confirmer',
+    },
   },
 };
 
