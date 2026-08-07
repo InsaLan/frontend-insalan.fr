@@ -42,6 +42,7 @@ import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { type Component, createApp } from 'vue';
 import Multiselect from 'vue-multiselect';
+import i18n from '@/i18n';
 import { router } from '@/router';
 import { useNotificationStore } from '@/stores/notification.store';
 
@@ -100,6 +101,7 @@ createApp(App as Component)
   .component('fa-awesome-icon', FontAwesomeIcon)
   .use(pinia)
   .use(router)
+  .use(i18n)
   .mount('#app');
 
 const { addNotification } = useNotificationStore();
