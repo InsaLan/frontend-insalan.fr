@@ -66,6 +66,13 @@
       "lastname": "Last name",
       "title": "Confirm your name"
     },
+    "ResetPassword": {
+      "newPassword": "New password",
+      "passwordPlaceholder": "Password",
+      "repeatPassword": "Repeat password",
+      "submit": "Submit",
+      "title": "Reset your password"
+    },
     "Navigation": {
       "admin-panel": "Admin panel",
       "association": "Association",
