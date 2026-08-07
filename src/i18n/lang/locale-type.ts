@@ -69,5 +69,10 @@ export type Locale = {
       previousDay: string;
       nextDay: string;
     };
+    Error: {
+      title404: string;
+      description404: string;
+      backToHome: string;
+    };
   };
 };

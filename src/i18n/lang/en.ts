@@ -71,6 +71,11 @@ const en: Locale = {
       previousDay: 'Previous day',
       nextDay: 'Next day',
     },
+    Error: {
+      title404: 'Invalid Page',
+      description404: "The page you are searching for doesn't exist or was deleted. If you think this message is an error, please do contact us",
+      backToHome: 'Home page',
+    },
   },
 };
 

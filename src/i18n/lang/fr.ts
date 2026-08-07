@@ -71,6 +71,11 @@ const fr: Locale = {
       previousDay: 'Jour précédent',
       nextDay: 'Jour suivant',
     },
+    Error: {
+      title404: 'Page Invalide',
+      description404: 'La page que vous cherchez n\'existe pas ou a été supprimée. Si vous pensez que ce message est une erreur, n\'hésitez pas à nous contacter',
+      backToHome: 'Page d\'accueil',
+    },
   },
 };
 
