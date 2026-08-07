@@ -34,20 +34,20 @@ await fetchNextTimeslots();
   <Content class="u-m-text u-mb-4 l-flex-column l-gap-4 u-text-indent" name="Restauration"/>
   <section v-if="sortedTimeslotList.length" class="u-m-text u-mb-4">
     <h1 class="u-mb-4">
-      Prochains créneaux
+      {{ $t('content.Eat.nextTimeslots') }}
     </h1>
     <p>
-      Les prochains créneaux sont :
+      {{ $t('content.Eat.nextTimeslotsDescription') }}
     </p>
     <ul>
       <li v-for="timeslot in sortedTimeslotList" :key="timeslot.id" class="ml-16">
-        Créneau {{ frenchFormatFromDate(new Date(timeslot.delivery_time)) }}
+        {{ $t('content.Eat.timeslot') }} {{ frenchFormatFromDate(new Date(timeslot.delivery_time)) }}
       </li>
     </ul>
   </section>
   <section>
     <h1 class="u-mb-4">
-      Pizzas {{ sortedTimeslotList.length ? 'du Prochain Créneau' : '' }}
+      {{ sortedTimeslotList.length ? $t('content.Eat.pizzasOfNextTimeslot') : $t('content.Eat.pizzas') }}
     </h1>
     <div class="u-full-width l-gap-2 u-p-main l-grid-3">
       <PizzaCard

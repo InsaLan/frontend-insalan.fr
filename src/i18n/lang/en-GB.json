@@ -16,6 +16,13 @@
       "title": "Your cart",
       "total": "Total:"
     },
+    "Eat": {
+      "nextTimeslots": "Next timeslots",
+      "nextTimeslotsDescription": "The next timeslots are:",
+      "pizzas": "Pizzas",
+      "pizzasOfNextTimeslot": "Pizzas of the next timeslot",
+      "timeslot": "Timeslot"
+    },
     "Error": {
       "backToHome": "Home page",
       "description404": "The page you are searching for doesn't exist or was deleted. If you think this message is an error, please do contact us",

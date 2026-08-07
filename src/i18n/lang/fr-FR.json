@@ -16,6 +16,13 @@
       "title": "Votre panier",
       "total": "Total :"
     },
+    "Eat": {
+      "nextTimeslots": "Prochains créneaux",
+      "nextTimeslotsDescription": "Les prochains créneaux sont :",
+      "pizzas": "Pizzas",
+      "pizzasOfNextTimeslot": "Pizzas du Prochain Créneau",
+      "timeslot": "Créneau"
+    },
     "Error": {
       "backToHome": "Page d'accueil",
       "description404": "La page que vous cherchez n'existe pas ou a été supprimée. Si vous pensez que ce message est une erreur, n'hésitez pas à nous contacter",
