@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { useContentStore } from '@/stores/content.store';
 import { useUserStore } from '@/stores/user.store';
-import { useI18n } from "vue-i18n";
 
 import Content from './Content.vue';
 
