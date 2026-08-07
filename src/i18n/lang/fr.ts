@@ -66,6 +66,11 @@ const fr: Locale = {
       valueLower: 'La valeur doit être inférieure à {max}',
       notInteger: 'La valeur doit être un entier relatif',
     },
+    Schedule: {
+      unavailable: 'Le planning n\'est pas encore disponible, revenez plus tard !',
+      previousDay: 'Jour précédent',
+      nextDay: 'Jour suivant',
+    },
   },
 };
 

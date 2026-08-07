@@ -195,7 +195,7 @@ watch(() => props.link, fetchEvents);
 
 <template>
   <div v-if="events.length === 0" class="l-flex-column u-full-height u-text-center u-big-text">
-    <p>Le planning n'est pas encore disponible, revenez plus tard !</p>
+    <p>{{ $t('content.Schedule.unavailable') }}</p>
   </div>
   <div v-else>
     <div
@@ -208,7 +208,7 @@ watch(() => props.link, fetchEvents);
         type="button"
         @click="goBack"
       >
-        &lt; Jours précédents
+        &lt; {{ $t('content.Schedule.previousDays') }}
       </button>
       <button
         :disabled="!canGoForward"
@@ -216,7 +216,7 @@ watch(() => props.link, fetchEvents);
         type="button"
         @click="goForward"
       >
-        Jours suivants &gt;
+        {{ $t('content.Schedule.nextDays') }} &gt;
       </button>
     </div>
     <div>

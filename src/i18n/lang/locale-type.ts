@@ -64,5 +64,10 @@ export type Locale = {
       valueLower: string;
       notInteger: string;
     };
+    Schedule: {
+      unavailable: string;
+      previousDay: string;
+      nextDay: string;
+    };
   };
 };
