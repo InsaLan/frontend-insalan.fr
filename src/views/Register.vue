@@ -79,7 +79,7 @@ onMounted(async () => {
     <div class="l-flex-column l-cross-center c-card-bg-2 u-p-4">
       <div class="l-flex-column l-cross-center u-mb-2">
         <h1 class="u-m-0">
-          S'enregistrer
+          {{ $t('content.Login.signin') }}
         </h1>
         <router-link
           to="/login"
@@ -87,7 +87,7 @@ onMounted(async () => {
           <div
             class="l-flex-row l-cross-center c-text-btn u-m-0"
           >
-            J'ai déjà un compte
+            {{ $t('content.Login.alreadyExists') }}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="c-inline-icon"
@@ -110,7 +110,7 @@ onMounted(async () => {
           <div class="l-flex-column l-gap-2">
             <FormField :validations="v$.email">
               <label for="email">
-                Email
+                {{ $t('content.Login.email') }}
               </label>
               <input
                 id="email"
@@ -123,7 +123,7 @@ onMounted(async () => {
             </FormField>
             <FormField :validations="v$.username">
               <label for="username_register">
-                Nom d'utilisateur·rice
+                {{ $t('content.Login.username') }}
               </label>
               <input
                 id="username_register"
@@ -146,7 +146,7 @@ onMounted(async () => {
           <div class="l-flex-column l-gap-2">
             <FormField :validations="v$.password" required>
               <label for="password_register">
-                Mot de passe
+                {{ $t('content.Login.password') }}
               </label>
               <PasswordInput
                 id="password_register"
@@ -156,7 +156,7 @@ onMounted(async () => {
             </FormField>
             <FormField :validations="v$.password_confirm">
               <label for="repeat">
-                Répéter mot de passe
+                {{ $t('content.Login.passwordConfirm') }}
               </label>
               <PasswordInput
                 id="repeat"
@@ -174,22 +174,18 @@ onMounted(async () => {
             class="u-mr-1"
             type="checkbox"
           >
-          <label for="accept">J'accepte les <a
-            class="c-link"
-            href="#"
-            @click="show_modal_cgu"
-            @keydown.enter="show_modal_cgu"
-          >CGU</a> de l'InsaLan</label>
+          <!-- eslint-disable-next-line vue/no-v-html-->
+          <label for="accept" v-html=" $t('content.Login.acceptCgu') "/>
         </FormField>
         <button class="c-btn-primary" type="submit">
-          Créer un compte
+          {{ $t('content.Login.signin') }}
         </button>
       </form>
     </div>
 
     <Modal v-if="modal_cgu" @close="modal_cgu = false">
       <template #title>
-        Conditions générales d'utilisation
+        {{ $t('content.Login.cgu') }}
       </template>
       <template #body>
         <Content name="cgu"/>

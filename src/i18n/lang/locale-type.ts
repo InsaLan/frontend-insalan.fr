@@ -35,5 +35,34 @@ export type Locale = {
       lastname: string;
       confirm: string;
     };
+    Login: { // contains Login.vue + Register.vue field as they are very similar
+      signin: string;
+      alreadyExists: string;
+      passwordConfirm: string;
+      cgu: string;
+      acceptCgu: string;
+      login: string;
+      'no-account': string;
+      username: string;
+      password: string;
+      submit: string;
+      'forgotPassword?': string;
+      forgotPassword: string;
+      email: string;
+      cancel: string;
+      validate: string;
+    };
+    ValidationErrors: {
+      invalidEmail: string;
+      missingField: string;
+      noCGU: string;
+      noRules: string;
+      shortPassword: string;
+      longPassword: string;
+      valueBetween: string;
+      valueSuperior: string;
+      valueLower: string;
+      notInteger: string;
+    };
   };
 };

@@ -70,7 +70,7 @@ onMounted(async () => {
     <div class="l-flex-column l-cross-center c-card-bg-2 u-p-4">
       <div class="l-flex-column l-cross-center u-mb-2">
         <h1 class="u-m-0">
-          Se connecter
+          {{ $t('content.Login.login') }}
         </h1>
         <router-link
           to="/register"
@@ -78,7 +78,7 @@ onMounted(async () => {
           <div
             class="l-flex-row l-cross-center c-text-btn u-m-0"
           >
-            Je n'ai pas de compte
+            {{ $t('content.Login.no-account') }}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="c-inline-icon"
@@ -99,7 +99,7 @@ onMounted(async () => {
       <form id="login" @submit.prevent="login_user">
         <FormField :validations="v$.username">
           <label for="username">
-            Nom d'utilisateur·rice
+            {{ $t('content.Login.username') }}
           </label>
           <input
             id="username"
@@ -111,32 +111,33 @@ onMounted(async () => {
         </FormField>
         <FormField :validations="v$.password">
           <label for="password">
-            Mot de passe
+            {{ $t('content.Login.password') }}
           </label>
           <PasswordInput
             id="password"
             v-model="login_form.password"
+            :placeholder="$t('content.Login.password')"
             :on-blur="v$.password.$touch"
           />
         </FormField>
         <button class="c-btn-primary u-mt-2" type="submit">
-          Se connecter
+          {{ $t('content.Login.submit') }}
         </button>
         <button class="c-text-btn" type="button" @click="openModal()">
-          Mot de passe oublié ?
+          {{ $t('content.Login.forgotPassword?') }}
         </button>
       </form>
     </div>
 
     <Modal v-if="modal_open" @close="closeModal">
       <template #title>
-        Mot de passe oublié
+        {{ $t('content.Login.forgotPassword') }}
       </template>
       <template #body>
         <form id="password-reset" @submit.prevent="validateModal">
           <FormField :validations="v$_modal.email">
             <label for="email">
-              Email
+              {{ $t('content.Login.email') }}
             </label>
             <input
               id="email"
@@ -155,14 +156,14 @@ onMounted(async () => {
           type="button"
           @click="closeModal"
         >
-          Annuler
+          {{ $t('content.Login.cancel') }}
         </button>
         <button
           class="c-btn-secondary"
           type="submit"
           @click="validateModal"
         >
-          Valider
+          {{ $t('content.Login.validate') }}
         </button>
       </template>
     </Modal>
