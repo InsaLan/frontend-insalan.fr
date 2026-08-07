@@ -4,26 +4,28 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useContentStore } from '@/stores/content.store';
 import { useUserStore } from '@/stores/user.store';
+import { useI18n } from "vue-i18n";
 
 import Content from './Content.vue';
 
 const contentStore = useContentStore();
 const { getContent } = contentStore;
+const { t } = useI18n();
 
 const items = [
-  { url: '/association', text: 'Association' },
-  { url: '/tournament', text: 'Tournois' },
-  { url: '/info', text: 'Informations pratiques' },
-  { url: '/eat', text: 'Restauration' },
-  { url: '/schedule', text: 'Planning' },
+  { url: '/association', text: t('content.Navigation.association') },
+  { url: '/tournament', text: t('content.Navigation.tournament') },
+  { url: '/info', text: t('content.Navigation.info') },
+  { url: '/eat', text: t('content.Navigation.eat') },
+  { url: '/schedule', text: t('content.Navigation.schedule') },
 ] as const;
 const mobile_items = [
-  { url: '/', text: 'Accueil' },
-  { url: '/association', text: 'Association' },
-  { url: '/tournament', text: 'Tournois' },
-  { url: '/info', text: 'Informations pratiques' },
-  { url: '/eat', text: 'Restauration' },
-  { url: '/schedule', text: 'Planning' },
+  { url: '/', text: t('content.Navigation.home') },
+  { url: '/association', text: t('content.Navigation.association') },
+  { url: '/tournament', text: t('content.Navigation.tournament') },
+  { url: '/info', text: t('content.Navigation.info') },
+  { url: '/eat', text: t('content.Navigation.eat') },
+  { url: '/schedule', text: t('content.Navigation.schedule') },
 ] as const;
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -85,7 +87,7 @@ const toggleBurgerMenu = () => {
             class="c-btn-primary"
             to="/login"
           >
-            S'identifier
+            {{ $t('content.Navigation.login') }}
           </router-link>
         </div>
         <div
@@ -114,7 +116,7 @@ const toggleBurgerMenu = () => {
                 <div
                   class="u-bold u-color-text-2 u-big-text"
                 >
-                  Staff :
+                  {{ $t('content.Navigation.admin') }}
                 </div>
                 <a
                   class="c-text-btn-secondary"
@@ -122,13 +124,13 @@ const toggleBurgerMenu = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Panel admin <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
+                  {{ $t('content.Navigation.admin-panel') }} <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
                 </a>
                 <router-link
                   class="c-text-btn-secondary"
                   :to="{ path: '/admin/scan' }"
                 >
-                  Scan billets
+                  {{ $t('content.Navigation.ticket-scan') }}
                 </router-link>
               </div>
               <div
@@ -138,25 +140,25 @@ const toggleBurgerMenu = () => {
                 <div
                   class="u-bold u-color-text-2 u-big-text"
                 >
-                  Team Bouffe :
+                  {{ $t('content.Navigation.eating-team') }}
                 </div>
                 <router-link
                   class="c-text-btn-secondary"
                   to="/admin/pizza/export/list"
                 >
-                  Liste des exports
+                  {{ $t('content.Navigation.eating-export-list') }}
                 </router-link>
                 <router-link
                   class="c-text-btn-secondary"
                   to="/admin/pizza/list"
                 >
-                  Liste des pizzas
+                  {{ $t('content.Navigation.eating-pizza-list') }}
                 </router-link>
                 <router-link
                   class="c-text-btn-secondary"
                   to="/admin/pizza"
                 >
-                  Menu pizza
+                  {{ $t('content.Navigation.eating-pizza') }}
                 </router-link>
               </div>
             </div>
@@ -165,7 +167,7 @@ const toggleBurgerMenu = () => {
             to="/me"
             :class="$route.path === '/me' ? 'u-underline c-text-btn-secondary' : 'c-text-btn-secondary'"
           >
-            Mon compte
+            {{ $t('content.Navigation.me') }}
           </router-link>
 
           <button
@@ -173,7 +175,7 @@ const toggleBurgerMenu = () => {
             type="button"
             @click="logout_user()"
           >
-            Se déconnecter
+            {{ $t('content.Navigation.logout') }}
           </button>
         </div>
       </div>
@@ -194,7 +196,7 @@ const toggleBurgerMenu = () => {
                 class="c-btn-primary"
                 to="/login"
               >
-                S'identifier
+                {{ $t('content.Navigation.login') }}
               </router-link>
             </div>
             <div v-else class="l-flex-row l-cross-center l-gap-1">
@@ -202,14 +204,14 @@ const toggleBurgerMenu = () => {
                 class="c-text-btn-secondary u-text-center"
                 to="/me"
               >
-                Mon compte
+                {{ $t('content.Navigation.me') }}
               </router-link>
               <button
                 class="c-btn-primary"
                 type="button"
                 @click="logout_user()"
               >
-                Se déconnecter
+                {{ $t('content.Navigation.logout') }}
               </button>
             </div>
             <button
@@ -253,7 +255,7 @@ const toggleBurgerMenu = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Panel admin <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
+            {{ $t('content.Navigation.admin-panel') }} <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
           </a>
           <router-link
             v-if="role === 'dev' || role === 'staff'"
@@ -261,7 +263,7 @@ const toggleBurgerMenu = () => {
             :to="{ path: '/admin/scan' }"
             @click="toggleBurgerMenu()"
           >
-            Scan billets
+            {{ $t('content.Navigation.ticket-scan') }}
           </router-link>
 
           <router-link

@@ -3,5 +3,8 @@ export type Locale = {
     home: {
       [key: string]: string;
     };
+    Navigation: {
+      [key: string]: string;
+    };
   };
 };
