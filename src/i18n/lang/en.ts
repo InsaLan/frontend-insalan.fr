@@ -76,6 +76,10 @@ const en: Locale = {
       description404: "The page you are searching for doesn't exist or was deleted. If you think this message is an error, please do contact us",
       backToHome: 'Home page',
     },
+    Archive: {
+      title: 'Archives',
+      noArchives: 'No archives are available for now, come back later!',
+    },
   },
 };
 

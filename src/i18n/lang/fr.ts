@@ -76,6 +76,10 @@ const fr: Locale = {
       description404: 'La page que vous cherchez n\'existe pas ou a été supprimée. Si vous pensez que ce message est une erreur, n\'hésitez pas à nous contacter',
       backToHome: 'Page d\'accueil',
     },
+    Archive: {
+      title: 'Archives',
+      noArchives: "Aucune archive n'est disponible pour le moment, revenez plus tard !",
+    },
   },
 };
 

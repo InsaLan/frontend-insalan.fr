@@ -74,5 +74,9 @@ export type Locale = {
       description404: string;
       backToHome: string;
     };
+    Archive: {
+      title: string;
+      noArchives: string;
+    };
   };
 };

@@ -13,10 +13,10 @@ await fetchAllEvents();
 <template>
   <div class="u-m-main">
     <h1>
-      Archives
+      {{ $t('content.Archive.title') }}
     </h1>
     <div v-if="oldEvents?.length === 0" class="u-text-center">
-      Aucune archive n'est disponible pour le moment, revenez plus tard !
+      {{ $t('content.Archive.noArchives') }}
     </div>
     <div class="l-flex-column l-gap-4">
       <div
