@@ -81,7 +81,7 @@ const isTeamSeat = (index: number) => {
   );
   if (!slot) return false;
   // find the team occupying the hovered seat
-  const team = props.tournament.teams.find((t) => (t as unknown as TeamDeref).seat_slot === slot?.id);
+  const team = props.tournament.teams.find((te) => (te as unknown as TeamDeref).seat_slot === slot?.id);
   return team ? (team as unknown as TeamDeref).id === props.team?.id : false;
 };
 
@@ -93,7 +93,7 @@ const isPicked = (index: number) => {
   );
   if (!slot) return false;
   // find the team occupying the hovered seat
-  const team = props.tournament.teams.find((t) => (t as unknown as TeamDeref).seat_slot === slot?.id);
+  const team = props.tournament.teams.find((te) => (te as unknown as TeamDeref).seat_slot === slot?.id);
   return !!team;
 };
 
@@ -107,7 +107,7 @@ const handleHover = (index: number, e: Event) => {
 
   if (slot) {
     hoveredTeamSlot.value = slot.id;
-    const team = props.tournament.teams.find((t) => (t as unknown as TeamDeref).seat_slot === slot.id);
+    const team = props.tournament.teams.find((te) => (te as unknown as TeamDeref).seat_slot === slot.id);
     hoveredTeamSlotName.value = team ? (team as unknown as TeamDeref).name : null;
 
     // display the tooltip
@@ -140,7 +140,7 @@ const handleClick = (index: number) => {
   );
   if (slot) {
     // find the team occupying the hovered seat
-    const team = props.tournament.teams.find((t) => (t as unknown as TeamDeref).seat_slot === slot.id);
+    const team = props.tournament.teams.find((te) => (te as unknown as TeamDeref).seat_slot === slot.id);
     if (!team) {
       selectedTeamSlot.value = slot.id;
       showModal.value = true;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Planning from '@/components/Planning.vue';
 import { useI18n } from 'vue-i18n';
+import Planning from '@/components/Planning.vue';
 import type { EventTournamentDeref } from '@/models/tournament';
 
 const props = defineProps<{
