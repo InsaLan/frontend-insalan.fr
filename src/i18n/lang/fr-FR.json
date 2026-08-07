@@ -177,8 +177,8 @@
       "payment": "Paiement",
       "playerRegistered": "Votre inscription dans l'équipe {team} a bien été enregistrée.",
       "playerRegistrationTitle": "Inscription de {name} dans l'équipe {team}",
-      "registrationsFull": "Inscriptions complètes",
       "registrationFor": "Inscription {name}",
+      "registrationsFull": "Inscriptions complètes",
       "roleInTeam": "Rôle dans l'équipe",
       "roleManager": "Manager",
       "rolePlayer": "Joueur·euse",
@@ -211,6 +211,79 @@
       "valueBetween": "La valeur doit être entre {min} et {max}",
       "valueLower": "La valeur doit être inférieure à {max}",
       "valueSuperior": "La valeur doit être supérieure à {min}"
+    },
+    "components": {
+      "Tournament": {
+        "SeatingPlan": {
+          "cancel": "Annuler",
+          "currentTeamSeat": "Place actuelle de l'équipe",
+          "editPlacementInstruction": "Pour modifier votre placement, rendez-vous sur la page de votre équipe, accessible depuis ",
+          "freeSeats": "Places libres",
+          "myAccount": "Mon compte",
+          "selectSeatsConfirm": "Êtes vous sûr·e de vouloir sélectionner ces places ?",
+          "selectSeatsNotice": "Vous pourrez les modifier jusqu'à la fin des inscriptions.",
+          "selectSeatsTitle": "Sélection des places",
+          "team": "Équipe",
+          "teamSeating": "Placement des équipes {event}",
+          "tournamentFreeSeats": "Places libres du tournois {name}",
+          "tournamentTakenSeats": "Places prises du tournois {name}",
+          "unavailable": "Le plan de la salle n'est pas encore disponible, revenez plus tard !",
+          "usedByOtherTournaments": "Place utilisée par les autres tournois",
+          "validate": "Valider"
+        },
+        "TeamCard": {
+          "managers": "Manager | Managers",
+          "substitutes": "Remplaçant·e | Remplaçant·e·s"
+        },
+        "TournamentCard": {
+          "announcedSoon": "Ce tournoi sera annoncé prochainement !",
+          "cashprize": "Cashprize\\u00A0",
+          "comingSoon": "À venir",
+          "logoAlt": "Logo du {name}",
+          "moreInfo": "Plus d'infos",
+          "register": "S'inscrire",
+          "registrationsClosed": "Inscriptions fermées",
+          "registrationsSoon": "Inscriptions à venir",
+          "validatedTeams": "Équipes validées",
+          "waitingThreshold": "En attente du palier"
+        },
+        "TournamentInfo": {
+          "cashprizes": "Cashprizes",
+          "casters": "Casters",
+          "comingSoon": "À venir",
+          "format": "Format",
+          "manager": "Manager",
+          "passwordProtectedRegistration": "L'inscription à ce tournoi est protégée par un mot de passe.",
+          "player": "Joueureuse",
+          "players": "Joueureuses",
+          "price": "Prix",
+          "privateDescription": "Ce tournoi est un tournoi secondaire et n'est pas lié à une édition de l'InsaLan.\\nPour plus d'informations, veuillez demander à l'équipe Animation.",
+          "rewards": "Récompenses",
+          "start": "Début",
+          "teamsOf": "équipes de"
+        },
+        "TournamentPlanning": {
+          "disclaimer": "Les plannings peuvent varier en fonction de l'avancement des tournois et sont donnés à titre indicatif."
+        },
+        "TournamentTeams": {
+          "noRegisteredTeam": "Aucun équipe inscrite.",
+          "validatedTeamsDescription": "Les équipes validées ont rempli toutes les conditions pour participer au tournoi.\\nSi votre équipe apparaît ici, félicitations !",
+          "validatedTeamsTitle": "Équipes validées.",
+          "validatingTeamsDescription": "Les équipes en cours de validation n'ont pas encore rempli les conditions nécessaires pour participer au tournoi. Pour être validées, il faut qu'au moins la moitié des membres de l'équipe aient payé leur inscription.",
+          "validatingTeamsTitle": "Équipes en cours de validation",
+          "waitingThresholdDescription": "Les équipes en attente du palier ont rempli les conditions minimales mais doivent attendre que le prochain palier d'équipe soit atteint pour être validées.\\nEncore <strong>{count} autres équipes</strong> doivent remplir les conditions pour atteindre le prochain palier.",
+          "waitingThresholdTitle": "Équipes en attentes du palier"
+        },
+        "TravelFormModal": {
+          "body": "Ce formulaire est facultatif, mais votre réponse nous serait très utile ! En partageant <strong>anonymement</strong> votre ville de départ et le moyen de transport que vous comptez utiliser pour venir à la LAN, vous nous aidez à mieux estimer l’impact environnemental de l’évènement et à l’améliorer chaque année. Merci d’avance !",
+          "city": "Ville",
+          "send": "Envoyé !",
+          "sending": "Envoi...",
+          "skip": "Ne pas répondre",
+          "title": "Estimation de l’impact environnemental de la LAN",
+          "transportMethod": "Moyen de Transport"
+        }
+      }
     },
     "home": {
       "no-tournament": "Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !",

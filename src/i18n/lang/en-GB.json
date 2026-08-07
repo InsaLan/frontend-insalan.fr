@@ -177,8 +177,8 @@
       "payment": "Payment",
       "playerRegistered": "Your registration in team {team} has been recorded.",
       "playerRegistrationTitle": "Registration of {name} in team {team}",
-      "registrationsFull": "Registrations full",
       "registrationFor": "Registration {name}",
+      "registrationsFull": "Registrations full",
       "roleInTeam": "Role in team",
       "roleManager": "Manager",
       "rolePlayer": "Player",
@@ -211,6 +211,79 @@
       "valueBetween": "Value must be between {min} and {max}",
       "valueLower": "Value must be lower than {max}",
       "valueSuperior": "Value must be greater than {min}"
+    },
+    "components": {
+      "Tournament": {
+        "SeatingPlan": {
+          "cancel": "Cancel",
+          "currentTeamSeat": "Current team placement",
+          "editPlacementInstruction": "To modify your placement, please go to your team page, accessible on ",
+          "freeSeats": "Free seats",
+          "myAccount": "My account",
+          "selectSeatsConfirm": "Are you sure you want to select those places ?",
+          "selectSeatsNotice": "You can modify them until the end of the registration",
+          "selectSeatsTitle": "Place selection",
+          "team": "Team",
+          "teamSeating": "Placement of the teams {event}",
+          "tournamentFreeSeats": "Free places of the tournament {name}",
+          "tournamentTakenSeats": "Taken places of the tournament {name}",
+          "unavailable": "The room plan is not yet available, come back later!",
+          "usedByOtherTournaments": "Places used by other tournaments",
+          "validate": "Validate"
+        },
+        "TeamCard": {
+          "managers": "Manager | Managers",
+          "substitutes": "Substitute | Substitutes"
+        },
+        "TournamentCard": {
+          "announcedSoon": "This tournament will be announced shortly !",
+          "cashprize": "Cashprize:",
+          "comingSoon": "coming soon",
+          "logoAlt": "Logo of {name}",
+          "moreInfo": "More infos",
+          "register": "Register",
+          "registrationsClosed": "Registrations closed",
+          "registrationsSoon": "Registrations coming soon",
+          "validatedTeams": "Validated team",
+          "waitingThreshold": "Waiting for threshold"
+        },
+        "TournamentInfo": {
+          "cashprizes": "Cashprizes",
+          "casters": "Casters",
+          "comingSoon": "Coming soon",
+          "format": "Format",
+          "manager": "Manager",
+          "passwordProtectedRegistration": "The registering to this tournament is protected by a password.",
+          "player": "Player",
+          "players": "Players",
+          "price": "Prize",
+          "privateDescription": "This tournament is a secondary tournament and is not linked with an edition of the InsaLan.\\nFor more informations, please ask to a member of the Animation team.",
+          "rewards": "Rewards",
+          "start": "Start",
+          "teamsOf": "teams of"
+        },
+        "TournamentPlanning": {
+          "disclaimer": "Schedules can vary depending on the progress of the tournaments and are given for information purposes."
+        },
+        "TournamentTeams": {
+          "noRegisteredTeam": "No team registered.",
+          "validatedTeamsDescription": "Validated teams meet all conditions to participate to the tournament.\\nIf your team shows here, congratulations !",
+          "validatedTeamsTitle": "Validated teams.",
+          "validatingTeamsDescription": "Teams waiting for validation have not met the necessary conditions to participate to the tournament. To be validate, it is necessary that at least half of the members of the team have payed their registering.",
+          "validatingTeamsTitle": "Teams waiting for validation",
+          "waitingThresholdDescription": "Teams waiting for threshold have met the minimal conditions but need to wait for the next threshold to be met to be validated.\\n<strong>{count} more teams</strong> need to meet the confitions to reach the next threshold.",
+          "waitingThresholdTitle": "Teams waiting for threshold"
+        },
+        "TravelFormModal": {
+          "body": "This form is facultative, but your answer would greatly help us ! By sharing <strong>anonymely</strong> your city of departure and the mean of transport that you plan to use to come to the LAN, you help us to better estimate the environemental impact of the event and to improve it every year. Thanks in advance !",
+          "city": "City",
+          "send": "Sent !",
+          "sending": "Sending...",
+          "skip": "Do not answer",
+          "title": "Estimation of the environmental impact of the LAN",
+          "transportMethod": "Mean of Transportation"
+        }
+      }
     },
     "home": {
       "no-tournament": "No tournament is occurring or coming, come back later!",

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n';
 import PaymentStatusIcon from '@/components/PaymentStatusIcon.vue';
 import type { PlayerRegistration } from '@/models/registration';
 import type { Team } from '@/models/team';
@@ -11,6 +12,7 @@ defineProps<{
   team: Team;
   soloGame?: boolean;
 }>();
+const { t } = useI18n();
 </script>
 
 <template>
@@ -26,7 +28,7 @@ defineProps<{
     </ul>
     <div v-if="team.substitutes.length > 0">
       <p class="u-big-text">
-        Remplaçant·e{{ team.substitutes.length > 1 ? '·s' : '' }} :
+        {{ t('content.components.Tournament.TeamCard.substitutes', team.substitutes.length) }}
       </p>
       <ul>
         <li v-for="player in team.substitutes" :key="((player as PlayerRegistration).user)">
@@ -37,7 +39,7 @@ defineProps<{
     </div>
     <div v-if="team.managers.length > 0" class="u-big-text">
       <p class="u-big-text">
-        Manager{{ team.managers.length > 1 ? 's' : '' }} :
+        {{ t('content.components.Tournament.TeamCard.managers', team.managers.length) }}
       </p>
       <ul>
         <li v-for="manager in team.managers" :key="manager">
