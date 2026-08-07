@@ -1,3 +1,7 @@
 export type Locale = {
-  message: { [key: string]: string };
+  content: {
+    home: {
+      [key: string]: string;
+    };
+  };
 };
