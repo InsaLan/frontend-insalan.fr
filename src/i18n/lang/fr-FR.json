@@ -29,7 +29,7 @@
       "canNowLogin": "Vous pouvez désormais vous connecter à votre compte !",
       "createAccount": "Créer un compte",
       "emailVerified": "votre adresse e-mail a été vérifiée !",
-      "goBackTo": "Revenir à\u00A0:",
+      "goBackTo": "Revenir à :",
       "myAccount": "Mon compte",
       "verificationFailed": "Échec de la vérification"
     },
@@ -56,7 +56,7 @@
       "passwordConfirm": "Répéter mot de passe",
       "signin": "S'enregistrer",
       "submit": "Se connecter",
-      "username": "Nom d'utilisateur·rice",
+      "username": "Pseudo",
       "validate": "Valider"
     },
     "NameConfirmationModal": {
@@ -65,13 +65,6 @@
       "firstname": "Prénom",
       "lastname": "Nom",
       "title": "Confirmez votre nom"
-    },
-    "ResetPassword": {
-      "newPassword": "Nouveau mot de passe",
-      "passwordPlaceholder": "Mot de passe",
-      "repeatPassword": "Répéter le mot de passe",
-      "submit": "Valider",
-      "title": "Réinitialiser votre mot de passe"
     },
     "Navigation": {
       "admin-panel": "Panel admin",
@@ -92,10 +85,70 @@
       "ticket-scan": "Scan billets",
       "tournament": "Tournois"
     },
+    "ResetPassword": {
+      "newPassword": "Nouveau mot de passe",
+      "passwordPlaceholder": "Mot de passe",
+      "repeatPassword": "Répéter le mot de passe",
+      "submit": "Valider",
+      "title": "Réinitialiser votre mot de passe"
+    },
+    "ReturnPayment": {
+      "backToProfile": "Retour vers le profil",
+      "processingError": "Une erreur est survenue lors du traitement du paiement :",
+      "refused": "❌ Votre paiement a été refusé.",
+      "succeeded": "🎉 Votre paiement a été accepté !",
+      "unknownError": "🛸 Erreur inconnue"
+    },
+    "ScanQrCode": {
+      "cameraAlreadyInUse": "La caméra est-elle déjà utilisée ?",
+      "cameraPermissionRequired": "Vous devez accorder l'autorisation d'accès à la caméra",
+      "cancel": "Annuler",
+      "identity": "Identité :",
+      "noCameraDevice": "Pas d'appareil photo sur cet appareil",
+      "noRegistrationFound": "Aucune inscription trouvée",
+      "player": "Joueureuse :",
+      "searchUnpaidRegistration": "Rechercher une inscription non payée",
+      "secureContextRequired": "Contexte sécurisé requis (HTTPS, localhost)",
+      "status": "Statut :",
+      "team": "Équipe :",
+      "ticketAlreadyScanned": "Ticket déjà scanné",
+      "ticketCancelled": "Ticket annulé",
+      "ticketScanError": "Erreur dans le scan du ticket",
+      "ticketValid": "Ticket valide",
+      "tournament": "Tournoi :",
+      "unsupportedCamera": "Les caméras installées ne sont pas adaptées",
+      "usernamePlaceholder": "Pseudo",
+      "validate": "Valider",
+      "validatePayment": "Valider le paiement"
+    },
     "Schedule": {
       "nextDay": "Jour suivant",
       "previousDay": "Jour précédent",
       "unavailable": "Le planning n'est pas encore disponible, revenez plus tard !"
+    },
+    "TeamDetail": {
+      "cancel": "Annuler",
+      "changeInGameName": "Changer votre nom en jeu",
+      "changeTeamName": "Changer le nom de l'équipe",
+      "changeTeamPassword": "Changer le mot de passe de l'équipe",
+      "kickPlayer": "Expulser le·la joueureuse",
+      "kickPlayerConfirm": "Êtes-vous sûr·e de vouloir expulser \"{name}\" de l'équipe ?",
+      "kickPlayerTitle": "Expulsion d'un·e joueureuse",
+      "leaveTeam": "Quitter l'équipe",
+      "leaveTeamConfirm": "Êtes-vous sûr·e de vouloir quitter l'équipe ?",
+      "leaveTeamWarning": "Vous ne pourrez pas revenir dans l'équipe à moins d'y être invité·e de nouveau.",
+      "managers": "Managers :",
+      "newName": "Nouveau nom",
+      "newNickname": "Nouveau pseudo",
+      "newPassword": "Nouveau mot de passe",
+      "no": "Non",
+      "players": "Joueur·euse·s :",
+      "substitutes": "Remplaçant·e·s :",
+      "teamCaptain": "Capitaine de l'équipe",
+      "teamValidated": "Équipe validée",
+      "tournamentEndedNoChanges": "Le tournoi est terminé et l'équipe ne peut plus être modifiée.",
+      "validate": "Valider",
+      "yes": "Oui"
     },
     "ValidationErrors": {
       "invalidEmail": "Doit être une adresse email valide",

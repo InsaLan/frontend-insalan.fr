@@ -66,13 +66,6 @@
       "lastname": "Last name",
       "title": "Confirm your name"
     },
-    "ResetPassword": {
-      "newPassword": "New password",
-      "passwordPlaceholder": "Password",
-      "repeatPassword": "Repeat password",
-      "submit": "Submit",
-      "title": "Reset your password"
-    },
     "Navigation": {
       "admin-panel": "Admin panel",
       "association": "Association",
@@ -92,10 +85,70 @@
       "ticket-scan": "Ticket scan",
       "tournament": "Tournament"
     },
+    "ResetPassword": {
+      "newPassword": "New password",
+      "passwordPlaceholder": "Password",
+      "repeatPassword": "Repeat password",
+      "submit": "Submit",
+      "title": "Reset your password"
+    },
+    "ReturnPayment": {
+      "backToProfile": "Back to profile",
+      "processingError": "An error occurred while processing the payment:",
+      "refused": "❌ Your payment was refused.",
+      "succeeded": "🎉 Your payment was accepted!",
+      "unknownError": "🛸 Unknown error"
+    },
+    "ScanQrCode": {
+      "cameraAlreadyInUse": "Is the camera already in use?",
+      "cameraPermissionRequired": "You must grant camera access permission",
+      "cancel": "Cancel",
+      "identity": "Identity:",
+      "noCameraDevice": "No camera found on this device",
+      "noRegistrationFound": "No registration found",
+      "player": "Player:",
+      "searchUnpaidRegistration": "Search for an unpaid registration",
+      "secureContextRequired": "Secure context required (HTTPS, localhost)",
+      "status": "Status:",
+      "team": "Team:",
+      "ticketAlreadyScanned": "Ticket already scanned",
+      "ticketCancelled": "Ticket cancelled",
+      "ticketScanError": "Ticket scan error",
+      "ticketValid": "Valid ticket",
+      "tournament": "Tournament:",
+      "unsupportedCamera": "Installed cameras are not suitable",
+      "usernamePlaceholder": "Username",
+      "validate": "Validate",
+      "validatePayment": "Validate payment"
+    },
     "Schedule": {
       "nextDay": "Next day",
       "previousDay": "Previous day",
       "unavailable": "Schedule is not yet available, come back later!"
+    },
+    "TeamDetail": {
+      "cancel": "Cancel",
+      "changeInGameName": "Change your in-game name",
+      "changeTeamName": "Change team name",
+      "changeTeamPassword": "Change team password",
+      "kickPlayer": "Kick player",
+      "kickPlayerConfirm": "Are you sure you want to kick \"{name}\" from the team?",
+      "kickPlayerTitle": "Kick a player",
+      "leaveTeam": "Leave team",
+      "leaveTeamConfirm": "Are you sure you want to leave the team?",
+      "leaveTeamWarning": "You will not be able to rejoin the team unless invited again.",
+      "managers": "Managers:",
+      "newName": "New name",
+      "newNickname": "New nickname",
+      "newPassword": "New password",
+      "no": "No",
+      "players": "Players:",
+      "substitutes": "Substitutes:",
+      "teamCaptain": "Team captain",
+      "teamValidated": "Team validated",
+      "tournamentEndedNoChanges": "The tournament is over and the team can no longer be modified.",
+      "validate": "Validate",
+      "yes": "Yes"
     },
     "ValidationErrors": {
       "invalidEmail": "Must be a valid email address",

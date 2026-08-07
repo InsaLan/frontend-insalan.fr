@@ -272,7 +272,7 @@ const kick_member = async (type: string, id: number) => {
                 )
             "
             type="button"
-            title="Changer le nom de l'équipe"
+            :title="$t('content.TeamDetail.changeTeamName')"
             class="c-inline-icon c-image-btn"
             @click="showModalTeamName = true"
             @keydown.enter="showModalTeamName = true"
@@ -285,7 +285,7 @@ const kick_member = async (type: string, id: number) => {
             v-if="selected_team.validated"
             icon="fa-circle-check"
             class="c-inline-icon u-color-correct-1"
-            title="Équipe validée"
+            :title="$t('content.TeamDetail.teamValidated')"
           />
         </h2>
         <div class="l-grow"/>
@@ -308,7 +308,7 @@ const kick_member = async (type: string, id: number) => {
         <div
           class="l-flex-column u-full-width u-p-1"
         >
-          <span class="u-big-text">Joueur·euse·s :</span>
+          <span class="u-big-text">{{ $t('content.TeamDetail.players') }}</span>
           <div
             class="l-grid-3 u-pt-1 l-gap-1"
           >
@@ -322,7 +322,7 @@ const kick_member = async (type: string, id: number) => {
                 v-if="selected_team.captain === player.name_in_game"
                 class="c-inline-icon u-mr-0"
                 icon="fa-crown"
-                title="Capitaine de l'équipe"
+                :title="$t('content.TeamDetail.teamCaptain')"
               />
               <PaymentStatusIcon :player="player as PlayerRegistration"/>
               <div class="l-grow"/>
@@ -343,7 +343,7 @@ const kick_member = async (type: string, id: number) => {
                     )
                 "
                 type="button"
-                title="Expulser le·la joueur·euse"
+                :title="$t('content.TeamDetail.kickPlayer')"
                 class="c-inline-icon c-image-btn u-mr-0"
                 @click="kickregtype = 'player'; kickregid = player.id; showModalKickPlayer = true"
               >
@@ -358,7 +358,7 @@ const kick_member = async (type: string, id: number) => {
           v-if="!(props.id in privateTournamentsList) && selected_team?.managers.length !== 0"
           class="l-flex-column u-full-width u-p-1"
         >
-          <span class="u-big-text">Managers :</span>
+          <span class="u-big-text">{{ $t('content.TeamDetail.managers') }}</span>
           <ul
             class="l-grid-3 u-pt-1 l-gap-1"
           >
@@ -375,7 +375,7 @@ const kick_member = async (type: string, id: number) => {
           v-if="!(props.id in privateTournamentsList) && selected_team?.substitutes.length !== 0"
           class="l-flex-column u-full-width u-p-1"
         >
-          <span class="u-big-text">Remplaçant·e·s :</span>
+          <span class="u-big-text">{{ $t('content.TeamDetail.substitutes') }}</span>
           <div
             class="l-grid-3 u-pt-1 l-gap-1"
           >
@@ -400,7 +400,7 @@ const kick_member = async (type: string, id: number) => {
                     )
                 "
                 type="button"
-                title="Expulser le·la joueur·euse"
+                :title="$t('content.TeamDetail.kickPlayer')"
                 class="c-inline-icon c-image-btn u-mr-0"
                 @click="kickregtype = 'substitue'; kickregid = substitute.id; showModalKickPlayer = true"
               >
@@ -435,7 +435,7 @@ const kick_member = async (type: string, id: number) => {
           class="c-btn-bg-3"
           @click="showModalTeamPassword = true"
         >
-          Changer le mot de passe de l'équipe
+          {{ $t('content.TeamDetail.changeTeamPassword') }}
         </button>
         <button
           v-if="
@@ -445,14 +445,14 @@ const kick_member = async (type: string, id: number) => {
           class="c-btn-secondary"
           @click="showModalLeaveTeam = true"
         >
-          Quitter l'équipe
+          {{ $t('content.TeamDetail.leaveTeam') }}
         </button>
       </div>
       <div
         v-else-if="!(tournament && (!('event' in tournament) || (tournament as EventTournamentDeref)?.event.ongoing))"
         class="u-mb-1 u-mx-1 u-full-width u-big-text u-text-center"
       >
-        Le tournoi est terminé et l'équipe ne peut plus être modifiée.
+        {{ $t('content.TeamDetail.tournamentEndedNoChanges') }}
       </div>
     </div>
 
@@ -469,7 +469,7 @@ const kick_member = async (type: string, id: number) => {
 
   <Modal v-if="showModalNameInGame" @close="closeModalNameInGame">
     <template #title>
-      Changer votre nom en jeu
+      {{ $t('content.TeamDetail.changeInGameName') }}
     </template>
     <template #body>
       <form id="patch-user" @submit.prevent="ValidateModalNameInGame">
@@ -477,13 +477,13 @@ const kick_member = async (type: string, id: number) => {
           :validations="v$_name_in_game.name_in_game"
         >
           <label for="name_in_game">
-            Nouveau Pseudo
+            {{ $t('content.TeamDetail.newNickname') }}
           </label>
           <input
             id="name_in_game"
             v-model="data_name_in_game.name_in_game"
-            aria-label="Nouveau Pseudo"
-            placeholder="Nouveau Pseudo"
+            :aria-label="$t('content.TeamDetail.newNickname')"
+            :placeholder="$t('content.TeamDetail.newNickname')"
             required
             type="text"
           />
@@ -497,21 +497,21 @@ const kick_member = async (type: string, id: number) => {
         type="button"
         @click="closeModalNameInGame"
       >
-        Annuler
+        {{ $t('content.TeamDetail.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="ValidateModalNameInGame"
       >
-        Valider
+        {{ $t('content.TeamDetail.validate') }}
       </button>
     </template>
   </Modal>
 
   <Modal v-if="showModalTeamName" @close="closeModalTeamName">
     <template #title>
-      Changer le nom de l'équipe
+      {{ $t('content.TeamDetail.changeTeamName') }}
     </template>
     <template #body>
       <form id="patch-user" @submit.prevent="ValidateModalTeamName">
@@ -519,13 +519,13 @@ const kick_member = async (type: string, id: number) => {
           :validations="v$_team_name.name"
         >
           <label for="name">
-            Nouveau nom
+            {{ $t('content.TeamDetail.newName') }}
           </label>
           <input
             id="name"
             v-model="data_team_name.name"
-            aria-label="Nouveau nom"
-            placeholder="Nouveau nom"
+            :aria-label="$t('content.TeamDetail.newName')"
+            :placeholder="$t('content.TeamDetail.newName')"
             required
             type="text"
           />
@@ -539,21 +539,21 @@ const kick_member = async (type: string, id: number) => {
         type="button"
         @click="closeModalTeamName"
       >
-        Annuler
+        {{ $t('content.TeamDetail.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="ValidateModalTeamName"
       >
-        Valider
+        {{ $t('content.TeamDetail.validate') }}
       </button>
     </template>
   </Modal>
 
   <Modal v-if="showModalTeamPassword" @close="closeModalTeamPassword">
     <template #title>
-      Changer le mot de passe de l'équipe
+      {{ $t('content.TeamDetail.changeTeamPassword') }}
     </template>
     <template #body>
       <form id="patch-user" @submit.prevent="ValidateModalTeamPassword">
@@ -561,12 +561,12 @@ const kick_member = async (type: string, id: number) => {
           :validations="v$_team_password.password"
         >
           <label for="password">
-            Nouveau mot de passe
+            {{ $t('content.TeamDetail.newPassword') }}
           </label>
           <input
             v-model="data_team_password.password"
-            aria-label="Nouveau mot de passe"
-            placeholder="Nouveau mot de passe"
+            :aria-label="$t('content.TeamDetail.newPassword')"
+            :placeholder="$t('content.TeamDetail.newPassword')"
             required
             type="text"
           />
@@ -580,26 +580,26 @@ const kick_member = async (type: string, id: number) => {
         type="button"
         @click="closeModalTeamPassword"
       >
-        Annuler
+        {{ $t('content.TeamDetail.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="ValidateModalTeamPassword"
       >
-        Valider
+        {{ $t('content.TeamDetail.validate') }}
       </button>
     </template>
   </Modal>
 
   <Modal v-if="showModalLeaveTeam" @close="showModalLeaveTeam = false">
     <template #title>
-      Quitter l'équipe
+      {{ $t('content.TeamDetail.leaveTeam') }}
     </template>
     <template #body>
-      Êtes-vous sûr·e de vouloir quitter l'équipe ?
+      {{ $t('content.TeamDetail.leaveTeamConfirm') }}
       <br/><br/>
-      Vous ne pourrez pas revenir dans l'équipe à moins d'y être invité·e de nouveau.
+      {{ $t('content.TeamDetail.leaveTeamWarning') }}
     </template>
     <template #buttons>
       <button
@@ -607,28 +607,30 @@ const kick_member = async (type: string, id: number) => {
         type="button"
         @click="showModalLeaveTeam = false"
       >
-        Non
+        {{ $t('content.TeamDetail.no') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="leave_team(team_registration?.[0] || '', team_registration?.[1]?.id ?? 0); router.push('/me')"
       >
-        Oui
+        {{ $t('content.TeamDetail.yes') }}
       </button>
     </template>
   </Modal>
 
   <Modal v-if="showModalKickPlayer" @close="showModalKickPlayer = false">
     <template #title>
-      Expulsion d'un joueur
+      {{ $t('content.TeamDetail.kickPlayerTitle') }}
     </template>
     <template #body>
-      Êtes-vous sûr·e de vouloir expulser "{{
-        kickregtype === "player"
-          ? (selected_team?.players as PlayerRegistration[]).find((player) => player.id === kickregid)?.name_in_game
-          : (selected_team?.substitutes as PlayerRegistration[]).find((sub) => sub.id === kickregid)?.name_in_game
-      }}" de l'équipe ?
+      {{
+        $t('content.TeamDetail.kickPlayerConfirm', {
+          name: kickregtype === "player"
+            ? (selected_team?.players as PlayerRegistration[]).find((player) => player.id === kickregid)?.name_in_game
+            : (selected_team?.substitutes as PlayerRegistration[]).find((sub) => sub.id === kickregid)?.name_in_game,
+        })
+      }}
     </template>
     <template #buttons>
       <button
@@ -636,14 +638,14 @@ const kick_member = async (type: string, id: number) => {
         type="button"
         @click="showModalKickPlayer = false"
       >
-        Non
+        {{ $t('content.TeamDetail.no') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="kick_member(kickregtype, kickregid)"
       >
-        Oui
+        {{ $t('content.TeamDetail.yes') }}
       </button>
     </template>
   </Modal>
