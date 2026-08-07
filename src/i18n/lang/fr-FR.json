@@ -23,6 +23,16 @@
       "pizzasOfNextTimeslot": "Pizzas du Prochain Créneau",
       "timeslot": "Créneau"
     },
+    "EmailVerif": {
+      "accountCreation": "Création de compte",
+      "alreadyVerifiedOrInvalidLink": "L'adresse a déjà été vérifiée ou le lien est invalide.",
+      "canNowLogin": "Vous pouvez désormais vous connecter à votre compte !",
+      "createAccount": "Créer un compte",
+      "emailVerified": "votre adresse e-mail a été vérifiée !",
+      "goBackTo": "Revenir à\u00A0:",
+      "myAccount": "Mon compte",
+      "verificationFailed": "Échec de la vérification"
+    },
     "Error": {
       "backToHome": "Page d'accueil",
       "description404": "La page que vous cherchez n'existe pas ou a été supprimée. Si vous pensez que ce message est une erreur, n'hésitez pas à nous contacter",

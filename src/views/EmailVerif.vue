@@ -25,27 +25,27 @@ const { username } = await verifMail(props);
   <!-- Cas fonctionnel -->
   <div v-if="MailVerified" class="u-m-text u-text-center u-big-text">
     <h1>
-      Création de compte
+      {{ $t('content.EmailVerif.accountCreation') }}
     </h1>
-    <em class="u-color-secondary-1">{{ username }}</em>, votre adresse e-mail a été vérifiée !
+    <em class="u-color-secondary-1">{{ username }}</em>, {{ $t('content.EmailVerif.emailVerified') }}
     <br><br>
-    Vous pouvez désormais vous connecter à votre compte !
+    {{ $t('content.EmailVerif.canNowLogin') }}
     <router-link class="c-btn-primary" to="/me">
-      Mon compte
+      {{ $t('content.EmailVerif.myAccount') }}
     </router-link>
   </div>
   <!-- Cas où erreur verif -->
   <div v-else class="u-m-text u-text-center u-big-text">
     <h1>
-      Création de compte
+      {{ $t('content.EmailVerif.accountCreation') }}
     </h1>
-    Échec de la vérification
+    {{ $t('content.EmailVerif.verificationFailed') }}
     <br><br>
-    L'adresse a déjà été vérifiée ou le lien est invalide.
+    {{ $t('content.EmailVerif.alreadyVerifiedOrInvalidLink') }}
     <br><br>
-    Revenir à :
+    {{ $t('content.EmailVerif.goBackTo') }}
     <router-link class="c-btn-primary" to="/register">
-      Créer un compte
+      {{ $t('content.EmailVerif.createAccount') }}
     </router-link>
   </div>
 </template>
