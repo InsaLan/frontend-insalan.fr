@@ -24,6 +24,7 @@ const en: Locale = {
       'eating-pizza': 'Pizza menu',
       me: 'My account',
       logout: 'Logout',
+      'label-locale-selector': 'Change language',
     },
     Footer: {
       socials: 'Socials',

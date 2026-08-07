@@ -22,6 +22,7 @@ export type Locale = {
       'eating-pizza': string;
       'me': string;
       'logout': string;
+      'label-locale-selector': string;
     };
     Footer: {
       'socials': string;
