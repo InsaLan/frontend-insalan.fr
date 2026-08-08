@@ -777,7 +777,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             :validations="v_group$.team_per_group"
           >
             <label for="team_per_group">
-              Nombre d'équipes par poules
+              Nombre d'équipes par poule
             </label>
             <input
               id="team_per_group"
