@@ -480,7 +480,18 @@
           "sending": "Envoi...",
           "skip": "Ne pas répondre",
           "title": "Estimation de l’impact environnemental de la LAN",
-          "transportMethod": "Moyen de Transport"
+          "transportMethod": "Moyen de Transport",
+          "transportationMethods": {
+            "BIKE": "Vélo",
+            "BOAT": "Bateau",
+            "BUS": "Bus",
+            "CAR": "Voiture",
+            "CARPOOLING": "Covoiturage",
+            "NONE": "Aucun",
+            "PLANE": "Avion",
+            "PUBLIC_TRANSPORT": "Transport public urbain",
+            "TRAIN": "Train"
+          }
         }
       },
       "TournamentMeCard": {

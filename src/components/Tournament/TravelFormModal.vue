@@ -90,11 +90,11 @@ const handleSubmit = async () => {
             @blur="v$.transportationMethod.$touch"
           >
             <option
-              v-for="transportation_method in Object.keys(TRANSPORTATION_METHOD) as TransportationMethod[]"
+              v-for="transportation_method in TRANSPORTATION_METHOD"
               :key="transportation_method"
               :value="transportation_method"
             >
-              {{ TRANSPORTATION_METHOD[transportation_method] }}
+              {{ t(`content.components.Tournament.TravelFormModal.transportationMethods.${transportation_method}`) }}
             </option>
           </select>
         </FormField>
