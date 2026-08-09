@@ -29,23 +29,23 @@ onMounted(async () => {
 <template>
   <div v-if="status.type === ReturnType.RETURN" class="l-flex-column l-cross-center l-main-center u-full-height">
     <div v-if="status.code === ReturnState.REFUSED" class="u-color-error-1 u-big-text">
-      {{ $t('content.ReturnPayment.refused') }}
+      {{ $t('content.views.ReturnPayment.refused') }}
     </div>
     <div v-else-if="status.code === ReturnState.SUCCEEDED" class="l-flex-column l-cross-center l-main-center u-full-height u-big-text">
-      {{ $t('content.ReturnPayment.succeeded') }}
+      {{ $t('content.views.ReturnPayment.succeeded') }}
       <RouterLink to="/me" class="c-btn-primary">
-        {{ $t('content.ReturnPayment.backToProfile') }}
+        {{ $t('content.views.ReturnPayment.backToProfile') }}
       </RouterLink>
     </div>
     <div v-else class="u-color-error-1 u-big-text">
-      {{ $t('content.ReturnPayment.unknownError') }}
+      {{ $t('content.views.ReturnPayment.unknownError') }}
     </div>
   </div>
   <div v-else-if="status.type === ReturnType.REFUSED" class="l-flex-column l-cross-center l-main-center u-full-height u-color-error-1 u-big-text">
-    {{ $t('content.ReturnPayment.processingError') }}
+    {{ $t('content.views.ReturnPayment.processingError') }}
     <p>{{ status.error }}</p>
   </div>
   <div v-else class="l-flex-column l-cross-center l-main-center u-full-height u-color-error-1 u-big-text">
-    {{ $t('content.ReturnPayment.unknownError') }}
+    {{ $t('content.views.ReturnPayment.unknownError') }}
   </div>
 </template>

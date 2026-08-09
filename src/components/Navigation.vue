@@ -13,19 +13,19 @@ const { getContent } = contentStore;
 const { t } = useI18n();
 
 const items = [
-  { url: '/association', text: t('content.Navigation.association') },
-  { url: '/tournament', text: t('content.Navigation.tournament') },
-  { url: '/info', text: t('content.Navigation.info') },
-  { url: '/eat', text: t('content.Navigation.eat') },
-  { url: '/schedule', text: t('content.Navigation.schedule') },
+  { url: '/association', text: t('content.components.Navigation.association') },
+  { url: '/tournament', text: t('content.components.Navigation.tournament') },
+  { url: '/info', text: t('content.components.Navigation.info') },
+  { url: '/eat', text: t('content.components.Navigation.eat') },
+  { url: '/schedule', text: t('content.components.Navigation.schedule') },
 ] as const;
 const mobile_items = [
-  { url: '/', text: t('content.Navigation.home') },
-  { url: '/association', text: t('content.Navigation.association') },
-  { url: '/tournament', text: t('content.Navigation.tournament') },
-  { url: '/info', text: t('content.Navigation.info') },
-  { url: '/eat', text: t('content.Navigation.eat') },
-  { url: '/schedule', text: t('content.Navigation.schedule') },
+  { url: '/', text: t('content.components.Navigation.home') },
+  { url: '/association', text: t('content.components.Navigation.association') },
+  { url: '/tournament', text: t('content.components.Navigation.tournament') },
+  { url: '/info', text: t('content.components.Navigation.info') },
+  { url: '/eat', text: t('content.components.Navigation.eat') },
+  { url: '/schedule', text: t('content.components.Navigation.schedule') },
 ] as const;
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -87,7 +87,7 @@ const toggleBurgerMenu = () => {
             class="c-btn-primary"
             to="/login"
           >
-            {{ $t('content.Navigation.login') }}
+            {{ $t('content.component.Navigation.login') }}
           </router-link>
         </div>
         <div
@@ -116,7 +116,7 @@ const toggleBurgerMenu = () => {
                 <div
                   class="u-bold u-color-text-2 u-big-text"
                 >
-                  {{ $t('content.Navigation.admin') }}
+                  {{ $t('content.component.Navigation.admin') }}
                 </div>
                 <a
                   class="c-text-btn-secondary"
@@ -124,13 +124,13 @@ const toggleBurgerMenu = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {{ $t('content.Navigation.admin-panel') }} <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
+                  {{ $t('content.component.Navigation.admin-panel') }} <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
                 </a>
                 <router-link
                   class="c-text-btn-secondary"
                   :to="{ path: '/admin/scan' }"
                 >
-                  {{ $t('content.Navigation.ticket-scan') }}
+                  {{ $t('content.component.Navigation.ticket-scan') }}
                 </router-link>
               </div>
               <div
@@ -140,25 +140,25 @@ const toggleBurgerMenu = () => {
                 <div
                   class="u-bold u-color-text-2 u-big-text"
                 >
-                  {{ $t('content.Navigation.eating-team') }}
+                  {{ $t('content.component.Navigation.eating-team') }}
                 </div>
                 <router-link
                   class="c-text-btn-secondary"
                   to="/admin/pizza/export/list"
                 >
-                  {{ $t('content.Navigation.eating-export-list') }}
+                  {{ $t('content.component.Navigation.eating-export-list') }}
                 </router-link>
                 <router-link
                   class="c-text-btn-secondary"
                   to="/admin/pizza/list"
                 >
-                  {{ $t('content.Navigation.eating-pizza-list') }}
+                  {{ $t('content.component.Navigation.eating-pizza-list') }}
                 </router-link>
                 <router-link
                   class="c-text-btn-secondary"
                   to="/admin/pizza"
                 >
-                  {{ $t('content.Navigation.eating-pizza') }}
+                  {{ $t('content.component.Navigation.eating-pizza') }}
                 </router-link>
               </div>
             </div>
@@ -167,7 +167,7 @@ const toggleBurgerMenu = () => {
             to="/me"
             :class="$route.path === '/me' ? 'u-underline c-text-btn-secondary' : 'c-text-btn-secondary'"
           >
-            {{ $t('content.Navigation.me') }}
+            {{ $t('content.component.Navigation.me') }}
           </router-link>
 
           <button
@@ -175,7 +175,7 @@ const toggleBurgerMenu = () => {
             type="button"
             @click="logout_user()"
           >
-            {{ $t('content.Navigation.logout') }}
+            {{ $t('content.component.Navigation.logout') }}
           </button>
         </div>
         <div class="locale-changer">
@@ -186,110 +186,108 @@ const toggleBurgerMenu = () => {
           </select>
         </div>
       </div>
-    </nav>
-  </div>
-  <div
-    :class="[
-      'not-desktop-only',
-      { burgered: burger_menu },
-    ]"
-  >
-    <div id="top" class="l-flex-row l-cross-center">
-      <router-link to="/">
-        <img alt="Logo InsaLan" class="logo c-image-btn u-mx-1" src="@/assets/images/logo_home.png"/>
-      </router-link>
-      <div class="l-grow"/>
-      <div class="l-flex-row l-cross-center l-gap-2 u-p-1 u-ml-1">
-        <div v-if="!isConnected">
-          <router-link
-            class="c-btn-primary"
-            to="/login"
-          >
-            {{ $t('content.Navigation.login') }}
+      <div
+        :class="[
+          'not-desktop-only',
+          { burgered: burger_menu },
+        ]"
+      >
+        <div id="top" class="l-flex-row l-cross-center">
+          <router-link to="/">
+            <img alt="Logo InsaLan" class="logo c-image-btn u-mx-1" src="@/assets/images/logo_home.png"/>
           </router-link>
+          <div class="l-grow"/>
+          <div class="l-flex-row l-cross-center l-gap-2 u-p-1 u-ml-1">
+            <div v-if="!isConnected">
+              <router-link
+                class="c-btn-primary"
+                to="/login"
+              >
+                {{ $t('content.component.Navigation.login') }}
+              </router-link>
+            </div>
+            <div v-else class="l-flex-row l-cross-center l-gap-1">
+              <router-link
+                class="c-text-btn-secondary u-text-center"
+                to="/me"
+              >
+                {{ $t('content.component.Navigation.me') }}
+              </router-link>
+              <button
+                class="c-btn-primary"
+                type="button"
+                @click="logout_user()"
+              >
+                {{ $t('content.component.Navigation.logout') }}
+              </button>
+            </div>
+            <button
+              class="c-text-btn menu-btn u-text-center"
+              type="button"
+              @click="toggleBurgerMenu()"
+            >
+              <svg
+                v-if="!burger_menu || isClosingMenu"
+                class="menu-btn"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <svg
+                v-else
+                class="menu-btn"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
         </div>
-        <div v-else class="l-flex-row l-cross-center l-gap-1">
-          <router-link
-            class="c-text-btn-secondary u-text-center"
-            to="/me"
-          >
-            {{ $t('content.Navigation.me') }}
-          </router-link>
-          <button
-            class="c-btn-primary"
-            type="button"
-            @click="logout_user()"
-          >
-            {{ $t('content.Navigation.logout') }}
-          </button>
-        </div>
-        <button
-          class="c-text-btn menu-btn u-text-center"
-          type="button"
-          @click="toggleBurgerMenu()"
+        <div
+          v-if="burger_menu"
+          :class="['animated-burger', 'l-flex-column', 'l-overflow-auto', { closing: isClosingMenu }]"
         >
-          <svg
-            v-if="!burger_menu || isClosingMenu"
-            class="menu-btn"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+          <a
+            v-if="role === 'dev' || role === 'staff'"
+            class="u-mx-1 u-py-1 c-text-btn-secondary u-text-center"
+            :href="`${apiUrl}/admin/`"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <svg
-            v-else
-            class="menu-btn"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+            {{ $t('content.component.Navigation.admin-panel') }} <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
+          </a>
+          <router-link
+            v-if="role === 'dev' || role === 'staff'"
+            class="u-mx-1 u-py-1 c-text-btn-secondary u-text-center"
+            :to="{ path: '/admin/scan' }"
+            @click="toggleBurgerMenu()"
           >
-            <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-    <div
-      v-if="burger_menu"
-      :class="['animated-burger', 'l-flex-column', 'l-overflow-auto', { closing: isClosingMenu }]"
-    >
-      <a
-        v-if="role === 'dev' || role === 'staff'"
-        class="u-mx-1 u-py-1 c-text-btn-secondary u-text-center"
-        :href="`${apiUrl}/admin/`"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {{ $t('content.Navigation.admin-panel') }} <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
-      </a>
-      <router-link
-        v-if="role === 'dev' || role === 'staff'"
-        class="u-mx-1 u-py-1 c-text-btn-secondary u-text-center"
-        :to="{ path: '/admin/scan' }"
-        @click="toggleBurgerMenu()"
-      >
-        {{ $t('content.Navigation.ticket-scan') }}
-      </router-link>
+            {{ $t('content.component.Navigation.ticket-scan') }}
+          </router-link>
 
-      <router-link
-        v-for="(item, i) in mobile_items"
-        :key="i"
-        :to="{ path: item.url }"
-        class="u-mx-1 u-py-1 c-text-btn-secondary u-text-center"
-        @click="toggleBurgerMenu()"
-      >
-        {{ item.text }}
-      </router-link>
+          <router-link
+            v-for="(item, i) in mobile_items"
+            :key="i"
+            :to="{ path: item.url }"
+            class="u-mx-1 u-py-1 c-text-btn-secondary u-text-center"
+            @click="toggleBurgerMenu()"
+          >
+            {{ item.text }}
+          </router-link>
+        </div>
+      </div>
+    </nav>
+    <div v-if="getContent('alert') && !$route.path.startsWith('/admin/')" class="c-card-error u-full-width u-mt-1 l-flex-column l-cross-center u-px-2 u-py-1">
+      <Content name="alert"/>
     </div>
-  </div>
-  </nav>
-  <div v-if="getContent('alert') && !$route.path.startsWith('/admin/')" class="c-card-error u-full-width u-mt-1 l-flex-column l-cross-center u-px-2 u-py-1">
-    <Content name="alert"/>
-  </div>
   </div>
 </template>
 

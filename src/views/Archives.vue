@@ -13,10 +13,10 @@ await fetchAllEvents();
 <template>
   <div class="u-m-main">
     <h1>
-      {{ $t('content.Archive.title') }}
+      {{ $t('content.views.Archive.title') }}
     </h1>
     <div v-if="oldEvents?.length === 0" class="u-text-center">
-      {{ $t('content.Archive.noArchives') }}
+      {{ $t('content.views.Archive.noArchives') }}
     </div>
     <div class="l-flex-column l-gap-4">
       <div

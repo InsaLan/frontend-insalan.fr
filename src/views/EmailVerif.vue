@@ -25,27 +25,27 @@ const { username } = await verifMail(props);
   <!-- Cas fonctionnel -->
   <div v-if="MailVerified" class="u-m-text u-text-center u-big-text">
     <h1>
-      {{ $t('content.EmailVerif.accountCreation') }}
+      {{ $t('content.views.EmailVerif.accountCreation') }}
     </h1>
-    <em class="u-color-secondary-1">{{ username }}</em>, {{ $t('content.EmailVerif.emailVerified') }}
+    <em class="u-color-secondary-1">{{ username }}</em>, {{ $t('content.views.EmailVerif.emailVerified') }}
     <br><br>
-    {{ $t('content.EmailVerif.canNowLogin') }}
+    {{ $t('content.views.EmailVerif.canNowLogin') }}
     <router-link class="c-btn-primary" to="/me">
-      {{ $t('content.EmailVerif.myAccount') }}
+      {{ $t('content.views.EmailVerif.myAccount') }}
     </router-link>
   </div>
   <!-- Cas où erreur verif -->
   <div v-else class="u-m-text u-text-center u-big-text">
     <h1>
-      {{ $t('content.EmailVerif.accountCreation') }}
+      {{ $t('content.views.EmailVerif.accountCreation') }}
     </h1>
-    {{ $t('content.EmailVerif.verificationFailed') }}
+    {{ $t('content.views.EmailVerif.verificationFailed') }}
     <br><br>
-    {{ $t('content.EmailVerif.alreadyVerifiedOrInvalidLink') }}
+    {{ $t('content.views.EmailVerif.alreadyVerifiedOrInvalidLink') }}
     <br><br>
-    {{ $t('content.EmailVerif.goBackTo') }}
+    {{ $t('content.views.EmailVerif.goBackTo') }}
     <router-link class="c-btn-primary" to="/register">
-      {{ $t('content.EmailVerif.createAccount') }}
+      {{ $t('content.views.EmailVerif.createAccount') }}
     </router-link>
   </div>
 </template>

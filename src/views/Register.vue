@@ -79,7 +79,7 @@ onMounted(async () => {
     <div class="l-flex-column l-cross-center c-card-bg-2 u-p-4">
       <div class="l-flex-column l-cross-center u-mb-2">
         <h1 class="u-m-0">
-          {{ $t('content.Login.signin') }}
+          {{ $t('content.views.Login.signin') }}
         </h1>
         <router-link
           to="/login"
@@ -87,7 +87,7 @@ onMounted(async () => {
           <div
             class="l-flex-row l-cross-center c-text-btn u-m-0"
           >
-            {{ $t('content.Login.alreadyExists') }}
+            {{ $t('content.views.Login.alreadyExists') }}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="c-inline-icon"
@@ -110,7 +110,7 @@ onMounted(async () => {
           <div class="l-flex-column l-gap-2">
             <FormField :validations="v$.email">
               <label for="email">
-                {{ $t('content.Login.email') }}
+                {{ $t('content.views.Login.email') }}
               </label>
               <input
                 id="email"
@@ -123,7 +123,7 @@ onMounted(async () => {
             </FormField>
             <FormField :validations="v$.username">
               <label for="username_register">
-                {{ $t('content.Login.username') }}
+                {{ $t('content.views.Login.username') }}
               </label>
               <input
                 id="username_register"
@@ -146,7 +146,7 @@ onMounted(async () => {
           <div class="l-flex-column l-gap-2">
             <FormField :validations="v$.password" required>
               <label for="password_register">
-                {{ $t('content.Login.password') }}
+                {{ $t('content.views.Login.password') }}
               </label>
               <PasswordInput
                 id="password_register"
@@ -156,7 +156,7 @@ onMounted(async () => {
             </FormField>
             <FormField :validations="v$.password_confirm">
               <label for="repeat">
-                {{ $t('content.Login.passwordConfirm') }}
+                {{ $t('content.views.Login.passwordConfirm') }}
               </label>
               <PasswordInput
                 id="repeat"
@@ -174,24 +174,24 @@ onMounted(async () => {
             class="u-mr-1"
             type="checkbox"
           >
-          <i18n-t keypath="content.Login.acceptCgu" tag="label" for="accept">
+          <i18n-t keypath="content.views.Login.acceptCgu" tag="label" for="accept">
             <a
               class="c-link"
               href="#"
               @click="show_modal_cgu"
               @keydown.enter="show_modal_cgu"
-            >{{ $t('content.Login.cgu') }}</a>
+            >{{ $t('content.views.Login.cgu') }}</a>
           </i18n-t>
         </FormField>
         <button class="c-btn-primary" type="submit">
-          {{ $t('content.Login.signin') }}
+          {{ $t('content.views.Login.signin') }}
         </button>
       </form>
     </div>
 
     <Modal v-if="modal_cgu" @close="modal_cgu = false">
       <template #title>
-        {{ $t('content.Login.cgu') }}
+        {{ $t('content.views.Login.cgu') }}
       </template>
       <template #body>
         <Content name="cgu"/>

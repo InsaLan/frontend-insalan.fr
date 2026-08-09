@@ -28,12 +28,12 @@ const { isConnected, user } = storeToRefs(userStore);
 const { t } = useI18n();
 
 const sections = computed<Record<string, TournamentDetailSection>>(() => ({
-  info: { title: t('content.TournamentDetail.informations'), is_available: true },
-  teams: { title: t('content.TournamentDetail.teams'), is_available: true },
-  seatings: { title: t('content.TournamentDetail.seatings'), is_available: 'seatslots' in (tournament.value as EventTournamentDeref) },
-  stages: { title: t('content.TournamentDetail.stages'), is_available: true },
-  planning: { title: t('content.TournamentDetail.planning'), is_available: 'planning_file' in (tournament.value as EventTournamentDeref) },
-  rules: { title: t('content.TournamentDetail.rules'), is_available: true },
+  info: { title: t('content.views.TournamentDetail.informations'), is_available: true },
+  teams: { title: t('content.views.TournamentDetail.teams'), is_available: true },
+  seatings: { title: t('content.views.TournamentDetail.seatings'), is_available: 'seatslots' in (tournament.value as EventTournamentDeref) },
+  stages: { title: t('content.views.TournamentDetail.stages'), is_available: true },
+  planning: { title: t('content.views.TournamentDetail.planning'), is_available: 'planning_file' in (tournament.value as EventTournamentDeref) },
+  rules: { title: t('content.views.TournamentDetail.rules'), is_available: true },
 }));
 
 const router = useRouter();
@@ -112,7 +112,7 @@ const event_ongoing = computed(() => {
         :to="isPrivate ? `/tournament/private/${id}/register` : `/tournament/${id}/register`"
         class="c-btn-secondary"
       >
-        {{ $t('content.TournamentDetail.register') }}
+        {{ $t('content.views.TournamentDetail.register') }}
       </router-link>
     </div>
 
@@ -166,7 +166,7 @@ const event_ongoing = computed(() => {
           type="button"
           class="c-btn-bg-3"
         >
-          {{ admin_mode ? $t('content.TournamentDetail.normalMode') : $t('content.TournamentDetail.adminMode') }}
+          {{ admin_mode ? $t('content.views.TournamentDetail.normalMode') : $t('content.views.TournamentDetail.adminMode') }}
         </router-link>
       </nav>
     </div>
@@ -178,7 +178,7 @@ const event_ongoing = computed(() => {
     </RouterView>
   </div>
   <div v-else class="u-text-center u-big-text">
-    {{ $t('content.TournamentDetail.notAnnounced') }}
+    {{ $t('content.views.TournamentDetail.notAnnounced') }}
   </div>
 </template>
 

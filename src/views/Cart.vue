@@ -22,12 +22,12 @@ const modal_cgv = ref(false);
   <div class="l-flex-column l-cross-center u-m-text u-full-height l-main-center">
     <div class="c-card-bg-2 u-full-width">
       <h2 class="u-m-1 u-mb-2">
-        {{ $t('content.Cart.title') }}
+        {{ $t('content.views.Cart.title') }}
       </h2>
 
       <div class="u-px-2 l-flex-column">
         <div v-if="cart.length === 0" class="u-py-4 u-text-center u-big-text">
-          {{ $t('content.Cart.empty') }}
+          {{ $t('content.views.Cart.empty') }}
         </div>
 
         <ul v-else class="l-flex-column l-gap-1 u-py-1">
@@ -43,7 +43,7 @@ const modal_cgv = ref(false);
         </ul>
 
         <div v-if="cart.length > 0" class="u-pt-2 u-text-right u-big-text">
-          {{ $t('content.Cart.total') }} <strong>{{ totalPrice.toFixed(2) }} €</strong>
+          {{ $t('content.views.Cart.total') }} <strong>{{ totalPrice.toFixed(2) }} €</strong>
         </div>
 
         <!-- Terms and conditions of sale -->
@@ -56,7 +56,7 @@ const modal_cgv = ref(false);
             v-model="hasReadTerms"
             type="checkbox"
           />
-          <i18n-t keypath="content.Cart.terms" tag="label" for="terms">
+          <i18n-t keypath="content.views.Cart.terms" tag="label" for="terms">
             <a
               class="c-link"
               href="#"
@@ -74,7 +74,7 @@ const modal_cgv = ref(false);
           :disabled="cart.length === 0"
           @click="clear_cart"
         >
-          {{ $t('content.Cart.emptyCart') }}
+          {{ $t('content.views.Cart.emptyCart') }}
         </button>
         <button
           class="c-btn-primary"
@@ -82,7 +82,7 @@ const modal_cgv = ref(false);
           :disabled="cart.length === 0 || !hasReadTerms"
           @click="pay_cart"
         >
-          {{ $t('content.Cart.checkout') }}
+          {{ $t('content.views.Cart.checkout') }}
         </button>
       </div>
     </div>
@@ -90,7 +90,7 @@ const modal_cgv = ref(false);
 
   <Modal v-if="modal_cgv" @close="modal_cgv = false">
     <template #title>
-      {{ $t('content.Cart.cgv') }}
+      {{ $t('content.views.Cart.cgv') }}
     </template>
     <template #body>
       <Content name="cgv"/>
