@@ -1,6 +1,6 @@
 <template>
   <h1>
-    Où nous trouver
+    {{ $t('content.components.Map.title') }}
   </h1>
   <div class="u-m-double-text u-mb-2 u-text-center u-flex-column l-cross-center u-big-text">
     <Content name="Adresse"/>

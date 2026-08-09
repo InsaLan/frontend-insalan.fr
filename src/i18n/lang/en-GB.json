@@ -213,6 +213,16 @@
       "valueSuperior": "Value must be greater than {min}"
     },
     "components": {
+      "Map": {
+        "title": "Where to find us"
+      },
+      "Partners": {
+        "partners": "Our partners",
+        "sponsors": "Our sponsors"
+      },
+      "PartnerCard": {
+        "logoAlt": "Logo of {name}"
+      },
       "Tournament": {
         "Bracket": {
           "cancel": "Cancel",

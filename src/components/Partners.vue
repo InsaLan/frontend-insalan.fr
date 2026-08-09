@@ -25,7 +25,7 @@ onMounted(async () => {
 <template>
   <section v-if="sponsors.length">
     <h1>
-      Nos sponsors
+      {{ $t('content.components.Partners.sponsors') }}
     </h1>
     <div class="l-grid-6 l-gap-2 u-px-2">
       <PartnerCard v-for="sponsor in sponsors" :key="sponsor.id" :partner="sponsor"/>
@@ -33,7 +33,7 @@ onMounted(async () => {
   </section>
   <section v-if="partners.length">
     <h1>
-      Nos partenaires
+      {{ $t('content.components.Partners.partners') }}
     </h1>
     <div class="l-grid-6 l-gap-2 u-px-2">
       <PartnerCard v-for="partner in partners" :key="partner.id" :partner="partner"/>

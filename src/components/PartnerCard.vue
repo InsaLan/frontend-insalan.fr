@@ -12,7 +12,7 @@ const { partner } = toRefs(props);
 
 <template>
   <a :key="partner.id" :href="partner.url" class="partner c-btn-bg-2 l-flex-column l-cross-center" target="_blank" rel="noopener noreferrer">
-    <img :src="partner.logo" :alt="`logo de ${partner.name}`" class="u-full-height"/>
+    <img :src="partner.logo" :alt="$t('content.components.PartnerCard.logoAlt', { name: partner.name })" class="u-full-height"/>
     <p class="u-text-center">{{ partner.name }}</p>
   </a>
 </template>
