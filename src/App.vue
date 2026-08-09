@@ -50,7 +50,7 @@ onUnmounted(() => {
           <template #fallback>
             <div class="l-flex-column l-main-center l-cross-center l-gap-2 u-full-height l-grow">
               <div class="u-big-text">
-                Chargement...
+                {{ $t('content.components.App.loading') }}
               </div>
               <div role="status" aria-hidden="true" class="c-spinner"/>
             </div>

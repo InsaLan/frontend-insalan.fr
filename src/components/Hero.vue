@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
+import i18n from '@/i18n';
 import type { Event } from '@/models/event';
 import { useContentStore } from '@/stores/content.store';
 
@@ -14,7 +15,7 @@ const props = defineProps<Props>();
 
 const eventText = computed(() => {
   if (props.event === undefined) {
-    return getConstant('message_remerciement');
+    return getConstant('message_remerciement', i18n.global.locale.value);
   }
 
   const { date_start, date_end } = props.event;

@@ -4,13 +4,13 @@ import MarkdownItClass from 'markdown-it-class';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-export type Constant = { name: string; value: string };
-export type Content = { name: string; content: string };
+export type Constant = { name: string; lang: string; value: string };
+export type Content = { name: string; lang: string; content: string };
 export type File = { name: string; file: string };
 
 export const useContentStore = defineStore('content', () => {
-  const contents = ref<Record<string, string>>({});
-  const constants = ref<Record<string, string>>({});
+  const contents = ref<Record<string, Record<string, string>>>({});
+  const constants = ref<Record<string, Record<string, string>>>({});
   const files = ref<Record<string, string>>({});
 
   // captures named group matching the pattern ${name}
@@ -33,30 +33,32 @@ export const useContentStore = defineStore('content', () => {
       files:File[];
     }>('/content/full/');
     fetch_cms.data.constants.forEach((constant: Constant) => {
-      constants.value[constant.name] = constant.value;
+      if (constants.value[constant.lang] === undefined) constants.value[constant.lang] = {};
+      constants.value[constant.lang][constant.name] = constant.value;
     });
     fetch_cms.data.files.forEach((file: File) => {
       files.value[file.name] = file.file;
     });
     fetch_cms.data.contents.forEach((content: Content) => {
-      contents.value[content.name] = md.render(
+      if (contents.value[content.lang] === undefined) contents.value[content.lang] = {};
+      contents.value[content.lang][content.name] = md.render(
         content.content
-          .replace(re_constant, (_, name: string) => constants.value[name])
+          .replace(re_constant, (_, name: string) => constants.value[content.lang][name])
           .replace(re_file, (_, name: string) => `[${name}](${files.value[name]})`),
       );
     });
   }
 
-  function getContent(name: string): string {
-    if (contents.value[name] === undefined) return '';
+  function getContent(name: string, lang: string = 'fr'): string {
+    if (contents.value[lang] === undefined || contents.value[lang][name] === undefined) return '';
 
-    return md.renderInline(contents.value[name]);
+    return md.renderInline(contents.value[lang][name]);
   }
 
-  function getConstant(name: string): string {
-    if (constants.value[name] === undefined) return '';
+  function getConstant(name: string, lang: string = 'fr'): string {
+    if (constants.value[lang] === undefined || constants.value[lang][name] === undefined) return '';
 
-    return constants.value[name];
+    return constants.value[lang][name];
   }
 
   function getFile(name: string): string {

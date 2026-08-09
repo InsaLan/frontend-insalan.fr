@@ -26,9 +26,72 @@
       "valueLower": "La valeur doit être inférieure à {max}",
       "valueSuperior": "La valeur doit être supérieure à {min}"
     },
+    "common": {
+      "back": "Retour",
+      "bestOf": "BO {value}",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "email": "Email",
+      "goToCart": "Aller au panier",
+      "invalidScores": "Les scores que vous avez rentrés ne sont pas valides !",
+      "launchSelectedMatches": "Lancer les matchs sélectionnés",
+      "login": "Se connecter",
+      "manager": "Manager",
+      "matchesLaunched": "Les matchs ont bien été lancés.",
+      "myAccount": "Mon compte",
+      "newPassword": "Nouveau mot de passe",
+      "noMatchSelected": "Aucun match sélectionné",
+      "noMatches": "Il n'existe pas de matchs.",
+      "password": "Mot de passe",
+      "playAll": "PA {value}",
+      "register": "S'inscrire",
+      "registrationAddedToCart": "Votre inscription a été ajoutée au panier.",
+      "round": "Tour {round}",
+      "stayOnPage": "Rester sur cette page",
+      "submit": "Valider",
+      "tbd": "À déterminer",
+      "team": "Équipe",
+      "username": "Pseudo",
+      "validate": "Valider"
+    },
     "components": {
+      "App": {
+        "loading": "Chargement..."
+      },
+      "Footer": {
+        "credits": "Code & design : équipe Sysrez - Dev",
+        "socials": "Réseaux"
+      },
       "Map": {
         "title": "Où nous trouver"
+      },
+      "NameConfirmationModal": {
+        "confirm": "Confirmer",
+        "description": "Nous avons besoin de votre nom pour vérifier votre identité à l'entrée",
+        "firstname": "Prénom",
+        "lastname": "Nom",
+        "title": "Confirmez votre nom"
+      },
+      "Navigation": {
+        "admin": "Admin",
+        "admin-panel": "Panel admin",
+        "association": "Association",
+        "eat": "Restauration",
+        "eating-export-list": "Liste des exports",
+        "eating-pizza": "Menu pizza",
+        "eating-pizza-list": "Liste des pizzas",
+        "eating-team": "Team Bouffe :",
+        "home": "Accueil",
+        "info": "Informations pratiques",
+        "label-locale-selector": "Changer de langue",
+        "login": "S'identifier",
+        "logout": "Se déconnecter",
+        "me": "@:content.common.myAccount",
+        "schedule": "Planning",
+        "staff": "Staff :",
+        "ticket-scan": "Scan billets",
+        "tournament": "Tournois"
       },
       "PartnerCard": {
         "logoAlt": "Logo de {name}"
@@ -54,6 +117,11 @@
         "edit": "@:content.common.edit",
         "imageAlt": "Image de {name}",
         "ingredients": "Ingrédients"
+      },
+      "Schedule": {
+        "nextDay": "Jour suivant",
+        "previousDay": "Jour précédent",
+        "unavailable": "Le planning n'est pas encore disponible, revenez plus tard !"
       },
       "StringListInput": {
         "add": "Ajouter",
@@ -283,41 +351,6 @@
         "score": "score",
         "send": "Envoyer",
         "tournamentCodes": "Codes de tournoi :"
-      },
-      "Footer": {
-        "credits": "Code & design : équipe Sysrez - Dev",
-        "socials": "Réseaux"
-      },
-      "NameConfirmationModal": {
-        "confirm": "Confirmer",
-        "description": "Nous avons besoin de votre nom pour vérifier votre identité à l'entrée",
-        "firstname": "Prénom",
-        "lastname": "Nom",
-        "title": "Confirmez votre nom"
-      },
-      "Navigation": {
-        "admin-panel": "Panel admin",
-        "association": "Association",
-        "eat": "Restauration",
-        "eating-export-list": "Liste des exports",
-        "eating-pizza": "Menu pizza",
-        "eating-pizza-list": "Liste des pizzas",
-        "eating-team": "Team Bouffe :",
-        "home": "Accueil",
-        "info": "Informations pratiques",
-        "label-locale-selector": "Changer de langue",
-        "login": "S'identifier",
-        "logout": "Se déconnecter",
-        "me": "@:content.common.myAccount",
-        "schedule": "Planning",
-        "staff": "Staff :",
-        "ticket-scan": "Scan billets",
-        "tournament": "Tournois"
-      },
-      "Schedule": {
-        "nextDay": "Jour suivant",
-        "previousDay": "Jour précédent",
-        "unavailable": "Le planning n'est pas encore disponible, revenez plus tard !"
       }
     },
     "views": {
@@ -533,35 +566,6 @@
         "see-all-tournament": "Voir tous les tournois",
         "title-tournament": "Tournois"
       }
-    },
-    "common": {
-      "cancel": "Annuler",
-      "submit": "Valider",
-      "validate": "Valider",
-      "password": "Mot de passe",
-      "myAccount": "Mon compte",
-      "team": "Équipe",
-      "username": "Pseudo",
-      "newPassword": "Nouveau mot de passe",
-      "delete": "Supprimer",
-      "edit": "Modifier",
-      "launchSelectedMatches": "Lancer les matchs sélectionnés",
-      "matchesLaunched": "Les matchs ont bien été lancés.",
-      "noMatchSelected": "Aucun match sélectionné",
-      "noMatches": "Il n'existe pas de matchs.",
-      "back": "Retour",
-      "tbd": "À déterminer",
-      "invalidScores": "Les scores que vous avez rentrés ne sont pas valides !",
-      "register": "S'inscrire",
-      "manager": "Manager",
-      "login": "Se connecter",
-      "email": "Email",
-      "goToCart": "Aller au panier",
-      "registrationAddedToCart": "Votre inscription a été ajoutée au panier.",
-      "stayOnPage": "Rester sur cette page",
-      "round": "Tour {round}",
-      "bestOf": "BO {value}",
-      "playAll": "PA {value}"
     }
   }
 }

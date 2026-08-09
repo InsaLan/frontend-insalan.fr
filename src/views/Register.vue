@@ -8,6 +8,7 @@ import Content from '@/components/Content.vue';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
+import i18n from '@/i18n';
 import { useContentStore } from '@/stores/content.store';
 import { useUserStore } from '@/stores/user.store';
 import {
@@ -19,7 +20,7 @@ const { getContent } = contentStore;
 
 const modal_cgu = ref(false);
 const show_modal_cgu = (event: MouseEvent | KeyboardEvent) => {
-  if (getContent('cgu')) {
+  if (getContent('cgu', i18n.global.locale.value)) {
     event.preventDefault();
     modal_cgu.value = true;
   }

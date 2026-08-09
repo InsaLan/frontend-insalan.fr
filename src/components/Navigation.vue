@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import i18n from '@/i18n';
 import { useContentStore } from '@/stores/content.store';
 import { useUserStore } from '@/stores/user.store';
 
@@ -10,23 +10,23 @@ import Content from './Content.vue';
 
 const contentStore = useContentStore();
 const { getContent } = contentStore;
-const { t } = useI18n();
+const { t } = i18n.global;
 
-const items = [
+const items = computed(() => [
   { url: '/association', text: t('content.components.Navigation.association') },
   { url: '/tournament', text: t('content.components.Navigation.tournament') },
   { url: '/info', text: t('content.components.Navigation.info') },
   { url: '/eat', text: t('content.components.Navigation.eat') },
   { url: '/schedule', text: t('content.components.Navigation.schedule') },
-] as const;
-const mobile_items = [
+] as const);
+const mobile_items = computed(() => [
   { url: '/', text: t('content.components.Navigation.home') },
   { url: '/association', text: t('content.components.Navigation.association') },
   { url: '/tournament', text: t('content.components.Navigation.tournament') },
   { url: '/info', text: t('content.components.Navigation.info') },
   { url: '/eat', text: t('content.components.Navigation.eat') },
   { url: '/schedule', text: t('content.components.Navigation.schedule') },
-] as const;
+] as const);
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -285,7 +285,7 @@ const toggleBurgerMenu = () => {
         </div>
       </div>
     </nav>
-    <div v-if="getContent('alert') && !$route.path.startsWith('/admin/')" class="c-card-error u-full-width u-mt-1 l-flex-column l-cross-center u-px-2 u-py-1">
+    <div v-if="getContent('alert', i18n.global.locale.value) && !$route.path.startsWith('/admin/')" class="c-card-error u-full-width u-mt-1 l-flex-column l-cross-center u-px-2 u-py-1">
       <Content name="alert"/>
     </div>
   </div>

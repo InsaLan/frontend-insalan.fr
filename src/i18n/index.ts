@@ -5,11 +5,11 @@ import fr from './lang/fr.json';
 
 const i18n = createI18n({
   legacy: false,
-  locale: 'en-GB',
-  fallbackLocale: 'fr-FR',
+  locale: 'en',
+  fallbackLocale: 'fr',
   messages: {
-    'fr-FR': fr,
-    'en-GB': en,
+    fr,
+    en,
   },
 });
 
