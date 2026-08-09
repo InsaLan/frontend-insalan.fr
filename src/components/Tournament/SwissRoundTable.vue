@@ -192,7 +192,7 @@ const swiss_fill_round = async () => {
         :disabled="!has_matchs || selected_matchs.size === 0"
         @click="launch_selected_matchs"
       >
-        Lancer les matchs séléctionnés
+        Lancer les matchs sélectionnés
       </button>
     </div>
 

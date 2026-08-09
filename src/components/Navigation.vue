@@ -109,7 +109,6 @@ const toggleBurgerMenu = () => {
               class="admin-panel c-card-bg-3 l-absolute-position l-flex-column admin-group-show u-text-left"
             >
               <div
-                v-if="role === 'dev' || role === 'staff'"
                 class="l-flex-column u-full-width"
               >
                 <div

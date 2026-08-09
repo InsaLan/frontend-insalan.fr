@@ -344,11 +344,6 @@ const handleCloseTravelFormModal = () => {
             </FormField>
           </div>
         </div>
-        <!-- <h2>Rappel du Règlement</h2>
-        <ul class="list-inside list-disc">
-          <li>Pas d'insulte</li>
-          <li>Apporter son propre matériel <strong>filaire </strong></li>
-        </ul> -->
 
         <FormField
           :validations="v$.accept_rules"

@@ -116,7 +116,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         :disabled="!has_matchs || selected_matchs.size === 0"
         @click="launch_selected_matchs"
       >
-        Lancer les matchs séléctionnés
+        Lancer les matchs sélectionnés
       </button>
     </div>
 
@@ -295,7 +295,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
       Supprimer l'arbre
     </template>
     <template #body>
-      L'arbre va être supprimée ainsi que les matchs qui lui sont liés.
+      L'arbre va être supprimé ainsi que les matchs qui lui sont liés.
     </template>
     <template #buttons>
       <button

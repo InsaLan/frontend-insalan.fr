@@ -180,7 +180,7 @@ watchEffect(() => {
         </h2>
         <div class="l-grow"/>
         <template
-          v-if="editable"
+          v-if="editable && isAdmin"
         >
           <button
             type="button"
