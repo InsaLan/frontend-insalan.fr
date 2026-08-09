@@ -59,6 +59,48 @@
       "username": "Username",
       "validate": "Submit"
     },
+    "Me": {
+      "account": "My account",
+      "cancel": "Cancel",
+      "cartItems": "You have {count} item in your cart. | You have {count} items in your cart.",
+      "changeEmail": "Change email",
+      "changeName": "Change first and last name",
+      "changePassword": "Change password",
+      "completeRegistration": "Complete registration",
+      "confirmNewPassword": "Confirm new password",
+      "currentEdition": "Current edition",
+      "currentPassword": "Current password",
+      "downloadTicket": "Download ticket",
+      "email": "Email",
+      "emailPlaceholder": "john-doe@gmail.com",
+      "findCartFromAccount": "You can find your cart from your account.",
+      "firstNamePlaceholder": "John",
+      "fullName": "First and last name",
+      "goToCart": "Go to cart",
+      "lastNamePlaceholder": "Doe",
+      "manageTeam": "Manage team",
+      "myTeams": "My teams",
+      "newEmail": "New email",
+      "newFirstName": "New first name",
+      "newLastName": "New last name",
+      "newPassword": "New password",
+      "otherEditions": "Other editions",
+      "password": "Password",
+      "payment": "payment",
+      "player": "player",
+      "profileImageAlt": "Profile image",
+      "registrationAddedToCart": "Your registration has been added to the cart.",
+      "role": "Role",
+      "secondaryTournaments": "Secondary tournaments",
+      "stayOnPage": "Stay on this page",
+      "tournamentImageAlt": "Tournament image",
+      "tournamentRules": "Tournament rules",
+      "unpaidRegistration": "You have an unpaid registration | You have unpaids registrations",
+      "username": "Username",
+      "validate": "Submit",
+      "viewCart": "View cart",
+      "viewTeam": "View team"
+    },
     "NameConfirmationModal": {
       "confirm": "Confirm",
       "description": "We need your name to verify your identity at the entrance",
@@ -213,28 +255,15 @@
       "valueSuperior": "Value must be greater than {min}"
     },
     "components": {
-      "StringListInput": {
-        "add": "Add",
-        "delete": "Delete",
-        "edit": "Edit"
+      "Map": {
+        "title": "Where to find us"
       },
-      "TournamentMeCard": {
-        "back": "Back",
-        "cancel": "Cancel",
-        "durationMinutes": "Duration (minutes)",
-        "durationPlaceholder": "5",
-        "finishMatchManually": "Finish the match manually",
-        "game": "Game {number}",
-        "invalidScores": "The scores you entered are invalid!",
-        "invalidTimes": "Times cannot be empty",
-        "next": "Next",
-        "ongoingMatch": "Ongoing match",
-        "ranking": "ranking",
-        "record": "Record the {type}",
-        "recordDurations": "Record match durations (in minutes)",
-        "score": "score",
-        "send": "Send",
-        "tournamentCodes": "Tournament codes:"
+      "PartnerCard": {
+        "logoAlt": "Logo of {name}"
+      },
+      "Partners": {
+        "partners": "Our partners",
+        "sponsors": "Our sponsors"
       },
       "PasswordInput": {
         "generatePassword": "Generate a password",
@@ -254,20 +283,15 @@
         "imageAlt": "Image of {name}",
         "ingredients": "Ingredients"
       },
-      "Map": {
-        "title": "Where to find us"
-      },
-      "Partners": {
-        "partners": "Our partners",
-        "sponsors": "Our sponsors"
-      },
-      "PartnerCard": {
-        "logoAlt": "Logo of {name}"
+      "StringListInput": {
+        "add": "Add",
+        "delete": "Delete",
+        "edit": "Edit"
       },
       "Tournament": {
         "Bracket": {
-          "cancel": "Cancel",
           "bracketDeleted": "The bracket has been deleted.",
+          "cancel": "Cancel",
           "deleteBracket": "Delete bracket",
           "deleteBracketDescription": "The bracket and all matches linked to it will be deleted.",
           "final": "Final",
@@ -302,13 +326,14 @@
           "saveGroup": "Save group",
           "score": "Score",
           "seed": "Seed",
-          "team": "Team",
           "tbd": "TBD",
+          "team": "Team",
           "tiebreak": "tiebreak",
           "validate": "Submit"
         },
         "MatchCard": {
           "bestOf": "BO {value}",
+          "cancelChanges": "Cancel changes",
           "classification": "Cls",
           "completed": "Completed",
           "editMatch": "Edit match",
@@ -318,8 +343,24 @@
           "playAll": "PA {value}",
           "save": "Save",
           "scheduled": "Scheduled",
-          "tbd": "TBD",
-          "cancelChanges": "Cancel changes"
+          "tbd": "TBD"
+        },
+        "SeatingPlan": {
+          "cancel": "Cancel",
+          "currentTeamSeat": "Current team placement",
+          "editPlacementInstruction": "To modify your placement, please go to your team page, accessible on ",
+          "freeSeats": "Free seats",
+          "myAccount": "My account",
+          "selectSeatsConfirm": "Are you sure you want to select those places ?",
+          "selectSeatsNotice": "You can modify them until the end of the registration",
+          "selectSeatsTitle": "Place selection",
+          "team": "Team",
+          "teamSeating": "Placement of the teams {event}",
+          "tournamentFreeSeats": "Free places of the tournament {name}",
+          "tournamentTakenSeats": "Taken places of the tournament {name}",
+          "unavailable": "The room plan is not yet available, come back later!",
+          "usedByOtherTournaments": "Places used by other tournaments",
+          "validate": "Validate"
         },
         "SwissRoundTable": {
           "cancel": "Cancel",
@@ -341,6 +382,40 @@
           "roundMatchesLaunched": "The matches for round {round} have been launched.",
           "roundNumber": "Round number",
           "validate": "Submit"
+        },
+        "TeamCard": {
+          "managers": "Manager | Managers",
+          "substitutes": "Substitute | Substitutes"
+        },
+        "TournamentCard": {
+          "announcedSoon": "This tournament will be announced shortly !",
+          "cashprize": "Cashprize:",
+          "comingSoon": "coming soon",
+          "logoAlt": "Logo of {name}",
+          "moreInfo": "More infos",
+          "register": "Register",
+          "registrationsClosed": "Registrations closed",
+          "registrationsSoon": "Registrations coming soon",
+          "validatedTeams": "Validated team",
+          "waitingThreshold": "Waiting for threshold"
+        },
+        "TournamentInfo": {
+          "cashprizes": "Cashprizes",
+          "casters": "Casters",
+          "comingSoon": "Coming soon",
+          "format": "Format",
+          "manager": "Manager",
+          "passwordProtectedRegistration": "The registering to this tournament is protected by a password.",
+          "player": "Player",
+          "players": "Players",
+          "price": "Prize",
+          "privateDescription": "This tournament is a secondary tournament and is not linked with an edition of the InsaLan.\\nFor more informations, please ask to a member of the Animation team.",
+          "rewards": "Rewards",
+          "start": "Start",
+          "teamsOf": "teams of"
+        },
+        "TournamentPlanning": {
+          "disclaimer": "Schedules can vary depending on the progress of the tournaments and are given for information purposes."
         },
         "TournamentStages": {
           "addFormat": "Add a format",
@@ -389,57 +464,6 @@
           "useTeamSeeding": "Use team seeding",
           "validate": "Submit"
         },
-        "SeatingPlan": {
-          "cancel": "Cancel",
-          "currentTeamSeat": "Current team placement",
-          "editPlacementInstruction": "To modify your placement, please go to your team page, accessible on ",
-          "freeSeats": "Free seats",
-          "myAccount": "My account",
-          "selectSeatsConfirm": "Are you sure you want to select those places ?",
-          "selectSeatsNotice": "You can modify them until the end of the registration",
-          "selectSeatsTitle": "Place selection",
-          "team": "Team",
-          "teamSeating": "Placement of the teams {event}",
-          "tournamentFreeSeats": "Free places of the tournament {name}",
-          "tournamentTakenSeats": "Taken places of the tournament {name}",
-          "unavailable": "The room plan is not yet available, come back later!",
-          "usedByOtherTournaments": "Places used by other tournaments",
-          "validate": "Validate"
-        },
-        "TeamCard": {
-          "managers": "Manager | Managers",
-          "substitutes": "Substitute | Substitutes"
-        },
-        "TournamentCard": {
-          "announcedSoon": "This tournament will be announced shortly !",
-          "cashprize": "Cashprize:",
-          "comingSoon": "coming soon",
-          "logoAlt": "Logo of {name}",
-          "moreInfo": "More infos",
-          "register": "Register",
-          "registrationsClosed": "Registrations closed",
-          "registrationsSoon": "Registrations coming soon",
-          "validatedTeams": "Validated team",
-          "waitingThreshold": "Waiting for threshold"
-        },
-        "TournamentInfo": {
-          "cashprizes": "Cashprizes",
-          "casters": "Casters",
-          "comingSoon": "Coming soon",
-          "format": "Format",
-          "manager": "Manager",
-          "passwordProtectedRegistration": "The registering to this tournament is protected by a password.",
-          "player": "Player",
-          "players": "Players",
-          "price": "Prize",
-          "privateDescription": "This tournament is a secondary tournament and is not linked with an edition of the InsaLan.\\nFor more informations, please ask to a member of the Animation team.",
-          "rewards": "Rewards",
-          "start": "Start",
-          "teamsOf": "teams of"
-        },
-        "TournamentPlanning": {
-          "disclaimer": "Schedules can vary depending on the progress of the tournaments and are given for information purposes."
-        },
         "TournamentTeams": {
           "noRegisteredTeam": "No team registered.",
           "validatedTeamsDescription": "Validated teams meet all conditions to participate to the tournament.\\nIf your team shows here, congratulations !",
@@ -458,6 +482,24 @@
           "title": "Estimation of the environmental impact of the LAN",
           "transportMethod": "Mean of Transportation"
         }
+      },
+      "TournamentMeCard": {
+        "back": "Back",
+        "cancel": "Cancel",
+        "durationMinutes": "Duration (minutes)",
+        "durationPlaceholder": "5",
+        "finishMatchManually": "Finish the match manually",
+        "game": "Game {number}",
+        "invalidScores": "The scores you entered are invalid!",
+        "invalidTimes": "Times cannot be empty",
+        "next": "Next",
+        "ongoingMatch": "Ongoing match",
+        "ranking": "ranking",
+        "record": "Record the {type}",
+        "recordDurations": "Record match durations (in minutes)",
+        "score": "score",
+        "send": "Send",
+        "tournamentCodes": "Tournament codes:"
       }
     },
     "home": {

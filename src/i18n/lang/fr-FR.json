@@ -59,6 +59,48 @@
       "username": "Pseudo",
       "validate": "Valider"
     },
+    "Me": {
+      "account": "Mon compte",
+      "cancel": "Annuler",
+      "cartItems": "Vous avez {count} article dans votre panier. | Vous avez {count} articles dans votre panier.",
+      "changeEmail": "Changer d'email",
+      "changeName": "Changer de prénom et nom",
+      "changePassword": "Changer son mot de passe",
+      "completeRegistration": "Terminer l'inscription",
+      "confirmNewPassword": "Confirmer le nouveau mot de passe",
+      "currentEdition": "Édition actuelle",
+      "currentPassword": "Mot de passe actuel",
+      "downloadTicket": "Télécharger son billet",
+      "email": "Email",
+      "emailPlaceholder": "jean-dupont@gmail.com",
+      "findCartFromAccount": "Vous pouvez retrouver votre panier depuis votre compte.",
+      "firstNamePlaceholder": "Jean",
+      "fullName": "Prénom et nom",
+      "goToCart": "Aller au panier",
+      "lastNamePlaceholder": "Dupont",
+      "manageTeam": "Gérer l'équipe",
+      "myTeams": "Mes équipes",
+      "newEmail": "Nouvel email",
+      "newFirstName": "Nouveau prénom",
+      "newLastName": "Nouveau nom",
+      "newPassword": "Nouveau mot de passe",
+      "otherEditions": "Autres éditions",
+      "password": "Mot de passe",
+      "payment": "paiement",
+      "player": "joueur·euse",
+      "profileImageAlt": "Image de profil",
+      "registrationAddedToCart": "Votre inscription a été ajoutée au panier.",
+      "role": "Rôle",
+      "secondaryTournaments": "Tournois secondaires",
+      "stayOnPage": "Rester sur cette page",
+      "tournamentImageAlt": "Image du tournoi",
+      "tournamentRules": "Règlement du tournoi",
+      "unpaidRegistration": "Vous avez une inscription non payée | Vous avez des inscriptions non payées",
+      "username": "Pseudo",
+      "validate": "Valider",
+      "viewCart": "Voir le panier",
+      "viewTeam": "Voir l'équipe"
+    },
     "NameConfirmationModal": {
       "confirm": "Confirmer",
       "description": "Nous avons besoin de votre nom pour vérifier votre identité à l'entrée",
@@ -213,28 +255,15 @@
       "valueSuperior": "La valeur doit être supérieure à {min}"
     },
     "components": {
-      "StringListInput": {
-        "add": "Ajouter",
-        "delete": "Supprimer",
-        "edit": "Modifier"
+      "Map": {
+        "title": "Où nous trouver"
       },
-      "TournamentMeCard": {
-        "back": "Retour",
-        "cancel": "Annuler",
-        "durationMinutes": "Durée (minutes)",
-        "durationPlaceholder": "5",
-        "finishMatchManually": "Terminer la partie manuellement",
-        "game": "Partie {number}",
-        "invalidScores": "Les scores que vous avez rentrés ne sont pas valides !",
-        "invalidTimes": "Les temps ne peuvent pas être nuls",
-        "next": "Suivant",
-        "ongoingMatch": "Partie en cours",
-        "ranking": "classement",
-        "record": "Enregistrer le {type}",
-        "recordDurations": "Enregistrer les durées de match (en minutes)",
-        "score": "score",
-        "send": "Envoyer",
-        "tournamentCodes": "Codes de tournoi :"
+      "PartnerCard": {
+        "logoAlt": "Logo de {name}"
+      },
+      "Partners": {
+        "partners": "Nos partenaires",
+        "sponsors": "Nos sponsors"
       },
       "PasswordInput": {
         "generatePassword": "Générer un mot de passe",
@@ -254,20 +283,15 @@
         "imageAlt": "Image de {name}",
         "ingredients": "Ingrédients"
       },
-      "Map": {
-        "title": "Où nous trouver"
-      },
-      "Partners": {
-        "partners": "Nos partenaires",
-        "sponsors": "Nos sponsors"
-      },
-      "PartnerCard": {
-        "logoAlt": "Logo de {name}"
+      "StringListInput": {
+        "add": "Ajouter",
+        "delete": "Supprimer",
+        "edit": "Modifier"
       },
       "Tournament": {
         "Bracket": {
-          "cancel": "Annuler",
           "bracketDeleted": "L'arbre a bien été supprimé.",
+          "cancel": "Annuler",
           "deleteBracket": "Supprimer l'arbre",
           "deleteBracketDescription": "L'arbre va être supprimé ainsi que les matchs qui lui sont liés.",
           "final": "Finale",
@@ -302,13 +326,14 @@
           "saveGroup": "Sauvegarder la poule",
           "score": "Score",
           "seed": "Seed",
-          "team": "Équipe",
           "tbd": "À déterminer",
+          "team": "Équipe",
           "tiebreak": "tiebreak",
           "validate": "Valider"
         },
         "MatchCard": {
           "bestOf": "BO {value}",
+          "cancelChanges": "Annuler les modifications",
           "classification": "Cls",
           "completed": "Terminé",
           "editMatch": "Éditer le match",
@@ -318,8 +343,24 @@
           "playAll": "PA {value}",
           "save": "Sauvegarder",
           "scheduled": "Prévu",
-          "tbd": "À déterminer",
-          "cancelChanges": "Annuler les modifications"
+          "tbd": "À déterminer"
+        },
+        "SeatingPlan": {
+          "cancel": "Annuler",
+          "currentTeamSeat": "Place actuelle de l'équipe",
+          "editPlacementInstruction": "Pour modifier votre placement, rendez-vous sur la page de votre équipe, accessible depuis ",
+          "freeSeats": "Places libres",
+          "myAccount": "Mon compte",
+          "selectSeatsConfirm": "Êtes vous sûr·e de vouloir sélectionner ces places ?",
+          "selectSeatsNotice": "Vous pourrez les modifier jusqu'à la fin des inscriptions.",
+          "selectSeatsTitle": "Sélection des places",
+          "team": "Équipe",
+          "teamSeating": "Placement des équipes {event}",
+          "tournamentFreeSeats": "Places libres du tournois {name}",
+          "tournamentTakenSeats": "Places prises du tournois {name}",
+          "unavailable": "Le plan de la salle n'est pas encore disponible, revenez plus tard !",
+          "usedByOtherTournaments": "Place utilisée par les autres tournois",
+          "validate": "Valider"
         },
         "SwissRoundTable": {
           "cancel": "Annuler",
@@ -341,6 +382,40 @@
           "roundMatchesLaunched": "Les matchs du tour {round} ont bien été lancés.",
           "roundNumber": "Numéro du tour",
           "validate": "Valider"
+        },
+        "TeamCard": {
+          "managers": "Manager | Managers",
+          "substitutes": "Remplaçant·e | Remplaçant·e·s"
+        },
+        "TournamentCard": {
+          "announcedSoon": "Ce tournoi sera annoncé prochainement !",
+          "cashprize": "Cashprize\\u00A0",
+          "comingSoon": "À venir",
+          "logoAlt": "Logo du {name}",
+          "moreInfo": "Plus d'infos",
+          "register": "S'inscrire",
+          "registrationsClosed": "Inscriptions fermées",
+          "registrationsSoon": "Inscriptions à venir",
+          "validatedTeams": "Équipes validées",
+          "waitingThreshold": "En attente du palier"
+        },
+        "TournamentInfo": {
+          "cashprizes": "Cashprizes",
+          "casters": "Casters",
+          "comingSoon": "À venir",
+          "format": "Format",
+          "manager": "Manager",
+          "passwordProtectedRegistration": "L'inscription à ce tournoi est protégée par un mot de passe.",
+          "player": "Joueureuse",
+          "players": "Joueureuses",
+          "price": "Prix",
+          "privateDescription": "Ce tournoi est un tournoi secondaire et n'est pas lié à une édition de l'InsaLan.\\nPour plus d'informations, veuillez demander à l'équipe Animation.",
+          "rewards": "Récompenses",
+          "start": "Début",
+          "teamsOf": "équipes de"
+        },
+        "TournamentPlanning": {
+          "disclaimer": "Les plannings peuvent varier en fonction de l'avancement des tournois et sont donnés à titre indicatif."
         },
         "TournamentStages": {
           "addFormat": "Ajouter un format",
@@ -389,57 +464,6 @@
           "useTeamSeeding": "Utiliser le seeding des équipes",
           "validate": "Valider"
         },
-        "SeatingPlan": {
-          "cancel": "Annuler",
-          "currentTeamSeat": "Place actuelle de l'équipe",
-          "editPlacementInstruction": "Pour modifier votre placement, rendez-vous sur la page de votre équipe, accessible depuis ",
-          "freeSeats": "Places libres",
-          "myAccount": "Mon compte",
-          "selectSeatsConfirm": "Êtes vous sûr·e de vouloir sélectionner ces places ?",
-          "selectSeatsNotice": "Vous pourrez les modifier jusqu'à la fin des inscriptions.",
-          "selectSeatsTitle": "Sélection des places",
-          "team": "Équipe",
-          "teamSeating": "Placement des équipes {event}",
-          "tournamentFreeSeats": "Places libres du tournois {name}",
-          "tournamentTakenSeats": "Places prises du tournois {name}",
-          "unavailable": "Le plan de la salle n'est pas encore disponible, revenez plus tard !",
-          "usedByOtherTournaments": "Place utilisée par les autres tournois",
-          "validate": "Valider"
-        },
-        "TeamCard": {
-          "managers": "Manager | Managers",
-          "substitutes": "Remplaçant·e | Remplaçant·e·s"
-        },
-        "TournamentCard": {
-          "announcedSoon": "Ce tournoi sera annoncé prochainement !",
-          "cashprize": "Cashprize\\u00A0",
-          "comingSoon": "À venir",
-          "logoAlt": "Logo du {name}",
-          "moreInfo": "Plus d'infos",
-          "register": "S'inscrire",
-          "registrationsClosed": "Inscriptions fermées",
-          "registrationsSoon": "Inscriptions à venir",
-          "validatedTeams": "Équipes validées",
-          "waitingThreshold": "En attente du palier"
-        },
-        "TournamentInfo": {
-          "cashprizes": "Cashprizes",
-          "casters": "Casters",
-          "comingSoon": "À venir",
-          "format": "Format",
-          "manager": "Manager",
-          "passwordProtectedRegistration": "L'inscription à ce tournoi est protégée par un mot de passe.",
-          "player": "Joueureuse",
-          "players": "Joueureuses",
-          "price": "Prix",
-          "privateDescription": "Ce tournoi est un tournoi secondaire et n'est pas lié à une édition de l'InsaLan.\\nPour plus d'informations, veuillez demander à l'équipe Animation.",
-          "rewards": "Récompenses",
-          "start": "Début",
-          "teamsOf": "équipes de"
-        },
-        "TournamentPlanning": {
-          "disclaimer": "Les plannings peuvent varier en fonction de l'avancement des tournois et sont donnés à titre indicatif."
-        },
         "TournamentTeams": {
           "noRegisteredTeam": "Aucun équipe inscrite.",
           "validatedTeamsDescription": "Les équipes validées ont rempli toutes les conditions pour participer au tournoi.\\nSi votre équipe apparaît ici, félicitations !",
@@ -458,6 +482,24 @@
           "title": "Estimation de l’impact environnemental de la LAN",
           "transportMethod": "Moyen de Transport"
         }
+      },
+      "TournamentMeCard": {
+        "back": "Retour",
+        "cancel": "Annuler",
+        "durationMinutes": "Durée (minutes)",
+        "durationPlaceholder": "5",
+        "finishMatchManually": "Terminer la partie manuellement",
+        "game": "Partie {number}",
+        "invalidScores": "Les scores que vous avez rentrés ne sont pas valides !",
+        "invalidTimes": "Les temps ne peuvent pas être nuls",
+        "next": "Suivant",
+        "ongoingMatch": "Partie en cours",
+        "ranking": "classement",
+        "record": "Enregistrer le {type}",
+        "recordDurations": "Enregistrer les durées de match (en minutes)",
+        "score": "score",
+        "send": "Envoyer",
+        "tournamentCodes": "Codes de tournoi :"
       }
     },
     "home": {
