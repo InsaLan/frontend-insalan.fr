@@ -30,6 +30,7 @@
       "back": "Retour",
       "bestOf": "BO {value}",
       "cancel": "Annuler",
+      "choosePaymentMethod": "Choisir un moyen de paiement",
       "delete": "Supprimer",
       "edit": "Modifier",
       "email": "Email",
@@ -44,6 +45,14 @@
       "noMatchSelected": "Aucun match sélectionné",
       "noMatches": "Il n'existe pas de matchs.",
       "password": "Mot de passe",
+      "paymentMethod": "Méthode de paiement",
+      "paymentMethods": {
+        "CB": "Carte bancaire",
+        "CH": "Chèque",
+        "ES": "Espèces",
+        "FR": "Gratuit",
+        "LI": "LyfPay"
+      },
       "playAll": "PA {value}",
       "register": "S'inscrire",
       "registrationAddedToCart": "Votre inscription a été ajoutée au panier.",

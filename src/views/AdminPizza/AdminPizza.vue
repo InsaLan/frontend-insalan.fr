@@ -2,6 +2,7 @@
 import { useVuelidate } from '@vuelidate/core';
 import { storeToRefs } from 'pinia';
 import { computed, reactive, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import Multiselect from 'vue-multiselect';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
@@ -13,6 +14,7 @@ import { required } from '@/support/locales/errors.fr';
 import { frenchFormatFromDate } from '@/utils';
 
 const { addNotification } = useNotificationStore();
+const { t } = useI18n();
 
 const pizzaStore = usePizzaStore();
 const { pizzaList, timeslotList } = storeToRefs(pizzaStore);
@@ -389,13 +391,13 @@ const factorise = (pizzas: number[]) => {
           </div>
           <div class="desktop-only-row l-cross-end u-text-center l-gap-1">
             <div class="l-grow">
-              <label for="paymentMethod">Méthode de paiement</label>
+              <label for="paymentMethod">{{ t('content.common.paymentMethod') }}</label>
               <select id="paymentMethod" v-model="selectedPaymentMethod">
                 <option value="default" selected>
-                  Choisir un moyen de paiement
+                  {{ t('content.common.choosePaymentMethod') }}
                 </option>
-                <option v-for="(value, key) in PAYMENT_METHODS" :key="key" :value="key">
-                  {{ value }}
+                <option v-for="paymentMethod in PAYMENT_METHODS" :key="paymentMethod" :value="paymentMethod">
+                  {{ t(`content.common.paymentMethods.${paymentMethod}`) }}
                 </option>
               </select>
             </div>
@@ -717,7 +719,10 @@ const factorise = (pizzas: number[]) => {
           </li>
         </ul>
       </div>
-      <p>Méthode de paiement : <strong>{{ PAYMENT_METHODS[selectedPaymentMethod as Payment] }}</strong></p>
+      <p>
+        {{ t('content.common.paymentMethod') }}:
+        <strong>{{ t(`content.common.paymentMethods.${selectedPaymentMethod as Payment}`) }}</strong>
+      </p>
       <p>Total : <strong>{{ totalPrice }} €</strong></p>
     </template>
     <template #buttons>

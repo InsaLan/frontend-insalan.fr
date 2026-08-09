@@ -30,6 +30,7 @@
       "back": "Back",
       "bestOf": "BO {value}",
       "cancel": "Cancel",
+      "choosePaymentMethod": "Choose a payment method",
       "delete": "Delete",
       "edit": "Edit",
       "email": "Email",
@@ -44,6 +45,14 @@
       "noMatchSelected": "No match selected",
       "noMatches": "There are no matches.",
       "password": "Password",
+      "paymentMethod": "Payment method",
+      "paymentMethods": {
+        "CB": "Bank card",
+        "CH": "Cheque",
+        "ES": "Cash",
+        "FR": "Free",
+        "LI": "LyfPay"
+      },
       "playAll": "PA {value}",
       "register": "Register",
       "registrationAddedToCart": "Your registration has been added to the cart.",
