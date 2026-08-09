@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
 import { computed, reactive, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import StringListInput from '@/components/StringListInput.vue';
@@ -12,6 +13,7 @@ const props = defineProps<{
   pizza?: Pizza;
   validate: (name: string, ingredients: string[], allergens: string[], image: File | null) => Promise<boolean>;
 }>();
+const { t } = useI18n();
 
 const emit = defineEmits<{
   (e: 'close'): void;
@@ -56,35 +58,35 @@ const handleImageChange = (event: Event) => {
     <template #body>
       <form @submit.prevent="validate">
         <FormField :validations="v$_pizza.name">
-          <label for="pizza-name">Nom</label>
+          <label for="pizza-name">{{ t('content.components.AdminPizza.PizzaModal.name') }}</label>
           <input
             id="pizza-name"
             v-model="dataPizza.name"
             type="text"
             required
-            placeholder="Nom"
+            :placeholder="t('content.components.AdminPizza.PizzaModal.name')"
           />
         </FormField>
         <FormField :validations="v$_pizza.ingredients">
-          <label for="pizza-ingredients">Ingrédients</label>
+          <label for="pizza-ingredients">{{ t('content.components.AdminPizza.PizzaModal.ingredients') }}</label>
           <StringListInput
             id="pizza-ingredients"
             v-model="dataPizza.ingredients"
-            label="Ingrédients"
-            placeholder="Ajouter un ingrédient"
+            :label="t('content.components.AdminPizza.PizzaModal.ingredients')"
+            :placeholder="t('content.components.AdminPizza.PizzaModal.addIngredient')"
           />
         </FormField>
         <FormField :validations="v$_pizza.ingredients">
-          <label for="pizza-ingredients">Allergènes</label>
+          <label for="pizza-ingredients">{{ t('content.components.AdminPizza.PizzaModal.allergens') }}</label>
           <StringListInput
             id="pizza-allergens"
             v-model="dataPizza.allergens"
-            label="Allergènes"
-            placeholder="Ajouter un allergène"
+            :label="t('content.components.AdminPizza.PizzaModal.allergens')"
+            :placeholder="t('content.components.AdminPizza.PizzaModal.addAllergen')"
           />
         </FormField>
         <div class="l-flex-column">
-          <label for="pizza-image">Image</label>
+          <label for="pizza-image">{{ t('content.components.AdminPizza.PizzaModal.image') }}</label>
           <input
             id="pizza-image"
             accept="image/*"
@@ -100,14 +102,14 @@ const handleImageChange = (event: Event) => {
         type="button"
         @click="emit('close')"
       >
-        Annuler
+        {{ t('content.common.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="validate"
       >
-        Valider
+        {{ t('content.common.validate') }}
       </button>
     </template>
   </Modal>

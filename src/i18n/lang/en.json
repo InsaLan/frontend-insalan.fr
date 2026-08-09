@@ -1,5 +1,66 @@
 {
   "content": {
+    "AdminPizza": {
+      "add": "Add",
+      "addPizza": "Add a pizza",
+      "addPizzaError": "Please add at least one pizza",
+      "addTimeslot": "Add a timeslot",
+      "choosePaymentMethod": "Please choose a payment method",
+      "createPizza": "Create a pizza",
+      "createTimeslot": "Create a timeslot",
+      "datePlaceholder": "2021-01-01 00:00",
+      "deleteExportQuestion": "Do you want to delete the export from {date}?",
+      "deleteExportTitle": "Delete an export",
+      "deletePizzaQuestion": "Do you want to delete pizza {name}?",
+      "deletePizzaTitle": "Delete a pizza",
+      "deletePizzaWarning": "Do not delete a pizza that could be ordered in an ongoing timeslot.",
+      "deleteTimeslot": "Delete timeslot",
+      "deleteTimeslotQuestion": "You are going to delete the timeslot from {date} along with its {count} associated orders.",
+      "deleteTimeslotTitle": "Delete a timeslot",
+      "deleteTimeslotWarning": "Do not delete a completed timeslot, as its data will be lost.",
+      "deliveryDate": "Delivery date",
+      "downloadExport": "Download export",
+      "enterUsername": "Please enter a username",
+      "export": "Export {date}",
+      "exportCount": "{count} export | {count} exports",
+      "exportOrders": "Export orders",
+      "exportTimeslotOrders": "Export timeslot orders",
+      "exportsTitle": "Export list",
+      "externalPrice": "Price for external players",
+      "listTitle": "Pizza list",
+      "maxPizzas": "Maximum number of pizzas",
+      "maxPizzasExceeded": "The maximum number of pizzas has been exceeded",
+      "newOrder": "New order",
+      "nextPage": "Next page",
+      "noTimeslot": "There is no order timeslot",
+      "noTimeslots": "There is no order timeslot.",
+      "orderEnd": "Order end",
+      "orderCount": "Orders: {count} / {max}",
+      "orderEndPassed": "The order end time has passed",
+      "orderStart": "Order start",
+      "orderSummary": "Order summary",
+      "orderType": "Order type",
+      "orderTypes": {
+        "player": "Player",
+        "public": "Public",
+        "staff": "Staff"
+      },
+      "page": "Page {page}",
+      "pizza": "Pizza",
+      "pizzaCount": "{count} pizza | {count} pizzas",
+      "pizzaSelection": "Pizza selection",
+      "pizzas": "Pizza(s)",
+      "playerPrice": "Price for players",
+      "previousPage": "Previous page",
+      "retrieved": "Retrieved?",
+      "search": "Search",
+      "searchOrder": "Search for an order",
+      "searchPizza": "Search for a pizza",
+      "showTimeslotExports": "Show timeslot exports",
+      "staffPrice": "Price for staff",
+      "timeslot": "Timeslot {date}",
+      "total": "Total"
+    },
     "UserStore": {
       "fetchRegistrationsError": "Unable to retrieve your registrations, please try again later or contact an administrator",
       "fetchUserError": "An error occurred while retrieving the user, please try logging in again",
@@ -45,6 +106,7 @@
       "noMatchSelected": "No match selected",
       "noMatches": "There are no matches.",
       "password": "Password",
+      "save": "Save",
       "paymentMethod": "Payment method",
       "paymentMethods": {
         "CB": "Bank card",
@@ -65,6 +127,16 @@
       "validate": "Validate"
     },
     "components": {
+      "AdminPizza": {
+        "PizzaModal": {
+          "addAllergen": "Add an allergen",
+          "addIngredient": "Add an ingredient",
+          "allergens": "Allergens",
+          "image": "Image",
+          "ingredients": "Ingredients",
+          "name": "Name"
+        }
+      },
       "App": {
         "loading": "Loading..."
       },
@@ -138,6 +210,49 @@
         "edit": "@:content.common.edit"
       },
       "Tournament": {
+        "Admin": {
+          "AdminGroups": {
+            "boType": "BO type",
+            "create": "Create",
+            "createMatchesDescription": "The group matches will be created.",
+            "createMatchesTitle": "Create matches",
+            "delete": "Delete",
+            "deleteGroups": "Delete groups",
+            "deleteGroupsDescription": "The groups and their linked matches will be deleted.",
+            "deleteGroupsTitle": "Delete groups",
+            "deleteMatchesDescription": "The group matches will be deleted if no match is ongoing or completed.",
+            "deleteMatchesTitle": "Delete matches",
+            "groupMatchesDeleted": "The group matches have been deleted",
+            "groupsDeleted": "The groups have been deleted",
+            "launchRound": "Launch a round",
+            "launchRoundMatches": "Launch a round's matches",
+            "manageMatches": "Manage matches",
+            "matches": "matches",
+            "matchesCreated": "The matches have been created.",
+            "ranking": "Ranking",
+            "roundCount": "Number of rounds",
+            "roundMatchesLaunched": "The matches for round {round} have been launched.",
+            "roundNumber": "Round number"
+          },
+          "AdminGroupsMatchs": {
+            "launchRound": "Launch the round",
+            "launchRoundMatches": "Launch a round's matches",
+            "manageGroups": "Manage groups",
+            "roundMatchesLaunched": "The matches for round {round} have been launched.",
+            "roundNumber": "Round number"
+          },
+          "TournamentAdminTeams": {
+            "duplicateSeeds": "Seeds must be unique",
+            "noChanges": "No changes",
+            "seed": "Seed",
+            "seedDescription": "A team's seed must be an integer between 1 and {max}.",
+            "seedUnique": "Each seed must be unique.",
+            "seedsUpdated": "Seeds updated successfully.",
+            "title": "Teams and seeding list",
+            "unseededDescription": "All teams without a seed will be placed randomly after all seeded teams.",
+            "zeroSeedIgnored": "A team with a seed of 0 will be ignored in calculations involving seeding."
+          }
+        },
         "Bracket": {
           "bracketDeleted": "The bracket has been deleted.",
           "cancel": "@:content.common.cancel",

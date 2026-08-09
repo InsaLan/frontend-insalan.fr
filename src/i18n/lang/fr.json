@@ -1,5 +1,67 @@
 {
   "content": {
+    "AdminPizza": {
+      "add": "Ajouter",
+      "addPizza": "Ajouter une pizza",
+      "addPizzaError": "Veuillez ajouter au moins une pizza",
+      "addTimeslot": "Ajouter un créneau",
+      "choosePaymentMethod": "Veuillez choisir un moyen de paiement",
+      "createPizza": "Créer une pizza",
+      "createTimeslot": "Créer un créneau",
+      "datePlaceholder": "2021-01-01 00:00",
+      "deleteExportQuestion": "Voulez-vous supprimer l'export du {date} ?",
+      "deleteExportTitle": "Supprimer un export",
+      "deletePizzaQuestion": "Voulez-vous supprimer la pizza {name} ?",
+      "deletePizzaTitle": "Supprimer une pizza",
+      "deletePizzaWarning": "Ne supprimez pas une pizza qui pourrait être commandée dans un créneau en cours.",
+      "deleteTimeslot": "Supprimer le créneau",
+      "deleteTimeslotBody": "Vous allez supprimer le créneau du {0} ainsi que les {1} commandes associées. {3} Ne supprimez pas un créneau terminé, les données seront perdues.",
+      "deleteTimeslotQuestion": "Vous allez supprimer le créneau du {date} ainsi que les {count} commandes associées.",
+      "deleteTimeslotTitle": "Supprimer un créneau",
+      "deleteTimeslotWarning": "Ne supprimez pas un créneau terminé, les données seront perdues.",
+      "deliveryDate": "Date de livraison",
+      "downloadExport": "Télécharger l'export",
+      "enterUsername": "Veuillez renseigner un pseudo",
+      "export": "Export {date}",
+      "exportCount": "{count} export | {count} exports",
+      "exportOrders": "Exporter les commandes",
+      "exportTimeslotOrders": "Exporter les commandes du créneau",
+      "exportsTitle": "Liste des exports",
+      "externalPrice": "Prix pour les externes",
+      "listTitle": "Liste des pizzas",
+      "maxPizzas": "Nombre de pizzas maximum",
+      "maxPizzasExceeded": "Le nombre maximum de pizzas a été dépassé",
+      "newOrder": "Nouvelle commande",
+      "nextPage": "Page suivante",
+      "noTimeslot": "Il n'y a pas de créneau de commande",
+      "noTimeslots": "Il n'y a pas de créneau de commande.",
+      "orderEnd": "Fin de la commande",
+      "orderCount": "Commandes : {count} / {max}",
+      "orderEndPassed": "L'heure de fin de commande est dépassée",
+      "orderStart": "Début de la commande",
+      "orderSummary": "Résumé de la commande",
+      "orderType": "Type de commande",
+      "orderTypes": {
+        "player": "Joueureuse",
+        "public": "Public",
+        "staff": "Staff"
+      },
+      "page": "Page {page}",
+      "pizza": "Pizza",
+      "pizzaCount": "{count} pizza | {count} pizzas",
+      "pizzaSelection": "Sélection de pizzas",
+      "pizzas": "Pizza(s)",
+      "playerPrice": "Prix pour les joueureuses",
+      "previousPage": "Page précédente",
+      "retrieved": "Récupéré ?",
+      "search": "Rechercher",
+      "searchOrder": "Rechercher une commande",
+      "searchPizza": "Rechercher une pizza",
+      "showTimeslotExports": "Afficher les exports du créneau",
+      "staffPrice": "Prix pour le staff",
+      "timeslot": "Créneau {date}",
+      "total": "Total"
+    },
     "UserStore": {
       "fetchRegistrationsError": "Impossible de récupérer vos inscriptions, veuillez réessayer plus tard ou contacter un administrateur",
       "fetchUserError": "Une erreur est survenue lors de la récupération de l'utilisateur·rice, essayez de vous reconnecter",
@@ -57,6 +119,7 @@
       "register": "S'inscrire",
       "registrationAddedToCart": "Votre inscription a été ajoutée au panier.",
       "round": "Tour {round}",
+      "save": "Sauvegarder",
       "stayOnPage": "Rester sur cette page",
       "submit": "Valider",
       "tbd": "À déterminer",
@@ -65,6 +128,16 @@
       "validate": "Valider"
     },
     "components": {
+      "AdminPizza": {
+        "PizzaModal": {
+          "addAllergen": "Ajouter un allergène",
+          "addIngredient": "Ajouter un ingrédient",
+          "allergens": "Allergènes",
+          "image": "Image",
+          "ingredients": "Ingrédients",
+          "name": "Nom"
+        }
+      },
       "App": {
         "loading": "Chargement..."
       },
@@ -138,6 +211,49 @@
         "edit": "@:content.common.edit"
       },
       "Tournament": {
+        "Admin": {
+          "AdminGroups": {
+            "boType": "Type de BO",
+            "create": "Créer",
+            "createMatchesDescription": "Les matchs des poules vont être créés.",
+            "createMatchesTitle": "Créer les matchs",
+            "delete": "Supprimer",
+            "deleteGroups": "Supprimer les poules",
+            "deleteGroupsDescription": "Les poules vont être supprimées ainsi que les matchs qui leur sont liés.",
+            "deleteGroupsTitle": "Suppression des poules",
+            "deleteMatchesDescription": "Les matchs des poules vont être supprimés si aucun match n'est en cours ou terminé.",
+            "deleteMatchesTitle": "Supprimer les matchs",
+            "groupMatchesDeleted": "Les matchs de poules ont bien été supprimés",
+            "groupsDeleted": "Les poules ont bien été supprimées",
+            "launchRound": "Lancer un tour",
+            "launchRoundMatches": "Lancer les matchs d'un tour",
+            "manageMatches": "Gérer les matchs",
+            "matches": "les matchs",
+            "matchesCreated": "Les matchs ont bien été créés.",
+            "ranking": "Classement",
+            "roundCount": "Nombre de tours",
+            "roundMatchesLaunched": "Les matchs du tour {round} ont bien été lancés.",
+            "roundNumber": "Numéro du tour"
+          },
+          "AdminGroupsMatchs": {
+            "launchRound": "Lancer le tour",
+            "launchRoundMatches": "Lancer les matchs d'un tour",
+            "manageGroups": "Gérer les poules",
+            "roundMatchesLaunched": "Les matchs du tour {round} ont bien été lancés.",
+            "roundNumber": "Numéro du tour"
+          },
+          "TournamentAdminTeams": {
+            "duplicateSeeds": "Les seeds doivent être uniques",
+            "noChanges": "Pas de modification",
+            "seed": "Seed",
+            "seedDescription": "Le seed d'une équipe doit être un entier compris entre 1 et {max}.",
+            "seedUnique": "Chaque seed doit être unique.",
+            "seedsUpdated": "Seeds modifiés avec succès.",
+            "title": "Liste des équipes et seeding",
+            "unseededDescription": "Toutes les équipes sans seed seront placées aléatoirement après toutes les équipes seedées.",
+            "zeroSeedIgnored": "Une équipe avec un seed de 0 sera ignorée lors des calculs faisant intervenir le seeding."
+          }
+        },
         "Bracket": {
           "bracketDeleted": "L'arbre a bien été supprimé.",
           "cancel": "@:content.common.cancel",

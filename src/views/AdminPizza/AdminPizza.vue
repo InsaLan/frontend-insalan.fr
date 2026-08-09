@@ -36,9 +36,9 @@ enum OrderType {
 }
 
 const orderTypeToString = {
-  [OrderType.PUBLIC]: 'Public',
-  [OrderType.PLAYER]: 'Joueur·euse',
-  [OrderType.STAFF]: 'Staff',
+  [OrderType.PUBLIC]: 'content.AdminPizza.orderTypes.public',
+  [OrderType.PLAYER]: 'content.AdminPizza.orderTypes.player',
+  [OrderType.STAFF]: 'content.AdminPizza.orderTypes.staff',
 };
 
 const extend = ref(false);
@@ -87,12 +87,12 @@ const totalPrice = computed(() => {
 const validatePizza = () => {
   // check if payment method is selected
   if (selectedPaymentMethod.value === 'default') {
-    addNotification('Veuillez choisir un moyen de paiement', 'error');
+    addNotification(t('content.AdminPizza.choosePaymentMethod'), 'error');
     return;
   }
 
   if (!pseudo.value) {
-    addNotification('Veuillez renseigner un pseudo', 'error');
+    addNotification(t('content.AdminPizza.enterUsername'), 'error');
     return;
   }
 
@@ -106,7 +106,7 @@ const validatePizza = () => {
   });
 
   if (!hasPizza) {
-    addNotification('Veuillez ajouter au moins une pizza', 'error');
+    addNotification(t('content.AdminPizza.addPizzaError'), 'error');
     return;
   }
 
@@ -311,7 +311,7 @@ const factorise = (pizzas: number[]) => {
       type="button"
       @click="extend = !extend"
     >
-      Créneau {{ frenchFormatFromDate(new Date(timeslotList[selectedTimeslotId]?.delivery_time)) }}
+      {{ t('content.AdminPizza.timeslot', { date: frenchFormatFromDate(new Date(timeslotList[selectedTimeslotId]?.delivery_time)) }) }}
       <fa-awesome-icon
         class="c-inline-icon u-mr-0"
         icon="fa-chevron-down"
@@ -334,11 +334,11 @@ const factorise = (pizzas: number[]) => {
           class="c-btn-bg-3 l-grow u-text-left"
           @click="selectedTimeslotId = timeslot.id"
         >
-          Créneau {{ frenchFormatFromDate(new Date(timeslot.delivery_time)) }}
+          {{ t('content.AdminPizza.timeslot', { date: frenchFormatFromDate(new Date(timeslot.delivery_time)) }) }}
         </button>
         <button
           type="button"
-          title="Supprimer le créneau"
+          :title="t('content.AdminPizza.deleteTimeslot')"
           @click="showDeleteModal = true; selectedDelete = timeslot.id"
         >
           <fa-awesome-icon
@@ -357,13 +357,13 @@ const factorise = (pizzas: number[]) => {
           class="c-inline-icon"
           icon="fa-circle-plus"
         />
-        Ajouter un créneau
+        {{ t('content.AdminPizza.addTimeslot') }}
       </button>
     </div>
     <div class="desktop-only-row u-mt-2 l-grow l-gap-2 u-full-width">
       <div class="l-flex-column l-gap-2 c-card-bg-2 u-full-width">
         <h2 class="u-text-center u-m-0">
-          Nouvelle commande
+          {{ t('content.AdminPizza.newOrder') }}
         </h2>
         <div
           v-if="new Date(timeslotList[selectedTimeslotId]?.end) < new Date()"
@@ -373,11 +373,11 @@ const factorise = (pizzas: number[]) => {
             class="c-inline-icon"
             icon="fa-warning"
           />
-          <strong>L'heure de fin de commande est dépassée</strong>
+          <strong>{{ t('content.AdminPizza.orderEndPassed') }}</strong>
         </div>
         <form id="add_pizza" class="l-flex-column l-gap-2 u-full-width">
-          <label for="searchPizza" class="sr-only">Rechercher une pizza</label>
-          <input id="searchPizza" v-model="pizzaSearch" type="text" placeholder="Rechercher une pizza"/>
+          <label for="searchPizza" class="sr-only">{{ t('content.AdminPizza.searchPizza') }}</label>
+          <input id="searchPizza" v-model="pizzaSearch" type="text" :placeholder="t('content.AdminPizza.searchPizza')"/>
           <div class="l-flex-column l-gap-1 reasonable-height">
             <div v-for="pizzaId in timeslotList[selectedTimeslotId]?.pizza" :key="pizzaId">
               <div v-if="pizzaList[pizzaId]?.name.toLowerCase().includes(pizzaSearch.toLowerCase())" class="l-flex-row l-cross-center l-gap-1">
@@ -402,30 +402,29 @@ const factorise = (pizzas: number[]) => {
               </select>
             </div>
             <div class="l-grow">
-              <label for="order-type">Type de commande</label>
+              <label for="order-type">{{ t('content.AdminPizza.orderType') }}</label>
               <select id="order-type" v-model="selectedOrderType">
                 <option v-for="type in OrderType" :key="type" :value="type">
-                  {{ orderTypeToString[type] }}
+                  {{ t(orderTypeToString[type]) }}
                 </option>
               </select>
             </div>
             <div class="l-grow">
-              <label for="InputPseudo">Pseudo</label>
-              <input id="InputPseudo" v-model="pseudo" type="text" placeholder="Pseudo"/>
+              <label for="InputPseudo">{{ t('content.common.username') }}</label>
+              <input id="InputPseudo" v-model="pseudo" type="text" :placeholder="t('content.common.username')"/>
             </div>
             <button type="submit" class="c-btn-secondary" @click.prevent="validatePizza">
-              Ajouter
+              {{ t('content.AdminPizza.add') }}
             </button>
           </div>
         </form>
       </div>
       <div class="l-flex-column l-gap-2 c-card-bg-2 u-full-width">
         <h2 class="u-text-center u-m-0">
-          Commandes : {{ pizzaCount }} /
-          {{ timeslotList[selectedTimeslotId]?.pizza_max }}
+          {{ t('content.AdminPizza.orderCount', { count: pizzaCount, max: timeslotList[selectedTimeslotId]?.pizza_max }) }}
           <button
             type="button"
-            title="Exporter les commandes"
+            :title="t('content.AdminPizza.exportOrders')"
             @click="exportOrders(selectedTimeslotId)"
           >
             <fa-awesome-icon
@@ -442,19 +441,19 @@ const factorise = (pizzas: number[]) => {
             class="c-inline-icon"
             icon="fa-warning"
           />
-          <strong>Le nombre maximum de pizzas a été dépassé</strong>
+          <strong>{{ t('content.AdminPizza.maxPizzasExceeded') }}</strong>
         </div>
-        <label for="searchPizza" class="sr-only">Rechercher une commande</label>
-        <input id="searchPizza" v-model="orderSearch" type="text" placeholder="Rechercher une commande"/>
+        <label for="searchPizza" class="sr-only">{{ t('content.AdminPizza.searchOrder') }}</label>
+        <input id="searchPizza" v-model="orderSearch" type="text" :placeholder="t('content.AdminPizza.searchOrder')"/>
         <div class="l-flex-row u-text-center u-big-text c-card-bg-3 u-full-width u-bold">
           <div class="l-grow">
-            Pseudo
+            {{ t('content.common.username') }}
           </div>
           <div class="l-grow">
-            Pizza(s)
+            {{ t('content.AdminPizza.pizzas') }}
           </div>
           <div class="l-grow">
-            Récupéré ?
+            {{ t('content.AdminPizza.retrieved') }}
           </div>
         </div>
         <div class="l-flex-column l-gap-1 u-full-width reasonable-height">
@@ -486,16 +485,16 @@ const factorise = (pizzas: number[]) => {
         class="c-inline-icon"
         icon="fa-circle-plus"
       />
-      Ajouter un créneau
+      {{ t('content.AdminPizza.addTimeslot') }}
     </button>
     <div class="u-m-text u-my-2 u-text-center u-big-text">
-      Il n'y a pas de créneau de commande
+      {{ t('content.AdminPizza.noTimeslot') }}
     </div>
   </div>
 
   <Modal v-if="showModal" @close="showModal = false">
     <template #title>
-      Créer un créneau
+      {{ t('content.AdminPizza.createTimeslot') }}
     </template>
     <template #body>
       <form id="patch-user" class="l-grid-3" @submit.prevent="validateModal">
@@ -504,13 +503,13 @@ const factorise = (pizzas: number[]) => {
             :validations="v$_create.delivery_time"
           >
             <label for="delivery_time">
-              Date de livraison
+              {{ t('content.AdminPizza.deliveryDate') }}
             </label>
             <input
               id="delivery_time"
               v-model="data_create.delivery_time"
-              aria-label="Date de livraison"
-              placeholder="2021-01-01 00:00"
+              :aria-label="t('content.AdminPizza.deliveryDate')"
+              :placeholder="t('content.AdminPizza.datePlaceholder')"
               required
               type="text"
               @blur="v$_create.delivery_time.$touch"
@@ -520,13 +519,13 @@ const factorise = (pizzas: number[]) => {
             :validations="v$_create.start"
           >
             <label for="start">
-              Début de la commande
+              {{ t('content.AdminPizza.orderStart') }}
             </label>
             <input
               id="start"
               v-model="data_create.start"
-              aria-label="Début de la commande"
-              placeholder="2021-01-01 00:00"
+              :aria-label="t('content.AdminPizza.orderStart')"
+              :placeholder="t('content.AdminPizza.datePlaceholder')"
               required
               type="text"
               @blur="v$_create.delivery_time.$touch"
@@ -536,13 +535,13 @@ const factorise = (pizzas: number[]) => {
             :validations="v$_create.end"
           >
             <label for="end">
-              Fin de la commande
+              {{ t('content.AdminPizza.orderEnd') }}
             </label>
             <input
               id="end"
               v-model="data_create.end"
-              aria-label="Fin de la commande"
-              placeholder="2021-01-01 00:00"
+              :aria-label="t('content.AdminPizza.orderEnd')"
+              :placeholder="t('content.AdminPizza.datePlaceholder')"
               required
               type="text"
               @blur="v$_create.delivery_time.$touch"
@@ -554,12 +553,12 @@ const factorise = (pizzas: number[]) => {
             :validations="v$_create.player_price"
           >
             <label for="player_price">
-              Prix pour les joueur·euse·s
+              {{ t('content.AdminPizza.playerPrice') }}
             </label>
             <input
               id="player_price"
               v-model="data_create.player_price"
-              aria-label="Prix pour les joueur·euse·s"
+              :aria-label="t('content.AdminPizza.playerPrice')"
               placeholder="0"
               required
               type="number"
@@ -570,12 +569,12 @@ const factorise = (pizzas: number[]) => {
             :validations="v$_create.staff_price"
           >
             <label for="staff_price">
-              Prix pour le staff
+              {{ t('content.AdminPizza.staffPrice') }}
             </label>
             <input
               id="staff_price"
               v-model="data_create.staff_price"
-              aria-label="Prix pour le staff"
+              :aria-label="t('content.AdminPizza.staffPrice')"
               placeholder="0"
               required
               type="number"
@@ -586,12 +585,12 @@ const factorise = (pizzas: number[]) => {
             :validations="v$_create.external_price"
           >
             <label for="external_price">
-              Prix pour les externes
+              {{ t('content.AdminPizza.externalPrice') }}
             </label>
             <input
               id="external_price"
               v-model="data_create.external_price"
-              aria-label="Prix pour les externes"
+              :aria-label="t('content.AdminPizza.externalPrice')"
               placeholder="0"
               required
               type="number"
@@ -604,12 +603,12 @@ const factorise = (pizzas: number[]) => {
             :validations="v$_create.pizza_max"
           >
             <label for="pizza_max">
-              Nombre de pizzas maximum
+              {{ t('content.AdminPizza.maxPizzas') }}
             </label>
             <input
               id="pizza_max"
               v-model="data_create.pizza_max"
-              aria-label="Nombre de pizzas maximum"
+              :aria-label="t('content.AdminPizza.maxPizzas')"
               placeholder="0"
               required
               type="number"
@@ -620,7 +619,7 @@ const factorise = (pizzas: number[]) => {
             :validations="v$_create.pizza_selection"
           >
             <label for="pizza_selection">
-              Sélection de pizzas
+              {{ t('content.AdminPizza.pizzaSelection') }}
             </label>
             <multiselect
               id="pizza_selection"
@@ -630,7 +629,7 @@ const factorise = (pizzas: number[]) => {
               :close-on-select="false"
               :clear-on-select="false"
               :preserve-search="true"
-              placeholder="Sélection de pizzas"
+              :placeholder="t('content.AdminPizza.pizzaSelection')"
               label="name"
               track-by="id"
               :preselect-first="false"
@@ -648,31 +647,30 @@ const factorise = (pizzas: number[]) => {
         type="button"
         @click="showModal = false"
       >
-        Annuler
+        {{ t('content.common.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="validateModal"
       >
-        Valider
+        {{ t('content.common.validate') }}
       </button>
     </template>
   </Modal>
 
   <Modal v-if="showDeleteModal" @close="showDeleteModal = false">
     <template #title>
-      Supprimer un créneau
+      {{ t('content.AdminPizza.deleteTimeslotTitle') }}
     </template>
     <template #body>
-      Vous allez suppimer le créneau du
-      <strong>{{ frenchFormatFromDate(new Date(timeslotList[selectedDelete].delivery_time)) }}</strong>
-      ainsi que les
-      <strong>{{ (timeslotList[selectedDelete] as AdminTimeslotDeref).orders.length }}</strong>
-      commandes associées.
-      <br/>
-      <br/>
-      <em>Ne supprimez pas un créneau terminé, les données seront perdues.</em>
+      <i18n-t keypath="content.AdminPizza.deleteTimeslotBody" tag="body">
+        <strong>{{ frenchFormatFromDate(new Date(timeslotList[selectedDelete].delivery_time)) }}</strong>
+        <strong>{{ (timeslotList[selectedDelete] as AdminTimeslotDeref).orders.length }}</strong>
+        <br/>
+        <br/>
+        <em/>
+      </i18n-t>
     </template>
     <template #buttons>
       <button
@@ -680,7 +678,7 @@ const factorise = (pizzas: number[]) => {
         type="button"
         @click="showDeleteModal = false"
       >
-        Annuler
+        {{ t('content.common.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
@@ -696,23 +694,23 @@ const factorise = (pizzas: number[]) => {
           deleteTimeslot(timeslotList[selectedDelete].id);
         "
       >
-        Valider
+        {{ t('content.common.validate') }}
       </button>
     </template>
   </Modal>
 
   <Modal v-if="showConfirmationModal" @close="showConfirmationModal = false">
     <template #title>
-      Résumé de la commande
+      {{ t('content.AdminPizza.orderSummary') }}
     </template>
     <template #body>
-      <p>Pseudo : <strong>{{ pseudo }}</strong> </p>
-      <p>Type de commande : <strong>{{ orderTypeToString[selectedOrderType] }}</strong></p>
+      <p>{{ t('content.common.username') }} : <strong>{{ pseudo }}</strong> </p>
+      <p>{{ t('content.AdminPizza.orderType') }} : <strong>{{ t(orderTypeToString[selectedOrderType]) }}</strong></p>
       <p v-if="Object.values(pizzaQuantities).reduce((acc, val) => acc + val) <= 1">
-        Pizza : <strong>{{ pizzaList[Number(Object.keys(pizzaQuantities)[0])]?.name }}</strong>
+        {{ t('content.AdminPizza.pizza') }} : <strong>{{ pizzaList[Number(Object.keys(pizzaQuantities)[0])]?.name }}</strong>
       </p>
       <div v-else>
-        Pizzas :
+        {{ t('content.AdminPizza.pizzas') }} :
         <ul>
           <li v-for="(quantity, pizzaId) in pizzaQuantities" :key="pizzaId">
             <strong>{{ quantity }} x {{ pizzaList[pizzaId].name }}</strong>
@@ -723,7 +721,7 @@ const factorise = (pizzas: number[]) => {
         {{ t('content.common.paymentMethod') }}:
         <strong>{{ t(`content.common.paymentMethods.${selectedPaymentMethod as Payment}`) }}</strong>
       </p>
-      <p>Total : <strong>{{ totalPrice }} €</strong></p>
+      <p>{{ t('content.AdminPizza.total') }} : <strong>{{ totalPrice }} €</strong></p>
     </template>
     <template #buttons>
       <button
@@ -731,14 +729,14 @@ const factorise = (pizzas: number[]) => {
         class="c-btn-bg-3"
         @click="showConfirmationModal = false"
       >
-        Annuler
+        {{ t('content.common.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="sendOrder"
       >
-        Valider
+        {{ t('content.common.validate') }}
       </button>
     </template>
   </Modal>
