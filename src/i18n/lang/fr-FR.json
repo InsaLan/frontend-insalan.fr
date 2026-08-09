@@ -237,6 +237,20 @@
       "tournamentPassword": "Mot de passe du tournoi",
       "tournamentRules": "règles du tournoi"
     },
+    "UserStore": {
+      "fetchRegistrationsError": "Impossible de récupérer vos inscriptions, veuillez réessayer plus tard ou contacter un administrateur",
+      "fetchUserError": "Une erreur est survenue lors de la récupération de l'utilisateur·rice, essayez de vous reconnecter",
+      "genericError": "Une erreur est survenue",
+      "passwordReset": "Votre mot de passe a été réinitialisé",
+      "passwordResetEmailSent": "Un email a été envoyé à {email} pour réinitialiser votre compte",
+      "registrationEmailSent": "Un email a été envoyé à {email} pour confirmer votre compte",
+      "scoreUpdated": "Le score a bien été mis à jour",
+      "sessionExpired": "Votre session a expiré, veuillez vous reconnecter",
+      "updated": "Vos informations ont été mises à jour",
+      "updatedAndReconnect": "Vos informations ont été mises à jour, vous devez vous reconnecter",
+      "welcome": "Bienvenue, {username}",
+      "wrongCurrentPassword": "Le mot de passe actuel est différent de celui que vous avez entré"
+    },
     "TournamentView": {
       "noTournament": "Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !",
       "privateTournaments": "Tournois privés",

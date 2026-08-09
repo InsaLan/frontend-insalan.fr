@@ -237,6 +237,20 @@
       "tournamentPassword": "Tournament password",
       "tournamentRules": "tournament rules"
     },
+    "UserStore": {
+      "fetchRegistrationsError": "Unable to retrieve your registrations, please try again later or contact an administrator",
+      "fetchUserError": "An error occurred while retrieving the user, please try logging in again",
+      "genericError": "An error occurred",
+      "passwordReset": "Your password has been reset",
+      "passwordResetEmailSent": "An email was sent to {email} to reset your account",
+      "registrationEmailSent": "An email was sent to {email} to confirm your account",
+      "scoreUpdated": "The score has been updated",
+      "sessionExpired": "Your session has expired, please log in again",
+      "updated": "Your information has been updated",
+      "updatedAndReconnect": "Your information has been updated, you need to log in again",
+      "welcome": "Welcome, {username}",
+      "wrongCurrentPassword": "The current password differs from the one you entered"
+    },
     "TournamentView": {
       "noTournament": "No tournament is ongoing or upcoming for now, come back later!",
       "privateTournaments": "Private tournaments",
