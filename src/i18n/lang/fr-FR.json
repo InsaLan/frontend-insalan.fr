@@ -214,6 +214,62 @@
     },
     "components": {
       "Tournament": {
+        "Bracket": {
+          "cancel": "Annuler",
+          "bracketDeleted": "L'arbre a bien été supprimé.",
+          "deleteBracket": "Supprimer l'arbre",
+          "deleteBracketDescription": "L'arbre va être supprimé ainsi que les matchs qui lui sont liés.",
+          "final": "Finale",
+          "grandFinal": "Grande finale",
+          "launchSelectedMatches": "Lancer les matchs sélectionnés",
+          "losersBracket": "Arbre de repêchage",
+          "mainBracket": "Arbre principal",
+          "matchesLaunched": "Les matchs ont bien été lancés.",
+          "noMatchSelected": "Aucun match sélectionné",
+          "noMatches": "Il n'existe pas de matchs.",
+          "quarterFinals": "Quarts de finale",
+          "round": "Tour {round}",
+          "roundOf": "{round}ᵉ de finale",
+          "semiFinals": "Demi-finales",
+          "validate": "Valider",
+          "winner": "Vainqueureuse"
+        },
+        "GroupDetail": {
+          "round": "Tour {round}"
+        },
+        "GroupTable": {
+          "back": "Retour",
+          "cancel": "Annuler",
+          "cancelChanges": "Annuler les changements",
+          "deleteGroup": "Supprimer la poule",
+          "deleteGroupDescription": "La poule {name} va être supprimée ainsi que tous les matchs qui lui sont liés.",
+          "deleteGroupTitle": "Suppression de {name}",
+          "details": "Détails",
+          "editGroup": "Éditer la poule",
+          "groupDeleted": "La poule a bien été supprimée",
+          "groupSaved": "Les informations de la poule ont bien été sauvegardées.",
+          "saveGroup": "Sauvegarder la poule",
+          "score": "Score",
+          "seed": "Seed",
+          "team": "Équipe",
+          "tbd": "À déterminer",
+          "tiebreak": "tiebreak",
+          "validate": "Valider"
+        },
+        "MatchCard": {
+          "bestOf": "BO {value}",
+          "classification": "Cls",
+          "completed": "Terminé",
+          "editMatch": "Éditer le match",
+          "invalidScores": "Les scores que vous avez rentrés ne sont pas valides !",
+          "matchUpdated": "Le match a bien été modifié.",
+          "ongoing": "En cours",
+          "playAll": "PA {value}",
+          "save": "Sauvegarder",
+          "scheduled": "Prévu",
+          "tbd": "À déterminer",
+          "cancelChanges": "Annuler les modifications"
+        },
         "SeatingPlan": {
           "cancel": "Annuler",
           "currentTeamSeat": "Place actuelle de l'équipe",

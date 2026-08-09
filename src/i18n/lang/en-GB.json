@@ -214,6 +214,62 @@
     },
     "components": {
       "Tournament": {
+        "Bracket": {
+          "cancel": "Cancel",
+          "bracketDeleted": "The bracket has been deleted.",
+          "deleteBracket": "Delete bracket",
+          "deleteBracketDescription": "The bracket and all matches linked to it will be deleted.",
+          "final": "Final",
+          "grandFinal": "Grand final",
+          "launchSelectedMatches": "Launch selected matches",
+          "losersBracket": "Losers bracket",
+          "mainBracket": "Main bracket",
+          "matchesLaunched": "The matches have been launched.",
+          "noMatchSelected": "No match selected",
+          "noMatches": "There are no matches.",
+          "quarterFinals": "Quarter-finals",
+          "round": "Round {round}",
+          "roundOf": "Round of {round}",
+          "semiFinals": "Semi-finals",
+          "validate": "Submit",
+          "winner": "Winner"
+        },
+        "GroupDetail": {
+          "round": "Round {round}"
+        },
+        "GroupTable": {
+          "back": "Back",
+          "cancel": "Cancel",
+          "cancelChanges": "Cancel changes",
+          "deleteGroup": "Delete group",
+          "deleteGroupDescription": "Group {name} will be deleted along with all matches linked to it.",
+          "deleteGroupTitle": "Delete {name}",
+          "details": "Details",
+          "editGroup": "Edit group",
+          "groupDeleted": "The group has been deleted",
+          "groupSaved": "The group information has been saved.",
+          "saveGroup": "Save group",
+          "score": "Score",
+          "seed": "Seed",
+          "team": "Team",
+          "tbd": "TBD",
+          "tiebreak": "tiebreak",
+          "validate": "Submit"
+        },
+        "MatchCard": {
+          "bestOf": "BO {value}",
+          "classification": "Cls",
+          "completed": "Completed",
+          "editMatch": "Edit match",
+          "invalidScores": "The scores you entered are invalid!",
+          "matchUpdated": "The match has been updated.",
+          "ongoing": "Ongoing",
+          "playAll": "PA {value}",
+          "save": "Save",
+          "scheduled": "Scheduled",
+          "tbd": "TBD",
+          "cancelChanges": "Cancel changes"
+        },
         "SeatingPlan": {
           "cancel": "Cancel",
           "currentTeamSeat": "Current team placement",

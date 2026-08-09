@@ -7,6 +7,7 @@ import {
   ref,
   watchEffect,
 } from 'vue';
+import { useI18n } from 'vue-i18n';
 import Modal from '@/components/Modal.vue';
 import type { Group } from '@/models/group';
 import type { Team } from '@/models/team';
@@ -30,6 +31,7 @@ const NotificationStore = useNotificationStore();
 const { addNotification } = NotificationStore;
 
 const { isAdmin } = storeToRefs(useUserStore());
+const { t: translate } = useI18n();
 
 const modal_open = ref(false);
 const edit_mode = ref(false);
@@ -121,7 +123,7 @@ const edit_group = async () => {
 
   await editGroup(group.id, group_data_clean);
 
-  addNotification('Les informations de la poule ont bien été sauvegardées.', 'info');
+  addNotification(translate('content.components.Tournament.GroupTable.groupSaved'), 'info');
   edit_mode.value = false;
 };
 
@@ -133,7 +135,7 @@ const delete_group = async (confirm: boolean) => {
 
   const res = await deleteGroup(group.id);
 
-  if (res) addNotification('La poule à bien été supprimée', 'info');
+  if (res) addNotification(translate('content.components.Tournament.GroupTable.groupDeleted'), 'info');
 
   modal_open.value = false;
 };
@@ -167,7 +169,7 @@ watchEffect(() => {
         <button
           v-if="onBack"
           type="button"
-          title="Retour"
+          :title="translate('content.components.Tournament.GroupTable.back')"
           @click="onBack()"
         >
           <fa-awesome-icon
@@ -184,7 +186,7 @@ watchEffect(() => {
         >
           <button
             type="button"
-            title="Éditer la poule"
+            :title="translate('content.components.Tournament.GroupTable.editGroup')"
             @click="open_edit"
           >
             <fa-awesome-icon
@@ -194,7 +196,7 @@ watchEffect(() => {
           </button>
           <button
             type="button"
-            title="Supprimer la poule"
+            :title="translate('content.components.Tournament.GroupTable.deleteGroup')"
             @click="delete_group(false)"
           >
             <fa-awesome-icon
@@ -206,7 +208,7 @@ watchEffect(() => {
         <button
           v-if="onDetail"
           type="button"
-          title="Détails"
+          :title="translate('content.components.Tournament.GroupTable.details')"
           @click="onDetail()"
         >
           <fa-awesome-icon
@@ -224,7 +226,7 @@ watchEffect(() => {
         >
         <button
           type="button"
-          title="Sauvegarder la poule"
+          :title="translate('content.components.Tournament.GroupTable.saveGroup')"
           :disabled="v$.$invalid"
           @click="edit_group"
         >
@@ -235,7 +237,7 @@ watchEffect(() => {
         </button>
         <button
           type="button"
-          title="Annuler les changements"
+          :title="translate('content.components.Tournament.GroupTable.cancelChanges')"
           @click="edit_mode = false; reset()"
         >
           <fa-awesome-icon
@@ -257,16 +259,16 @@ watchEffect(() => {
       <thead>
         <tr>
           <th v-if="editable && isAdmin">
-            Seed
+            {{ translate('content.components.Tournament.GroupTable.seed') }}
           </th>
           <th>
-            Équipe
+            {{ translate('content.components.Tournament.GroupTable.team') }}
           </th>
           <th>
-            Score
+            {{ translate('content.components.Tournament.GroupTable.score') }}
             <br>
             <span class="u-normal-text u-regular">
-              (tiebreak)
+              ({{ translate('content.components.Tournament.GroupTable.tiebreak') }})
             </span>
           </th>
         </tr>
@@ -327,7 +329,7 @@ watchEffect(() => {
                 @blur="v$.teams.$touch"
               >
                 <option :value="0">
-                  TBD
+                  {{ translate('content.components.Tournament.GroupTable.tbd') }}
                 </option>
                 <option
                   v-for="team in validated_teams.filter(
@@ -364,10 +366,10 @@ watchEffect(() => {
     @close="modal_open = false"
   >
     <template #title>
-      Suppression de {{ group.name }}
+      {{ translate('content.components.Tournament.GroupTable.deleteGroupTitle', { name: group.name }) }}
     </template>
     <template #body>
-      La poule <strong>{{ group.name }}</strong> va être supprimée ainsi que tous les matchs qui lui sont liés.
+      {{ translate('content.components.Tournament.GroupTable.deleteGroupDescription', { name: group.name }) }}
     </template>
     <template #buttons>
       <button
@@ -375,14 +377,14 @@ watchEffect(() => {
         type="button"
         @click="modal_open = false"
       >
-        Annuler
+        {{ translate('content.components.Tournament.GroupTable.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click="delete_group(true)"
       >
-        Valider
+        {{ translate('content.components.Tournament.GroupTable.validate') }}
       </button>
     </template>
   </Modal>

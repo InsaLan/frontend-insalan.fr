@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import Modal from '@/components/Modal.vue';
 import MatchCard from '@/components/Tournament/MatchCard.vue';
 import type { Bracket } from '@/models/bracket';
@@ -14,6 +15,7 @@ const { bracket, admin } = defineProps<{
 }>();
 
 const { addNotification } = useNotificationStore();
+const { t } = useI18n();
 
 const {
   launchMatchs,
@@ -32,19 +34,19 @@ const selected_matchs = ref(new Set<number>());
 
 const launch_selected_matchs = async () => {
   if (!has_matchs.value) {
-    addNotification('Il n\'existe pas de matchs.', 'info');
+    addNotification(t('content.components.Tournament.Bracket.noMatches'), 'info');
     return;
   }
 
   if (selected_matchs.value.size === 0) {
-    addNotification('Aucun match sélectionné', 'info');
+    addNotification(t('content.components.Tournament.Bracket.noMatchSelected'), 'info');
   }
 
   await launchMatchs([{ id: bracket.id, matchs: Array.from(selected_matchs.value) }], 'brackets');
 
   selected_matchs.value.clear();
 
-  addNotification('Les matchs ont bien été lancés.', 'info');
+  addNotification(t('content.components.Tournament.Bracket.matchesLaunched'), 'info');
 };
 
 const modal_open = ref(false);
@@ -66,23 +68,23 @@ const open_delete_bracket_modal = (bracket_id: number) => {
 const delete_bracket = async () => {
   const res = await deleteBracket(deleted_bracket.value);
 
-  if (res) addNotification('L\'arbre à bien été supprimé.', 'info');
+  if (res) addNotification(t('content.components.Tournament.Bracket.bracketDeleted'), 'info');
 
   modal_open.value = false;
 };
 
 const bracket_round_title = (depth: number, round_idx: number) => {
   if (round_idx < depth - 2) {
-    return `${2 ** (depth - round_idx)}ᵉ de finale`;
+    return t('content.components.Tournament.Bracket.roundOf', { round: 2 ** (depth - round_idx) });
   }
   if (round_idx === depth - 2) {
-    return 'Quarts de finale';
+    return t('content.components.Tournament.Bracket.quarterFinals');
   }
   if (round_idx === depth - 1) {
-    return 'Demi-finales';
+    return t('content.components.Tournament.Bracket.semiFinals');
   }
   if (round_idx === depth) {
-    return 'Finale';
+    return t('content.components.Tournament.Bracket.final');
   }
 
   return '';
@@ -96,7 +98,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
       <button
         v-if="admin"
         type="button"
-        title="Supprimer l'arbre"
+        :title="t('content.components.Tournament.Bracket.deleteBracket')"
         @click="open_delete_bracket_modal(bracket.id)"
       >
         <fa-awesome-icon
@@ -116,7 +118,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         :disabled="!has_matchs || selected_matchs.size === 0"
         @click="launch_selected_matchs"
       >
-        Lancer les matchs sélectionnés
+        {{ t('content.components.Tournament.Bracket.launchSelectedMatches') }}
       </button>
     </div>
 
@@ -161,7 +163,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
               icon="fa-trophy"
               class="c-inline-icon u-ml-0"
             />
-            Vainqueur·euse
+            {{ t('content.components.Tournament.Bracket.winner') }}
           </strong>
           <br>
           {{ get_validated_team_by_id(bracket.winner)?.name }}
@@ -175,7 +177,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
       class="l-overflow-auto u-p-1"
     >
       <h2 class="u-p-2">
-        Arbre principal
+        {{ t('content.components.Tournament.Bracket.mainBracket') }}
       </h2>
       <div
         class="l-grid-arbitrary u-full-height l-cross-center l-gap-1"
@@ -192,7 +194,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
               : (round_idx % 2 === 0 && round_idx < 2 * bracket.depth)
                 ? bracket_round_title(bracket.depth, (round_idx + 2) / 2)
                 : (round_idx === 2 * bracket.depth)
-                  ? 'Grande finale'
+                  ? t('content.components.Tournament.Bracket.grandFinal')
                   : ''
           }}
         </div>
@@ -237,7 +239,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
               icon="fa-trophy"
               class="c-inline-icon u-ml-0"
             />
-            Vainqueur·euse
+            {{ t('content.components.Tournament.Bracket.winner') }}
           </strong>
           <br>
           {{ get_validated_team_by_id(bracket.winner)?.name }}
@@ -245,7 +247,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
       </div>
 
       <h2 class="u-p-2">
-        Arbre de repêchage
+        {{ t('content.components.Tournament.Bracket.losersBracket') }}
       </h2>
 
       <div
@@ -259,9 +261,9 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         >
           {{
             (round_idx !== 1 && round_idx < 2 * bracket.depth - 1)
-              ? `Tour ${round_idx - 1}`
+              ? t('content.components.Tournament.Bracket.round', { round: round_idx - 1 })
               : (round_idx === 2 * bracket.depth - 1)
-                ? 'Finale'
+                ? t('content.components.Tournament.Bracket.final')
                 : ''
           }}
         </div>
@@ -292,10 +294,10 @@ const bracket_round_title = (depth: number, round_idx: number) => {
     @close="modal_open = false;"
   >
     <template #title>
-      Supprimer l'arbre
+      {{ t('content.components.Tournament.Bracket.deleteBracket') }}
     </template>
     <template #body>
-      L'arbre va être supprimé ainsi que les matchs qui lui sont liés.
+      {{ t('content.components.Tournament.Bracket.deleteBracketDescription') }}
     </template>
     <template #buttons>
       <button
@@ -303,14 +305,14 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         type="button"
         @click="modal_open = false;"
       >
-        Annuler
+        {{ t('content.components.Tournament.Bracket.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click="delete_bracket"
       >
-        Valider
+        {{ t('content.components.Tournament.Bracket.validate') }}
       </button>
     </template>
   </Modal>

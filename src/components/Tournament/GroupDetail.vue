@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import GroupTable from '@/components/Tournament/GroupTable.vue';
 import MatchCard from '@/components/Tournament/MatchCard.vue';
 import type { Group } from '@/models/group';
@@ -14,6 +15,7 @@ const { group } = defineProps<{
 const selectModel = defineModel<Set<number>>();
 
 const { get_matchs_per_round } = useTournamentStore();
+const { t } = useI18n();
 </script>
 
 <template>
@@ -36,7 +38,7 @@ const { get_matchs_per_round } = useTournamentStore();
         class="c-frame u-p-1 l-flex-column l-gap-1 u-full-width"
       >
         <div class="u-text-center u-big-text">
-          Tour {{ matchs[0].round_number }}
+          {{ t('content.components.Tournament.GroupDetail.round', { round: matchs[0].round_number }) }}
         </div>
         <MatchCard
           v-for="match in matchs"
