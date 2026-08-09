@@ -213,6 +213,47 @@
       "valueSuperior": "Value must be greater than {min}"
     },
     "components": {
+      "StringListInput": {
+        "add": "Add",
+        "delete": "Delete",
+        "edit": "Edit"
+      },
+      "TournamentMeCard": {
+        "back": "Back",
+        "cancel": "Cancel",
+        "durationMinutes": "Duration (minutes)",
+        "durationPlaceholder": "5",
+        "finishMatchManually": "Finish the match manually",
+        "game": "Game {number}",
+        "invalidScores": "The scores you entered are invalid!",
+        "invalidTimes": "Times cannot be empty",
+        "next": "Next",
+        "ongoingMatch": "Ongoing match",
+        "ranking": "ranking",
+        "record": "Record the {type}",
+        "recordDurations": "Record match durations (in minutes)",
+        "score": "score",
+        "send": "Send",
+        "tournamentCodes": "Tournament codes:"
+      },
+      "PasswordInput": {
+        "generatePassword": "Generate a password",
+        "password": "Password",
+        "showPassword": "Show password"
+      },
+      "PaymentStatusIcon": {
+        "later": "This player will pay on site",
+        "laterIconAlt": "Clock icon",
+        "paid": "This player has paid",
+        "paidIconAlt": "Check icon"
+      },
+      "PizzaCard": {
+        "allergens": "Allergens",
+        "delete": "Delete",
+        "edit": "Edit",
+        "imageAlt": "Image of {name}",
+        "ingredients": "Ingredients"
+      },
       "Map": {
         "title": "Where to find us"
       },

@@ -213,6 +213,47 @@
       "valueSuperior": "La valeur doit être supérieure à {min}"
     },
     "components": {
+      "StringListInput": {
+        "add": "Ajouter",
+        "delete": "Supprimer",
+        "edit": "Modifier"
+      },
+      "TournamentMeCard": {
+        "back": "Retour",
+        "cancel": "Annuler",
+        "durationMinutes": "Durée (minutes)",
+        "durationPlaceholder": "5",
+        "finishMatchManually": "Terminer la partie manuellement",
+        "game": "Partie {number}",
+        "invalidScores": "Les scores que vous avez rentrés ne sont pas valides !",
+        "invalidTimes": "Les temps ne peuvent pas être nuls",
+        "next": "Suivant",
+        "ongoingMatch": "Partie en cours",
+        "ranking": "classement",
+        "record": "Enregistrer le {type}",
+        "recordDurations": "Enregistrer les durées de match (en minutes)",
+        "score": "score",
+        "send": "Envoyer",
+        "tournamentCodes": "Codes de tournoi :"
+      },
+      "PasswordInput": {
+        "generatePassword": "Générer un mot de passe",
+        "password": "Mot de passe",
+        "showPassword": "Afficher le mot de passe"
+      },
+      "PaymentStatusIcon": {
+        "later": "Ce·tte joueur·euse paiera sur place",
+        "laterIconAlt": "Icône horloge",
+        "paid": "Ce·tte joueur·euse a payé",
+        "paidIconAlt": "Icône correcte"
+      },
+      "PizzaCard": {
+        "allergens": "Allergènes",
+        "delete": "Supprimer",
+        "edit": "Modifier",
+        "imageAlt": "Image de {name}",
+        "ingredients": "Ingrédients"
+      },
       "Map": {
         "title": "Où nous trouver"
       },

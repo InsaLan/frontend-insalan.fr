@@ -19,7 +19,7 @@ const pizza = computed<Pizza | undefined>(() => pizzaList.value[props.id]);
 <template>
   <div class="c-card-bg-2 u-p-0 u-pb-2 l-flex-column l-cross-center u-full-height u-full-width">
     <img
-      :alt="`Image de ${pizza?.name}`"
+      :alt="$t('content.components.PizzaCard.imageAlt', { name: pizza?.name })"
       :src="pizza?.image"
       class="pizza-thumbnail u-full-width u-rounded"
     />
@@ -29,8 +29,8 @@ const pizza = computed<Pizza | undefined>(() => pizzaList.value[props.id]);
           {{ pizza?.name }}
         </p>
         <p class="u-text-center">
-          <strong>Ingrédients :</strong> {{ pizza?.ingredients.join(', ') }}<br>
-          <strong>Allergènes :</strong> {{ pizza?.allergens.join(', ') }}
+          <strong>{{ $t('content.components.PizzaCard.ingredients') }} :</strong> {{ pizza?.ingredients.join(', ') }}<br>
+          <strong>{{ $t('content.components.PizzaCard.allergens') }} :</strong> {{ pizza?.allergens.join(', ') }}
         </p>
       </div>
       <div v-if="onEdit || onDelete" class="l-flex-column l-gap-1 u-big-text l-cross-center">
@@ -38,7 +38,7 @@ const pizza = computed<Pizza | undefined>(() => pizzaList.value[props.id]);
           v-if="onEdit"
           type="button"
           class="c-image-btn"
-          title="Modifier"
+          :title="$t('content.components.PizzaCard.edit')"
           @click="onEdit?.(pizza!)"
         >
           <fa-awesome-icon icon="fa-pen-to-square"/>
@@ -47,7 +47,7 @@ const pizza = computed<Pizza | undefined>(() => pizzaList.value[props.id]);
           v-if="onDelete"
           type="button"
           class="c-image-btn u-color-error-1"
-          title="Supprimer"
+          :title="$t('content.components.PizzaCard.delete')"
           @click="onDelete?.(pizza!)"
         >
           <fa-awesome-icon icon="fa-trash-can"/>
