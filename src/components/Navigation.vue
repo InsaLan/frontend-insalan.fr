@@ -124,13 +124,13 @@ const toggleBurgerMenu = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {{ $t('content.components.Navigation.admin-panel') }} <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
+                  {{ $t('content.components.Navigation.adminPanel') }} <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
                 </a>
                 <router-link
                   class="c-text-btn-secondary"
                   :to="{ path: '/admin/scan' }"
                 >
-                  {{ $t('content.components.Navigation.ticket-scan') }}
+                  {{ $t('content.components.Navigation.ticketScan') }}
                 </router-link>
               </div>
               <div
@@ -140,25 +140,25 @@ const toggleBurgerMenu = () => {
                 <div
                   class="u-bold u-color-text-2 u-big-text"
                 >
-                  {{ $t('content.components.Navigation.eating-team') }}
+                  {{ $t('content.components.Navigation.eatingTeam') }}
                 </div>
                 <router-link
                   class="c-text-btn-secondary"
                   to="/admin/pizza/export/list"
                 >
-                  {{ $t('content.components.Navigation.eating-export-list') }}
+                  {{ $t('content.components.Navigation.eatingExportList') }}
                 </router-link>
                 <router-link
                   class="c-text-btn-secondary"
                   to="/admin/pizza/list"
                 >
-                  {{ $t('content.components.Navigation.eating-pizza-list') }}
+                  {{ $t('content.components.Navigation.eatingPizzaList') }}
                 </router-link>
                 <router-link
                   class="c-text-btn-secondary"
                   to="/admin/pizza"
                 >
-                  {{ $t('content.components.Navigation.eating-pizza') }}
+                  {{ $t('content.components.Navigation.eatingPizza') }}
                 </router-link>
               </div>
             </div>
@@ -262,7 +262,7 @@ const toggleBurgerMenu = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            {{ $t('content.components.Navigation.admin-panel') }} <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
+            {{ $t('content.components.Navigation.adminPanel') }} <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
           </a>
           <router-link
             v-if="role === 'dev' || role === 'staff'"
@@ -270,7 +270,7 @@ const toggleBurgerMenu = () => {
             :to="{ path: '/admin/scan' }"
             @click="toggleBurgerMenu()"
           >
-            {{ $t('content.components.Navigation.ticket-scan') }}
+            {{ $t('content.components.Navigation.ticketScan') }}
           </router-link>
 
           <router-link

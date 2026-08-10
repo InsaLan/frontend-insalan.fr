@@ -450,7 +450,7 @@ const factorise = (pizzas: number[]) => {
             {{ t('content.common.username') }}
           </div>
           <div class="l-grow">
-            {{ t('content.AdminPizza.pizzas') }}
+            {{ t('content.AdminPizza.pizza', 2) }}
           </div>
           <div class="l-grow">
             {{ t('content.AdminPizza.retrieved') }}
@@ -710,7 +710,7 @@ const factorise = (pizzas: number[]) => {
         {{ t('content.AdminPizza.pizza') }} : <strong>{{ pizzaList[Number(Object.keys(pizzaQuantities)[0])]?.name }}</strong>
       </p>
       <div v-else>
-        {{ t('content.AdminPizza.pizzas') }} :
+        {{ t('content.AdminPizza.pizza', 2) }} :
         <ul>
           <li v-for="(quantity, pizzaId) in pizzaQuantities" :key="pizzaId">
             <strong>{{ quantity }} x {{ pizzaList[pizzaId].name }}</strong>

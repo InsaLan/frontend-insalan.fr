@@ -105,7 +105,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
       {{ t('content.AdminPizza.exportsTitle') }}
     </h1>
     <div v-if="timeslots_id.length === 0" class="u-text-center u-big-text">
-      {{ t('content.AdminPizza.noTimeslots') }}
+      {{ t('content.AdminPizza.noTimeslot') }}
     </div>
     <div
       v-else

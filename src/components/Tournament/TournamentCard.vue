@@ -100,11 +100,11 @@ onMounted(async () => {
       <progress-bar
         :quantity1="validated_teams"
         :max1="thresholds[current_threshold_index]"
-        :description1="t('content.components.Tournament.TournamentCard.validatedTeams')"
+        :description1="t('content.components.Tournament.TournamentCard.validatedTeams').toLocaleLowerCase()"
         :quantity2="waiting_validation_teams_count"
         :max2="isNaN(thresholds[current_threshold_index + 1]) ? undefined
           : thresholds[current_threshold_index + 1] - thresholds[current_threshold_index]"
-        :description2="t('content.components.Tournament.TournamentCard.waitingThreshold')"
+        :description2="t('content.components.Tournament.TournamentCard.waitingThreshold').toLocaleLowerCase()"
       />
     </div>
     <p v-if="!isPrivate" class="u-big-text">

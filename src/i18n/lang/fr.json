@@ -34,7 +34,6 @@
       "newOrder": "Nouvelle commande",
       "nextPage": "Page suivante",
       "noTimeslot": "Il n'y a pas de créneau de commande",
-      "noTimeslots": "Il n'y a pas de créneau de commande.",
       "orderCount": "Commandes : {count} / {max}",
       "orderEnd": "Fin de la commande",
       "orderEndPassed": "L'heure de fin de commande est dépassée",
@@ -47,13 +46,12 @@
         "staff": "Staff"
       },
       "page": "Page {page}",
-      "pizza": "Pizza",
+      "pizza": "Pizza | Pizzas",
       "pizzaCount": "{count} pizza | {count} pizzas",
       "pizzaSelection": "Sélection de pizzas",
-      "pizzas": "Pizza(s)",
       "playerPrice": "Prix pour les joueureuses",
       "previousPage": "Page précédente",
-      "retrieved": "Récupéré ?",
+      "retrieved": "Récupérée ?",
       "search": "Rechercher",
       "searchOrder": "Rechercher une commande",
       "searchPizza": "Rechercher une pizza",
@@ -142,7 +140,7 @@
         "loading": "Chargement..."
       },
       "Footer": {
-        "credits": "Code & design : équipe Sysrez - Dev",
+        "credits": "Code & design : équipe Sysrez - Dev",
         "socials": "Réseaux"
       },
       "Map": {
@@ -156,23 +154,23 @@
         "title": "Confirmez votre nom"
       },
       "Navigation": {
-        "admin": "Admin",
-        "admin-panel": "Panel admin",
+        "admin": "Staff :",
+        "adminPanel": "Panel admin",
         "association": "Association",
         "eat": "Restauration",
-        "eating-export-list": "Liste des exports",
-        "eating-pizza": "Menu pizza",
-        "eating-pizza-list": "Liste des pizzas",
-        "eating-team": "Team Bouffe :",
+        "eatingExportList": "Liste des exports",
+        "eatingPizza": "Menu pizza",
+        "eatingPizzaList": "Liste des pizzas",
+        "eatingTeam": "Team Bouffe :",
         "home": "Accueil",
         "info": "Informations pratiques",
-        "label-locale-selector": "Changer de langue",
+        "labelLocaleSelector": "Changer de langue",
         "login": "S'identifier",
         "logout": "Se déconnecter",
         "me": "@:content.common.myAccount",
         "schedule": "Planning",
-        "staff": "Staff :",
-        "ticket-scan": "Scan billets",
+        "staff": "Staff :",
+        "ticketScan": "Scan billets",
         "tournament": "Tournois"
       },
       "PartnerCard": {
@@ -188,9 +186,9 @@
         "showPassword": "Afficher le mot de passe"
       },
       "PaymentStatusIcon": {
-        "later": "Ce·tte joueur·euse paiera sur place",
+        "later": "Ce·tte joueureuse paiera sur place",
         "laterIconAlt": "Icône horloge",
-        "paid": "Ce·tte joueur·euse a payé",
+        "paid": "Ce·tte joueureuse a payé",
         "paidIconAlt": "Icône correcte"
       },
       "PizzaCard": {
@@ -354,7 +352,7 @@
         },
         "TournamentCard": {
           "announcedSoon": "Ce tournoi sera annoncé prochainement !",
-          "cashprize": "Cashprize\\u00A0",
+          "cashprize": "Cashprize :",
           "comingSoon": "À venir",
           "logoAlt": "Logo du {name}",
           "moreInfo": "Plus d'infos",
@@ -374,7 +372,7 @@
           "player": "Joueureuse",
           "players": "Joueureuses",
           "price": "Prix",
-          "privateDescription": "Ce tournoi est un tournoi secondaire et n'est pas lié à une édition de l'InsaLan.\\nPour plus d'informations, veuillez demander à l'équipe Animation.",
+          "privateDescription": "Ce tournoi est un tournoi secondaire et n'est pas lié à une édition de l'InsaLan. Pour plus d'informations, veuillez demander à l'équipe Animation.",
           "rewards": "Récompenses",
           "start": "Début",
           "teamsOf": "équipes de"
@@ -430,12 +428,12 @@
           "validate": "@:content.common.submit"
         },
         "TournamentTeams": {
-          "noRegisteredTeam": "Aucun équipe inscrite.",
-          "validatedTeamsDescription": "Les équipes validées ont rempli toutes les conditions pour participer au tournoi.\\nSi votre équipe apparaît ici, félicitations !",
-          "validatedTeamsTitle": "Équipes validées.",
+          "noRegisteredTeam": "Aucune équipe inscrite.",
+          "validatedTeamsDescription": "Les équipes validées ont rempli toutes les conditions pour participer au tournoi. Si votre équipe apparaît ici, félicitations !",
+          "validatedTeamsTitle": "Équipes validées",
           "validatingTeamsDescription": "Les équipes en cours de validation n'ont pas encore rempli les conditions nécessaires pour participer au tournoi. Pour être validées, il faut qu'au moins la moitié des membres de l'équipe aient payé leur inscription.",
           "validatingTeamsTitle": "Équipes en cours de validation",
-          "waitingThresholdDescription": "Les équipes en attente du palier ont rempli les conditions minimales mais doivent attendre que le prochain palier d'équipe soit atteint pour être validées.\\nEncore <strong>{count} autres équipes</strong> doivent remplir les conditions pour atteindre le prochain palier.",
+          "waitingThresholdDescription": "Les équipes en attente du palier ont rempli les conditions minimales mais doivent attendre que le prochain palier d'équipe soit atteint pour être validées. Encore <strong>{count} autres équipes</strong> doivent remplir les conditions pour atteindre le prochain palier.",
           "waitingThresholdTitle": "Équipes en attentes du palier"
         },
         "TravelFormModal": {
@@ -493,7 +491,7 @@
         "empty": "Votre panier est vide.",
         "emptyCart": "Vider le panier",
         "title": "Votre panier",
-        "total": "Total :"
+        "total": "Total :"
       },
       "Eat": {
         "nextTimeslots": "Prochains créneaux",
@@ -508,14 +506,14 @@
         "canNowLogin": "Vous pouvez désormais vous connecter à votre compte !",
         "createAccount": "Créer un compte",
         "emailVerified": "votre adresse e-mail a été vérifiée !",
-        "goBackTo": "Revenir à :",
+        "goBackTo": "Revenir à :",
         "myAccount": "@:content.common.myAccount",
         "verificationFailed": "Échec de la vérification"
       },
       "Error": {
         "backToHome": "Page d'accueil",
-        "description404": "La page que vous cherchez n'existe pas ou a été supprimée. Si vous pensez que ce message est une erreur, n'hésitez pas à nous contacter",
-        "title404": "Page Invalide"
+        "description404": "La page que vous cherchez n'existe pas ou a été supprimée. Si vous pensez que ce message est une erreur, n'hésitez pas à nous contacter.",
+        "title404": "Page invalide"
       },
       "Login": {
         "acceptCgu": "J'accepte les {0} de l'InsaLan",
@@ -524,11 +522,11 @@
         "cgu": "Conditions générales d'utilisation",
         "email": "@:content.common.email",
         "forgotPassword": "Mot de passe oublié",
-        "forgotPassword?": "Mot de passe oublié ?",
+        "forgotPasswordQuestion": "Mot de passe oublié ?",
         "login": "@:content.common.login",
-        "no-account": "Je n'ai pas de compte",
+        "noAccount": "Je n'ai pas de compte",
         "password": "@:content.common.password",
-        "passwordConfirm": "Répéter mot de passe",
+        "passwordConfirm": "Répéter le mot de passe",
         "signin": "S'enregistrer",
         "submit": "@:content.common.login",
         "username": "@:content.common.username",
@@ -562,7 +560,7 @@
         "otherEditions": "Autres éditions",
         "password": "@:content.common.password",
         "payment": "paiement",
-        "player": "joueur·euse",
+        "player": "joueureuse",
         "profileImageAlt": "Image de profil",
         "registrationAddedToCart": "@:content.common.registrationAddedToCart",
         "role": "Rôle",
@@ -604,7 +602,7 @@
         "team": "Équipe :",
         "ticketAlreadyScanned": "Ticket déjà scanné",
         "ticketCancelled": "Ticket annulé",
-        "ticketScanError": "Erreur dans le scan du ticket",
+        "ticketScanError": "Erreur lors du scan du ticket",
         "ticketValid": "Ticket valide",
         "tournament": "Tournoi :",
         "unsupportedCamera": "Les caméras installées ne sont pas adaptées",
@@ -687,9 +685,9 @@
         "seePastEditions": "Voir les anciennes éditions"
       },
       "home": {
-        "no-tournament": "Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !",
-        "see-all-tournament": "Voir tous les tournois",
-        "title-tournament": "Tournois"
+        "noTournament": "Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !",
+        "seeAllTournament": "Voir tous les tournois",
+        "titleTournament": "Tournois"
       }
     }
   }

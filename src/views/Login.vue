@@ -78,7 +78,7 @@ onMounted(async () => {
           <div
             class="l-flex-row l-cross-center c-text-btn u-m-0"
           >
-            {{ $t('content.views.Login.no-account') }}
+            {{ $t('content.views.Login.noAccount') }}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="c-inline-icon"
@@ -124,7 +124,7 @@ onMounted(async () => {
           {{ $t('content.views.Login.submit') }}
         </button>
         <button class="c-text-btn" type="button" @click="openModal()">
-          {{ $t('content.views.Login.forgotPassword?') }}
+          {{ $t('content.views.Login.forgotPasswordQuestion') }}
         </button>
       </form>
     </div>

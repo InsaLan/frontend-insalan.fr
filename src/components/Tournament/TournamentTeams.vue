@@ -42,7 +42,7 @@ const next_threshold = props.tournament.max_team_thresholds[props.tournament.cur
             :bg-color-level="2"
             :quantity1="n_validated_teams"
             :max1="max_validated_teams"
-            :description1="t('content.components.Tournament.TournamentTeams.validatedTeamsTitle')"
+            :description1="t('content.components.Tournament.TournamentTeams.validatedTeamsTitle').toLocaleLowerCase()"
           />
         </div>
         <p>
@@ -68,11 +68,11 @@ const next_threshold = props.tournament.max_team_thresholds[props.tournament.cur
             :bg-color-level="2"
             :quantity1="n_waiting_threshold"
             :max1="next_threshold"
-            :description1="t('content.components.Tournament.TournamentTeams.waitingThresholdTitle')"
+            :description1="t('content.components.Tournament.TournamentTeams.waitingThresholdTitle').toLocaleLowerCase()"
           />
         </div>
         <!-- eslint-disable-next-line vue/no-v-html -->
-        <p v-html="t('content.components.Tournament.TournamentTeams.waitingThresholdDescription')"/>
+        <p v-html="t('content.components.Tournament.TournamentTeams.waitingThresholdDescription', { count: next_threshold - n_waiting_threshold })"/>
       </div>
       <div class="l-grid-4 l-gap-2">
         <TeamCard
