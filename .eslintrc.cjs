@@ -16,6 +16,7 @@ module.exports = defineConfig({
         'plugin:vue/vue3-recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
         '@vue/eslint-config-airbnb-with-typescript',
+        'plugin:@intlify/vue-i18n/recommended-legacy',
       ],
       plugins: [
         'simple-import-sort',
@@ -81,6 +82,18 @@ module.exports = defineConfig({
           endTag: 'never',
           selfClosingTag: 'never',
         }],
+
+        // i18n rules
+        '@intlify/vue-i18n/no-unused-keys': [
+          'error',
+          {
+            extensions: ['.js', '.vue'],
+          },
+        ],
+        '@intlify/vue-i18n/key-format-style': [
+          'error',
+          'camelCase',
+        ],
       },
     },
     {

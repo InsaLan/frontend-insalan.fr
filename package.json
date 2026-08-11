@@ -32,18 +32,21 @@
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
+    "@intlify/eslint-plugin-vue-i18n": "^4.5.1",
     "@rushstack/eslint-patch": "^1.10.4",
     "@types/markdown-it": "^14.1.2",
     "@types/node": "^22.7.4",
     "@vitejs/plugin-vue": "^5.1.4",
     "@vue/eslint-config-airbnb-with-typescript": "^8.0.0",
     "autoprefixer": "^10.4.20",
-    "eslint": "^8.53.0",
+    "eslint": "^8.57.1",
     "eslint-define-config": "^2.1.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-vue": "^9.28.0",
+    "jsonc-eslint-parser": "^3.3.0",
     "typescript": "^5.6.2",
     "vite": "^5.4.8",
-    "vue-tsc": "^2.1.6"
+    "vue-tsc": "^2.1.6",
+    "yaml-eslint-parser": "^2.1.0"
   }
 }
