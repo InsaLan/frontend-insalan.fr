@@ -22,11 +22,11 @@ const eventText = computed(() => {
 
   if (date_start.getFullYear() === date_end.getFullYear()) {
     if (date_start.getMonth() === date_end.getMonth()) {
-      return `${date_start.getDate()} - ${date_end.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()}`;
+      return `${date_start.getDate()} - ${date_end.getDate()} ${date_start.toLocaleString(i18n.global.locale.value, { month: 'long' })} ${date_start.getFullYear()}`;
     }
-    return `${date_start.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} - ${date_end.getDate()} ${date_end.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()}`;
+    return `${date_start.getDate()} ${date_start.toLocaleString(i18n.global.locale.value, { month: 'long' })} - ${date_end.getDate()} ${date_end.toLocaleString(i18n.global.locale.value, { month: 'long' })} ${date_start.getFullYear()}`;
   }
-  return `${date_start.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()} - ${date_end.getDate()} ${date_end.toLocaleString('default', { month: 'long' })} ${date_end.getFullYear()}`;
+  return `${date_start.getDate()} ${date_start.toLocaleString(i18n.global.locale.value, { month: 'long' })} ${date_start.getFullYear()} - ${date_end.getDate()} ${date_end.toLocaleString(i18n.global.locale.value, { month: 'long' })} ${date_end.getFullYear()}`;
 });
 
 const topOffset = ref(0);

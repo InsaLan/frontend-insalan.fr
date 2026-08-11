@@ -264,7 +264,7 @@ export const useUserStore = defineStore('user', () => {
           } else if (response.password) {
             addNotification(response.password, 'error');
           } else {
-            addNotification(t('content.UserStore.genericError'), 'error');
+            addNotification(t('content.common.genericError'), 'error');
           }
         }
       }

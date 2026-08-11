@@ -39,6 +39,7 @@
       "orderStart": "Début de la commande",
       "orderSummary": "Résumé de la commande",
       "orderType": "Type de commande",
+      "orderTypeColon": "@:content.AdminPizza.orderType@:content.common.colon",
       "orderTypes": {
         "player": "Joueureuse",
         "public": "Public",
@@ -62,7 +63,6 @@
     "UserStore": {
       "fetchRegistrationsError": "Impossible de récupérer vos inscriptions, veuillez réessayer plus tard ou contacter un administrateur",
       "fetchUserError": "Une erreur est survenue lors de la récupération de l'utilisateur·rice, essayez de vous reconnecter",
-      "genericError": "Une erreur est survenue",
       "passwordReset": "Votre mot de passe a été réinitialisé",
       "passwordResetEmailSent": "Un email a été envoyé à {email} pour réinitialiser votre compte",
       "registrationEmailSent": "Un email a été envoyé à {email} pour confirmer votre compte",
@@ -90,9 +90,12 @@
       "bestOf": "BO {value}",
       "cancel": "Annuler",
       "choosePaymentMethod": "Choisir un moyen de paiement",
+      "colon": " : ",
+      "create": "Créer",
       "delete": "Supprimer",
       "edit": "Modifier",
       "email": "Email",
+      "genericError": "Une erreur est survenue",
       "goToCart": "Aller au panier",
       "invalidScores": "Les scores que vous avez rentrés ne sont pas valides !",
       "launchSelectedMatches": "Lancer les matchs sélectionnés",
@@ -211,10 +214,8 @@
         "Admin": {
           "AdminGroups": {
             "boType": "Type de BO",
-            "create": "Créer",
             "createMatchesDescription": "Les matchs des poules vont être créés.",
             "createMatchesTitle": "Créer les matchs",
-            "delete": "Supprimer",
             "deleteGroups": "Supprimer les poules",
             "deleteGroupsDescription": "Les poules vont être supprimées ainsi que les matchs qui leur sont liés.",
             "deleteGroupsTitle": "Suppression des poules",
@@ -495,6 +496,7 @@
         "checkout": "Payer",
         "empty": "Votre panier est vide.",
         "emptyCart": "Vider le panier",
+        "terms": "J'ai lu et j'accepte les {0}.",
         "title": "Votre panier",
         "total": "Total :"
       },

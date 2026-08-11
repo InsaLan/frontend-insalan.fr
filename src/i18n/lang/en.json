@@ -62,7 +62,6 @@
     "UserStore": {
       "fetchRegistrationsError": "Failed to retrieve your registrations, please try again later or contact an administrator",
       "fetchUserError": "An error occurred while retrieving the user, please try logging in again",
-      "genericError": "An error occurred",
       "passwordReset": "Your password has been reset",
       "passwordResetEmailSent": "An email was sent to {email} to reset your account",
       "registrationEmailSent": "An email was sent to {email} to confirm your account",
@@ -90,9 +89,12 @@
       "bestOf": "BO {value}",
       "cancel": "Cancel",
       "choosePaymentMethod": "Choose a payment method",
+      "colon": ": ",
+      "create": "Create",
       "delete": "Delete",
       "edit": "Edit",
       "email": "Email",
+      "genericError": "An error occurred",
       "goToCart": "Go to cart",
       "invalidScores": "The scores you entered are invalid!",
       "launchSelectedMatches": "Start selected matches",
@@ -211,10 +213,8 @@
         "Admin": {
           "AdminGroups": {
             "boType": "BO type",
-            "create": "Create",
             "createMatchesDescription": "The group matches will be created.",
             "createMatchesTitle": "Create matches",
-            "delete": "Delete",
             "deleteGroups": "Delete groups",
             "deleteGroupsDescription": "The groups and their linked matches will be deleted.",
             "deleteGroupsTitle": "Delete groups",
@@ -495,6 +495,7 @@
         "checkout": "Checkout",
         "empty": "Your cart is empty",
         "emptyCart": "Empty the cart",
+        "terms": "I have read and accept the {0}.",
         "title": "Your cart",
         "total": "Total:"
       },

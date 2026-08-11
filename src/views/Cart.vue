@@ -56,13 +56,13 @@ const modal_cgv = ref(false);
             v-model="hasReadTerms"
             type="checkbox"
           />
-          <i18n-t keypath="content.views.Cart.terms" tag="label" for="terms">
+          <i18n-t keypath="t('content.views.Cart.terms')" tag="label" for="terms">
             <a
               class="c-link"
               href="#"
               @click="modal_cgv = true"
               @keydown.enter="modal_cgv = true"
-            >les conditions générales de vente</a>.
+            >{{ $t('content.views.Cart.cgv') }}</a>
           </i18n-t>
         </div>
       </div>

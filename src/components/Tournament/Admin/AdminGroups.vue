@@ -128,7 +128,7 @@ const delete_groups_matchs = async () => {
       class="c-btn-bg-2"
       @click="open_modal(has_matchs ? 'delete_matchs' : 'create_matchs')"
     >
-      {{ has_matchs ? t('content.components.Tournament.Admin.AdminGroups.delete') : t('content.components.Tournament.Admin.AdminGroups.create') }} {{ t('content.components.Tournament.Admin.AdminGroups.matches') }}
+      {{ has_matchs ? t('content.common.delete') : t('content.common.create') }} {{ t('content.components.Tournament.Admin.AdminGroups.matches') }}
     </button>
     <button
       type="button"

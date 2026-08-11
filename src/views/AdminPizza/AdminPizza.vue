@@ -707,13 +707,13 @@ const factorise = (pizzas: number[]) => {
       {{ t('content.AdminPizza.orderSummary') }}
     </template>
     <template #body>
-      <p>{{ t('content.common.username') }} : <strong>{{ pseudo }}</strong> </p>
-      <p>{{ t('content.AdminPizza.orderType') }} : <strong>{{ t(orderTypeToString[selectedOrderType]) }}</strong></p>
+      <p>{{ t('content.common.username') }}{{ t('content.common.colon') }}<strong>{{ pseudo }}</strong> </p>
+      <p>{{ t('content.AdminPizza.orderType') }}{{ t('content.common.colon') }}<strong>{{ t(orderTypeToString[selectedOrderType]) }}</strong></p>
       <p v-if="Object.values(pizzaQuantities).reduce((acc, val) => acc + val) <= 1">
-        {{ t('content.AdminPizza.pizza') }} : <strong>{{ pizzaList[Number(Object.keys(pizzaQuantities)[0])]?.name }}</strong>
+        {{ t('content.AdminPizza.pizza') }}{{ t('content.common.colon') }}<strong>{{ pizzaList[Number(Object.keys(pizzaQuantities)[0])]?.name }}</strong>
       </p>
       <div v-else>
-        {{ t('content.AdminPizza.pizza', 2) }} :
+        {{ t('content.AdminPizza.pizza', 2) }}{{ t('content.common.colon') }}
         <ul>
           <li v-for="(quantity, pizzaId) in pizzaQuantities" :key="pizzaId">
             <strong>{{ quantity }} x {{ pizzaList[pizzaId].name }}</strong>
@@ -721,10 +721,10 @@ const factorise = (pizzas: number[]) => {
         </ul>
       </div>
       <p>
-        {{ t('content.common.paymentMethod') }}:
+        {{ t('content.common.paymentMethod') }}{{ t('content.common.colon') }}
         <strong>{{ t(`content.common.paymentMethods.${selectedPaymentMethod as Payment}`) }}</strong>
       </p>
-      <p>{{ t('content.AdminPizza.total') }} : <strong>{{ totalPrice }} €</strong></p>
+      <p>{{ t('content.AdminPizza.total') }}{{ t('content.common.colon') }}<strong>{{ totalPrice }} €</strong></p>
     </template>
     <template #buttons>
       <button
