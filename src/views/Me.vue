@@ -19,7 +19,7 @@ import {
   email,
   minLength,
   required, sameAs,
-} from '@/support/locales/errors.fr';
+} from '@/support/locales/errors';
 
 const userStore = useUserStore();
 const { t } = useI18n();

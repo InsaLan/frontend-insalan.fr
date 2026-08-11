@@ -13,7 +13,7 @@ import { useContentStore } from '@/stores/content.store';
 import { useUserStore } from '@/stores/user.store';
 import {
   acceptGCU, email, minLength, required, sameAs,
-} from '@/support/locales/errors.fr';
+} from '@/support/locales/errors';
 
 const contentStore = useContentStore();
 const { getContent } = contentStore;

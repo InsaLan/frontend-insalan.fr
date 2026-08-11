@@ -11,7 +11,7 @@ import {
   between,
   integer,
   required,
-} from '@/support/locales/errors.fr';
+} from '@/support/locales/errors';
 
 import GroupDetail from '../GroupDetail.vue';
 

@@ -14,7 +14,7 @@ import type { Team } from '@/models/team';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
-import { between, integer, required } from '@/support/locales/errors.fr';
+import { between, integer, required } from '@/support/locales/errors';
 
 const { group, editable = false } = defineProps<{
   group: Group;

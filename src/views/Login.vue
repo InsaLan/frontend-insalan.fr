@@ -8,7 +8,7 @@ import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
 import { useUserStore } from '@/stores/user.store';
-import { email, required } from '@/support/locales/errors.fr';
+import { email, required } from '@/support/locales/errors';
 
 const { ask_reset_password, login, isConnected } = useUserStore();
 

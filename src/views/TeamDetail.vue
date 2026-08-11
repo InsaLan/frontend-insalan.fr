@@ -12,7 +12,7 @@ import type { Team } from '@/models/team';
 import type { EventTournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
-import { required } from '@/support/locales/errors.fr';
+import { required } from '@/support/locales/errors';
 
 const props = defineProps<{
   isPrivate: boolean;

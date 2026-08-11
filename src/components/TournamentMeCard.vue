@@ -6,7 +6,7 @@ import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import { BestofType, type OngoingMatch, type ScorePatch } from '@/models/match';
 import { useUserStore } from '@/stores/user.store';
-import { between, required } from '@/support/locales/errors.fr';
+import { between, required } from '@/support/locales/errors';
 
 interface Props {
   ongoingMatch: OngoingMatch;

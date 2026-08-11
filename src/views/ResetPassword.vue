@@ -6,7 +6,7 @@ import PasswordInput from '@/components/PasswordInput.vue';
 import { useUserStore } from '@/stores/user.store';
 import {
   minLength, required, sameAs,
-} from '@/support/locales/errors.fr';
+} from '@/support/locales/errors';
 
 const { reset_password } = useUserStore();
 

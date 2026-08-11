@@ -25,7 +25,7 @@ import {
   maxLength,
   minLength,
   required,
-} from '@/support/locales/errors.fr';
+} from '@/support/locales/errors';
 
 const {
   match,

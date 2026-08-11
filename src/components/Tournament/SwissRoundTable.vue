@@ -13,7 +13,7 @@ import {
   between,
   integer,
   required,
-} from '@/support/locales/errors.fr';
+} from '@/support/locales/errors';
 
 const { swiss } = defineProps<{
   swiss: SwissRound;

@@ -5,7 +5,7 @@ import {
   computed, reactive, ref, watch,
 } from 'vue';
 import { useUserStore } from '@/stores/user.store';
-import { required } from '@/support/locales/errors.fr';
+import { required } from '@/support/locales/errors';
 
 import FormField from './FormField.vue';
 import Modal from './Modal.vue';

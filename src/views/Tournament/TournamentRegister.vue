@@ -15,7 +15,7 @@ import { useTournamentStore } from '@/stores/tournament.store';
 import { useUserStore } from '@/stores/user.store';
 import {
   acceptRules, minLength, required,
-} from '@/support/locales/errors.fr';
+} from '@/support/locales/errors';
 
 const { id, isPrivate } = defineProps<{
   id: number;

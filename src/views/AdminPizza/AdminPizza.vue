@@ -10,7 +10,7 @@ import { type Payment, PAYMENT_METHODS } from '@/models/order';
 import type { AdminTimeslotDeref } from '@/models/timeslot';
 import { useNotificationStore } from '@/stores/notification.store';
 import { usePizzaStore } from '@/stores/pizza.store';
-import { required } from '@/support/locales/errors.fr';
+import { required } from '@/support/locales/errors';
 import { frenchFormatFromDate } from '@/utils';
 
 const { addNotification } = useNotificationStore();

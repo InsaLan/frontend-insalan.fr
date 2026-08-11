@@ -3,6 +3,7 @@ import MarkdownIt from 'markdown-it';
 import MarkdownItClass from 'markdown-it-class';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import i18n from "@/i18n";
 
 export type Constant = { name: string; lang: string; value: string };
 export type Content = { name: string; lang: string; content: string };
@@ -51,14 +52,35 @@ export const useContentStore = defineStore('content', () => {
 
   function getContent(name: string, lang: string = 'fr'): string {
     if (contents.value[lang] === undefined || contents.value[lang][name] === undefined) return '';
-
-    return md.renderInline(contents.value[lang][name]);
+    let rawContent = contents.value[lang][name];
+    if (rawContent === undefined) {
+      for (let i = 0; i < i18n.global.availableLocales.length; i += 1) {
+        const availableLang = i18n.global.availableLocales[i];
+        // return the first available content
+        if (contents.value[availableLang] && contents.value[availableLang][name]) {
+          rawContent = contents.value[availableLang][name];
+          break;
+        }
+      }
+    }
+    return md.renderInline(rawContent);
   }
 
   function getConstant(name: string, lang: string = 'fr'): string {
     if (constants.value[lang] === undefined || constants.value[lang][name] === undefined) return '';
+    let element = constants.value[lang][name];
+    if (element === undefined) {
+      for (let i = 0; i < i18n.global.availableLocales.length; i += 1) {
+        const availableLang = i18n.global.availableLocales[i];
+        // return the first available constant
+        if (constants.value[availableLang] && constants.value[availableLang][name]) {
+          element = constants.value[availableLang][name];
+          break;
+        }
+      }
+    }
 
-    return constants.value[lang][name];
+    return element;
   }
 
   function getFile(name: string): string {

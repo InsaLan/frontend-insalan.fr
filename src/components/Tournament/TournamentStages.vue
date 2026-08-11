@@ -24,7 +24,7 @@ import {
   minLength,
   minValue,
   required,
-} from '@/support/locales/errors.fr';
+} from '@/support/locales/errors';
 
 import Bracket from './Bracket.vue';
 

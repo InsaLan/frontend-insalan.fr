@@ -8,7 +8,7 @@ import type { Team } from '@/models/team';
 import type { EventTournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
-import { between, integer, required } from '@/support/locales/errors.fr';
+import { between, integer, required } from '@/support/locales/errors';
 
 const { tournament } = defineProps<{
   tournament: EventTournamentDeref;

@@ -6,7 +6,7 @@ import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import StringListInput from '@/components/StringListInput.vue';
 import type { Pizza } from '@/models/pizza';
-import { required } from '@/support/locales/errors.fr';
+import { required } from '@/support/locales/errors';
 
 const props = defineProps<{
   title: string;
