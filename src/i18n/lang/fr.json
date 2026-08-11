@@ -39,7 +39,6 @@
     "orderStart": "Début de la commande",
     "orderSummary": "Résumé de la commande",
     "orderType": "Type de commande",
-    "orderTypeColon": "@:adminPizza.orderType@:common.colon",
     "orderTypes": {
       "player": "Joueureuse",
       "public": "Public",
@@ -134,6 +133,7 @@
     },
     "navigation": {
       "admin": "Staff :",
+      "adminHead": "Admin",
       "adminPanel": "Panel admin",
       "association": "Association",
       "eat": "Restauration",

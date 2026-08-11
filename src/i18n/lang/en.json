@@ -133,6 +133,7 @@
     },
     "navigation": {
       "admin": "Staff:",
+      "adminHead": "Admin",
       "adminPanel": "Admin panel",
       "association": "Association",
       "eat": "Eat",

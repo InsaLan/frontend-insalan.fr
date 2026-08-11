@@ -82,6 +82,13 @@ const toggleBurgerMenu = () => {
             {{ item.text }}
           </router-link>
         </div>
+        <div class="locale-changer">
+          <select v-model="$i18n.locale" aria-label="Change language">
+            <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">
+              {{ locale }}
+            </option>
+          </select>
+        </div>
         <div v-if="!isConnected">
           <router-link
             class="c-btn-primary"
@@ -101,7 +108,7 @@ const toggleBurgerMenu = () => {
             <div
               class="admin-text"
             >
-              <span :class="$route.path.startsWith('/admin') ? 'u-underline' : ''">Admin</span>
+              <span :class="$route.path.startsWith('/admin') ? 'u-underline' : ''">{{ $t('components.navigation.adminHead') }}</span>
               <fa-awesome-icon
                 class="u-ml-1 u-color-text-2 admin-group-rotate"
                 icon="fa-chevron-up"
@@ -177,13 +184,6 @@ const toggleBurgerMenu = () => {
           >
             {{ $t('components.navigation.logout') }}
           </button>
-        </div>
-        <div class="locale-changer">
-          <select v-model="$i18n.locale" aria-label="Change language">
-            <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">
-              {{ locale }}
-            </option>
-          </select>
         </div>
       </div>
       <div
@@ -282,6 +282,14 @@ const toggleBurgerMenu = () => {
           >
             {{ item.text }}
           </router-link>
+
+          <div class="locale-changer">
+            <select v-model="$i18n.locale" aria-label="Change language">
+              <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">
+                {{ locale }}
+              </option>
+            </select>
+          </div>
         </div>
       </div>
     </nav>
