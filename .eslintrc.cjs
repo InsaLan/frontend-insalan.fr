@@ -26,6 +26,11 @@ module.exports = defineConfig({
         parser: '@typescript-eslint/parser',
         ecmaVersion: 'latest',
       },
+      settings: {
+        'vue-i18n': {
+          localeDir: './src/locales/*.json',
+        },
+      },
       rules: {
         // Eslint rules
         'no-console': 'error',

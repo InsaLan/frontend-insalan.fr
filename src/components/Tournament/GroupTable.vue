@@ -31,7 +31,7 @@ const NotificationStore = useNotificationStore();
 const { addNotification } = NotificationStore;
 
 const { isAdmin } = storeToRefs(useUserStore());
-const { t: translate } = useI18n();
+const { t } = useI18n();
 
 const modal_open = ref(false);
 const edit_mode = ref(false);
@@ -40,22 +40,22 @@ const group_data = reactive({
   name: group.name,
   teams: Object.keys(group.scores).map((team) => Number(team)).concat(0),
   seeding: validated_teams
-    .map((t) => t.id)
-    .reduce((res, t) => {
-      if (group.seeding !== undefined && Object.keys(group.seeding).includes(t.toString())) {
-        res[t] = group.seeding[t];
+    .map((u) => u.id)
+    .reduce((res, u) => {
+      if (group.seeding !== undefined && Object.keys(group.seeding).includes(u.toString())) {
+        res[u] = group.seeding[u];
       } else {
-        res[t] = 0;
+        res[u] = 0;
       }
       return res;
     }, { 0: 0 } as Record<string, number>),
   tiebreak_scores: validated_teams
-    .map((t) => t.id)
-    .reduce((res, t) => {
-      if (Object.keys(group.tiebreak_scores).includes(t.toString())) {
-        res[t] = group.tiebreak_scores[t];
+    .map((u) => u.id)
+    .reduce((res, u) => {
+      if (Object.keys(group.tiebreak_scores).includes(u.toString())) {
+        res[u] = group.tiebreak_scores[u];
       } else {
-        res[t] = 0;
+        res[u] = 0;
       }
       return res;
     }, { 0: 0 } as Record<string, number>),
@@ -65,10 +65,10 @@ const group_rules = computed(() => ({
   name: { required },
   teams: { required },
   seeding: validated_teams
-    .map((t) => t.id)
+    .map((u) => u.id)
     .reduce(
-      (res, t) => {
-        res[t] = { required, integer, between: between(0, group_data.teams.length - 1) };
+      (res, u) => {
+        res[u] = { required, integer, between: between(0, group_data.teams.length - 1) };
         return res;
       },
       {
@@ -76,9 +76,9 @@ const group_rules = computed(() => ({
       } as Record<string, { required: ValidationRule; integer: ValidationRule; between: ValidationRule }>,
     ),
   tiebreak_scores: validated_teams
-    .map((t) => t.id)
-    .reduce((res, t) => {
-      res[t] = { required, integer };
+    .map((u) => u.id)
+    .reduce((res, u) => {
+      res[u] = { required, integer };
       return res;
     }, { 0: { required, integer } } as Record<string, { required: ValidationRule; integer: ValidationRule }>),
 }));
@@ -87,22 +87,22 @@ const reset = () => {
   group_data.name = group.name;
   group_data.teams = Object.keys(group.scores).map((team) => Number(team)).concat(0);
   group_data.seeding = validated_teams
-    .map((t) => t.id)
-    .reduce((res, t) => {
-      if (group.seeding !== undefined && Object.keys(group.seeding).includes(t.toString())) {
-        res[t] = group.seeding[t];
+    .map((u) => u.id)
+    .reduce((res, u) => {
+      if (group.seeding !== undefined && Object.keys(group.seeding).includes(u.toString())) {
+        res[u] = group.seeding[u];
       } else {
-        res[t] = 0;
+        res[u] = 0;
       }
       return res;
     }, { 0: 0 } as Record<string, number>);
   group_data.tiebreak_scores = validated_teams
-    .map((t) => t.id)
-    .reduce((res, t) => {
-      if (Object.keys(group.tiebreak_scores).includes(t.toString())) {
-        res[t] = group.tiebreak_scores[t];
+    .map((u) => u.id)
+    .reduce((res, u) => {
+      if (Object.keys(group.tiebreak_scores).includes(u.toString())) {
+        res[u] = group.tiebreak_scores[u];
       } else {
-        res[t] = 0;
+        res[u] = 0;
       }
       return res;
     }, { 0: 0 } as Record<string, number>);
@@ -112,7 +112,7 @@ const v$ = useVuelidate(group_rules, group_data);
 
 const edit_group = async () => {
   const group_data_clean = { ...group_data };
-  group_data_clean.teams = group_data_clean.teams.filter((t) => t !== 0);
+  group_data_clean.teams = group_data_clean.teams.filter((u) => u !== 0);
   group_data_clean.seeding = Object.fromEntries(
     Object.entries(group_data_clean.seeding).filter(([team_id]) => group_data_clean.teams.includes(Number(team_id))),
   );
@@ -123,7 +123,7 @@ const edit_group = async () => {
 
   await editGroup(group.id, group_data_clean);
 
-  addNotification(translate('content.components.Tournament.GroupTable.groupSaved'), 'info');
+  addNotification(t('content.components.Tournament.GroupTable.groupSaved'), 'info');
   edit_mode.value = false;
 };
 
@@ -135,7 +135,7 @@ const delete_group = async (confirm: boolean) => {
 
   const res = await deleteGroup(group.id);
 
-  if (res) addNotification(translate('content.components.Tournament.GroupTable.groupDeleted'), 'info');
+  if (res) addNotification(t('content.components.Tournament.GroupTable.groupDeleted'), 'info');
 
   modal_open.value = false;
 };
@@ -148,10 +148,10 @@ const open_edit = () => {
 };
 
 watchEffect(() => {
-  if (group_data.teams.filter((t) => t === 0).length > 1) {
-    group_data.teams = group_data.teams.filter((t) => t !== 0);
+  if (group_data.teams.filter((u) => u === 0).length > 1) {
+    group_data.teams = group_data.teams.filter((u) => u !== 0);
   }
-  if (group_data.teams.filter((t) => t === 0).length === 0) {
+  if (group_data.teams.filter((u) => u === 0).length === 0) {
     group_data.teams.push(0);
   }
 });
@@ -169,7 +169,7 @@ watchEffect(() => {
         <button
           v-if="onBack"
           type="button"
-          :title="translate('content.components.Tournament.GroupTable.back')"
+          :title="t('content.components.Tournament.GroupTable.back')"
           @click="onBack()"
         >
           <fa-awesome-icon
@@ -186,7 +186,7 @@ watchEffect(() => {
         >
           <button
             type="button"
-            :title="translate('content.components.Tournament.GroupTable.editGroup')"
+            :title="t('content.components.Tournament.GroupTable.editGroup')"
             @click="open_edit"
           >
             <fa-awesome-icon
@@ -196,7 +196,7 @@ watchEffect(() => {
           </button>
           <button
             type="button"
-            :title="translate('content.components.Tournament.GroupTable.deleteGroup')"
+            :title="t('content.components.Tournament.GroupTable.deleteGroup')"
             @click="delete_group(false)"
           >
             <fa-awesome-icon
@@ -208,7 +208,7 @@ watchEffect(() => {
         <button
           v-if="onDetail"
           type="button"
-          :title="translate('content.components.Tournament.GroupTable.details')"
+          :title="t('content.components.Tournament.GroupTable.details')"
           @click="onDetail()"
         >
           <fa-awesome-icon
@@ -226,7 +226,7 @@ watchEffect(() => {
         >
         <button
           type="button"
-          :title="translate('content.components.Tournament.GroupTable.saveGroup')"
+          :title="t('content.components.Tournament.GroupTable.saveGroup')"
           :disabled="v$.$invalid"
           @click="edit_group"
         >
@@ -237,7 +237,7 @@ watchEffect(() => {
         </button>
         <button
           type="button"
-          :title="translate('content.components.Tournament.GroupTable.cancelChanges')"
+          :title="t('content.components.Tournament.GroupTable.cancelChanges')"
           @click="edit_mode = false; reset()"
         >
           <fa-awesome-icon
@@ -259,16 +259,19 @@ watchEffect(() => {
       <thead>
         <tr>
           <th v-if="editable && isAdmin">
-            {{ translate('content.components.Tournament.GroupTable.seed') }}
+            {{ t('content.components.Tournament.GroupTable.seed') }}
           </th>
           <th>
-            {{ translate('content.components.Tournament.GroupTable.team') }}
+            {{ t('content.components.Tournament.GroupTable.team') }}
           </th>
           <th>
-            {{ translate('content.components.Tournament.GroupTable.score') }}
+            {{ t('content.components.Tournament.GroupTable.score') }}
             <br>
+            <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
             <span class="u-normal-text u-regular">
-              ({{ translate('content.components.Tournament.GroupTable.tiebreak') }})
+              <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
+              <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
+              ({{ t('content.components.Tournament.GroupTable.tiebreak') }})
             </span>
           </th>
         </tr>
@@ -285,6 +288,7 @@ watchEffect(() => {
             <td
               v-if="editable && isAdmin"
             >
+              <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
               {{ group.seeding ? group.seeding[team_id] : 0 }}
             </td>
             <td
@@ -329,7 +333,7 @@ watchEffect(() => {
                 @blur="v$.teams.$touch"
               >
                 <option :value="0">
-                  {{ translate('content.components.Tournament.GroupTable.tbd') }}
+                  {{ t('content.components.Tournament.GroupTable.tbd') }}
                 </option>
                 <option
                   v-for="team in validated_teams.filter(
@@ -345,15 +349,24 @@ watchEffect(() => {
             <td
               class="l-flex-row l-cross-center"
             >
+              <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
               {{ group.scores[group_data.teams[idx - 1]] ?? 0 }}
-              (<input
+              <!-- idk why i need so much of them but otherwise it isn't happy -->
+              <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
+              <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
+              (
+              <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
+              <input
                 id="seed"
                 v-model.number="group_data.tiebreak_scores[group_data.teams[idx - 1]]"
                 type="number"
                 name="seed"
                 class="not-too-wide"
                 @blur="v$.tiebreak_scores[group_data.teams[idx - 1]].$touch"
-              />)
+              />
+              <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
+              <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
+              )
             </td>
           </tr>
         </template>
@@ -366,10 +379,10 @@ watchEffect(() => {
     @close="modal_open = false"
   >
     <template #title>
-      {{ translate('content.components.Tournament.GroupTable.deleteGroupTitle', { name: group.name }) }}
+      {{ t('content.components.Tournament.GroupTable.deleteGroupTitle', { name: group.name }) }}
     </template>
     <template #body>
-      {{ translate('content.components.Tournament.GroupTable.deleteGroupDescription', { name: group.name }) }}
+      {{ t('content.components.Tournament.GroupTable.deleteGroupDescription', { name: group.name }) }}
     </template>
     <template #buttons>
       <button
@@ -377,14 +390,14 @@ watchEffect(() => {
         type="button"
         @click="modal_open = false"
       >
-        {{ translate('content.components.Tournament.GroupTable.cancel') }}
+        {{ t('content.components.Tournament.GroupTable.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click="delete_group(true)"
       >
-        {{ translate('content.components.Tournament.GroupTable.validate') }}
+        {{ t('content.components.Tournament.GroupTable.validate') }}
       </button>
     </template>
   </Modal>
