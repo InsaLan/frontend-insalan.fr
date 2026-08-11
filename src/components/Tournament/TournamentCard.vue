@@ -74,7 +74,7 @@ const cashprizeText = computed(() => {
       acc += Number(val);
       return acc;
     }, 0)} €`
-    : t('components.tournament.tournamentCard.comingSoon');
+    : t('common.comingSoon');
   return `${t('components.tournament.tournamentCard.cashprize')} ${total}`;
 });
 

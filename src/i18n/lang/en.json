@@ -65,6 +65,7 @@
     "cancel": "Cancel",
     "choosePaymentMethod": "Choose a payment method",
     "colon": ": ",
+    "comingSoon": "Coming soon",
     "create": "Create",
     "delete": "Delete",
     "edit": "Edit",
@@ -73,6 +74,7 @@
     "goToCart": "Go to cart",
     "invalidScores": "The scores you entered are invalid!",
     "launchSelectedMatches": "Start selected matches",
+    "loading": "Loading...",
     "login": "Login",
     "manager": "Manager",
     "matchesLaunched": "The matches have been started.",
@@ -327,7 +329,6 @@
       "tournamentCard": {
         "announcedSoon": "This tournament will be announced shortly!",
         "cashprize": "Cashprize:",
-        "comingSoon": "Coming soon",
         "logoAlt": "Logo of {name}",
         "moreInfo": "More info",
         "register": "@:common.register",
@@ -339,7 +340,6 @@
       "tournamentInfo": {
         "cashprizes": "Cashprizes",
         "casters": "Casters",
-        "comingSoon": "Coming soon",
         "format": "Format",
         "manager": "@:common.manager",
         "managerPrice": "Managers: ",

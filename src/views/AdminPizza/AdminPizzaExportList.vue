@@ -115,7 +115,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
         class="l-flex-column l-main-center l-cross-center l-gap-2 l-grow"
       >
         <div class="u-big-text">
-          {{ t('components.app.loading') }}
+          {{ t('common.loading') }}
         </div>
         <div role="status" aria-hidden="true" class="c-spinner"/>
       </div>

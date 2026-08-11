@@ -41,7 +41,7 @@ defineProps<{
             <div class="massive">
               🥇
             </div>
-            {{ tournament?.cashprizes.length === 0 ? t('components.tournament.tournamentInfo.comingSoon') : `${Number(tournament?.cashprizes[0])} €` }}
+            {{ tournament?.cashprizes.length === 0 ? t('common.comingSoon') : `${Number(tournament?.cashprizes[0])} €` }}
           </div>
         </div>
         <div class="l-flex-row even u-huge-text u-text-center l-gap-4">
@@ -50,14 +50,14 @@ defineProps<{
             <div class="massive">
               🥈
             </div>
-            {{ tournament?.cashprizes.length === 0 ? t('components.tournament.tournamentInfo.comingSoon') : `${Number(tournament?.cashprizes[1])} €` }}
+            {{ tournament?.cashprizes.length === 0 ? t('common.comingSoon') : `${Number(tournament?.cashprizes[1])} €` }}
           </div>
           <div class="l-flex-column l-cross-center">
             <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
             <div class="massive">
               🥉
             </div>
-            {{ tournament?.cashprizes.length === 0 ? t('components.tournament.tournamentInfo.comingSoon') : `${Number(tournament?.cashprizes[2])} €` }}
+            {{ tournament?.cashprizes.length === 0 ? t('common.comingSoon') : `${Number(tournament?.cashprizes[2])} €` }}
           </div>
         </div>
       </div>
@@ -68,21 +68,21 @@ defineProps<{
           <div class="massive">
             🥈
           </div>
-          {{ tournament?.cashprizes.length === 0 ? t('components.tournament.tournamentInfo.comingSoon') : `${Number(tournament?.cashprizes[1])} €` }}
+          {{ tournament?.cashprizes.length === 0 ? t('common.comingSoon') : `${Number(tournament?.cashprizes[1])} €` }}
         </div>
         <div class="l-flex-column l-cross-center">
           <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
           <div class="massive">
             🥇
           </div>
-          {{ tournament?.cashprizes.length === 0 ? t('components.tournament.tournamentInfo.comingSoon') : `${Number(tournament?.cashprizes[0])} €` }}
+            {{ tournament?.cashprizes.length === 0 ? t('common.comingSoon') : `${Number(tournament?.cashprizes[0])} €` }}
         </div>
         <div class="l-flex-column l-cross-center u-mt-4">
           <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
           <div class="massive">
             🥉
           </div>
-          {{ tournament?.cashprizes.length === 0 ? t('components.tournament.tournamentInfo.comingSoon') : `${Number(tournament?.cashprizes[2])} €` }}
+            {{ tournament?.cashprizes.length === 0 ? t('common.comingSoon') : `${Number(tournament?.cashprizes[2])} €` }}
         </div>
       </div>
 

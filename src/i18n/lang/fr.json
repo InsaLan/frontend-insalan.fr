@@ -66,6 +66,7 @@
     "cancel": "Annuler",
     "choosePaymentMethod": "Choisir un moyen de paiement",
     "colon": " : ",
+    "comingSoon": "À venir",
     "create": "Créer",
     "delete": "Supprimer",
     "edit": "Modifier",
@@ -74,6 +75,7 @@
     "goToCart": "Aller au panier",
     "invalidScores": "Les scores que vous avez rentrés ne sont pas valides !",
     "launchSelectedMatches": "Lancer les matchs sélectionnés",
+    "loading": "Chargement...",
     "login": "Se connecter",
     "manager": "Manager",
     "matchesLaunched": "Les matchs ont bien été lancés.",
@@ -114,7 +116,7 @@
       }
     },
     "app": {
-      "loading": "Chargement..."
+      "loading": "@:common.loading"
     },
     "footer": {
       "credits": "Code & design : équipe Sysrez - Dev",
@@ -328,7 +330,6 @@
       "tournamentCard": {
         "announcedSoon": "Ce tournoi sera annoncé prochainement !",
         "cashprize": "Cashprize :",
-        "comingSoon": "À venir",
         "logoAlt": "Logo du {name}",
         "moreInfo": "Plus d'infos",
         "register": "@:common.register",
@@ -340,7 +341,6 @@
       "tournamentInfo": {
         "cashprizes": "Cashprizes",
         "casters": "Casters",
-        "comingSoon": "À venir",
         "format": "Format",
         "manager": "@:common.manager",
         "managerPrice": "Managers\\u00A0: ",
