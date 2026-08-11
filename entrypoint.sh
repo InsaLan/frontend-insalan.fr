@@ -2,5 +2,5 @@
 
 set -xe
 
-npm ci
+npm ci --legacy-peer-deps
 npm run build

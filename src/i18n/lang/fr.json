@@ -15,7 +15,6 @@
       "deletePizzaTitle": "Supprimer une pizza",
       "deletePizzaWarning": "Ne supprimez pas une pizza qui pourrait être commandée dans un créneau en cours.",
       "deleteTimeslot": "Supprimer le créneau",
-      "deleteTimeslotBody": "Vous allez supprimer le créneau du {0} ainsi que les {1} commandes associées. {3} Ne supprimez pas un créneau terminé, les données seront perdues.",
       "deleteTimeslotQuestion": "Vous allez supprimer le créneau du {date} ainsi que les {count} commandes associées.",
       "deleteTimeslotTitle": "Supprimer un créneau",
       "deleteTimeslotWarning": "Ne supprimez pas un créneau terminé, les données seront perdues.",
@@ -57,7 +56,7 @@
       "searchPizza": "Rechercher une pizza",
       "showTimeslotExports": "Afficher les exports du créneau",
       "staffPrice": "Prix pour le staff",
-      "timeslot": "Créneau {date}",
+      "timeslot": "Créneau du {date}",
       "total": "Total"
     },
     "UserStore": {
@@ -317,7 +316,7 @@
           "selectSeatsConfirm": "Êtes vous sûr·e de vouloir sélectionner ces places ?",
           "selectSeatsNotice": "Vous pourrez les modifier jusqu'à la fin des inscriptions.",
           "selectSeatsTitle": "Sélection des places",
-          "team": "@:content.common.team",
+          "team": "@:content.common.team :",
           "teamSeating": "Placement des équipes {event}",
           "tournamentFreeSeats": "Places libres du tournois {name}",
           "tournamentTakenSeats": "Places prises du tournois {name}",
@@ -368,13 +367,19 @@
           "comingSoon": "À venir",
           "format": "Format",
           "manager": "@:content.common.manager",
+          "managerPrice": "Managers\\u00A0: ",
           "passwordProtectedRegistration": "L'inscription à ce tournoi est protégée par un mot de passe.",
           "player": "Joueureuse",
+          "playerNumber": "{0} Joueureuses",
+          "playerPrice": "Players\\u00A0: ",
           "players": "Joueureuses",
           "price": "Prix",
           "privateDescription": "Ce tournoi est un tournoi secondaire et n'est pas lié à une édition de l'InsaLan. Pour plus d'informations, veuillez demander à l'équipe Animation.",
           "rewards": "Récompenses",
+          "rewardsColon": "Récompenses\\u00A0: ",
           "start": "Début",
+          "startColon": "Début\\u00A0: ",
+          "teamNumber": "{teamNumber} équipes de {playerNumber} joueureuses",
           "teamsOf": "équipes de"
         },
         "TournamentPlanning": {
@@ -498,7 +503,7 @@
         "nextTimeslotsDescription": "Les prochains créneaux sont :",
         "pizzas": "Pizzas",
         "pizzasOfNextTimeslot": "Pizzas du Prochain Créneau",
-        "timeslot": "Créneau"
+        "timeslot": "Créneau du {date}"
       },
       "EmailVerif": {
         "accountCreation": "Création de compte",

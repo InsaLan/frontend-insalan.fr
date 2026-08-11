@@ -4,7 +4,6 @@ import { computed } from 'vue';
 import Content from '@/components/Content.vue';
 import PizzaCard from '@/components/PizzaCard.vue';
 import { usePizzaStore } from '@/stores/pizza.store';
-import { frenchFormatFromDate } from '@/utils';
 
 const pizzaStore = usePizzaStore();
 const { timeslotList, pizzaList } = storeToRefs(pizzaStore);
@@ -41,7 +40,7 @@ await fetchNextTimeslots();
     </p>
     <ul>
       <li v-for="timeslot in sortedTimeslotList" :key="timeslot.id" class="ml-16">
-        {{ $t('content.views.Eat.timeslot') }} {{ frenchFormatFromDate(new Date(timeslot.delivery_time)) }}
+        {{ $t('content.views.Eat.timeslot', { date: $d(new Date(timeslot.delivery_time), 'long') }) }}
       </li>
     </ul>
   </section>

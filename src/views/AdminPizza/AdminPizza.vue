@@ -11,7 +11,6 @@ import type { AdminTimeslotDeref } from '@/models/timeslot';
 import { useNotificationStore } from '@/stores/notification.store';
 import { usePizzaStore } from '@/stores/pizza.store';
 import { required } from '@/support/locales/errors';
-import { frenchFormatFromDate } from '@/utils';
 
 const { addNotification } = useNotificationStore();
 const { t } = useI18n();
@@ -311,7 +310,7 @@ const factorise = (pizzas: number[]) => {
       type="button"
       @click="extend = !extend"
     >
-      {{ t('content.AdminPizza.timeslot', { date: frenchFormatFromDate(new Date(timeslotList[selectedTimeslotId]?.delivery_time)) }) }}
+      {{ t('content.AdminPizza.timeslot', { date: $d(new Date(timeslotList[selectedTimeslotId]?.delivery_time), 'long') }) }}
       <fa-awesome-icon
         class="c-inline-icon u-mr-0"
         icon="fa-chevron-down"
@@ -334,7 +333,7 @@ const factorise = (pizzas: number[]) => {
           class="c-btn-bg-3 l-grow u-text-left"
           @click="selectedTimeslotId = timeslot.id"
         >
-          {{ t('content.AdminPizza.timeslot', { date: frenchFormatFromDate(new Date(timeslot.delivery_time)) }) }}
+          {{ t('content.AdminPizza.timeslot', { date: $d(new Date(timeslot.delivery_time), 'long') }) }}
         </button>
         <button
           type="button"
@@ -664,13 +663,17 @@ const factorise = (pizzas: number[]) => {
       {{ t('content.AdminPizza.deleteTimeslotTitle') }}
     </template>
     <template #body>
-      <i18n-t keypath="content.AdminPizza.deleteTimeslotBody" tag="body">
-        <strong>{{ frenchFormatFromDate(new Date(timeslotList[selectedDelete].delivery_time)) }}</strong>
-        <strong>{{ (timeslotList[selectedDelete] as AdminTimeslotDeref).orders.length }}</strong>
-        <br/>
-        <br/>
-        <em/>
+      <i18n-t keypath="content.AdminPizza.deleteTimeslotQuestion" tag="body">
+        <template #date>
+          <strong>{{ $d(new Date(timeslotList[selectedDelete].delivery_time), 'long') }}</strong>
+        </template>
+        <template #count>
+          <strong>{{ (timeslotList[selectedDelete] as AdminTimeslotDeref).orders.length }}</strong>
+        </template>
       </i18n-t>
+      <br/>
+      <br/>
+      <em>{{ $t('content.AdminPizza.deleteTimeslotWarning') }}</em>
     </template>
     <template #buttons>
       <button

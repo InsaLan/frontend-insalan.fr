@@ -6,7 +6,6 @@ import { useI18n } from 'vue-i18n';
 import Modal from '@/components/Modal.vue';
 import type { Export } from '@/models/timeslot';
 import { usePizzaStore } from '@/stores/pizza.store';
-import { frenchFormatFromDate } from '@/utils';
 
 const pizzaStore = usePizzaStore();
 const { t } = useI18n();
@@ -152,7 +151,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
           >
             <fa-awesome-icon icon="fa-download"/>
           </button>
-          {{ t('content.AdminPizza.timeslot', { date: frenchFormatFromDate(new Date(timeslot.delivery_time)) }) }}
+          {{ t('content.AdminPizza.timeslot', { date: $d(new Date(timeslot.delivery_time), 'long') }) }}
           <div class="l-grow"/>
           {{ t('content.AdminPizza.exportCount', { count: timeslotExportList[timeslot.id].length }) }}
         </div>
@@ -170,7 +169,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
             @click="downloadTimeslotDetails(timeslotExport.id)"
           >
             <fa-awesome-icon icon="fa-file"/>
-            <strong>{{ t('content.AdminPizza.export', { date: frenchFormatFromDate(new Date(timeslotExport.created_at)) }) }}</strong>
+            <strong>{{ t('content.AdminPizza.export', { date: $d(new Date(timeslotExport.created_at), 'long') }) }}</strong>
             ({{ t('content.AdminPizza.pizzaCount', { count: Object.values(timeslotExport.orders).reduce((acc, nb) => acc + nb, 0) }) }})
           </button>
           <button
@@ -230,7 +229,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
       {{ t('content.AdminPizza.deleteExportTitle') }}
     </template>
     <template #body>
-      {{ t('content.AdminPizza.deleteExportQuestion', { date: frenchFormatFromDate(new Date(exportToDelete.created_at)) }) }}
+      {{ t('content.AdminPizza.deleteExportQuestion', { date: $d(new Date(exportToDelete.created_at), 'long') }) }}
     </template>
     <template #buttons>
       <button

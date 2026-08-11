@@ -179,7 +179,7 @@ const closeModal = () => {
           class="tooltip u-hidden c-card-bg-3"
         >
           <div v-if="hoveredTeamSlotName" class="truncate">
-            {{ t('content.components.Tournament.SeatingPlan.team') }} : <strong>
+            {{ t('content.components.Tournament.SeatingPlan.team') }} <strong>
               {{ hoveredTeamSlotName }}
             </strong>
           </div>

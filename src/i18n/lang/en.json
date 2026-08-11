@@ -15,7 +15,6 @@
       "deletePizzaTitle": "Delete a pizza",
       "deletePizzaWarning": "Do not delete a pizza that could be ordered in an ongoing timeslot.",
       "deleteTimeslot": "Delete timeslot",
-      "deleteTimeslotBody": "You are going to delete the timeslot from {0} along with its {1} associated orders. {3} Do not delete a completed timeslot, its data will be lost.",
       "deleteTimeslotQuestion": "You are going to delete the timeslot from {date} along with its {count} associated orders.",
       "deleteTimeslotTitle": "Delete a timeslot",
       "deleteTimeslotWarning": "Do not delete a completed timeslot, its data will be lost.",
@@ -57,7 +56,7 @@
       "searchPizza": "Search for a pizza",
       "showTimeslotExports": "Show timeslot exports",
       "staffPrice": "Price for staff",
-      "timeslot": "Timeslot {date}",
+      "timeslot": "Timeslot of {date}",
       "total": "Total"
     },
     "UserStore": {
@@ -317,7 +316,7 @@
           "selectSeatsConfirm": "Are you sure you want to select those seats?",
           "selectSeatsNotice": "You can modify them until the end of the registration",
           "selectSeatsTitle": "Seat selection",
-          "team": "@:content.common.team",
+          "team": "@:content.common.team:",
           "teamSeating": "Seating of the teams for {event}",
           "tournamentFreeSeats": "Free seats of the tournament {name}",
           "tournamentTakenSeats": "Taken seats of the tournament {name}",
@@ -368,13 +367,19 @@
           "comingSoon": "Coming soon",
           "format": "Format",
           "manager": "@:content.common.manager",
+          "managerPrice": "Managers: ",
           "passwordProtectedRegistration": "Registration to this tournament is protected by a password.",
           "player": "Player",
+          "playerNumber": "{0} Players",
+          "playerPrice": "Players: ",
           "players": "Players",
           "price": "Prize",
           "privateDescription": "This tournament is a secondary tournament and is not associated with an edition of InsaLan. For more informations, please ask to a member of the Animation team.",
           "rewards": "Rewards",
+          "rewardsColon": "Rewards: ",
           "start": "Start",
+          "startColon": "Start: ",
+          "teamNumber": "{teamNumber} teams of {playerNumber} players",
           "teamsOf": "teams of"
         },
         "TournamentPlanning": {
@@ -498,7 +503,7 @@
         "nextTimeslotsDescription": "The next timeslots are:",
         "pizzas": "Pizzas",
         "pizzasOfNextTimeslot": "Pizzas of the next timeslot",
-        "timeslot": "Timeslot"
+        "timeslot": "Timeslot of {date}"
       },
       "EmailVerif": {
         "accountCreation": "Account creation",
