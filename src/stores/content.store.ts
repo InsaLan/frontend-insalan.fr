@@ -10,6 +10,7 @@ export type Content = { name: string; lang: string; content: string };
 export type File = { name: string; file: string };
 
 export const useContentStore = defineStore('content', () => {
+  let hasContentBeenFetched = false;
   const contents = ref<Record<string, Record<string, string>>>({});
   const constants = ref<Record<string, Record<string, string>>>({});
   const files = ref<Record<string, string>>({});
@@ -48,11 +49,15 @@ export const useContentStore = defineStore('content', () => {
           .replace(re_file, (_, name: string) => `[${name}](${files.value[name]})`),
       );
     });
+    hasContentBeenFetched = true;
   }
 
   function getContent(name: string, lang: string = 'fr'): string {
-    if (contents.value[lang] === undefined || contents.value[lang][name] === undefined) return '';
-    let rawContent = contents.value[lang][name];
+    if (!hasContentBeenFetched) return '';
+    let rawContent: string | undefined;
+    if (contents.value[lang] !== undefined) {
+      rawContent = contents.value[lang][name];
+    }
     if (rawContent === undefined) {
       for (let i = 0; i < i18n.global.availableLocales.length; i += 1) {
         const availableLang = i18n.global.availableLocales[i];
@@ -63,12 +68,16 @@ export const useContentStore = defineStore('content', () => {
         }
       }
     }
+    if (rawContent === undefined) return '';
     return md.renderInline(rawContent);
   }
 
   function getConstant(name: string, lang: string = 'fr'): string {
-    if (constants.value[lang] === undefined || constants.value[lang][name] === undefined) return '';
-    let element = constants.value[lang][name];
+    if (!hasContentBeenFetched) return '';
+    let element: string | undefined;
+    if (constants.value[lang] !== undefined) {
+      element = constants.value[lang][name];
+    }
     if (element === undefined) {
       for (let i = 0; i < i18n.global.availableLocales.length; i += 1) {
         const availableLang = i18n.global.availableLocales[i];
@@ -80,7 +89,7 @@ export const useContentStore = defineStore('content', () => {
       }
     }
 
-    return element;
+    return element ?? '';
   }
 
   function getFile(name: string): string {
