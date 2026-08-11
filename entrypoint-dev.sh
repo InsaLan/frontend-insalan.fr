@@ -2,5 +2,5 @@
 
 set -xe
 
-npm install --legacy-peer-deps
+npm install
 exec npm run dev

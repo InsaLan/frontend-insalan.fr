@@ -6,6 +6,7 @@ import Navigation from '@/components/Navigation.vue';
 import Notification from '@/components/Notification.vue';
 import { useContentStore } from '@/stores/content.store';
 import { useUserStore } from '@/stores/user.store';
+import { initializeLocale } from '@/i18n';
 
 const contentStore = useContentStore();
 const { fetchStatic } = contentStore;
@@ -28,6 +29,7 @@ const updateTopOffset = () => {
 
 onMounted(async () => {
   await handle_session_cookie_expiration();
+  await initializeLocale();
   await fetchStatic();
   updateTopOffset();
   window.addEventListener('resize', updateTopOffset);

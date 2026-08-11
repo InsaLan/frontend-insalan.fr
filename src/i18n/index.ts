@@ -40,8 +40,7 @@ const datetimeFormats = {
 
 const i18n = createI18n({
   legacy: false,
-  locale: 'en',
-  fallbackLocale: 'fr',
+  locale: 'fr',
   messages: {
     fr,
     en,
@@ -50,3 +49,27 @@ const i18n = createI18n({
 });
 
 export default i18n;
+
+export const setLocale = (locale: string) => {
+  const candidates = [locale, locale.split('-')[0]];
+  for (let i = 0; i < candidates.length; i += 1) {
+    const candidate = candidates[i];
+    const availableLocale = i18n.global.availableLocales.find(((l) => l === candidate));
+    if (availableLocale) {
+      i18n.global.locale.value = availableLocale;
+      localStorage.setItem('user-selected-locale', availableLocale);
+      break;
+    }
+  }
+};
+
+export const initializeLocale = async () => {
+  const userSelectedLocale = localStorage.getItem('user-selected-locale');
+  if (userSelectedLocale) {
+    setLocale(userSelectedLocale);
+    return;
+  }
+  if (navigator.language) {
+    setLocale(navigator.language);
+  }
+};

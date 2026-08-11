@@ -3,7 +3,7 @@ import MarkdownIt from 'markdown-it';
 import MarkdownItClass from 'markdown-it-class';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import i18n from "@/i18n";
+import i18n from '@/i18n';
 
 export type Constant = { name: string; lang: string; value: string };
 export type Content = { name: string; lang: string; content: string };

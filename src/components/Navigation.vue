@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import i18n from '@/i18n';
+import i18n, { setLocale } from '@/i18n';
 import { useContentStore } from '@/stores/content.store';
 import { useUserStore } from '@/stores/user.store';
 
@@ -11,6 +11,13 @@ import Content from './Content.vue';
 const contentStore = useContentStore();
 const { getContent } = contentStore;
 const { t } = i18n.global;
+
+const selectedLocale = computed({
+  get: () => i18n.global.locale.value,
+  set: (locale: string) => {
+    setLocale(locale);
+  },
+});
 
 const items = computed(() => [
   { url: '/association', text: t('components.navigation.association') },
@@ -83,7 +90,7 @@ const toggleBurgerMenu = () => {
           </router-link>
         </div>
         <div class="locale-changer">
-          <select v-model="$i18n.locale" aria-label="Change language">
+          <select v-model="selectedLocale" aria-label="Change language">
             <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">
               {{ locale }}
             </option>
@@ -284,7 +291,7 @@ const toggleBurgerMenu = () => {
           </router-link>
 
           <div class="locale-changer">
-            <select v-model="$i18n.locale" aria-label="Change language">
+            <select v-model="selectedLocale" aria-label="Change language">
               <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">
                 {{ locale }}
               </option>
