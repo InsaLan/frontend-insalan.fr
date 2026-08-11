@@ -58,35 +58,35 @@ const handleImageChange = (event: Event) => {
     <template #body>
       <form @submit.prevent="validate">
         <FormField :validations="v$_pizza.name">
-          <label for="pizza-name">{{ t('content.components.AdminPizza.PizzaModal.name') }}</label>
+          <label for="pizza-name">{{ t('components.adminPizza.pizzaModal.name') }}</label>
           <input
             id="pizza-name"
             v-model="dataPizza.name"
             type="text"
             required
-            :placeholder="t('content.components.AdminPizza.PizzaModal.name')"
+            :placeholder="t('components.adminPizza.pizzaModal.name')"
           />
         </FormField>
         <FormField :validations="v$_pizza.ingredients">
-          <label for="pizza-ingredients">{{ t('content.components.AdminPizza.PizzaModal.ingredients') }}</label>
+          <label for="pizza-ingredients">{{ t('components.adminPizza.pizzaModal.ingredients') }}</label>
           <StringListInput
             id="pizza-ingredients"
             v-model="dataPizza.ingredients"
-            :label="t('content.components.AdminPizza.PizzaModal.ingredients')"
-            :placeholder="t('content.components.AdminPizza.PizzaModal.addIngredient')"
+            :label="t('components.adminPizza.pizzaModal.ingredients')"
+            :placeholder="t('components.adminPizza.pizzaModal.addIngredient')"
           />
         </FormField>
         <FormField :validations="v$_pizza.ingredients">
-          <label for="pizza-ingredients">{{ t('content.components.AdminPizza.PizzaModal.allergens') }}</label>
+          <label for="pizza-ingredients">{{ t('components.adminPizza.pizzaModal.allergens') }}</label>
           <StringListInput
             id="pizza-allergens"
             v-model="dataPizza.allergens"
-            :label="t('content.components.AdminPizza.PizzaModal.allergens')"
-            :placeholder="t('content.components.AdminPizza.PizzaModal.addAllergen')"
+            :label="t('components.adminPizza.pizzaModal.allergens')"
+            :placeholder="t('components.adminPizza.pizzaModal.addAllergen')"
           />
         </FormField>
         <div class="l-flex-column">
-          <label for="pizza-image">{{ t('content.components.AdminPizza.PizzaModal.image') }}</label>
+          <label for="pizza-image">{{ t('components.adminPizza.pizzaModal.image') }}</label>
           <input
             id="pizza-image"
             accept="image/*"
@@ -102,14 +102,14 @@ const handleImageChange = (event: Event) => {
         type="button"
         @click="emit('close')"
       >
-        {{ t('content.common.cancel') }}
+        {{ t('common.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="validate"
       >
-        {{ t('content.common.validate') }}
+        {{ t('common.validate') }}
       </button>
     </template>
   </Modal>

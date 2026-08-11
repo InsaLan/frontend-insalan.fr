@@ -169,7 +169,7 @@ const closeModal = () => {
   <section id="seating" class="u-full-width">
     <div v-if="tournament?.event.seats.length !== 0" class="l-flex-column l-cross-center l-gap-2">
       <h2 class="u-text-center">
-        {{ t('content.components.Tournament.SeatingPlan.teamSeating', { event: tournament.event.name }) }}
+        {{ t('components.tournament.seatingPlan.teamSeating', { event: tournament.event.name }) }}
       </h2>
       <div
         class="u-full-width overflow-x-auto"
@@ -179,12 +179,12 @@ const closeModal = () => {
           class="tooltip u-hidden c-card-bg-3"
         >
           <div v-if="hoveredTeamSlotName" class="truncate">
-            {{ t('content.components.Tournament.SeatingPlan.team') }} <strong>
+            {{ t('components.tournament.seatingPlan.team') }} <strong>
               {{ hoveredTeamSlotName }}
             </strong>
           </div>
           <template v-else>
-            {{ t('content.components.Tournament.SeatingPlan.freeSeats') }}
+            {{ t('components.tournament.seatingPlan.freeSeats') }}
           </template>
         </div>
         <div
@@ -229,36 +229,36 @@ const closeModal = () => {
         >
           <div class="l-flex-row l-cross-center l-gap-1">
             <div class="smol unused-square"/>
-            <span>{{ t('content.components.Tournament.SeatingPlan.usedByOtherTournaments') }}</span>
+            <span>{{ t('components.tournament.seatingPlan.usedByOtherTournaments') }}</span>
           </div>
           <div class="l-flex-row l-cross-center l-gap-1">
             <div class="smol free-square"/>
-            <span>{{ t('content.components.Tournament.SeatingPlan.tournamentFreeSeats', { name: tournament.name }) }}</span>
+            <span>{{ t('components.tournament.seatingPlan.tournamentFreeSeats', { name: tournament.name }) }}</span>
           </div>
           <div v-if="team" class="l-flex-row l-cross-center l-gap-1">
             <div class="smol team-square"/>
-            <span>{{ t('content.components.Tournament.SeatingPlan.currentTeamSeat') }}</span>
+            <span>{{ t('components.tournament.seatingPlan.currentTeamSeat') }}</span>
           </div>
           <div class="l-flex-row l-cross-center l-gap-1">
             <div class="smol taken-square"/>
-            <span>{{ t('content.components.Tournament.SeatingPlan.tournamentTakenSeats', { name: tournament.name }) }}</span>
+            <span>{{ t('components.tournament.seatingPlan.tournamentTakenSeats', { name: tournament.name }) }}</span>
           </div>
         </div>
       </div>
       <p
         v-if="!team"
       >
-        {{ t('content.components.Tournament.SeatingPlan.editPlacementInstruction') }}
+        {{ t('components.tournament.seatingPlan.editPlacementInstruction') }}
         <router-link
           to="/me"
           class="c-link"
         >
-          {{ t('content.components.Tournament.SeatingPlan.myAccount') }}
+          {{ t('components.tournament.seatingPlan.myAccount') }}
         </router-link>
       </p>
     </div>
     <div v-else class="u-text-center u-my-4 u-big-text">
-      {{ t('content.components.Tournament.SeatingPlan.unavailable') }}
+      {{ t('components.tournament.seatingPlan.unavailable') }}
     </div>
   </section>
 
@@ -266,12 +266,12 @@ const closeModal = () => {
     v-if="showModal"
   >
     <template #title>
-      {{ t('content.components.Tournament.SeatingPlan.selectSeatsTitle') }}
+      {{ t('components.tournament.seatingPlan.selectSeatsTitle') }}
     </template>
     <template #body>
-      {{ t('content.components.Tournament.SeatingPlan.selectSeatsConfirm') }}
+      {{ t('components.tournament.seatingPlan.selectSeatsConfirm') }}
       <br/><br/>
-      {{ t('content.components.Tournament.SeatingPlan.selectSeatsNotice') }}
+      {{ t('components.tournament.seatingPlan.selectSeatsNotice') }}
     </template>
     <template #buttons>
       <button
@@ -279,14 +279,14 @@ const closeModal = () => {
         type="button"
         @click="closeModal"
       >
-        {{ t('content.components.Tournament.SeatingPlan.cancel') }}
+        {{ t('components.tournament.seatingPlan.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="validateModal"
       >
-        {{ t('content.components.Tournament.SeatingPlan.validate') }}
+        {{ t('components.tournament.seatingPlan.validate') }}
       </button>
     </template>
   </Modal>

@@ -106,15 +106,15 @@ const validateModal = async () => {
 const editField = (field: string) => {
   switch (field) {
     case 'name':
-      title.value = t('content.views.Me.changeName');
+      title.value = t('views.me.changeName');
       focus.value = 'name';
       break;
     case 'email':
-      title.value = t('content.views.Me.changeEmail');
+      title.value = t('views.me.changeEmail');
       focus.value = 'email';
       break;
     case 'password':
-      title.value = t('content.views.Me.changePassword');
+      title.value = t('views.me.changePassword');
       focus.value = 'password';
       break;
     default:
@@ -128,20 +128,20 @@ const editField = (field: string) => {
   <div class="u-m-main me-grid l-gap-2">
     <div id="profile" class="l-flex-column l-cross-center c-card-bg-2 u-full-width">
       <h2 class="u-text-center">
-        {{ $t('content.views.Me.account') }}
+        {{ $t('views.me.account') }}
       </h2>
       <img
         :src="user.image ? user.image : placeholder"
-        :alt="$t('content.views.Me.profileImageAlt')"
+        :alt="$t('views.me.profileImageAlt')"
         class="profile"
       />
       <div class="u-text-left u-big-text">
-        {{ $t('content.views.Me.username') }} : <em>{{ user.username }}</em>
+        {{ $t('views.me.username') }}{{ $t('common.colon') }}<em>{{ user.username }}</em>
         <br>
-        {{ $t('content.views.Me.fullName') }} : <em>{{ user.first_name }} {{ user.last_name }}</em>
+        {{ $t('views.me.fullName') }}{{ $t('common.colon') }}<em>{{ user.first_name }} {{ user.last_name }}</em>
         <button
           type="button"
-          :title="$t('content.views.Me.changeName')"
+          :title="$t('views.me.changeName')"
           class="c-image-btn c-inline-icon"
           @click="editField('name')"
         >
@@ -150,10 +150,10 @@ const editField = (field: string) => {
           />
         </button>
         <br>
-        {{ $t('content.views.Me.email') }} : <em>{{ user.email }}</em>
+        {{ $t('views.me.email') }}{{ $t('common.colon') }}<em>{{ user.email }}</em>
         <button
           type="button"
-          :title="$t('content.views.Me.changeEmail')"
+          :title="$t('views.me.changeEmail')"
           class="c-image-btn c-inline-icon"
           @click="editField('email')"
         >
@@ -162,10 +162,10 @@ const editField = (field: string) => {
           />
         </button>
         <br>
-        {{ $t('content.views.Me.password') }} : <em class="u-color-text-2">**********</em>
+        {{ $t('views.me.password') }}{{ $t('common.colon') }}<em class="u-color-text-2">**********</em>
         <button
           type="button"
-          :title="$t('content.views.Me.changePassword')"
+          :title="$t('views.me.changePassword')"
           class="c-image-btn c-inline-icon"
           @click="editField('password')"
         >
@@ -174,20 +174,20 @@ const editField = (field: string) => {
           />
         </button>
         <br>
-        {{ $t('content.views.Me.role') }} : <em :class="{ ['u-color-secondary-1']: role === 'dev' }">{{ role === 'joueur' ? $t('content.views.Me.player') : role }}</em>
+        {{ $t('views.me.role') }}{{ $t('common.colon') }}<em :class="{ ['u-color-secondary-1']: role === 'dev' }">{{ role === 'joueur' ? $t('views.me.player') : role }}</em>
       </div>
       <div
         v-if="cart.length > 0"
         class="l-flex-row l-cross-center c-card-bg-3"
       >
         <div class="u-big-text u-text-left">
-          {{ $t('content.views.Me.cartItems', { count: cart.length }) }}
+          {{ $t('views.me.cartItems', { count: cart.length }) }}
         </div>
         <router-link
           class="c-btn-secondary"
           to="/cart"
         >
-          {{ $t('content.views.Me.viewCart') }}
+          {{ $t('views.me.viewCart') }}
         </router-link>
       </div>
       <!-- <button
@@ -199,19 +199,19 @@ const editField = (field: string) => {
     </div>
     <div id="team">
       <h1 class="u-m-1 u-text-center">
-        {{ $t('content.views.Me.myTeams') }}
+        {{ $t('views.me.myTeams') }}
       </h1>
       <div class="l-flex-column l-cross-center">
         <div v-if="Object.keys(inscriptions.unpaid).length" class="c-card-error l-flex-row l-cross-center l-main-center u-py-1 u-m-1 u-big-text">
           <fa-awesome-icon icon="fa-warning"/>
           <div>
-            {{ $t('content.views.Me.unpaidRegistration', Object.keys(inscriptions.unpaid).length) }}
+            {{ $t('views.me.unpaidRegistration', Object.keys(inscriptions.unpaid).length) }}
           </div>
         </div>
       </div>
       <div v-if="(inscriptions.ongoing as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="u-mt-2">
         <h2 class="u-m-2">
-          {{ $t('content.views.Me.currentEdition') }}
+          {{ $t('views.me.currentEdition') }}
         </h2>
         <div class="l-grid-2 l-gap-2">
           <MeTournamentCard
@@ -230,7 +230,7 @@ const editField = (field: string) => {
       </div>
       <div v-if="(inscriptions.past as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="u-mt-2">
         <h2 class="u-m-2">
-          {{ $t('content.views.Me.otherEditions') }}
+          {{ $t('views.me.otherEditions') }}
         </h2>
         <div class="l-grid-2 l-gap-2">
           <MeTournamentCard
@@ -242,7 +242,7 @@ const editField = (field: string) => {
       </div>
       <div v-if="(inscriptions.private_regs as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="u-mt-2">
         <h2 class="u-m-2">
-          {{ $t('content.views.Me.secondaryTournaments') }}
+          {{ $t('views.me.secondaryTournaments') }}
         </h2>
         <div class="l-grid-2 l-gap-2">
           <MeTournamentCard
@@ -269,13 +269,13 @@ const editField = (field: string) => {
           :validations="v$_name.first_name"
         >
           <label for="prenom">
-            {{ $t('content.views.Me.newFirstName') }}
+            {{ $t('views.me.newFirstName') }}
           </label>
           <input
             id="prenom"
             v-model="data_name.first_name"
-            :aria-label="$t('content.views.Me.newFirstName')"
-            :placeholder="$t('content.views.Me.firstNamePlaceholder')"
+            :aria-label="$t('views.me.newFirstName')"
+            :placeholder="$t('views.me.firstNamePlaceholder')"
             required
             type="text"
             @blur="v$_name.first_name.$touch"
@@ -286,13 +286,13 @@ const editField = (field: string) => {
           :validations="v$_name.last_name"
         >
           <label for="nom">
-            {{ $t('content.views.Me.newLastName') }}
+            {{ $t('views.me.newLastName') }}
           </label>
           <input
             id="nom"
             v-model="data_name.last_name"
-            :aria-label="$t('content.views.Me.newLastName')"
-            :placeholder="$t('content.views.Me.lastNamePlaceholder')"
+            :aria-label="$t('views.me.newLastName')"
+            :placeholder="$t('views.me.lastNamePlaceholder')"
             required
             type="text"
             @blur="v$_name.last_name.$touch"
@@ -304,13 +304,13 @@ const editField = (field: string) => {
           :validations="v$_email.email"
         >
           <label for="email">
-            {{ $t('content.views.Me.newEmail') }}
+            {{ $t('views.me.newEmail') }}
           </label>
           <input
             id="email"
             v-model="data_email.email"
-            :aria-label="$t('content.views.Me.email')"
-            :placeholder="$t('content.views.Me.emailPlaceholder')"
+            :aria-label="$t('views.me.email')"
+            :placeholder="$t('views.me.emailPlaceholder')"
             required
             type="text"
             @blur="v$_email.email.$touch"
@@ -322,13 +322,13 @@ const editField = (field: string) => {
           :validations="v$_password.current_password"
         >
           <label for="current_password">
-            {{ $t('content.views.Me.currentPassword') }}
+            {{ $t('views.me.currentPassword') }}
           </label>
           <PasswordInput
             id="current_password"
             v-model="data_password.current_password"
-            :aria-label="$t('content.views.Me.currentPassword')"
-            :placeholder="$t('content.views.Me.currentPassword')"
+            :aria-label="$t('views.me.currentPassword')"
+            :placeholder="$t('views.me.currentPassword')"
             required
             :on-blur="v$_password.current_password.$touch"
           />
@@ -338,13 +338,13 @@ const editField = (field: string) => {
           :validations="v$_password.new_password"
         >
           <label for="new_password">
-            {{ $t('content.views.Me.newPassword') }}
+            {{ $t('views.me.newPassword') }}
           </label>
           <PasswordInput
             id="new_password"
             v-model="data_password.new_password"
-            :aria-label="$t('content.views.Me.newPassword')"
-            :placeholder="$t('content.views.Me.newPassword')"
+            :aria-label="$t('views.me.newPassword')"
+            :placeholder="$t('views.me.newPassword')"
             required
             :on-blur="v$_password.new_password.$touch"
           />
@@ -354,13 +354,13 @@ const editField = (field: string) => {
           :validations="v$_password.password_validation"
         >
           <label for="repeat_password">
-            {{ $t('content.views.Me.confirmNewPassword') }}
+            {{ $t('views.me.confirmNewPassword') }}
           </label>
           <PasswordInput
             id="repeat_password"
             v-model="data_password.password_validation"
-            :aria-label="$t('content.views.Me.confirmNewPassword')"
-            :placeholder="$t('content.views.Me.confirmNewPassword')"
+            :aria-label="$t('views.me.confirmNewPassword')"
+            :placeholder="$t('views.me.confirmNewPassword')"
             required
             :on-blur="v$_password.password_validation.$touch"
           />
@@ -375,14 +375,14 @@ const editField = (field: string) => {
         type="button"
         @click="closeModal"
       >
-        {{ $t('content.views.Me.cancel') }}
+        {{ $t('views.me.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="validateModal"
       >
-        {{ $t('content.views.Me.validate') }}
+        {{ $t('views.me.validate') }}
       </button>
     </template>
   </Modal>
@@ -390,12 +390,12 @@ const editField = (field: string) => {
   <!-- Simple modal with a loading text for the payment -->
   <Modal v-if="modal_payment">
     <template #title>
-      {{ $t('content.views.Me.payment') }}
+      {{ $t('views.me.payment') }}
     </template>
     <template #body>
-      {{ $t('content.views.Me.registrationAddedToCart') }}
+      {{ $t('views.me.registrationAddedToCart') }}
       <br><br>
-      {{ $t('content.views.Me.findCartFromAccount') }}
+      {{ $t('views.me.findCartFromAccount') }}
     </template>
     <template #buttons>
       <button
@@ -403,13 +403,13 @@ const editField = (field: string) => {
         type="button"
         @click="modal_payment = false"
       >
-        {{ $t('content.views.Me.stayOnPage') }}
+        {{ $t('views.me.stayOnPage') }}
       </button>
       <router-link
         class="c-btn-secondary"
         :to="`/cart`"
       >
-        {{ $t('content.views.Me.goToCart') }}
+        {{ $t('views.me.goToCart') }}
       </router-link>
     </template>
   </Modal>

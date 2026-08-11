@@ -88,7 +88,7 @@ export const useUserStore = defineStore('user', () => {
       withCredentials: true,
     });
 
-    addNotification(t('content.UserStore.registrationEmailSent', { email }), 'info');
+    addNotification(t('userStore.registrationEmailSent', { email }), 'info');
   }
 
   async function fetchUser() {
@@ -98,7 +98,7 @@ export const useUserStore = defineStore('user', () => {
     } catch (err) {
       isConnected.value = false;
       user.value = {} as User;
-      addNotification(t('content.UserStore.fetchUserError'), 'error');
+      addNotification(t('userStore.fetchUserError'), 'error');
     }
   }
 
@@ -116,7 +116,7 @@ export const useUserStore = defineStore('user', () => {
 
       await fetchUser();
       isConnected.value = true;
-      addNotification(t('content.UserStore.welcome', { username }), 'info');
+      addNotification(t('userStore.welcome', { username }), 'info');
       connectionTimestamp.value = Date.now();
       await router.push('/me');
     } catch (err) {
@@ -133,7 +133,7 @@ export const useUserStore = defineStore('user', () => {
       },
       withCredentials: true,
     });
-    addNotification(t('content.UserStore.passwordResetEmailSent', { email }), 'info');
+    addNotification(t('userStore.passwordResetEmailSent', { email }), 'info');
   }
 
   async function reset_password(username: string, token: string, password: string, password_confirm: string) {
@@ -153,7 +153,7 @@ export const useUserStore = defineStore('user', () => {
         },
       },
     );
-    addNotification(t('content.UserStore.passwordReset'), 'info');
+    addNotification(t('userStore.passwordReset'), 'info');
     await router.push('/register');
   }
 
@@ -228,7 +228,7 @@ export const useUserStore = defineStore('user', () => {
         unpaid,
       };
     } catch (err) {
-      addNotification(t('content.UserStore.fetchRegistrationsError'), 'error');
+      addNotification(t('userStore.fetchRegistrationsError'), 'error');
     }
   }
 
@@ -244,11 +244,11 @@ export const useUserStore = defineStore('user', () => {
       });
       if (res.status === 200) {
         if (data.current_password) {
-          addNotification(t('content.UserStore.updatedAndReconnect'), 'info');
+          addNotification(t('userStore.updatedAndReconnect'), 'info');
           await logout();
         } else {
           user.value = { ...user.value, ...data };
-          addNotification(t('content.UserStore.updated'), 'info');
+          addNotification(t('userStore.updated'), 'info');
         }
       }
     } catch (err: unknown) {
@@ -256,7 +256,7 @@ export const useUserStore = defineStore('user', () => {
       if (isAxiosError(error)) {
         const request = error.request as XMLHttpRequest;
         if (request.status === 403) {
-          addNotification(t('content.UserStore.wrongCurrentPassword'), 'error');
+          addNotification(t('userStore.wrongCurrentPassword'), 'error');
         } else if (request.status === 400) {
           const response = JSON.parse(request.responseText) as UserPatchError;
           if (response.user) {
@@ -264,7 +264,7 @@ export const useUserStore = defineStore('user', () => {
           } else if (response.password) {
             addNotification(response.password, 'error');
           } else {
-            addNotification(t('content.common.genericError'), 'error');
+            addNotification(t('common.genericError'), 'error');
           }
         }
       }
@@ -280,7 +280,7 @@ export const useUserStore = defineStore('user', () => {
     ) {
       await logout();
       await router.push('/login');
-      addNotification(t('content.UserStore.sessionExpired'), 'error');
+      addNotification(t('userStore.sessionExpired'), 'error');
     }
   }
 
@@ -297,7 +297,7 @@ export const useUserStore = defineStore('user', () => {
         },
       });
       if (res.status === 200) {
-        addNotification(t('content.UserStore.scoreUpdated'), 'info');
+        addNotification(t('userStore.scoreUpdated'), 'info');
       }
     } catch (err: unknown) {
       const error = err as Error | AxiosError;

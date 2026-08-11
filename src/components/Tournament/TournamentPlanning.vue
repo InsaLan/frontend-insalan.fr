@@ -13,7 +13,7 @@ const { t } = useI18n();
 <template>
   <section id="planning">
     <div class="u-mb-2 u-m-text u-text-center u-color-text-2">
-      {{ t('content.components.Tournament.TournamentPlanning.disclaimer') }}
+      {{ t('components.tournament.tournamentPlanning.disclaimer') }}
     </div>
     <Planning :link="props.tournament?.planning_file"/>
   </section>

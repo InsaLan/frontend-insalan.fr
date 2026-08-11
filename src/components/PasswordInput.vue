@@ -51,8 +51,8 @@ const onGeneratePassword = (): void => {
         :id="id"
         :value="modelValue"
         :type="showPassword ? 'text' : 'password'"
-        :placeholder="placeholder || t('content.components.PasswordInput.password')"
-        :aria-label="ariaLabel || t('content.components.PasswordInput.password')"
+        :placeholder="placeholder || t('components.passwordInput.password')"
+        :aria-label="ariaLabel || t('components.passwordInput.password')"
         :required="required"
         @input="onInput"
         @blur="onBlur"
@@ -63,7 +63,7 @@ const onGeneratePassword = (): void => {
           v-if="generatePassword && generatePassword === true"
           type="button"
           class="action-btn c-image-btn"
-          :title="t('content.components.PasswordInput.generatePassword')"
+          :title="t('components.passwordInput.generatePassword')"
           @click="onGeneratePassword"
         >
           <fa-awesome-icon
@@ -75,7 +75,7 @@ const onGeneratePassword = (): void => {
         <button
           type="button"
           class="action-btn c-image-btn"
-          :title="t('content.components.PasswordInput.showPassword')"
+          :title="t('components.passwordInput.showPassword')"
           @click="onViewToggle"
         >
           <fa-awesome-icon

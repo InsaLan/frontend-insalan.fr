@@ -71,12 +71,12 @@ const create_group_matchs = async () => {
   await createGroupMatchs(groups.map((group) => group.id), bo_type.value, play_all.value, round_count.value);
 
   modal_open.value = false;
-  addNotification(t('content.components.Tournament.Admin.AdminGroups.matchesCreated'), 'info');
+  addNotification(t('components.tournament.admin.adminGroups.matchesCreated'), 'info');
 };
 
 const open_launch_round_modal = async () => {
   if (!has_matchs.value) {
-    addNotification(t('content.common.noMatches'), 'info');
+    addNotification(t('common.noMatches'), 'info');
     return;
   }
 
@@ -90,7 +90,7 @@ const launch_round_matchs = async () => {
 
   await launchMatchs(groups.map((g) => ({ id: g.id, round: round.value })), 'groups');
 
-  addNotification(t('content.components.Tournament.Admin.AdminGroups.roundMatchesLaunched', { round: round.value }), 'info');
+  addNotification(t('components.tournament.admin.adminGroups.roundMatchesLaunched', { round: round.value }), 'info');
 
   modal_open.value = false;
 };
@@ -98,7 +98,7 @@ const launch_round_matchs = async () => {
 const delete_groups = async () => {
   const res = await deleteGroups(groups.map((g) => g.id));
 
-  if (res) addNotification(t('content.components.Tournament.Admin.AdminGroups.groupsDeleted'), 'info');
+  if (res) addNotification(t('components.tournament.admin.adminGroups.groupsDeleted'), 'info');
 
   modal_open.value = false;
 };
@@ -106,7 +106,7 @@ const delete_groups = async () => {
 const delete_groups_matchs = async () => {
   const res = await deleteGroupMatchs(groups.map((g) => g.id));
 
-  if (res) addNotification(t('content.components.Tournament.Admin.AdminGroups.groupMatchesDeleted'), 'info');
+  if (res) addNotification(t('components.tournament.admin.adminGroups.groupMatchesDeleted'), 'info');
 
   modal_open.value = false;
 };
@@ -121,14 +121,14 @@ const delete_groups_matchs = async () => {
       class="c-btn-bg-2"
       @click="open_modal('delete_groups')"
     >
-      {{ t('content.components.Tournament.Admin.AdminGroups.deleteGroups') }}
+      {{ t('components.tournament.admin.adminGroups.deleteGroups') }}
     </button>
     <button
       type="button"
       class="c-btn-bg-2"
       @click="open_modal(has_matchs ? 'delete_matchs' : 'create_matchs')"
     >
-      {{ has_matchs ? t('content.common.delete') : t('content.common.create') }} {{ t('content.components.Tournament.Admin.AdminGroups.matches') }}
+      {{ has_matchs ? t('common.delete') : t('common.create') }} {{ t('components.tournament.admin.adminGroups.matches') }}
     </button>
     <button
       type="button"
@@ -136,14 +136,14 @@ const delete_groups_matchs = async () => {
       :disabled="!has_matchs"
       @click="open_launch_round_modal"
     >
-      {{ t('content.components.Tournament.Admin.AdminGroups.launchRound') }}
+      {{ t('components.tournament.admin.adminGroups.launchRound') }}
     </button>
     <button
       type="button"
       class="c-btn-bg-2"
       @click="show_groups_matchs = true"
     >
-      {{ t('content.components.Tournament.Admin.AdminGroups.manageMatches') }}
+      {{ t('components.tournament.admin.adminGroups.manageMatches') }}
       <fa-awesome-icon
         icon="fa-chevron-right"
         class="c-inline-icon u-mr-0"
@@ -167,10 +167,10 @@ const delete_groups_matchs = async () => {
     @close="modal_open = false;"
   >
     <template #title>
-      {{ t('content.components.Tournament.Admin.AdminGroups.deleteGroupsTitle') }}
+      {{ t('components.tournament.admin.adminGroups.deleteGroupsTitle') }}
     </template>
     <template #body>
-      {{ t('content.components.Tournament.Admin.AdminGroups.deleteGroupsDescription') }}
+      {{ t('components.tournament.admin.adminGroups.deleteGroupsDescription') }}
     </template>
     <template #buttons>
       <button
@@ -178,14 +178,14 @@ const delete_groups_matchs = async () => {
         type="button"
         @click="modal_open = false;"
       >
-        {{ t('content.common.cancel') }}
+        {{ t('common.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click="delete_groups"
       >
-        {{ t('content.common.validate') }}
+        {{ t('common.validate') }}
       </button>
     </template>
   </Modal>
@@ -195,16 +195,16 @@ const delete_groups_matchs = async () => {
     @close="modal_open = false;"
   >
     <template #title>
-      {{ t('content.components.Tournament.Admin.AdminGroups.createMatchesTitle') }}
+      {{ t('components.tournament.admin.adminGroups.createMatchesTitle') }}
     </template>
     <template #body>
       <p>
-        {{ t('content.components.Tournament.Admin.AdminGroups.createMatchesDescription') }}<br><br>
+        {{ t('components.tournament.admin.adminGroups.createMatchesDescription') }}<br><br>
       </p>
       <form @submit.prevent="create_group_matchs">
         <FormField :validations="v_round$">
           <label for="bo_type">
-            {{ t('content.components.Tournament.Admin.AdminGroups.boType') }}
+            {{ t('components.tournament.admin.adminGroups.boType') }}
           </label>
           <select
             id="bo_type"
@@ -218,26 +218,26 @@ const delete_groups_matchs = async () => {
               :key="value"
               :value="value"
             >
-              {{ value === '0' ? t('content.components.Tournament.Admin.AdminGroups.ranking') : t('content.common.bestOf', { value }) }}
+              {{ value === '0' ? t('components.tournament.admin.adminGroups.ranking') : t('common.bestOf', { value }) }}
             </option>
             <option
               v-for="value in Object.keys(BestofType).map(Number).filter((v) => Number.isInteger(v) && v > 1)"
               :key="value - 1"
               :value="value - 1"
             >
-              {{ t('content.common.playAll', { value }) }}
+              {{ t('common.playAll', { value }) }}
             </option>
           </select>
         </FormField>
         <FormField :validations="v_round$">
           <label for="round_count">
-            {{ t('content.components.Tournament.Admin.AdminGroups.roundCount') }}
+            {{ t('components.tournament.admin.adminGroups.roundCount') }}
           </label>
           <input
             id="round_count"
             v-model="round_count"
             type="number"
-            :aria-label="t('content.components.Tournament.Admin.AdminGroups.roundCount')"
+            :aria-label="t('components.tournament.admin.adminGroups.roundCount')"
           >
         </FormField>
       </form>
@@ -248,14 +248,14 @@ const delete_groups_matchs = async () => {
         type="button"
         @click="modal_open = false;"
       >
-        {{ t('content.common.cancel') }}
+        {{ t('common.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click="create_group_matchs"
       >
-        {{ t('content.common.validate') }}
+        {{ t('common.validate') }}
       </button>
     </template>
   </Modal>
@@ -265,10 +265,10 @@ const delete_groups_matchs = async () => {
     @close="modal_open = false;"
   >
     <template #title>
-      {{ t('content.components.Tournament.Admin.AdminGroups.deleteMatchesTitle') }}
+      {{ t('components.tournament.admin.adminGroups.deleteMatchesTitle') }}
     </template>
     <template #body>
-      {{ t('content.components.Tournament.Admin.AdminGroups.deleteMatchesDescription') }}
+      {{ t('components.tournament.admin.adminGroups.deleteMatchesDescription') }}
     </template>
     <template #buttons>
       <button
@@ -276,14 +276,14 @@ const delete_groups_matchs = async () => {
         type="button"
         @click="modal_open = false;"
       >
-        {{ t('content.common.cancel') }}
+        {{ t('common.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click="delete_groups_matchs"
       >
-        {{ t('content.common.validate') }}
+        {{ t('common.validate') }}
       </button>
     </template>
   </Modal>
@@ -293,7 +293,7 @@ const delete_groups_matchs = async () => {
     @close="modal_open = false;"
   >
     <template #title>
-      {{ t('content.components.Tournament.Admin.AdminGroups.launchRoundMatches') }}
+      {{ t('components.tournament.admin.adminGroups.launchRoundMatches') }}
     </template>
     <template #body>
       <form
@@ -304,14 +304,14 @@ const delete_groups_matchs = async () => {
           :validations="v_round$.round"
         >
           <label for="round">
-            {{ t('content.components.Tournament.Admin.AdminGroups.roundNumber') }}
+            {{ t('components.tournament.admin.adminGroups.roundNumber') }}
           </label>
           <input
             id="round"
             v-model="round"
             type="number"
             name="round"
-            :aria-label="t('content.components.Tournament.Admin.AdminGroups.roundNumber')"
+            :aria-label="t('components.tournament.admin.adminGroups.roundNumber')"
             @blur="v_round$.round.$touch"
           >
         </FormField>
@@ -323,14 +323,14 @@ const delete_groups_matchs = async () => {
         type="button"
         @click="modal_open = false;"
       >
-        {{ t('content.common.cancel') }}
+        {{ t('common.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click="launch_round_matchs"
       >
-        {{ t('content.components.Tournament.Admin.AdminGroups.launchRound') }}
+        {{ t('components.tournament.admin.adminGroups.launchRound') }}
       </button>
     </template>
   </Modal>

@@ -52,7 +52,7 @@ const v_round$ = useVuelidate(round_rule, { round_to_launch });
 
 const open_launch_round_modal = async () => {
   if (!has_matchs.value) {
-    addNotification(t('content.common.noMatches'), 'info');
+    addNotification(t('common.noMatches'), 'info');
     return;
   }
 
@@ -66,7 +66,7 @@ const launch_round_matchs = async () => {
 
   await launchMatchs(groups.map((g) => ({ id: g.id, round: round_to_launch.value })), 'groups');
 
-  addNotification(t('content.components.Tournament.Admin.AdminGroupsMatchs.roundMatchesLaunched', { round: round_to_launch.value }), 'info');
+  addNotification(t('components.tournament.admin.adminGroupsMatchs.roundMatchesLaunched', { round: round_to_launch.value }), 'info');
 
   modal_open.value = false;
 };
@@ -75,12 +75,12 @@ const selected_matchs = ref(new Set<number>());
 
 const launch_selected_matchs = async () => {
   if (!has_matchs.value) {
-    addNotification(t('content.common.noMatches'), 'info');
+    addNotification(t('common.noMatches'), 'info');
     return;
   }
 
   if (selected_matchs.value.size === 0) {
-    addNotification(t('content.common.noMatchSelected'), 'warn');
+    addNotification(t('common.noMatchSelected'), 'warn');
     return;
   }
 
@@ -94,7 +94,7 @@ const launch_selected_matchs = async () => {
 
   selected_matchs.value.clear();
 
-  addNotification(t('content.common.matchesLaunched'), 'info');
+  addNotification(t('common.matchesLaunched'), 'info');
 };
 </script>
 
@@ -111,7 +111,7 @@ const launch_selected_matchs = async () => {
         icon="fa-chevron-left"
         class="c-inline-icon u-ml-0"
       />
-      {{ t('content.components.Tournament.Admin.AdminGroupsMatchs.manageGroups') }}
+      {{ t('components.tournament.admin.adminGroupsMatchs.manageGroups') }}
     </button>
     <button
       type="button"
@@ -119,7 +119,7 @@ const launch_selected_matchs = async () => {
       :disabled="!has_matchs"
       @click="open_launch_round_modal"
     >
-      {{ t('content.components.Tournament.Admin.AdminGroupsMatchs.launchRound') }}
+      {{ t('components.tournament.admin.adminGroupsMatchs.launchRound') }}
     </button>
     <button
       type="button"
@@ -127,7 +127,7 @@ const launch_selected_matchs = async () => {
       :disabled="!has_matchs || selected_matchs.size === 0 "
       @click="launch_selected_matchs"
     >
-      {{ t('content.common.launchSelectedMatches') }}
+      {{ t('common.launchSelectedMatches') }}
     </button>
   </div>
 
@@ -145,7 +145,7 @@ const launch_selected_matchs = async () => {
 
   <Modal v-if="modal_open && modal_type === 'launch_round'">
     <template #title>
-      {{ t('content.components.Tournament.Admin.AdminGroupsMatchs.launchRoundMatches') }}
+      {{ t('components.tournament.admin.adminGroupsMatchs.launchRoundMatches') }}
     </template>
     <template #body>
       <form
@@ -156,14 +156,14 @@ const launch_selected_matchs = async () => {
           :validations="v_round$.round_to_launch"
         >
           <label for="round">
-            {{ t('content.components.Tournament.Admin.AdminGroupsMatchs.roundNumber') }}
+            {{ t('components.tournament.admin.adminGroupsMatchs.roundNumber') }}
           </label>
           <input
             id="round"
             v-model="round_to_launch"
             type="number"
             name="round"
-            :aria-label="t('content.components.Tournament.Admin.AdminGroupsMatchs.roundNumber')"
+            :aria-label="t('components.tournament.admin.adminGroupsMatchs.roundNumber')"
             @blur="v_round$.round_to_launch.$touch"
           >
         </FormField>
@@ -175,14 +175,14 @@ const launch_selected_matchs = async () => {
         type="button"
         @click="modal_open = false;"
       >
-        {{ t('content.common.cancel') }}
+        {{ t('common.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click="launch_round_matchs"
       >
-        {{ t('content.components.Tournament.Admin.AdminGroupsMatchs.launchRound') }}
+        {{ t('components.tournament.admin.adminGroupsMatchs.launchRound') }}
       </button>
     </template>
   </Modal>

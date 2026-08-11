@@ -28,7 +28,7 @@ const { t } = useI18n();
     </ul>
     <div v-if="team.substitutes.length > 0">
       <p class="u-big-text">
-        {{ t('content.components.Tournament.TeamCard.substitutes', team.substitutes.length) }}
+        {{ t('components.tournament.teamCard.substitutes', team.substitutes.length) }}
       </p>
       <ul>
         <li v-for="player in team.substitutes" :key="((player as PlayerRegistration).user)">
@@ -39,7 +39,7 @@ const { t } = useI18n();
     </div>
     <div v-if="team.managers.length > 0" class="u-big-text">
       <p class="u-big-text">
-        {{ t('content.components.Tournament.TeamCard.managers', team.managers.length) }}
+        {{ t('components.tournament.teamCard.managers', team.managers.length) }}
       </p>
       <ul>
         <li v-for="manager in team.managers" :key="manager">

@@ -56,14 +56,14 @@ const validateModal = async () => {
 <template>
   <Modal v-if="modal_open">
     <template #title>
-      {{ $t('content.components.NameConfirmationModal.title') }}
+      {{ $t('components.nameConfirmationModal.title') }}
     </template>
     <template #body>
-      {{ $t('content.components.NameConfirmationModal.description') }}
+      {{ $t('components.nameConfirmationModal.description') }}
       <form>
         <FormField :validations="v$.first_name">
           <label for="first_name">
-            {{ $t('content.components.NameConfirmationModal.firstname') }}
+            {{ $t('components.nameConfirmationModal.firstname') }}
           </label>
           <input
             id="first_name"
@@ -75,7 +75,7 @@ const validateModal = async () => {
         </FormField>
         <FormField :validations="v$.last_name">
           <label for="last_name">
-            {{ $t('content.components.NameConfirmationModal.lastname') }}
+            {{ $t('components.nameConfirmationModal.lastname') }}
           </label>
           <input
             id="last_name"
@@ -93,7 +93,7 @@ const validateModal = async () => {
         type="submit"
         @click="validateModal"
       >
-        {{ $t('content.components.NameConfirmationModal.validate') }}
+        {{ $t('components.nameConfirmationModal.validate') }}
       </button>
     </template>
   </Modal>

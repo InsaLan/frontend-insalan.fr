@@ -17,7 +17,7 @@ await getPrivateTournaments();
 <template>
   <div class="l-flex-column l-cross-center u-m-main">
     <div v-if="!tournaments_id">
-      {{ $t('content.views.TournamentView.noTournament') }}
+      {{ $t('views.tournamentView.noTournament') }}
     </div>
     <div class="l-grid-3 l-gap-2 u-full-width">
       <TournamentCard
@@ -31,10 +31,10 @@ await getPrivateTournaments();
       to="/archives"
       class="u-my-2 c-btn-primary"
     >
-      {{ $t('content.views.TournamentView.seePastEditions') }}
+      {{ $t('views.tournamentView.seePastEditions') }}
     </router-link>
     <h1 v-if="Object.keys(privateTournamentsList).length > 0">
-      {{ $t('content.views.TournamentView.privateTournaments') }}
+      {{ $t('views.tournamentView.privateTournaments') }}
     </h1>
     <div v-if="Object.keys(privateTournamentsList).length > 0" class="l-grid-3 l-gap-2 u-full-width">
       <TournamentCard

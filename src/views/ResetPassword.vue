@@ -41,12 +41,12 @@ const register_user = async () => {
   <div class="l-flex-column l-cross-center u-m-text">
     <div class="l-flex-column l-cross-center c-card-bg-2 u-p-4">
       <h1 class="u-m-0">
-        {{ $t('content.views.ResetPassword.title') }}
+        {{ $t('views.resetPassword.title') }}
       </h1>
       <form id="password-reset" class="l-flex-column" @submit.prevent="register_user">
         <FormField :validations="v$.password" required>
           <label for="password">
-            {{ $t('content.views.ResetPassword.newPassword') }}
+            {{ $t('views.resetPassword.newPassword') }}
           </label>
           <PasswordInput
             id="password"
@@ -56,18 +56,18 @@ const register_user = async () => {
         </FormField>
         <FormField :validations="v$.password_confirm" required>
           <label for="repeat">
-            {{ $t('content.views.ResetPassword.repeatPassword') }}
+            {{ $t('views.resetPassword.repeatPassword') }}
           </label>
           <PasswordInput
             id="repeat"
             v-model="data.password_confirm"
-            :placeholder="$t('content.views.ResetPassword.passwordPlaceholder')"
+            :placeholder="$t('views.resetPassword.passwordPlaceholder')"
             required
             :on-blur="v$.password_confirm.$touch"
           />
         </FormField>
         <button class="c-btn-secondary" type="submit">
-          {{ $t('content.views.ResetPassword.submit') }}
+          {{ $t('views.resetPassword.submit') }}
         </button>
       </form>
     </div>

@@ -4,17 +4,17 @@
       404
     </h1>
     <h2 class="u-big-text u-mb-2">
-      {{ $t('content.views.Error.title404') }}
+      {{ $t('views.error.title404') }}
     </h2>
     <p>
-      {{ $t('content.views.Error.description404') }}
+      {{ $t('views.error.description404') }}
     </p>
     <div class="u-my-4 l-flex-column l-cross-center">
       <router-link
         to="/"
         class="c-btn-primary"
       >
-        {{ $t('content.views.Error.backToHome') }}
+        {{ $t('views.error.backToHome') }}
       </router-link>
     </div>
   </div>

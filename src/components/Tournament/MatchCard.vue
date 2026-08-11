@@ -139,13 +139,13 @@ const patch_match = async () => {
       || (match.bo_type !== BestofType.RANKING && score_sum > (match.bo_type as number))
     )
   ) {
-    addNotification(t('content.components.Tournament.MatchCard.invalidScores'), 'error');
+    addNotification(t('components.tournament.matchCard.invalidScores'), 'error');
     return;
   }
 
   await patchMatch(match_info_clean, match.id, matchType);
 
-  addNotification(t('content.components.Tournament.MatchCard.matchUpdated'), 'info');
+  addNotification(t('components.tournament.matchCard.matchUpdated'), 'info');
   edit_mode.value = false;
 };
 
@@ -185,7 +185,7 @@ const open_edition = () => {
       <div
         v-if="!edit_mode"
       >
-        {{ match.bo_type === BestofType.RANKING ? t('content.components.Tournament.MatchCard.classification') : (match.play_all ? t('content.components.Tournament.MatchCard.playAll', { value: match.bo_type }) : t('content.components.Tournament.MatchCard.bestOf', { value: match.bo_type })) }}
+        {{ match.bo_type === BestofType.RANKING ? t('components.tournament.matchCard.classification') : (match.play_all ? t('components.tournament.matchCard.playAll', { value: match.bo_type }) : t('components.tournament.matchCard.bestOf', { value: match.bo_type })) }}
       </div>
       <select
         v-else
@@ -199,14 +199,14 @@ const open_edition = () => {
           :key="value"
           :value="value"
         >
-          {{ value === '0' ? t('content.components.Tournament.MatchCard.classification') : t('content.components.Tournament.MatchCard.bestOf', { value }) }}
+          {{ value === '0' ? t('components.tournament.matchCard.classification') : t('components.tournament.matchCard.bestOf', { value }) }}
         </option>
         <option
           v-for="value in Object.keys(BestofType).map(Number).filter((v) => Number.isInteger(v) && v > 1)"
           :key="value - 1"
           :value="value - 1"
         >
-          {{ t('content.components.Tournament.MatchCard.playAll', { value }) }}
+          {{ t('components.tournament.matchCard.playAll', { value }) }}
         </option>
       </select>
 
@@ -219,21 +219,21 @@ const open_edition = () => {
             class="c-inline-icon u-ml-0"
             icon="fa-clock"
           />
-          {{ t('content.components.Tournament.MatchCard.scheduled') }}
+          {{ t('components.tournament.matchCard.scheduled') }}
         </span>
         <span v-else-if="match.status === MatchStatus.ONGOING">
           <fa-awesome-icon
             class="c-inline-icon u-ml-0"
             icon="fa-arrows-rotate"
           />
-          {{ t('content.components.Tournament.MatchCard.ongoing') }}
+          {{ t('components.tournament.matchCard.ongoing') }}
         </span>
         <span v-else>
           <fa-awesome-icon
             class="c-inline-icon u-ml-0"
             icon="fa-circle-check"
           />
-          {{ t('content.components.Tournament.MatchCard.completed') }}
+          {{ t('components.tournament.matchCard.completed') }}
         </span>
       </div>
       <select
@@ -249,10 +249,10 @@ const open_edition = () => {
         >
           {{
             match_status === MatchStatus.SCHEDULED
-              ? t('content.components.Tournament.MatchCard.scheduled')
+              ? t('components.tournament.matchCard.scheduled')
               : match_status === MatchStatus.ONGOING
-                ? t('content.components.Tournament.MatchCard.ongoing')
-                : t('content.components.Tournament.MatchCard.completed')
+                ? t('components.tournament.matchCard.ongoing')
+                : t('components.tournament.matchCard.completed')
           }}
         </option>
       </select>
@@ -263,7 +263,7 @@ const open_edition = () => {
         <button
           v-if="!edit_mode"
           type="button"
-          :title="t('content.components.Tournament.MatchCard.editMatch')"
+          :title="t('components.tournament.matchCard.editMatch')"
           @click.stop="open_edition"
         >
           <fa-awesome-icon
@@ -277,7 +277,7 @@ const open_edition = () => {
         >
           <button
             type="button"
-            :title="t('content.components.Tournament.MatchCard.save')"
+            :title="t('components.tournament.matchCard.save')"
             @click.stop="patch_match"
           >
             <fa-awesome-icon
@@ -287,7 +287,7 @@ const open_edition = () => {
           </button>
           <button
             type="button"
-            :title="t('content.components.Tournament.MatchCard.cancelChanges')"
+            :title="t('components.tournament.matchCard.cancelChanges')"
             @click.stop="edit_mode = false; reset()"
           >
             <fa-awesome-icon
@@ -307,7 +307,7 @@ const open_edition = () => {
         :class="{ 'u-color-correct-1': is_winning_team(match, match.teams[idx - 1]) }"
       >
         <div>
-          {{ get_validated_team_by_id(match.teams[idx - 1])?.name ?? t('content.components.Tournament.MatchCard.tbd') }}
+          {{ get_validated_team_by_id(match.teams[idx - 1])?.name ?? t('components.tournament.matchCard.tbd') }}
         </div>
         <div class="l-grow"/>
         <div>
@@ -340,7 +340,7 @@ const open_edition = () => {
               {{ team.name }}
             </option>
             <option :value="0">
-              {{ t('content.components.Tournament.MatchCard.tbd') }}
+              {{ t('components.tournament.matchCard.tbd') }}
             </option>
           </select>
 

@@ -13,16 +13,16 @@ const { t } = useI18n();
 <template>
   <fa-awesome-icon
     v-if="player.payment_status === PaymentStatus.PAID"
-    :alt="t('content.components.PaymentStatusIcon.paidIconAlt')"
+    :alt="t('components.paymentStatusIcon.paidIconAlt')"
     icon="fa-circle-check"
     class="c-inline-icon u-color-correct-1"
-    :title="t('content.components.PaymentStatusIcon.paid')"
+    :title="t('components.paymentStatusIcon.paid')"
   />
   <fa-awesome-icon
     v-if="player.payment_status === PaymentStatus.LATER"
-    :alt="t('content.components.PaymentStatusIcon.laterIconAlt')"
+    :alt="t('components.paymentStatusIcon.laterIconAlt')"
     icon="fa-clock"
     class="c-inline-icon u-color-warn-1"
-    :title="t('content.components.PaymentStatusIcon.later')"
+    :title="t('components.paymentStatusIcon.later')"
   />
 </template>

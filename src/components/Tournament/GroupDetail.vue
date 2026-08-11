@@ -38,7 +38,7 @@ const { t } = useI18n();
         class="c-frame u-p-1 l-flex-column l-gap-1 u-full-width"
       >
         <div class="u-text-center u-big-text">
-          {{ t('content.components.Tournament.GroupDetail.round', { round: matchs[0].round_number }) }}
+          {{ t('components.tournament.groupDetail.round', { round: matchs[0].round_number }) }}
         </div>
         <MatchCard
           v-for="match in matchs"

@@ -40,7 +40,7 @@ const buildYear = BUILD_YEAR;
   <section class="u-bg-bg-2 footer-grid">
     <div class="reseaux u-m-1 l-flex-column l-cross-center l-main-center l-justify-center">
       <div class="reseaux-text u-text-center u-big-text">
-        {{ $t('content.components.Footer.socials') }}
+        {{ $t('components.footer.socials') }}
       </div>
       <div class="l-flex-row u-full-width l-cross-center l-main-center l-gap-1">
         <a class="icon-size c-image-btn" href="https://www.instagram.com/insalan_officiel" target="_blank" rel="noopener noreferrer">
@@ -66,7 +66,7 @@ const buildYear = BUILD_YEAR;
           InsaLan 2023 - {{ buildYear }}
         </p>
         <p>
-          {{ $t('content.components.Footer.credits') }}
+          {{ $t('components.footer.credits') }}
         </p>
       </div>
     </div>

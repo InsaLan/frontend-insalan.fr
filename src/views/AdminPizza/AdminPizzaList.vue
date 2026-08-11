@@ -78,7 +78,7 @@ await fetchAllPizzas();
 
 <template>
   <h1>
-    {{ t('content.AdminPizza.listTitle') }}
+    {{ t('adminPizza.listTitle') }}
   </h1>
   <div class="u-m-2 l-flex-row l-gap-1 l-cross-center">
     <button
@@ -86,16 +86,16 @@ await fetchAllPizzas();
       class="c-btn-primary"
       @click="showCreatePizzaModal = true"
     >
-      {{ t('content.AdminPizza.addPizza') }}
+      {{ t('adminPizza.addPizza') }}
     </button>
     <div class="l-grow"/>
     <form>
       <input
         id="pizza-search"
         v-model="pizzaSearch"
-        :aria-label="t('content.AdminPizza.search')"
+        :aria-label="t('adminPizza.search')"
         type="text"
-        :placeholder="t('content.AdminPizza.search')"
+        :placeholder="t('adminPizza.search')"
       >
     </form>
   </div>
@@ -112,7 +112,7 @@ await fetchAllPizzas();
 
   <PizzaModal
     v-if="pizzaToEdit"
-    :title="t('content.AdminPizza.editPizza')"
+    :title="t('adminPizza.editPizza')"
     :pizza="pizzaToEdit"
     :validate="handlePizzaEditModalValidate"
     @close="handlePizzaEditModalClose"
@@ -120,21 +120,21 @@ await fetchAllPizzas();
 
   <PizzaModal
     v-if="showCreatePizzaModal"
-    :title="t('content.AdminPizza.createPizza')"
+    :title="t('adminPizza.createPizza')"
     :validate="handlePizzaCreateModalValidate"
     @close="handlePizzaCreateModalClose"
   />
 
   <Modal v-if="pizzaToDelete" @close="closeDeleteConfirmModal">
     <template #title>
-      {{ t('content.AdminPizza.deletePizzaTitle') }}
+      {{ t('adminPizza.deletePizzaTitle') }}
     </template>
     <template #body>
       <p>
-        {{ t('content.AdminPizza.deletePizzaQuestion', { name: pizzaToDelete.name }) }}
+        {{ t('adminPizza.deletePizzaQuestion', { name: pizzaToDelete.name }) }}
         <br/>
         <br/>
-        <em>{{ t('content.AdminPizza.deletePizzaWarning') }}</em>
+        <em>{{ t('adminPizza.deletePizzaWarning') }}</em>
       </p>
     </template>
     <template #buttons>
@@ -143,14 +143,14 @@ await fetchAllPizzas();
         type="button"
         @click="closeDeleteConfirmModal"
       >
-        {{ t('content.common.cancel') }}
+        {{ t('common.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="confirmDeletePizza"
       >
-        {{ t('content.common.validate') }}
+        {{ t('common.validate') }}
       </button>
     </template>
   </Modal>

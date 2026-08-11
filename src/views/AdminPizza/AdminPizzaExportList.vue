@@ -101,10 +101,10 @@ Object.values(timeslotList.value).forEach((timeslot) => {
 <template>
   <div class="u-pb-2 l-flex-column u-m-main u-full-height">
     <h1>
-      {{ t('content.AdminPizza.exportsTitle') }}
+      {{ t('adminPizza.exportsTitle') }}
     </h1>
     <div v-if="timeslots_id.length === 0" class="u-text-center u-big-text">
-      {{ t('content.AdminPizza.noTimeslot') }}
+      {{ t('adminPizza.noTimeslot') }}
     </div>
     <div
       v-else
@@ -115,7 +115,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
         class="l-flex-column l-main-center l-cross-center l-gap-2 l-grow"
       >
         <div class="u-big-text">
-          {{ t('content.components.App.loading') }}
+          {{ t('components.app.loading') }}
         </div>
         <div role="status" aria-hidden="true" class="c-spinner"/>
       </div>
@@ -134,7 +134,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
             type="button"
             class="u-big-text"
             :class="{ 'c-image-btn': timeslotExportList[timeslot.id].length !== 0 }"
-            :title="t('content.AdminPizza.showTimeslotExports')"
+            :title="t('adminPizza.showTimeslotExports')"
             :disabled="timeslotExportList[timeslot.id].length === 0"
             @click="timeslotsExpand[timeslot.id] = !timeslotsExpand[timeslot.id]"
             @keydown.enter="timeslotsExpand[timeslot.id] = !timeslotsExpand[timeslot.id]"
@@ -145,15 +145,15 @@ Object.values(timeslotList.value).forEach((timeslot) => {
             v-if="timeslotExportList[timeslot.id].length > 0"
             type="button"
             class="u-big-text c-image-btn"
-            :title="t('content.AdminPizza.exportTimeslotOrders')"
+            :title="t('adminPizza.exportTimeslotOrders')"
             @click="exportOrders(timeslot.id)"
             @keydown.enter="exportOrders(timeslot.id)"
           >
             <fa-awesome-icon icon="fa-download"/>
           </button>
-          {{ t('content.AdminPizza.timeslot', { date: $d(new Date(timeslot.delivery_time), 'long') }) }}
+          {{ t('adminPizza.timeslot', { date: $d(new Date(timeslot.delivery_time), 'long') }) }}
           <div class="l-grow"/>
-          {{ t('content.AdminPizza.exportCount', { count: timeslotExportList[timeslot.id].length }) }}
+          {{ t('adminPizza.exportCount', { count: timeslotExportList[timeslot.id].length }) }}
         </div>
         <div
           v-for="timeslotExport in timeslotExportList[timeslot.id]"
@@ -161,7 +161,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
           type="button"
           class="c-card-bg-3 u-p-0 u-full-width l-flex-row l-cross-center l-gap-1 u-regular u-normal-text"
           :class="{ 'u-hidden': !timeslotsExpand[timeslot.id] }"
-          :title="t('content.AdminPizza.downloadExport')"
+          :title="t('adminPizza.downloadExport')"
         >
           <button
             type="button"
@@ -169,13 +169,13 @@ Object.values(timeslotList.value).forEach((timeslot) => {
             @click="downloadTimeslotDetails(timeslotExport.id)"
           >
             <fa-awesome-icon icon="fa-file"/>
-            <strong>{{ t('content.AdminPizza.export', { date: $d(new Date(timeslotExport.created_at), 'long') }) }}</strong>
-            ({{ t('content.AdminPizza.pizzaCount', { count: Object.values(timeslotExport.orders).reduce((acc, nb) => acc + nb, 0) }) }})
+            <strong>{{ t('adminPizza.export', { date: $d(new Date(timeslotExport.created_at), 'long') }) }}</strong>
+            ({{ t('adminPizza.pizzaCount', { count: Object.values(timeslotExport.orders).reduce((acc, nb) => acc + nb, 0) }) }})
           </button>
           <button
             type="button"
             class="c-image-btn u-color-error-1 u-big-text u-mr-2"
-            :title="t('content.common.delete')"
+            :title="t('common.delete')"
             @click.stop="exportToDelete = timeslotExport"
           >
             <fa-awesome-icon icon="fa-trash-can"/>
@@ -187,7 +187,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
           type="button"
           class="c-image-btn"
           :disabled="page === 1"
-          :title="t('content.AdminPizza.previousPage')"
+          :title="t('adminPizza.previousPage')"
           @click="changePage(page - 1)"
         >
           <fa-awesome-icon
@@ -201,7 +201,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
             type="button"
             class="c-image-btn u-px-1"
             :disabled="_page === page"
-            :title="t('content.AdminPizza.page', { page: _page })"
+            :title="t('adminPizza.page', { page: _page })"
             @click="changePage(_page)"
           >
             {{ _page }}
@@ -213,7 +213,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
           type="button"
           class="c-image-btn"
           :disabled="page >= max_pages"
-          :title="t('content.AdminPizza.nextPage')"
+          :title="t('adminPizza.nextPage')"
           @click="changePage(page + 1)"
         >
           <fa-awesome-icon
@@ -226,10 +226,10 @@ Object.values(timeslotList.value).forEach((timeslot) => {
 
   <Modal v-if="exportToDelete" @close="closeConfirmDeleteModal">
     <template #title>
-      {{ t('content.AdminPizza.deleteExportTitle') }}
+      {{ t('adminPizza.deleteExportTitle') }}
     </template>
     <template #body>
-      {{ t('content.AdminPizza.deleteExportQuestion', { date: $d(new Date(exportToDelete.created_at), 'long') }) }}
+      {{ t('adminPizza.deleteExportQuestion', { date: $d(new Date(exportToDelete.created_at), 'long') }) }}
     </template>
     <template #buttons>
       <button
@@ -237,14 +237,14 @@ Object.values(timeslotList.value).forEach((timeslot) => {
         type="button"
         @click="closeConfirmDeleteModal"
       >
-        {{ t('content.common.cancel') }}
+        {{ t('common.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="confirmDeleteExport"
       >
-        {{ t('content.common.validate') }}
+        {{ t('common.validate') }}
       </button>
     </template>
   </Modal>

@@ -64,14 +64,14 @@ const handleSubmit = async () => {
       <fa-awesome-icon class="u-color-correct-1" icon="fa-leaf"/>
     </template>
     <template #title>
-      {{ t('content.components.Tournament.TravelFormModal.title') }}
+      {{ t('components.tournament.travelFormModal.title') }}
     </template>
     <template #body>
       <!-- eslint-disable-next-line vue/no-v-html -->
-      <p v-html="t('content.components.Tournament.TravelFormModal.body')"/>
+      <p v-html="t('components.tournament.travelFormModal.body')"/>
       <form class="u-mt-2" @submit.prevent="handleSubmit">
         <FormField :validations="v$.city">
-          <label for="city">{{ t('content.components.Tournament.TravelFormModal.city') }}</label>
+          <label for="city">{{ t('components.tournament.travelFormModal.city') }}</label>
           <input
             id="city"
             v-model="form_data.city"
@@ -82,7 +82,7 @@ const handleSubmit = async () => {
           />
         </FormField>
         <FormField :validations="v$.transportationMethod">
-          <label for="transportation_method">{{ t('content.components.Tournament.TravelFormModal.transportMethod') }}</label>
+          <label for="transportation_method">{{ t('components.tournament.travelFormModal.transportMethod') }}</label>
           <select
             id="transportation_method"
             v-model="form_data.transportationMethod"
@@ -94,7 +94,7 @@ const handleSubmit = async () => {
               :key="transportation_method"
               :value="transportation_method"
             >
-              {{ t(`content.components.Tournament.TravelFormModal.transportationMethods.${transportation_method}`) }}
+              {{ t(`components.tournament.travelFormModal.transportationMethods.${transportation_method}`) }}
             </option>
           </select>
         </FormField>
@@ -107,7 +107,7 @@ const handleSubmit = async () => {
         :disabled="submittingForm"
         @click="closeModal"
       >
-        {{ t('content.components.Tournament.TravelFormModal.skip') }}
+        {{ t('components.tournament.travelFormModal.skip') }}
       </button>
       <button
         class="c-btn-secondary"
@@ -115,7 +115,7 @@ const handleSubmit = async () => {
         :disabled="submittingForm"
         @click="handleSubmit"
       >
-        {{ submittingForm ? t('content.components.Tournament.TravelFormModal.sending') : t('content.components.Tournament.TravelFormModal.send') }}
+        {{ submittingForm ? t('components.tournament.travelFormModal.sending') : t('components.tournament.travelFormModal.send') }}
       </button>
     </template>
   </Modal>

@@ -34,19 +34,19 @@ const selected_matchs = ref(new Set<number>());
 
 const launch_selected_matchs = async () => {
   if (!has_matchs.value) {
-    addNotification(t('content.components.Tournament.Bracket.noMatches'), 'info');
+    addNotification(t('components.tournament.bracket.noMatches'), 'info');
     return;
   }
 
   if (selected_matchs.value.size === 0) {
-    addNotification(t('content.components.Tournament.Bracket.noMatchSelected'), 'info');
+    addNotification(t('components.tournament.bracket.noMatchSelected'), 'info');
   }
 
   await launchMatchs([{ id: bracket.id, matchs: Array.from(selected_matchs.value) }], 'brackets');
 
   selected_matchs.value.clear();
 
-  addNotification(t('content.components.Tournament.Bracket.matchesLaunched'), 'info');
+  addNotification(t('components.tournament.bracket.matchesLaunched'), 'info');
 };
 
 const modal_open = ref(false);
@@ -68,23 +68,23 @@ const open_delete_bracket_modal = (bracket_id: number) => {
 const delete_bracket = async () => {
   const res = await deleteBracket(deleted_bracket.value);
 
-  if (res) addNotification(t('content.components.Tournament.Bracket.bracketDeleted'), 'info');
+  if (res) addNotification(t('components.tournament.bracket.bracketDeleted'), 'info');
 
   modal_open.value = false;
 };
 
 const bracket_round_title = (depth: number, round_idx: number) => {
   if (round_idx < depth - 2) {
-    return t('content.components.Tournament.Bracket.roundOf', { round: 2 ** (depth - round_idx) });
+    return t('components.tournament.bracket.roundOf', { round: 2 ** (depth - round_idx) });
   }
   if (round_idx === depth - 2) {
-    return t('content.components.Tournament.Bracket.quarterFinals');
+    return t('components.tournament.bracket.quarterFinals');
   }
   if (round_idx === depth - 1) {
-    return t('content.components.Tournament.Bracket.semiFinals');
+    return t('components.tournament.bracket.semiFinals');
   }
   if (round_idx === depth) {
-    return t('content.components.Tournament.Bracket.final');
+    return t('components.tournament.bracket.final');
   }
 
   return '';
@@ -98,7 +98,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
       <button
         v-if="admin"
         type="button"
-        :title="t('content.components.Tournament.Bracket.deleteBracket')"
+        :title="t('components.tournament.bracket.deleteBracket')"
         @click="open_delete_bracket_modal(bracket.id)"
       >
         <fa-awesome-icon
@@ -118,7 +118,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         :disabled="!has_matchs || selected_matchs.size === 0"
         @click="launch_selected_matchs"
       >
-        {{ t('content.components.Tournament.Bracket.launchSelectedMatches') }}
+        {{ t('components.tournament.bracket.launchSelectedMatches') }}
       </button>
     </div>
 
@@ -163,7 +163,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
               icon="fa-trophy"
               class="c-inline-icon u-ml-0"
             />
-            {{ t('content.components.Tournament.Bracket.winner') }}
+            {{ t('components.tournament.bracket.winner') }}
           </strong>
           <br>
           {{ get_validated_team_by_id(bracket.winner)?.name }}
@@ -177,7 +177,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
       class="l-overflow-auto u-p-1"
     >
       <h2 class="u-p-2">
-        {{ t('content.components.Tournament.Bracket.mainBracket') }}
+        {{ t('components.tournament.bracket.mainBracket') }}
       </h2>
       <div
         class="l-grid-arbitrary u-full-height l-cross-center l-gap-1"
@@ -194,7 +194,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
               : (round_idx % 2 === 0 && round_idx < 2 * bracket.depth)
                 ? bracket_round_title(bracket.depth, (round_idx + 2) / 2)
                 : (round_idx === 2 * bracket.depth)
-                  ? t('content.components.Tournament.Bracket.grandFinal')
+                  ? t('components.tournament.bracket.grandFinal')
                   : ''
           }}
         </div>
@@ -239,7 +239,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
               icon="fa-trophy"
               class="c-inline-icon u-ml-0"
             />
-            {{ t('content.components.Tournament.Bracket.winner') }}
+            {{ t('components.tournament.bracket.winner') }}
           </strong>
           <br>
           {{ get_validated_team_by_id(bracket.winner)?.name }}
@@ -247,7 +247,7 @@ const bracket_round_title = (depth: number, round_idx: number) => {
       </div>
 
       <h2 class="u-p-2">
-        {{ t('content.components.Tournament.Bracket.losersBracket') }}
+        {{ t('components.tournament.bracket.losersBracket') }}
       </h2>
 
       <div
@@ -261,9 +261,9 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         >
           {{
             (round_idx !== 1 && round_idx < 2 * bracket.depth - 1)
-              ? t('content.components.Tournament.Bracket.round', { round: round_idx - 1 })
+              ? t('components.tournament.bracket.round', { round: round_idx - 1 })
               : (round_idx === 2 * bracket.depth - 1)
-                ? t('content.components.Tournament.Bracket.final')
+                ? t('components.tournament.bracket.final')
                 : ''
           }}
         </div>
@@ -294,10 +294,10 @@ const bracket_round_title = (depth: number, round_idx: number) => {
     @close="modal_open = false;"
   >
     <template #title>
-      {{ t('content.components.Tournament.Bracket.deleteBracket') }}
+      {{ t('components.tournament.bracket.deleteBracket') }}
     </template>
     <template #body>
-      {{ t('content.components.Tournament.Bracket.deleteBracketDescription') }}
+      {{ t('components.tournament.bracket.deleteBracketDescription') }}
     </template>
     <template #buttons>
       <button
@@ -305,14 +305,14 @@ const bracket_round_title = (depth: number, round_idx: number) => {
         type="button"
         @click="modal_open = false;"
       >
-        {{ t('content.components.Tournament.Bracket.cancel') }}
+        {{ t('components.tournament.bracket.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click="delete_bracket"
       >
-        {{ t('content.components.Tournament.Bracket.validate') }}
+        {{ t('components.tournament.bracket.validate') }}
       </button>
     </template>
   </Modal>

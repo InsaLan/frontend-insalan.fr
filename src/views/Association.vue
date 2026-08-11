@@ -8,7 +8,7 @@ const store = useContentStore();
 <template>
   <div class="l-flex-column l-main-center u-full-height">
     <h1 class="u-mt-2">
-      {{ $t('content.views.Association.title') }}
+      {{ $t('views.association.title') }}
     </h1>
     <Content
       class="u-m-text l-flex-column l-gap-4 u-text-indent u-mb-4"

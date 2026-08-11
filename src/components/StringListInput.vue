@@ -43,7 +43,7 @@ const editEl = (index: number) => {
       <button
         type="button"
         class="l-flex-row l-cross-center u-pl-1"
-        :title="t('content.components.StringListInput.edit')"
+        :title="t('components.stringListInput.edit')"
         @click="editEl(i)"
       >
         <p class="truncate">
@@ -53,7 +53,7 @@ const editEl = (index: number) => {
       <button
         type="button"
         class="u-px-1"
-        :title="t('content.components.StringListInput.delete')"
+        :title="t('components.stringListInput.delete')"
         @click="removeEl(i)"
       >
         <fa-awesome-icon class="xmark" icon="fa-xmark"/>
@@ -71,7 +71,7 @@ const editEl = (index: number) => {
     />
     <button
       type="button"
-      :title="t('content.components.StringListInput.add')"
+      :title="t('components.stringListInput.add')"
       class="u-mx-2 c-image-btn"
       :disabled="newElement ? false : true"
       @click="addElement"

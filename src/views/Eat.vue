@@ -33,20 +33,20 @@ await fetchNextTimeslots();
   <Content class="u-m-text u-mb-4 l-flex-column l-gap-4 u-text-indent" name="Restauration"/>
   <section v-if="sortedTimeslotList.length" class="u-m-text u-mb-4">
     <h1 class="u-mb-4">
-      {{ $t('content.views.Eat.nextTimeslots') }}
+      {{ $t('views.eat.nextTimeslots') }}
     </h1>
     <p>
-      {{ $t('content.views.Eat.nextTimeslotsDescription') }}
+      {{ $t('views.eat.nextTimeslotsDescription') }}
     </p>
     <ul>
       <li v-for="timeslot in sortedTimeslotList" :key="timeslot.id" class="ml-16">
-        {{ $t('content.views.Eat.timeslot', { date: $d(new Date(timeslot.delivery_time), 'long') }) }}
+        {{ $t('views.eat.timeslot', { date: $d(new Date(timeslot.delivery_time), 'long') }) }}
       </li>
     </ul>
   </section>
   <section>
     <h1 class="u-mb-4">
-      {{ sortedTimeslotList.length ? $t('content.views.Eat.pizzasOfNextTimeslot') : $t('content.views.Eat.pizzas') }}
+      {{ sortedTimeslotList.length ? $t('views.eat.pizzasOfNextTimeslot') : $t('views.eat.pizzas') }}
     </h1>
     <div class="u-full-width l-gap-2 u-p-main l-grid-3">
       <PizzaCard

@@ -74,8 +74,8 @@ const cashprizeText = computed(() => {
       acc += Number(val);
       return acc;
     }, 0)} €`
-    : t('content.components.Tournament.TournamentCard.comingSoon');
-  return `${t('content.components.Tournament.TournamentCard.cashprize')} ${total}`;
+    : t('components.tournament.tournamentCard.comingSoon');
+  return `${t('components.tournament.tournamentCard.cashprize')} ${total}`;
 });
 
 onMounted(async () => {
@@ -89,7 +89,7 @@ onMounted(async () => {
 <template>
   <div v-if="isPrivate || (tournament && 'is_announced' in tournament && tournament.is_announced)" class="l-flex-column l-cross-center c-card-bg-2 u-p-0 l-gap-2 u-full-width">
     <img
-      :alt="t('content.components.Tournament.TournamentCard.logoAlt', { name: tournament?.name })"
+      :alt="t('components.tournament.tournamentCard.logoAlt', { name: tournament?.name })"
       :src="tournament?.logo"
       class="c-thumbnail"
     />
@@ -100,11 +100,11 @@ onMounted(async () => {
       <progress-bar
         :quantity1="validated_teams"
         :max1="thresholds[current_threshold_index]"
-        :description1="t('content.components.Tournament.TournamentCard.validatedTeams').toLocaleLowerCase()"
+        :description1="t('components.tournament.tournamentCard.validatedTeams').toLocaleLowerCase()"
         :quantity2="waiting_validation_teams_count"
         :max2="isNaN(thresholds[current_threshold_index + 1]) ? undefined
           : thresholds[current_threshold_index + 1] - thresholds[current_threshold_index]"
-        :description2="t('content.components.Tournament.TournamentCard.waitingThreshold').toLocaleLowerCase()"
+        :description2="t('components.tournament.tournamentCard.waitingThreshold').toLocaleLowerCase()"
       />
     </div>
     <p v-if="!isPrivate" class="u-big-text">
@@ -115,7 +115,7 @@ onMounted(async () => {
         :to="`tournament/${isPrivate ? 'private/' : ''}${tournament?.id as number}/info`"
         class="c-btn-bg-3"
       >
-        {{ t('content.components.Tournament.TournamentCard.moreInfo') }}
+        {{ t('components.tournament.tournamentCard.moreInfo') }}
       </router-link>
       <button
         v-if="tournament && 'registration_open' in tournament && Date.parse(tournament.registration_open) > Date.now()"
@@ -123,14 +123,14 @@ onMounted(async () => {
         class="c-btn-secondary"
         disabled
       >
-        {{ t('content.components.Tournament.TournamentCard.registrationsSoon') }}
+        {{ t('components.tournament.tournamentCard.registrationsSoon') }}
       </button>
       <router-link
         v-else-if="event_ongoing && (isPrivate || (tournament && 'registration_close' in tournament && Date.parse(tournament.registration_close) > Date.now()))"
         :to="`tournament/${isPrivate ? 'private/' : ''}${tournament?.id as number}/register`"
         class="c-btn-secondary"
       >
-        {{ t('content.components.Tournament.TournamentCard.register') }}
+        {{ t('components.tournament.tournamentCard.register') }}
       </router-link>
       <button
         v-else
@@ -138,7 +138,7 @@ onMounted(async () => {
         class="c-btn-secondary"
         disabled
       >
-        {{ t('content.components.Tournament.TournamentCard.registrationsClosed') }}
+        {{ t('components.tournament.tournamentCard.registrationsClosed') }}
       </button>
     </div>
   </div>
@@ -177,7 +177,7 @@ onMounted(async () => {
       </g>
     </svg>
     <p class="u-text-center u-big-text u-py-2">
-      {{ t('content.components.Tournament.TournamentCard.announcedSoon') }}
+      {{ t('components.tournament.tournamentCard.announcedSoon') }}
     </p>
   </div>
 </template>

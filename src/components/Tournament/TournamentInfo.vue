@@ -32,7 +32,7 @@ defineProps<{
       class="u-full-width"
     >
       <h2 class="u-text-center">
-        {{ t('content.components.Tournament.TournamentInfo.cashprizes') }}
+        {{ t('components.tournament.tournamentInfo.cashprizes') }}
       </h2>
       <div class="not-desktop-only">
         <div class="l-flex-row l-main-center u-huge-text u-text-center u-mx-1">
@@ -41,7 +41,7 @@ defineProps<{
             <div class="massive">
               🥇
             </div>
-            {{ tournament?.cashprizes.length === 0 ? t('content.components.Tournament.TournamentInfo.comingSoon') : `${Number(tournament?.cashprizes[0])} €` }}
+            {{ tournament?.cashprizes.length === 0 ? t('components.tournament.tournamentInfo.comingSoon') : `${Number(tournament?.cashprizes[0])} €` }}
           </div>
         </div>
         <div class="l-flex-row even u-huge-text u-text-center l-gap-4">
@@ -50,14 +50,14 @@ defineProps<{
             <div class="massive">
               🥈
             </div>
-            {{ tournament?.cashprizes.length === 0 ? t('content.components.Tournament.TournamentInfo.comingSoon') : `${Number(tournament?.cashprizes[1])} €` }}
+            {{ tournament?.cashprizes.length === 0 ? t('components.tournament.tournamentInfo.comingSoon') : `${Number(tournament?.cashprizes[1])} €` }}
           </div>
           <div class="l-flex-column l-cross-center">
             <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
             <div class="massive">
               🥉
             </div>
-            {{ tournament?.cashprizes.length === 0 ? t('content.components.Tournament.TournamentInfo.comingSoon') : `${Number(tournament?.cashprizes[2])} €` }}
+            {{ tournament?.cashprizes.length === 0 ? t('components.tournament.tournamentInfo.comingSoon') : `${Number(tournament?.cashprizes[2])} €` }}
           </div>
         </div>
       </div>
@@ -68,35 +68,35 @@ defineProps<{
           <div class="massive">
             🥈
           </div>
-          {{ tournament?.cashprizes.length === 0 ? t('content.components.Tournament.TournamentInfo.comingSoon') : `${Number(tournament?.cashprizes[1])} €` }}
+          {{ tournament?.cashprizes.length === 0 ? t('components.tournament.tournamentInfo.comingSoon') : `${Number(tournament?.cashprizes[1])} €` }}
         </div>
         <div class="l-flex-column l-cross-center">
           <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
           <div class="massive">
             🥇
           </div>
-          {{ tournament?.cashprizes.length === 0 ? t('content.components.Tournament.TournamentInfo.comingSoon') : `${Number(tournament?.cashprizes[0])} €` }}
+          {{ tournament?.cashprizes.length === 0 ? t('components.tournament.tournamentInfo.comingSoon') : `${Number(tournament?.cashprizes[0])} €` }}
         </div>
         <div class="l-flex-column l-cross-center u-mt-4">
           <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
           <div class="massive">
             🥉
           </div>
-          {{ tournament?.cashprizes.length === 0 ? t('content.components.Tournament.TournamentInfo.comingSoon') : `${Number(tournament?.cashprizes[2])} €` }}
+          {{ tournament?.cashprizes.length === 0 ? t('components.tournament.tournamentInfo.comingSoon') : `${Number(tournament?.cashprizes[2])} €` }}
         </div>
       </div>
 
       <div class="u-m-double-text u-mb-4">
         <h2 class="u-text-center">
-          {{ t('content.components.Tournament.TournamentInfo.format') }}
+          {{ t('components.tournament.tournamentInfo.format') }}
         </h2>
 
         <div class="double-info u-text-center">
           <div class="very-big-text">
-            <i18n-t v-if="(tournament?.game as Game).players_per_team === 1" for="div" keypath="content.components.Tournament.TournamentInfo.playerNumber">
+            <i18n-t v-if="(tournament?.game as Game).players_per_team === 1" for="div" keypath="components.tournament.tournamentInfo.playerNumber">
               <strong>{{ tournament?.max_team_thresholds[tournament?.current_threshold_index] }}</strong>
             </i18n-t>
-            <i18n-t v-else for="div" keypath="t('content.components.Tournament.TournamentInfo.teamNumber')">
+            <i18n-t v-else for="div" keypath="components.tournament.tournamentInfo.teamNumber">
               <template #teamNumber>
                 <strong>{{ tournament?.max_team_thresholds[tournament?.current_threshold_index] }}</strong>
               </template>
@@ -108,15 +108,15 @@ defineProps<{
 
           <div class="c-card-bg-2 u-big-text">
             <h2 class="u-mt-0">
-              {{ t('content.components.Tournament.TournamentInfo.price') }}
+              {{ t('components.tournament.tournamentInfo.price') }}
             </h2>
             <div>
               <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
-              {{ t('content.components.Tournament.TournamentInfo.playerPrice') }}{{ Number(tournament?.player_price_online) }}€
+              {{ t('components.tournament.tournamentInfo.playerPrice') }}{{ Number(tournament?.player_price_online) }}€
             </div>
             <div v-if="tournament?.enable_manager">
               <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
-              {{ t('content.components.Tournament.TournamentInfo.managerPrice') }}{{ Number(tournament?.manager_price_online) }}€
+              {{ t('components.tournament.tournamentInfo.managerPrice') }}{{ Number(tournament?.manager_price_online) }}€
             </div>
           </div>
         </div>
@@ -127,7 +127,7 @@ defineProps<{
         class="u-m-double-text"
       >
         <h2 class="u-text-center">
-          {{ t('content.components.Tournament.TournamentInfo.casters') }}
+          {{ t('components.tournament.tournamentInfo.casters') }}
         </h2>
 
         <div class="double-info">
@@ -160,22 +160,22 @@ defineProps<{
     <div v-else class="l-grow">
       <p class="u-my-4 u-m-text">
         <em>
-          {{ t('content.components.Tournament.TournamentInfo.privateDescription') }}
+          {{ t('components.tournament.tournamentInfo.privateDescription') }}
           <strong v-if="tournament?.password">
-            {{ t('content.components.Tournament.TournamentInfo.passwordProtectedRegistration') }}
+            {{ t('components.tournament.tournamentInfo.passwordProtectedRegistration') }}
           </strong>
         </em>
       </p>
 
       <div class="u-big-text u-text-center u-m-text u-my-4">
         <fa-awesome-icon icon="fa-calendar-days"/>
-        {{ t('content.components.Tournament.TournamentInfo.startColon') }}<strong> {{ $d(new Date(tournament?.start), 'long') }} </strong>
+        {{ t('components.tournament.tournamentInfo.startColon') }}<strong> {{ $d(new Date(tournament?.start), 'long') }} </strong>
       </div>
 
       <div v-if="tournament?.rewards" class="u-big-text u-text-center u-m-text u-my-4">
         <fa-awesome-icon icon="fa-trophy"/>
         <!-- eslint-disable-next-line vue/no-v-html -->
-        {{ t('content.components.Tournament.TournamentInfo.rewardsColon') }}<strong v-html="tournament?.rewards.includes('\n') ? tournament?.rewards.includes('/>') || tournament?.rewards.includes('</') ? md.render(tournament?.rewards) : `<p style='white-space: pre-line;'>${tournament?.rewards}</p>` : md.renderInline(tournament?.rewards)"/>
+        {{ t('components.tournament.tournamentInfo.rewardsColon') }}<strong v-html="tournament?.rewards.includes('\n') ? tournament?.rewards.includes('/>') || tournament?.rewards.includes('</') ? md.render(tournament?.rewards) : `<p style='white-space: pre-line;'>${tournament?.rewards}</p>` : md.renderInline(tournament?.rewards)"/>
       </div>
     </div>
 

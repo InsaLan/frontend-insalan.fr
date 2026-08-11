@@ -1,6 +1,6 @@
 <template>
   <h1>
-    {{ $t('content.components.Map.title') }}
+    {{ $t('components.map.title') }}
   </h1>
   <div class="u-m-double-text u-mb-2 u-text-center u-flex-column l-cross-center u-big-text">
     <Content name="Adresse"/>

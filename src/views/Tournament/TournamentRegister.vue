@@ -191,7 +191,7 @@ const handleCloseTravelFormModal = () => {
       class="l-flex-column l-cross-center l-main-center c-card-bg-2 u-p-4 u-m-text"
     >
       <h1 class="u-my-0 u-mx-2">
-        {{ $t('content.views.TournamentRegister.registrationFor', { name: tournament?.name }) }}
+        {{ $t('views.tournamentRegister.registrationFor', { name: tournament?.name }) }}
       </h1>
       <div class="l-flex-row u-mb-1">
         <button
@@ -200,7 +200,7 @@ const handleCloseTravelFormModal = () => {
           type="button"
           @click="create = true"
         >
-          {{ $t('content.views.TournamentRegister.createTeam') }}
+          {{ $t('views.tournamentRegister.createTeam') }}
         </button>
         <button
           :class="{ active: !create }"
@@ -208,7 +208,7 @@ const handleCloseTravelFormModal = () => {
           type="button"
           @click="create = false"
         >
-          {{ $t('content.views.TournamentRegister.joinTeam') }}
+          {{ $t('views.tournamentRegister.joinTeam') }}
         </button>
       </div>
       <form
@@ -227,12 +227,12 @@ const handleCloseTravelFormModal = () => {
               class="l-flex-column"
             >
               <label for="team">
-                {{ $t('content.views.TournamentRegister.teamName') }}
+                {{ $t('views.tournamentRegister.teamName') }}
               </label>
               <input
                 id="team"
                 v-model="register_form.team"
-                :placeholder="$t('content.views.TournamentRegister.teamPlaceholder')"
+                :placeholder="$t('views.tournamentRegister.teamPlaceholder')"
                 type="text"
                 required
                 @blur="v$.team.$touch"
@@ -244,13 +244,13 @@ const handleCloseTravelFormModal = () => {
               class="l-flex-column"
             >
               <label for="name_in_game">
-                {{ $t('content.views.TournamentRegister.inGameName') }}
+                {{ $t('views.tournamentRegister.inGameName') }}
               </label>
               <input
                 id="name_in_game"
                 v-model="register_form.name_in_game"
                 :disabled="register_form.role === 'manager'"
-                :placeholder="$t('content.views.TournamentRegister.nicknamePlaceholder')"
+                :placeholder="$t('views.tournamentRegister.nicknamePlaceholder')"
                 type="text"
                 required
                 @blur="v$.name_in_game.$touch"
@@ -262,7 +262,7 @@ const handleCloseTravelFormModal = () => {
               class="l-flex-column"
             >
               <label for="teams">
-                {{ $t('content.views.TournamentRegister.team') }}
+                {{ $t('views.tournamentRegister.team') }}
               </label>
               <select
                 id="teams"
@@ -270,7 +270,7 @@ const handleCloseTravelFormModal = () => {
                 required
               >
                 <option value="" selected>
-                  {{ $t('content.views.TournamentRegister.selectTeam') }}
+                  {{ $t('views.tournamentRegister.selectTeam') }}
                 </option>
                 <option v-for="(team, idx) in (tournament?.teams as Team[])" :key="idx" :value="team.name" :idx="idx">
                   {{ team.name }}
@@ -283,13 +283,13 @@ const handleCloseTravelFormModal = () => {
               class="l-flex-column"
             >
               <label for="name_in_game">
-                {{ $t('content.views.TournamentRegister.inGameName') }}
+                {{ $t('views.tournamentRegister.inGameName') }}
               </label>
               <input
                 id="name_in_game"
                 v-model="register_form.name_in_game"
                 :disabled="register_form.role === 'manager'"
-                :placeholder="$t('content.views.TournamentRegister.nicknamePlaceholder')"
+                :placeholder="$t('views.tournamentRegister.nicknamePlaceholder')"
                 type="text"
                 required
                 @blur="v$.name_in_game.$touch"
@@ -306,7 +306,7 @@ const handleCloseTravelFormModal = () => {
               class="l-flex-column"
             >
               <label for="pwd">
-                {{ isPrivate ? $t('content.views.TournamentRegister.tournamentPassword') : $t('content.views.TournamentRegister.teamPassword') }}
+                {{ isPrivate ? $t('views.tournamentRegister.tournamentPassword') : $t('views.tournamentRegister.teamPassword') }}
               </label>
               <PasswordInput
                 id="pwd"
@@ -324,7 +324,7 @@ const handleCloseTravelFormModal = () => {
               class="l-flex-column"
             >
               <label for="role">
-                {{ $t('content.views.TournamentRegister.roleInTeam') }}
+                {{ $t('views.tournamentRegister.roleInTeam') }}
               </label>
               <select
                 id="role"
@@ -332,13 +332,13 @@ const handleCloseTravelFormModal = () => {
                 required
               >
                 <option value="player">
-                  {{ $t('content.views.TournamentRegister.rolePlayer') }}
+                  {{ $t('views.tournamentRegister.rolePlayer') }}
                 </option>
                 <option v-if="enableManager" value="manager">
-                  {{ $t('content.views.TournamentRegister.roleManager') }}
+                  {{ $t('views.tournamentRegister.roleManager') }}
                 </option>
                 <option value="substitute">
-                  {{ $t('content.views.TournamentRegister.roleSubstitute') }}
+                  {{ $t('views.tournamentRegister.roleSubstitute') }}
                 </option>
               </select>
             </FormField>
@@ -348,7 +348,7 @@ const handleCloseTravelFormModal = () => {
         <FormField
           :validations="v$.accept_rules"
         >
-          <label for="check"> {{ $t('content.views.TournamentRegister.acceptRulesPrefix') }} <router-link :to="`/tournament/${isPrivate ? 'private/' : ''}${tournament?.id}/rules`" target="_blank" class="c-link">{{ $t('content.views.TournamentRegister.tournamentRules') }} <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/></router-link></label>
+          <label for="check"> {{ $t('views.tournamentRegister.acceptRulesPrefix') }} <router-link :to="`/tournament/${isPrivate ? 'private/' : ''}${tournament?.id}/rules`" target="_blank" class="c-link">{{ $t('views.tournamentRegister.tournamentRules') }} <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/></router-link></label>
           <input
             id="check"
             v-model="register_form.accept_rules"
@@ -368,7 +368,7 @@ const handleCloseTravelFormModal = () => {
           {{
             create ? ((tournament?.validated_teams ?? 0) >= (tournament?.max_team_thresholds[
               tournament?.max_team_thresholds.length - 1
-            ] ?? 0) ? $t('content.views.TournamentRegister.registrationsFull') : $t('content.views.TournamentRegister.createTeam')) : $t('content.views.TournamentRegister.joinTeam')
+            ] ?? 0) ? $t('views.tournamentRegister.registrationsFull') : $t('views.tournamentRegister.createTeam')) : $t('views.tournamentRegister.joinTeam')
           }}
         </button>
       </form>
@@ -378,16 +378,16 @@ const handleCloseTravelFormModal = () => {
   <Modal v-if="open_modal">
     <template #title>
       <div v-if="create">
-        {{ $t('content.views.TournamentRegister.teamRegistrationTitle', { team: register_form.team }) }}
+        {{ $t('views.tournamentRegister.teamRegistrationTitle', { team: register_form.team }) }}
       </div>
       <div v-else>
-        {{ $t('content.views.TournamentRegister.playerRegistrationTitle', { name: register_form.name_in_game, team: selected_team?.name }) }}
+        {{ $t('views.tournamentRegister.playerRegistrationTitle', { name: register_form.name_in_game, team: selected_team?.name }) }}
       </div>
     </template>
     <template #body>
       <div v-if="create">
-        {{ $t('content.views.TournamentRegister.teamRegistered', { team: register_form.team }) }}
-        {{ $t('content.views.TournamentRegister.shareLinkInstruction') }}
+        {{ $t('views.tournamentRegister.teamRegistered', { team: register_form.team }) }}
+        {{ $t('views.tournamentRegister.shareLinkInstruction') }}
         <br><br>
         <a
           :href="`${host}/tournament/${tournament?.id}/register?team=${selected_team?.id}${register_form.password ? `&pwd=${register_form.password}` : ''}`"
@@ -396,12 +396,12 @@ const handleCloseTravelFormModal = () => {
           {{ `${host}/tournament/${tournament?.id}/register?team=${selected_team?.id}${register_form.password ? `&pwd=${register_form.password}` : ''}` }}
         </a>
         <br><br>
-        {{ $t('content.views.TournamentRegister.canPayNow') }}
+        {{ $t('views.tournamentRegister.canPayNow') }}
       </div>
       <div v-else>
-        {{ $t('content.views.TournamentRegister.playerRegistered', { team: selected_team?.name }) }}
+        {{ $t('views.tournamentRegister.playerRegistered', { team: selected_team?.name }) }}
         <br><br>
-        {{ $t('content.views.TournamentRegister.canPayNow') }}
+        {{ $t('views.tournamentRegister.canPayNow') }}
       </div>
     </template>
     <template #buttons>
@@ -409,7 +409,7 @@ const handleCloseTravelFormModal = () => {
         :to="`/tournament/${isPrivate ? 'private/' : ''}${tournament?.id}/teams`"
         class="c-btn-primary"
       >
-        {{ $t('content.views.TournamentRegister.continue') }}
+        {{ $t('views.tournamentRegister.continue') }}
       </router-link>
       <button
         v-if="!isPrivate"
@@ -417,7 +417,7 @@ const handleCloseTravelFormModal = () => {
         type="button"
         @click="payment"
       >
-        {{ $t('content.views.TournamentRegister.continueAndPay') }}
+        {{ $t('views.tournamentRegister.continueAndPay') }}
       </button>
     </template>
   </Modal>
@@ -425,12 +425,12 @@ const handleCloseTravelFormModal = () => {
   <!-- Simple modal with a loading text for the payment -->
   <Modal v-if="modal_payment">
     <template #title>
-      {{ $t('content.views.TournamentRegister.payment') }}
+      {{ $t('views.tournamentRegister.payment') }}
     </template>
     <template #body>
-      {{ $t('content.views.TournamentRegister.addedToCart') }}
+      {{ $t('views.tournamentRegister.addedToCart') }}
       <br><br>
-      {{ $t('content.views.TournamentRegister.findCartFromAccount') }}
+      {{ $t('views.tournamentRegister.findCartFromAccount') }}
     </template>
     <template #buttons>
       <button
@@ -438,13 +438,13 @@ const handleCloseTravelFormModal = () => {
         type="button"
         @click="modal_payment = false"
       >
-        {{ $t('content.views.TournamentRegister.stayOnPage') }}
+        {{ $t('views.tournamentRegister.stayOnPage') }}
       </button>
       <router-link
         class="c-btn-secondary"
         :to="`/cart`"
       >
-        {{ $t('content.views.TournamentRegister.goToCart') }}
+        {{ $t('views.tournamentRegister.goToCart') }}
       </router-link>
     </template>
   </Modal>

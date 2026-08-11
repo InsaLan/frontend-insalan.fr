@@ -57,19 +57,19 @@ const selected_matchs = ref(new Set<number>());
 
 const launch_selected_matchs = async () => {
   if (!has_matchs.value) {
-    addNotification(t('content.components.Tournament.SwissRoundTable.noMatches'), 'info');
+    addNotification(t('components.tournament.swissRoundTable.noMatches'), 'info');
     return;
   }
 
   if (selected_matchs.value.size === 0) {
-    addNotification(t('content.components.Tournament.SwissRoundTable.noMatchSelected'), 'info');
+    addNotification(t('components.tournament.swissRoundTable.noMatchSelected'), 'info');
   }
 
   await launchMatchs([{ id: swiss.id, matchs: Array.from(selected_matchs.value) }], 'swiss');
 
   selected_matchs.value.clear();
 
-  addNotification(t('content.components.Tournament.SwissRoundTable.matchesLaunched'), 'info');
+  addNotification(t('components.tournament.swissRoundTable.matchesLaunched'), 'info');
 };
 
 const modal_open = ref(false);
@@ -83,14 +83,14 @@ const open_modal = (type: string) => {
 const delete_swiss = async () => {
   const res = await deleteSwiss(swiss.id);
 
-  if (res) addNotification(t('content.components.Tournament.SwissRoundTable.roundDeleted'), 'info');
+  if (res) addNotification(t('components.tournament.swissRoundTable.roundDeleted'), 'info');
 
   modal_open.value = false;
 };
 
 const open_launch_round_modal = () => {
   if (!has_matchs.value) {
-    addNotification(t('content.components.Tournament.SwissRoundTable.noMatches'), 'info');
+    addNotification(t('components.tournament.swissRoundTable.noMatches'), 'info');
     return;
   }
 
@@ -115,14 +115,14 @@ const launch_round_matchs = async () => {
 
   await launchMatchs([{ id: swiss.id, round: round_to_launch.value }], 'swiss');
 
-  addNotification(t('content.components.Tournament.SwissRoundTable.roundMatchesLaunched', { round: round_to_launch.value }), 'info');
+  addNotification(t('components.tournament.swissRoundTable.roundMatchesLaunched', { round: round_to_launch.value }), 'info');
 
   modal_open.value = false;
 };
 
 const open_fill_round_modal = () => {
   if (!has_matchs.value) {
-    addNotification(t('content.components.Tournament.SwissRoundTable.noMatches'), 'info');
+    addNotification(t('components.tournament.swissRoundTable.noMatches'), 'info');
     return;
   }
 
@@ -147,7 +147,7 @@ const swiss_fill_round = async () => {
   await swissFillRound(swiss.id, round_to_create.value);
 
   modal_open.value = false;
-  addNotification(t('content.components.Tournament.SwissRoundTable.roundMatchesGenerated', { round: round_to_create.value }), 'info');
+  addNotification(t('components.tournament.swissRoundTable.roundMatchesGenerated', { round: round_to_create.value }), 'info');
 };
 
 </script>
@@ -159,7 +159,7 @@ const swiss_fill_round = async () => {
       <button
         v-if="admin"
         type="button"
-        :title="$t('content.components.Tournament.SwissRoundTable.deleteRound')"
+        :title="$t('components.tournament.swissRoundTable.deleteRound')"
         @click="open_modal('delete_swiss')"
       >
         <fa-awesome-icon
@@ -178,7 +178,7 @@ const swiss_fill_round = async () => {
         class="c-btn-bg-2"
         @click="open_fill_round_modal"
       >
-        {{ $t('content.components.Tournament.SwissRoundTable.generateRound') }}
+        {{ $t('components.tournament.swissRoundTable.generateRound') }}
       </button>
       <button
         type="button"
@@ -186,7 +186,7 @@ const swiss_fill_round = async () => {
         :disabled="!has_matchs"
         @click="open_launch_round_modal"
       >
-        {{ $t('content.components.Tournament.SwissRoundTable.launchRound') }}
+        {{ $t('components.tournament.swissRoundTable.launchRound') }}
       </button>
       <button
         type="button"
@@ -194,7 +194,7 @@ const swiss_fill_round = async () => {
         :disabled="!has_matchs || selected_matchs.size === 0"
         @click="launch_selected_matchs"
       >
-        {{ $t('content.components.Tournament.SwissRoundTable.launchSelectedMatches') }}
+        {{ $t('components.tournament.swissRoundTable.launchSelectedMatches') }}
       </button>
     </div>
 
@@ -207,7 +207,7 @@ const swiss_fill_round = async () => {
         :key="round_idx"
         class="u-text-center u-big-text"
       >
-        {{ $t('content.components.Tournament.SwissRoundTable.round', { round: round_idx }) }}
+        {{ $t('components.tournament.swissRoundTable.round', { round: round_idx }) }}
       </div>
       <div
         v-for="(round_matchs, round_idx) in groupBy(swiss.matchs, 'round_number')"
@@ -260,10 +260,10 @@ const swiss_fill_round = async () => {
     @close="modal_open = false;"
   >
     <template #title>
-      {{ $t('content.components.Tournament.SwissRoundTable.deleteRound') }}
+      {{ $t('components.tournament.swissRoundTable.deleteRound') }}
     </template>
     <template #body>
-      {{ $t('content.components.Tournament.SwissRoundTable.deleteRoundDescription') }}
+      {{ $t('components.tournament.swissRoundTable.deleteRoundDescription') }}
     </template>
     <template #buttons>
       <button
@@ -271,14 +271,14 @@ const swiss_fill_round = async () => {
         type="button"
         @click="modal_open = false;"
       >
-        {{ $t('content.components.Tournament.SwissRoundTable.cancel') }}
+        {{ $t('components.tournament.swissRoundTable.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click="delete_swiss"
       >
-        {{ $t('content.components.Tournament.SwissRoundTable.validate') }}
+        {{ $t('components.tournament.swissRoundTable.validate') }}
       </button>
     </template>
   </Modal>
@@ -288,7 +288,7 @@ const swiss_fill_round = async () => {
     @close="modal_open = false;"
   >
     <template #title>
-      {{ $t('content.components.Tournament.SwissRoundTable.launchRoundMatches') }}
+      {{ $t('components.tournament.swissRoundTable.launchRoundMatches') }}
     </template>
     <template #body>
       <form
@@ -299,14 +299,14 @@ const swiss_fill_round = async () => {
           :validations="v_round$.round_to_launch"
         >
           <label for="round">
-            {{ $t('content.components.Tournament.SwissRoundTable.roundNumber') }}
+            {{ $t('components.tournament.swissRoundTable.roundNumber') }}
           </label>
           <input
             id="round"
             v-model="round_to_launch"
             type="number"
             name="round"
-            :aria-label="$t('content.components.Tournament.SwissRoundTable.roundNumber')"
+            :aria-label="$t('components.tournament.swissRoundTable.roundNumber')"
             @blur="v_round$.round_to_launch.$touch"
           >
         </FormField>
@@ -318,14 +318,14 @@ const swiss_fill_round = async () => {
         type="button"
         @click="modal_open = false;"
       >
-        {{ $t('content.components.Tournament.SwissRoundTable.cancel') }}
+        {{ $t('components.tournament.swissRoundTable.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click="launch_round_matchs"
       >
-        {{ $t('content.components.Tournament.SwissRoundTable.launchRound') }}
+        {{ $t('components.tournament.swissRoundTable.launchRound') }}
       </button>
     </template>
   </Modal>
@@ -335,7 +335,7 @@ const swiss_fill_round = async () => {
     @close="modal_open = false;"
   >
     <template #title>
-      {{ $t('content.components.Tournament.SwissRoundTable.generateRoundMatches') }}
+      {{ $t('components.tournament.swissRoundTable.generateRoundMatches') }}
     </template>
     <template #body>
       <form
@@ -343,22 +343,22 @@ const swiss_fill_round = async () => {
         @submit.prevent="swiss_fill_round"
       >
         <p>
-          {{ $t('content.components.Tournament.SwissRoundTable.generateRoundDescription') }}
+          {{ $t('components.tournament.swissRoundTable.generateRoundDescription') }}
           <br>
-          {{ $t('content.components.Tournament.SwissRoundTable.randomPairingDescription') }}
+          {{ $t('components.tournament.swissRoundTable.randomPairingDescription') }}
         </p>
         <FormField
           :validations="v_create_round$.round_to_create"
         >
           <label for="round">
-            {{ $t('content.components.Tournament.SwissRoundTable.roundNumber') }}
+            {{ $t('components.tournament.swissRoundTable.roundNumber') }}
           </label>
           <input
             id="round"
             v-model="round_to_create"
             type="number"
             name="round"
-            :aria-label="$t('content.components.Tournament.SwissRoundTable.roundNumber')"
+            :aria-label="$t('components.tournament.swissRoundTable.roundNumber')"
             @blur="v_create_round$.round_to_create.$touch"
           >
         </FormField>
@@ -370,14 +370,14 @@ const swiss_fill_round = async () => {
         type="button"
         @click="modal_open = false;"
       >
-        {{ $t('content.components.Tournament.SwissRoundTable.cancel') }}
+        {{ $t('components.tournament.swissRoundTable.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click="swiss_fill_round"
       >
-        {{ $t('content.components.Tournament.SwissRoundTable.generateRound') }}
+        {{ $t('components.tournament.swissRoundTable.generateRound') }}
       </button>
     </template>
   </Modal>

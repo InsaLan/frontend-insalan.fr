@@ -30,23 +30,23 @@ const next_threshold = props.tournament.max_team_thresholds[props.tournament.cur
 <template>
   <section id="teams" class="u-m-main l-flex-column l-gap-4">
     <div v-if="props.tournament?.teams.length === 0" class="u-my-4 u-text-center u-big-text">
-      {{ t('content.components.Tournament.TournamentTeams.noRegisteredTeam') }}
+      {{ t('components.tournament.tournamentTeams.noRegisteredTeam') }}
     </div>
     <div v-if="tourney_teams?.validated_teams.length > 0" class="l-flex-column l-gap-2">
       <div class="u-m-text l-flex-column l-gap-2">
         <h2 class="u-m-0 u-text-center">
-          {{ t('content.components.Tournament.TournamentTeams.validatedTeamsTitle') }}
+          {{ t('components.tournament.tournamentTeams.validatedTeamsTitle') }}
         </h2>
         <div class="u-mx-4 progressbar-height">
           <progress-bar
             :bg-color-level="2"
             :quantity1="n_validated_teams"
             :max1="max_validated_teams"
-            :description1="t('content.components.Tournament.TournamentTeams.validatedTeamsTitle').toLocaleLowerCase()"
+            :description1="t('components.tournament.tournamentTeams.validatedTeamsTitle').toLocaleLowerCase()"
           />
         </div>
         <p>
-          {{ t('content.components.Tournament.TournamentTeams.validatedTeamsDescription') }}
+          {{ t('components.tournament.tournamentTeams.validatedTeamsDescription') }}
         </p>
       </div>
       <div class="l-grid-4 l-gap-2">
@@ -61,18 +61,18 @@ const next_threshold = props.tournament.max_team_thresholds[props.tournament.cur
     <div v-if="tourney_teams?.waiting_validation_teams.length > 0" class="l-flex-column l-gap-2">
       <div class="u-m-text l-flex-column l-gap-2">
         <h2 class="u-text-center u-m-0">
-          {{ t('content.components.Tournament.TournamentTeams.waitingThresholdTitle') }}
+          {{ t('components.tournament.tournamentTeams.waitingThresholdTitle') }}
         </h2>
         <div class="u-mx-4 progressbar-height">
           <progress-bar
             :bg-color-level="2"
             :quantity1="n_waiting_threshold"
             :max1="next_threshold"
-            :description1="t('content.components.Tournament.TournamentTeams.waitingThresholdTitle').toLocaleLowerCase()"
+            :description1="t('components.tournament.tournamentTeams.waitingThresholdTitle').toLocaleLowerCase()"
           />
         </div>
         <!-- eslint-disable-next-line vue/no-v-html -->
-        <p v-html="t('content.components.Tournament.TournamentTeams.waitingThresholdDescription', { count: next_threshold - n_waiting_threshold })"/>
+        <p v-html="t('components.tournament.tournamentTeams.waitingThresholdDescription', { count: next_threshold - n_waiting_threshold })"/>
       </div>
       <div class="l-grid-4 l-gap-2">
         <TeamCard
@@ -85,10 +85,10 @@ const next_threshold = props.tournament.max_team_thresholds[props.tournament.cur
     <div v-if="tourney_teams?.non_validated_teams.length > 0" class="l-flex-column l-gap-2">
       <div class="u-m-text l-flex-column l-gap-2">
         <h2 class="u-text-center u-m-0">
-          {{ t('content.components.Tournament.TournamentTeams.validatingTeamsTitle') }}
+          {{ t('components.tournament.tournamentTeams.validatingTeamsTitle') }}
         </h2>
         <p>
-          {{ t('content.components.Tournament.TournamentTeams.validatingTeamsDescription') }}
+          {{ t('components.tournament.tournamentTeams.validatingTeamsDescription') }}
         </p>
       </div>
       <div class="l-grid-4 l-gap-2">

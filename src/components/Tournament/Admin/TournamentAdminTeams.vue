@@ -50,7 +50,7 @@ const save_seeds = async () => {
   if (!isValid) return;
 
   if (unique.size !== non_zero.length) {
-    addNotification(t('content.components.Tournament.Admin.TournamentAdminTeams.duplicateSeeds'), 'error');
+    addNotification(t('components.tournament.admin.tournamentAdminTeams.duplicateSeeds'), 'error');
     return;
   }
 
@@ -62,7 +62,7 @@ const save_seeds = async () => {
   }, [] as { id: number; seed: number }[]);
 
   if (modified_seed.length === 0) {
-    addNotification(t('content.components.Tournament.Admin.TournamentAdminTeams.noChanges'), 'info');
+    addNotification(t('components.tournament.admin.tournamentAdminTeams.noChanges'), 'info');
     return;
   }
 
@@ -79,7 +79,7 @@ const save_seeds = async () => {
     }
   });
 
-  addNotification(t('content.components.Tournament.Admin.TournamentAdminTeams.seedsUpdated'), 'info');
+  addNotification(t('components.tournament.admin.tournamentAdminTeams.seedsUpdated'), 'info');
 };
 
 </script>
@@ -87,16 +87,16 @@ const save_seeds = async () => {
 <template>
   <section class="u-m-main l-flex-column l-gap-2">
     <h2 class="u-m-0 u-text-center">
-      {{ t('content.components.Tournament.Admin.TournamentAdminTeams.title') }}
+      {{ t('components.tournament.admin.tournamentAdminTeams.title') }}
     </h2>
     <p class="u-m-text">
-      {{ t('content.components.Tournament.Admin.TournamentAdminTeams.seedDescription', { max: tournament.max_team_thresholds[tournament?.current_threshold_index] }) }}
+      {{ t('components.tournament.admin.tournamentAdminTeams.seedDescription', { max: tournament.max_team_thresholds[tournament?.current_threshold_index] }) }}
       <br>
-      {{ t('content.components.Tournament.Admin.TournamentAdminTeams.seedUnique') }}
+      {{ t('components.tournament.admin.tournamentAdminTeams.seedUnique') }}
       <br>
-      {{ t('content.components.Tournament.Admin.TournamentAdminTeams.zeroSeedIgnored') }}
+      {{ t('components.tournament.admin.tournamentAdminTeams.zeroSeedIgnored') }}
       <br><br>
-      {{ t('content.components.Tournament.Admin.TournamentAdminTeams.unseededDescription') }}
+      {{ t('components.tournament.admin.tournamentAdminTeams.unseededDescription') }}
     </p>
     <div class="l-flex-column l-cross-center">
       <div class="c-card-bg-2">
@@ -104,10 +104,10 @@ const save_seeds = async () => {
           <thead>
             <tr>
               <th class="u-big-text">
-                {{ t('content.common.team') }}
+                {{ t('common.team') }}
               </th>
               <th class="u-big-text">
-                {{ t('content.components.Tournament.Admin.TournamentAdminTeams.seed') }}
+                {{ t('components.tournament.admin.tournamentAdminTeams.seed') }}
               </th>
             </tr>
           </thead>
@@ -141,7 +141,7 @@ const save_seeds = async () => {
       </div>
     </div>
     <button type="submit" class="c-btn-secondary" @click="save_seeds">
-      {{ t('content.common.save') }}
+      {{ t('common.save') }}
     </button>
   </section>
 </template>

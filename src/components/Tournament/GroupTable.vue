@@ -123,7 +123,7 @@ const edit_group = async () => {
 
   await editGroup(group.id, group_data_clean);
 
-  addNotification(t('content.components.Tournament.GroupTable.groupSaved'), 'info');
+  addNotification(t('components.tournament.groupTable.groupSaved'), 'info');
   edit_mode.value = false;
 };
 
@@ -135,7 +135,7 @@ const delete_group = async (confirm: boolean) => {
 
   const res = await deleteGroup(group.id);
 
-  if (res) addNotification(t('content.components.Tournament.GroupTable.groupDeleted'), 'info');
+  if (res) addNotification(t('components.tournament.groupTable.groupDeleted'), 'info');
 
   modal_open.value = false;
 };
@@ -169,7 +169,7 @@ watchEffect(() => {
         <button
           v-if="onBack"
           type="button"
-          :title="t('content.components.Tournament.GroupTable.back')"
+          :title="t('components.tournament.groupTable.back')"
           @click="onBack()"
         >
           <fa-awesome-icon
@@ -186,7 +186,7 @@ watchEffect(() => {
         >
           <button
             type="button"
-            :title="t('content.components.Tournament.GroupTable.editGroup')"
+            :title="t('components.tournament.groupTable.editGroup')"
             @click="open_edit"
           >
             <fa-awesome-icon
@@ -196,7 +196,7 @@ watchEffect(() => {
           </button>
           <button
             type="button"
-            :title="t('content.components.Tournament.GroupTable.deleteGroup')"
+            :title="t('components.tournament.groupTable.deleteGroup')"
             @click="delete_group(false)"
           >
             <fa-awesome-icon
@@ -208,7 +208,7 @@ watchEffect(() => {
         <button
           v-if="onDetail"
           type="button"
-          :title="t('content.components.Tournament.GroupTable.details')"
+          :title="t('components.tournament.groupTable.details')"
           @click="onDetail()"
         >
           <fa-awesome-icon
@@ -226,7 +226,7 @@ watchEffect(() => {
         >
         <button
           type="button"
-          :title="t('content.components.Tournament.GroupTable.saveGroup')"
+          :title="t('components.tournament.groupTable.saveGroup')"
           :disabled="v$.$invalid"
           @click="edit_group"
         >
@@ -237,7 +237,7 @@ watchEffect(() => {
         </button>
         <button
           type="button"
-          :title="t('content.components.Tournament.GroupTable.cancelChanges')"
+          :title="t('components.tournament.groupTable.cancelChanges')"
           @click="edit_mode = false; reset()"
         >
           <fa-awesome-icon
@@ -259,19 +259,19 @@ watchEffect(() => {
       <thead>
         <tr>
           <th v-if="editable && isAdmin">
-            {{ t('content.components.Tournament.GroupTable.seed') }}
+            {{ t('components.tournament.groupTable.seed') }}
           </th>
           <th>
-            {{ t('content.components.Tournament.GroupTable.team') }}
+            {{ t('components.tournament.groupTable.team') }}
           </th>
           <th>
-            {{ t('content.components.Tournament.GroupTable.score') }}
+            {{ t('components.tournament.groupTable.score') }}
             <br>
             <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
             <span class="u-normal-text u-regular">
               <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
               <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
-              ({{ t('content.components.Tournament.GroupTable.tiebreak') }})
+              ({{ t('components.tournament.groupTable.tiebreak') }})
             </span>
           </th>
         </tr>
@@ -333,7 +333,7 @@ watchEffect(() => {
                 @blur="v$.teams.$touch"
               >
                 <option :value="0">
-                  {{ t('content.components.Tournament.GroupTable.tbd') }}
+                  {{ t('components.tournament.groupTable.tbd') }}
                 </option>
                 <option
                   v-for="team in validated_teams.filter(
@@ -379,10 +379,10 @@ watchEffect(() => {
     @close="modal_open = false"
   >
     <template #title>
-      {{ t('content.components.Tournament.GroupTable.deleteGroupTitle', { name: group.name }) }}
+      {{ t('components.tournament.groupTable.deleteGroupTitle', { name: group.name }) }}
     </template>
     <template #body>
-      {{ t('content.components.Tournament.GroupTable.deleteGroupDescription', { name: group.name }) }}
+      {{ t('components.tournament.groupTable.deleteGroupDescription', { name: group.name }) }}
     </template>
     <template #buttons>
       <button
@@ -390,14 +390,14 @@ watchEffect(() => {
         type="button"
         @click="modal_open = false"
       >
-        {{ t('content.components.Tournament.GroupTable.cancel') }}
+        {{ t('components.tournament.groupTable.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click="delete_group(true)"
       >
-        {{ t('content.components.Tournament.GroupTable.validate') }}
+        {{ t('components.tournament.groupTable.validate') }}
       </button>
     </template>
   </Modal>

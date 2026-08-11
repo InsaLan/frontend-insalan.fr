@@ -35,9 +35,9 @@ enum OrderType {
 }
 
 const orderTypeToString = {
-  [OrderType.PUBLIC]: 'content.AdminPizza.orderTypes.public',
-  [OrderType.PLAYER]: 'content.AdminPizza.orderTypes.player',
-  [OrderType.STAFF]: 'content.AdminPizza.orderTypes.staff',
+  [OrderType.PUBLIC]: 'adminPizza.orderTypes.public',
+  [OrderType.PLAYER]: 'adminPizza.orderTypes.player',
+  [OrderType.STAFF]: 'adminPizza.orderTypes.staff',
 };
 
 const extend = ref(false);
@@ -86,12 +86,12 @@ const totalPrice = computed(() => {
 const validatePizza = () => {
   // check if payment method is selected
   if (selectedPaymentMethod.value === 'default') {
-    addNotification(t('content.AdminPizza.choosePaymentMethod'), 'error');
+    addNotification(t('adminPizza.choosePaymentMethod'), 'error');
     return;
   }
 
   if (!pseudo.value) {
-    addNotification(t('content.AdminPizza.enterUsername'), 'error');
+    addNotification(t('adminPizza.enterUsername'), 'error');
     return;
   }
 
@@ -105,7 +105,7 @@ const validatePizza = () => {
   });
 
   if (!hasPizza) {
-    addNotification(t('content.AdminPizza.addPizzaError'), 'error');
+    addNotification(t('adminPizza.addPizzaError'), 'error');
     return;
   }
 
@@ -310,7 +310,7 @@ const factorise = (pizzas: number[]) => {
       type="button"
       @click="extend = !extend"
     >
-      {{ t('content.AdminPizza.timeslot', { date: $d(new Date(timeslotList[selectedTimeslotId]?.delivery_time), 'long') }) }}
+      {{ t('adminPizza.timeslot', { date: $d(new Date(timeslotList[selectedTimeslotId]?.delivery_time), 'long') }) }}
       <fa-awesome-icon
         class="c-inline-icon u-mr-0"
         icon="fa-chevron-down"
@@ -333,11 +333,11 @@ const factorise = (pizzas: number[]) => {
           class="c-btn-bg-3 l-grow u-text-left"
           @click="selectedTimeslotId = timeslot.id"
         >
-          {{ t('content.AdminPizza.timeslot', { date: $d(new Date(timeslot.delivery_time), 'long') }) }}
+          {{ t('adminPizza.timeslot', { date: $d(new Date(timeslot.delivery_time), 'long') }) }}
         </button>
         <button
           type="button"
-          :title="t('content.AdminPizza.deleteTimeslot')"
+          :title="t('adminPizza.deleteTimeslot')"
           @click="showDeleteModal = true; selectedDelete = timeslot.id"
         >
           <fa-awesome-icon
@@ -356,13 +356,13 @@ const factorise = (pizzas: number[]) => {
           class="c-inline-icon"
           icon="fa-circle-plus"
         />
-        {{ t('content.AdminPizza.addTimeslot') }}
+        {{ t('adminPizza.addTimeslot') }}
       </button>
     </div>
     <div class="desktop-only-row u-mt-2 l-grow l-gap-2 u-full-width">
       <div class="l-flex-column l-gap-2 c-card-bg-2 u-full-width">
         <h2 class="u-text-center u-m-0">
-          {{ t('content.AdminPizza.newOrder') }}
+          {{ t('adminPizza.newOrder') }}
         </h2>
         <div
           v-if="new Date(timeslotList[selectedTimeslotId]?.end) < new Date()"
@@ -372,11 +372,11 @@ const factorise = (pizzas: number[]) => {
             class="c-inline-icon"
             icon="fa-warning"
           />
-          <strong>{{ t('content.AdminPizza.orderEndPassed') }}</strong>
+          <strong>{{ t('adminPizza.orderEndPassed') }}</strong>
         </div>
         <form id="add_pizza" class="l-flex-column l-gap-2 u-full-width">
-          <label for="searchPizza" class="sr-only">{{ t('content.AdminPizza.searchPizza') }}</label>
-          <input id="searchPizza" v-model="pizzaSearch" type="text" :placeholder="t('content.AdminPizza.searchPizza')"/>
+          <label for="searchPizza" class="sr-only">{{ t('adminPizza.searchPizza') }}</label>
+          <input id="searchPizza" v-model="pizzaSearch" type="text" :placeholder="t('adminPizza.searchPizza')"/>
           <div class="l-flex-column l-gap-1 reasonable-height">
             <div v-for="pizzaId in timeslotList[selectedTimeslotId]?.pizza" :key="pizzaId">
               <div v-if="pizzaList[pizzaId]?.name.toLowerCase().includes(pizzaSearch.toLowerCase())" class="l-flex-row l-cross-center l-gap-1">
@@ -390,18 +390,18 @@ const factorise = (pizzas: number[]) => {
           </div>
           <div class="desktop-only-row l-cross-end u-text-center l-gap-1">
             <div class="l-grow">
-              <label for="paymentMethod">{{ t('content.common.paymentMethod') }}</label>
+              <label for="paymentMethod">{{ t('common.paymentMethod') }}</label>
               <select id="paymentMethod" v-model="selectedPaymentMethod">
                 <option value="default" selected>
-                  {{ t('content.common.choosePaymentMethod') }}
+                  {{ t('common.choosePaymentMethod') }}
                 </option>
                 <option v-for="paymentMethod in PAYMENT_METHODS" :key="paymentMethod" :value="paymentMethod">
-                  {{ t(`content.common.paymentMethods.${paymentMethod}`) }}
+                  {{ t(`common.paymentMethods.${paymentMethod}`) }}
                 </option>
               </select>
             </div>
             <div class="l-grow">
-              <label for="order-type">{{ t('content.AdminPizza.orderType') }}</label>
+              <label for="order-type">{{ t('adminPizza.orderType') }}</label>
               <select id="order-type" v-model="selectedOrderType">
                 <option v-for="type in OrderType" :key="type" :value="type">
                   {{ t(orderTypeToString[type]) }}
@@ -409,21 +409,21 @@ const factorise = (pizzas: number[]) => {
               </select>
             </div>
             <div class="l-grow">
-              <label for="InputPseudo">{{ t('content.common.username') }}</label>
-              <input id="InputPseudo" v-model="pseudo" type="text" :placeholder="t('content.common.username')"/>
+              <label for="InputPseudo">{{ t('common.username') }}</label>
+              <input id="InputPseudo" v-model="pseudo" type="text" :placeholder="t('common.username')"/>
             </div>
             <button type="submit" class="c-btn-secondary" @click.prevent="validatePizza">
-              {{ t('content.AdminPizza.add') }}
+              {{ t('adminPizza.add') }}
             </button>
           </div>
         </form>
       </div>
       <div class="l-flex-column l-gap-2 c-card-bg-2 u-full-width">
         <h2 class="u-text-center u-m-0">
-          {{ t('content.AdminPizza.orderCount', { count: pizzaCount, max: timeslotList[selectedTimeslotId]?.pizza_max }) }}
+          {{ t('adminPizza.orderCount', { count: pizzaCount, max: timeslotList[selectedTimeslotId]?.pizza_max }) }}
           <button
             type="button"
-            :title="t('content.AdminPizza.exportOrders')"
+            :title="t('adminPizza.exportOrders')"
             @click="exportOrders(selectedTimeslotId)"
           >
             <fa-awesome-icon
@@ -440,19 +440,19 @@ const factorise = (pizzas: number[]) => {
             class="c-inline-icon"
             icon="fa-warning"
           />
-          <strong>{{ t('content.AdminPizza.maxPizzasExceeded') }}</strong>
+          <strong>{{ t('adminPizza.maxPizzasExceeded') }}</strong>
         </div>
-        <label for="searchPizza" class="sr-only">{{ t('content.AdminPizza.searchOrder') }}</label>
-        <input id="searchPizza" v-model="orderSearch" type="text" :placeholder="t('content.AdminPizza.searchOrder')"/>
+        <label for="searchPizza" class="sr-only">{{ t('adminPizza.searchOrder') }}</label>
+        <input id="searchPizza" v-model="orderSearch" type="text" :placeholder="t('adminPizza.searchOrder')"/>
         <div class="l-flex-row u-text-center u-big-text c-card-bg-3 u-full-width u-bold">
           <div class="l-grow">
-            {{ t('content.common.username') }}
+            {{ t('common.username') }}
           </div>
           <div class="l-grow">
-            {{ t('content.AdminPizza.pizza', 2) }}
+            {{ t('adminPizza.pizza', 2) }}
           </div>
           <div class="l-grow">
-            {{ t('content.AdminPizza.retrieved') }}
+            {{ t('adminPizza.retrieved') }}
           </div>
         </div>
         <div class="l-flex-column l-gap-1 u-full-width reasonable-height">
@@ -484,16 +484,16 @@ const factorise = (pizzas: number[]) => {
         class="c-inline-icon"
         icon="fa-circle-plus"
       />
-      {{ t('content.AdminPizza.addTimeslot') }}
+      {{ t('adminPizza.addTimeslot') }}
     </button>
     <div class="u-m-text u-my-2 u-text-center u-big-text">
-      {{ t('content.AdminPizza.noTimeslot') }}
+      {{ t('adminPizza.noTimeslot') }}
     </div>
   </div>
 
   <Modal v-if="showModal" @close="showModal = false">
     <template #title>
-      {{ t('content.AdminPizza.createTimeslot') }}
+      {{ t('adminPizza.createTimeslot') }}
     </template>
     <template #body>
       <form id="patch-user" class="l-grid-3" @submit.prevent="validateModal">
@@ -502,13 +502,13 @@ const factorise = (pizzas: number[]) => {
             :validations="v$_create.delivery_time"
           >
             <label for="delivery_time">
-              {{ t('content.AdminPizza.deliveryDate') }}
+              {{ t('adminPizza.deliveryDate') }}
             </label>
             <input
               id="delivery_time"
               v-model="data_create.delivery_time"
-              :aria-label="t('content.AdminPizza.deliveryDate')"
-              :placeholder="t('content.AdminPizza.datePlaceholder')"
+              :aria-label="t('adminPizza.deliveryDate')"
+              :placeholder="t('adminPizza.datePlaceholder')"
               required
               type="text"
               @blur="v$_create.delivery_time.$touch"
@@ -518,13 +518,13 @@ const factorise = (pizzas: number[]) => {
             :validations="v$_create.start"
           >
             <label for="start">
-              {{ t('content.AdminPizza.orderStart') }}
+              {{ t('adminPizza.orderStart') }}
             </label>
             <input
               id="start"
               v-model="data_create.start"
-              :aria-label="t('content.AdminPizza.orderStart')"
-              :placeholder="t('content.AdminPizza.datePlaceholder')"
+              :aria-label="t('adminPizza.orderStart')"
+              :placeholder="t('adminPizza.datePlaceholder')"
               required
               type="text"
               @blur="v$_create.delivery_time.$touch"
@@ -534,13 +534,13 @@ const factorise = (pizzas: number[]) => {
             :validations="v$_create.end"
           >
             <label for="end">
-              {{ t('content.AdminPizza.orderEnd') }}
+              {{ t('adminPizza.orderEnd') }}
             </label>
             <input
               id="end"
               v-model="data_create.end"
-              :aria-label="t('content.AdminPizza.orderEnd')"
-              :placeholder="t('content.AdminPizza.datePlaceholder')"
+              :aria-label="t('adminPizza.orderEnd')"
+              :placeholder="t('adminPizza.datePlaceholder')"
               required
               type="text"
               @blur="v$_create.delivery_time.$touch"
@@ -552,12 +552,12 @@ const factorise = (pizzas: number[]) => {
             :validations="v$_create.player_price"
           >
             <label for="player_price">
-              {{ t('content.AdminPizza.playerPrice') }}
+              {{ t('adminPizza.playerPrice') }}
             </label>
             <input
               id="player_price"
               v-model="data_create.player_price"
-              :aria-label="t('content.AdminPizza.playerPrice')"
+              :aria-label="t('adminPizza.playerPrice')"
               placeholder="0"
               required
               type="number"
@@ -568,12 +568,12 @@ const factorise = (pizzas: number[]) => {
             :validations="v$_create.staff_price"
           >
             <label for="staff_price">
-              {{ t('content.AdminPizza.staffPrice') }}
+              {{ t('adminPizza.staffPrice') }}
             </label>
             <input
               id="staff_price"
               v-model="data_create.staff_price"
-              :aria-label="t('content.AdminPizza.staffPrice')"
+              :aria-label="t('adminPizza.staffPrice')"
               placeholder="0"
               required
               type="number"
@@ -584,12 +584,12 @@ const factorise = (pizzas: number[]) => {
             :validations="v$_create.external_price"
           >
             <label for="external_price">
-              {{ t('content.AdminPizza.externalPrice') }}
+              {{ t('adminPizza.externalPrice') }}
             </label>
             <input
               id="external_price"
               v-model="data_create.external_price"
-              :aria-label="t('content.AdminPizza.externalPrice')"
+              :aria-label="t('adminPizza.externalPrice')"
               placeholder="0"
               required
               type="number"
@@ -602,12 +602,12 @@ const factorise = (pizzas: number[]) => {
             :validations="v$_create.pizza_max"
           >
             <label for="pizza_max">
-              {{ t('content.AdminPizza.maxPizzas') }}
+              {{ t('adminPizza.maxPizzas') }}
             </label>
             <input
               id="pizza_max"
               v-model="data_create.pizza_max"
-              :aria-label="t('content.AdminPizza.maxPizzas')"
+              :aria-label="t('adminPizza.maxPizzas')"
               placeholder="0"
               required
               type="number"
@@ -618,7 +618,7 @@ const factorise = (pizzas: number[]) => {
             :validations="v$_create.pizza_selection"
           >
             <label for="pizza_selection">
-              {{ t('content.AdminPizza.pizzaSelection') }}
+              {{ t('adminPizza.pizzaSelection') }}
             </label>
             <multiselect
               id="pizza_selection"
@@ -628,7 +628,7 @@ const factorise = (pizzas: number[]) => {
               :close-on-select="false"
               :clear-on-select="false"
               :preserve-search="true"
-              :placeholder="t('content.AdminPizza.pizzaSelection')"
+              :placeholder="t('adminPizza.pizzaSelection')"
               label="name"
               track-by="id"
               :preselect-first="false"
@@ -646,24 +646,24 @@ const factorise = (pizzas: number[]) => {
         type="button"
         @click="showModal = false"
       >
-        {{ t('content.common.cancel') }}
+        {{ t('common.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="validateModal"
       >
-        {{ t('content.common.validate') }}
+        {{ t('common.validate') }}
       </button>
     </template>
   </Modal>
 
   <Modal v-if="showDeleteModal" @close="showDeleteModal = false">
     <template #title>
-      {{ t('content.AdminPizza.deleteTimeslotTitle') }}
+      {{ t('adminPizza.deleteTimeslotTitle') }}
     </template>
     <template #body>
-      <i18n-t keypath="content.AdminPizza.deleteTimeslotQuestion" tag="body">
+      <i18n-t keypath="adminPizza.deleteTimeslotQuestion" tag="body">
         <template #date>
           <strong>{{ $d(new Date(timeslotList[selectedDelete].delivery_time), 'long') }}</strong>
         </template>
@@ -673,7 +673,7 @@ const factorise = (pizzas: number[]) => {
       </i18n-t>
       <br/>
       <br/>
-      <em>{{ $t('content.AdminPizza.deleteTimeslotWarning') }}</em>
+      <em>{{ $t('adminPizza.deleteTimeslotWarning') }}</em>
     </template>
     <template #buttons>
       <button
@@ -681,7 +681,7 @@ const factorise = (pizzas: number[]) => {
         type="button"
         @click="showDeleteModal = false"
       >
-        {{ t('content.common.cancel') }}
+        {{ t('common.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
@@ -697,23 +697,23 @@ const factorise = (pizzas: number[]) => {
           deleteTimeslot(timeslotList[selectedDelete].id);
         "
       >
-        {{ t('content.common.validate') }}
+        {{ t('common.validate') }}
       </button>
     </template>
   </Modal>
 
   <Modal v-if="showConfirmationModal" @close="showConfirmationModal = false">
     <template #title>
-      {{ t('content.AdminPizza.orderSummary') }}
+      {{ t('adminPizza.orderSummary') }}
     </template>
     <template #body>
-      <p>{{ t('content.common.username') }}{{ t('content.common.colon') }}<strong>{{ pseudo }}</strong> </p>
-      <p>{{ t('content.AdminPizza.orderType') }}{{ t('content.common.colon') }}<strong>{{ t(orderTypeToString[selectedOrderType]) }}</strong></p>
+      <p>{{ t('common.username') }}{{ t('common.colon') }}<strong>{{ pseudo }}</strong> </p>
+      <p>{{ t('adminPizza.orderType') }}{{ t('common.colon') }}<strong>{{ t(orderTypeToString[selectedOrderType]) }}</strong></p>
       <p v-if="Object.values(pizzaQuantities).reduce((acc, val) => acc + val) <= 1">
-        {{ t('content.AdminPizza.pizza') }}{{ t('content.common.colon') }}<strong>{{ pizzaList[Number(Object.keys(pizzaQuantities)[0])]?.name }}</strong>
+        {{ t('adminPizza.pizza') }}{{ t('common.colon') }}<strong>{{ pizzaList[Number(Object.keys(pizzaQuantities)[0])]?.name }}</strong>
       </p>
       <div v-else>
-        {{ t('content.AdminPizza.pizza', 2) }}{{ t('content.common.colon') }}
+        {{ t('adminPizza.pizza', 2) }}{{ t('common.colon') }}
         <ul>
           <li v-for="(quantity, pizzaId) in pizzaQuantities" :key="pizzaId">
             <strong>{{ quantity }} x {{ pizzaList[pizzaId].name }}</strong>
@@ -721,10 +721,10 @@ const factorise = (pizzas: number[]) => {
         </ul>
       </div>
       <p>
-        {{ t('content.common.paymentMethod') }}{{ t('content.common.colon') }}
-        <strong>{{ t(`content.common.paymentMethods.${selectedPaymentMethod as Payment}`) }}</strong>
+        {{ t('common.paymentMethod') }}{{ t('common.colon') }}
+        <strong>{{ t(`common.paymentMethods.${selectedPaymentMethod as Payment}`) }}</strong>
       </p>
-      <p>{{ t('content.AdminPizza.total') }}{{ t('content.common.colon') }}<strong>{{ totalPrice }} €</strong></p>
+      <p>{{ t('adminPizza.total') }}{{ t('common.colon') }}<strong>{{ totalPrice }} €</strong></p>
     </template>
     <template #buttons>
       <button
@@ -732,14 +732,14 @@ const factorise = (pizzas: number[]) => {
         class="c-btn-bg-3"
         @click="showConfirmationModal = false"
       >
-        {{ t('content.common.cancel') }}
+        {{ t('common.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="sendOrder"
       >
-        {{ t('content.common.validate') }}
+        {{ t('common.validate') }}
       </button>
     </template>
   </Modal>
