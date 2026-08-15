@@ -46,7 +46,7 @@ const maxY = computed(() => {
 });
 
 const getCoordinates = (index: number) => {
-  const x = (index % (maxX.value - minX.value + 1)) + 2;
+  const x = (index % (maxX.value - minX.value + 1)) + minX.value;
   const y = Math.floor(index / (maxX.value - minX.value + 1)) + minY.value;
   return [x, y] as [number, number];
 };
