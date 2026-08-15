@@ -8,6 +8,7 @@ import placeholder from '@/assets/images/empty_pp.webp';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
+import MeTournamentCard from '@/components/Tournament/MeTournamentCard.vue';
 import TournamentMeCard from '@/components/TournamentMeCard.vue';
 import type { PlayerRegistrationDeref, RegistrationDeref } from '@/models/registration';
 import type { EventTournament } from '@/models/tournament';
@@ -25,7 +26,7 @@ const {
   user, role, inscriptions, ongoing_match, cart,
 } = storeToRefs(userStore);
 const { fetch_user_inscription_full, patch_user } = userStore;
-const { addRegistrationToCart, get_ticket_pdf } = tournamentStore;
+const { addRegistrationToCart } = tournamentStore;
 
 await fetch_user_inscription_full();
 
@@ -214,58 +215,18 @@ const editField = (field: string) => {
           Édition Actuelle
         </h2>
         <div class="l-grid-2 l-gap-2">
-          <div
+          <MeTournamentCard
             v-for="inscription in (inscriptions.ongoing as [string, PlayerRegistrationDeref | RegistrationDeref][])"
             :key="inscription[1].id"
-            class="c-card-bg-2 u-p-0 u-pb-2 l-flex-column l-main-center u-full-width u-full-height"
-          >
-            <div class="l-grow">
-              <img
-                :src="inscription[1].team.tournament.logo"
-                alt="image du tournoi"
-                class="c-thumbnail"
-              />
-            </div>
-            <button
-              v-if="inscription[1].ticket"
-              type="button"
-              class="c-text-btn-secondary u-m-0 u-mx-2 u-color-text-2"
-              @click="inscription[1].ticket && get_ticket_pdf(inscription[1].ticket)"
-            >
-              Télecharger son billet
-            </button>
-            <router-link
-              class="c-text-btn-secondary u-m-0 u-mx-2 u-color-text-2"
-              :to="`/tournament/${inscription[1].team.tournament.id}/rules`"
-            >
-              Règlement du tournoi
-            </router-link>
-            <strong class="u-big-text u-mx-2">
-              {{ inscription[1].team.name }}
-            </strong>
-            <div class="l-flex-row l-grow l-main-center l-cross-center l-gap-2 u-mx-2">
-              <router-link
-                class="c-btn-primary"
-                :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
-              >
-                {{ (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
-              </router-link>
-              <button
-                v-if="(inscriptions.unpaid as Record<string, boolean>)[inscription[1].id]"
-                type="button"
-                class="c-btn-secondary"
-                @click.prevent="
-                  (
-                    modal_payment = true,
-                    addRegistrationToCart(
-                      inscription[1].team.tournament as unknown as EventTournament, inscription[0],
-                    )
-                  )"
-              >
-                Terminer l'inscription
-              </button>
-            </div>
-          </div>
+            :inscription
+            current
+            @finish-inscription="(
+              modal_payment = true,
+              addRegistrationToCart(
+                inscription[1].team.tournament as unknown as EventTournament, inscription[0],
+              )
+            )"
+          />
         </div>
       </div>
       <div v-if="(inscriptions.past as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="u-mt-2">
@@ -273,32 +234,11 @@ const editField = (field: string) => {
           Autres Éditions
         </h2>
         <div class="l-grid-2 l-gap-2">
-          <div
+          <MeTournamentCard
             v-for="inscription in (inscriptions.past as [string, PlayerRegistrationDeref | RegistrationDeref][])"
             :key="inscription[1].id"
-            class="c-card-bg-2 u-p-0 u-pb-2 l-flex-column l-grow l-main-center u-full-width"
-          >
-            <img
-              :src="inscription[1].team.tournament.logo"
-              alt="image du tournoi"
-              class="c-thumbnail"
-            />
-            <router-link
-              class="c-text-btn-secondary u-m-0 u-mx-2 u-color-text-2"
-              :to="`/tournament/${inscription[1].team.tournament.id}/rules`"
-            >
-              Règlement du tournoi
-            </router-link>
-            <div class="u-big-text u-mx-2">
-              {{ inscription[1].team.tournament.event.name }} - <strong>{{ inscription[1].team.name }}</strong>
-            </div>
-            <router-link
-              class="c-btn-primary"
-              :to="`/tournament/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
-            >
-              {{ (inscription[1].team.players[0] === user.id || inscription[0] === 'manager') ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
-            </router-link>
-          </div>
+            :inscription
+          />
         </div>
       </div>
       <div v-if="(inscriptions.private_regs as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="u-mt-2">
@@ -306,34 +246,14 @@ const editField = (field: string) => {
           Tournois secondaires
         </h2>
         <div class="l-grid-2 l-gap-2">
-          <div
+          <MeTournamentCard
             v-for="inscription in (
               inscriptions.private_regs as [string, PlayerRegistrationDeref | RegistrationDeref][]
             )"
             :key="inscription[1].id"
-            class="c-card-bg-2 u-p-0 u-pb-2 l-flex-column l-grow l-main-center u-full-width"
-          >
-            <img
-              :src="inscription[1].team.tournament.logo"
-              alt="image du tournoi"
-              class="c-thumbnail"
-            />
-            <router-link
-              class="c-text-btn-secondary u-m-0 u-mx-2 u-color-text-2"
-              :to="`/tournament/private/${inscription[1].team.tournament.id}/rules`"
-            >
-              Règlement du tournoi
-            </router-link>
-            <strong class="u-big-text u-mx-2">
-              {{ inscription[1].team.tournament.name }}
-            </strong>
-            <router-link
-              class="c-btn-primary"
-              :to="`/tournament/private/${inscription[1].team.tournament.id}/team/${inscription[1].team.id}`"
-            >
-              {{ (inscription[1].team.players[0] === user.id || inscription[0] === "manager") ? 'Gérer l\'équipe' : 'Voir l\'équipe' }}
-            </router-link>
-          </div>
+            :inscription
+            private
+          />
         </div>
       </div>
     </div>
