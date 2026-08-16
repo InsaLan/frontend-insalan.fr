@@ -4,9 +4,9 @@ import Footer from '@/components/Footer.vue';
 import NameConfirmationModal from '@/components/NameConfirmationModal.vue';
 import Navigation from '@/components/Navigation.vue';
 import Notification from '@/components/Notification.vue';
+import { initializeLocale } from '@/i18n';
 import { useContentStore } from '@/stores/content.store';
 import { useUserStore } from '@/stores/user.store';
-import { initializeLocale } from '@/i18n';
 
 const contentStore = useContentStore();
 const { fetchStatic } = contentStore;
