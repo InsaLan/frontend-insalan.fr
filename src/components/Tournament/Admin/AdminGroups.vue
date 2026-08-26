@@ -112,112 +112,95 @@ const delete_groups_matchs = async () => {
 
 <template>
   <div
-    class="m-4 flex gap-16"
+    class="l-flex-row l-wrap l-main-center l-cross-center l-gap-2"
   >
-    <div
-      class="flex w-1/2 flex-col justify-end gap-8 md:flex-row"
+    <button
+      type="button"
+      class="c-btn-bg-2"
+      @click="open_modal('delete_groups')"
     >
-      <button
-        type="button"
-        class="rounded bg-red-500 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-        @click="open_modal('delete_groups')"
-      >
-        Supprimer les poules
-      </button>
-
-      <button
-        type="button"
-        class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out hover:ring hover:ring-pink-500"
-        :class="[has_matchs ? 'bg-red-500' : 'bg-blue-800']"
-        @click="open_modal(has_matchs ? 'delete_matchs' : 'create_matchs')"
-      >
-        {{ has_matchs ? 'Supprimer' : 'Créer' }} les matchs
-      </button>
-    </div>
-    <div
-      class="flex w-1/2 flex-col gap-8 md:flex-row"
+      Supprimer les poules
+    </button>
+    <button
+      type="button"
+      class="c-btn-bg-2"
+      @click="open_modal(has_matchs ? 'delete_matchs' : 'create_matchs')"
     >
-      <button
-        type="button"
-        class="rounded bg-blue-800 p-2 font-bold transition duration-150 ease-in-out"
-        :class="[!has_matchs ? '-z-10 opacity-60' : 'hover:ring hover:ring-pink-500']"
-        :disabled="!has_matchs"
-        @click="open_launch_round_modal"
-      >
-        Lancer un tour
-      </button>
-
-      <button
-        type="button"
-        class="content-center rounded bg-blue-800 p-2 text-center font-bold transition duration-150 ease-in-out "
-        :class="[has_matchs ? 'hover:ring hover:ring-pink-500' : '-z-10 opacity-60']"
-        @click="show_groups_matchs = true"
-      >
-        Gérer les matchs
-        <fa-awesome-icon
-          icon="fa-solid fa-arrow-right"
-        />
-      </button>
-    </div>
+      {{ has_matchs ? 'Supprimer' : 'Créer' }} les matchs
+    </button>
+    <button
+      type="button"
+      class="c-btn-bg-2"
+      :disabled="!has_matchs"
+      @click="open_launch_round_modal"
+    >
+      Lancer un tour
+    </button>
+    <button
+      type="button"
+      class="c-btn-bg-2"
+      @click="show_groups_matchs = true"
+    >
+      Gérer les matchs
+      <fa-awesome-icon
+        icon="fa-chevron-right"
+        class="c-inline-icon u-mr-0"
+      />
+    </button>
   </div>
 
   <div
-    class="m-4 mt-0 flex flex-wrap justify-center gap-6 md:m-6 md:mt-0 lg:m-8 lg:mt-0 lg:gap-8 2xl:m-9 2xl:mt-0 2xl:gap-10"
+    class="l-flex-row l-wrap l-main-center l-gap-2"
   >
     <GroupTable
       v-for="group in groups"
       :key="group.id"
       :group="group"
       :editable="true"
-      class="w-[27rem] shrink"
     />
   </div>
 
-  <Modal v-if="modal_open && modal_type === 'delete_groups'">
+  <Modal
+    v-if="modal_open && modal_type === 'delete_groups'"
+    @close="modal_open = false;"
+  >
     <template #title>
-      <h3>
-        Supprimer les poules
-      </h3>
+      Suppression des poules
     </template>
     <template #body>
       Les poules vont être supprimées ainsi que les matchs qui leurs sont liés.
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-        type="button"
-        @click="delete_groups"
-      >
-        Valider
-      </button>
-      <button
-        class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="modal_open = false;"
       >
         Annuler
       </button>
+      <button
+        class="c-btn-secondary"
+        type="button"
+        @click="delete_groups"
+      >
+        Valider
+      </button>
     </template>
   </Modal>
 
-  <Modal v-if="modal_open && modal_type === 'create_matchs'">
-    <template #icon>
-      <div/>
-    </template>
+  <Modal
+    v-if="modal_open && modal_type === 'create_matchs'"
+    @close="modal_open = false;"
+  >
     <template #title>
-      <h3>
-        Créer les matchs
-      </h3>
+      Créer les matchs
     </template>
     <template #body>
-      Les matchs des poules vont être créés.
-
-      <div
-        class="flex flex-col gap-4"
-      >
-        <div
-          class="flex items-center gap-4 pt-2"
-        >
+      <p>
+        Les matchs des poules vont être créés.<br><br>
+      </p>
+      <form @submit.prevent="create_group_matchs">
+        <FormField :validations="v_round$">
           <label for="bo_type">
             Type de BO
           </label>
@@ -243,8 +226,8 @@ const delete_groups_matchs = async () => {
               {{ `PA ${value}` }}
             </option>
           </select>
-        </div>
-        <div>
+        </FormField>
+        <FormField :validations="v_round$">
           <label for="round_count">
             Nombre de tours
           </label>
@@ -252,74 +235,70 @@ const delete_groups_matchs = async () => {
             id="round_count"
             v-model="round_count"
             type="number"
-            class="ml-2 w-14 bg-inherit text-right"
             aria-label="Number of rounds"
           >
-        </div>
-      </div>
+        </FormField>
+      </form>
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+        class="c-btn-bg-3"
+        type="button"
+        @click="modal_open = false;"
+      >
+        Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
         type="button"
         @click="create_group_matchs"
       >
         Valider
       </button>
+    </template>
+  </Modal>
+
+  <Modal
+    v-if="modal_open && modal_type === 'delete_matchs'"
+    @close="modal_open = false;"
+  >
+    <template #title>
+      Supprimer les matchs
+    </template>
+    <template #body>
+      Les matchs des poules vont être supprimés si aucun match n'est en cours ou terminé.
+    </template>
+    <template #buttons>
       <button
-        class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="modal_open = false;"
       >
         Annuler
       </button>
-    </template>
-  </Modal>
-
-  <Modal v-if="modal_open && modal_type === 'delete_matchs'">
-    <template #title>
-      <h3>
-        Supprimer les matchs
-      </h3>
-    </template>
-    <template #body>
-      Les matchs des poules vont êtres supprimés si aucun match n'est en cours ou terminés.
-    </template>
-    <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+        class="c-btn-secondary"
         type="button"
         @click="delete_groups_matchs"
       >
         Valider
       </button>
-      <button
-        class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
-        type="button"
-        @click="modal_open = false;"
-      >
-        Annuler
-      </button>
     </template>
   </Modal>
 
-  <Modal v-if="modal_open && modal_type === 'launch_round'">
-    <template #icon>
-      <div/>
-    </template>
+  <Modal
+    v-if="modal_open && modal_type === 'launch_round'"
+    @close="modal_open = false;"
+  >
     <template #title>
-      <h3 class="text-white-900 text-base font-semibold leading-6">
-        Lancer les matchs d'un tour
-      </h3>
+      Lancer les matchs d'un tour
     </template>
     <template #body>
       <form
         id="create_groups_form"
-        class="m-4 flex flex-col gap-4"
         @submit.prevent="launch_round_matchs"
       >
         <FormField
-          v-slot="context"
           :validations="v_round$.round"
         >
           <label for="round">
@@ -331,8 +310,6 @@ const delete_groups_matchs = async () => {
             type="number"
             name="round"
             aria-label="Round number"
-            class="ml-2 bg-inherit"
-            :class="{ error: context.invalid }"
             @blur="v_round$.round.$touch"
           >
         </FormField>
@@ -340,18 +317,18 @@ const delete_groups_matchs = async () => {
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-        type="button"
-        @click="launch_round_matchs"
-      >
-        Lancer le tour
-      </button>
-      <button
-        class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="modal_open = false;"
       >
         Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
+        type="button"
+        @click="launch_round_matchs"
+      >
+        Lancer le tour
       </button>
     </template>
   </Modal>

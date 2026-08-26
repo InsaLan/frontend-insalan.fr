@@ -31,28 +31,25 @@ await fetchNextTimeslots();
 </script>
 
 <template>
-  <h1 class="title y-2 text-white">
-    Restauration
-  </h1>
-  <Content class="mb-8 flex flex-col gap-8 lg:px-24 [&_p]:indent-12" name="Restauration"/>
-  <section v-if="sortedTimeslotList.length" class="mx-4 mb-8 lg:px-24">
-    <h1 class="title mb-8 text-white">
+  <Content class="u-m-text u-mb-4 l-flex-column l-gap-4 u-text-indent" name="Restauration"/>
+  <section v-if="sortedTimeslotList.length" class="u-m-text u-mb-4">
+    <h1 class="u-mb-4">
       Prochains créneaux
     </h1>
     <p>
       Les prochains créneaux sont :
     </p>
-    <ul class="list-disc">
+    <ul>
       <li v-for="timeslot in sortedTimeslotList" :key="timeslot.id" class="ml-16">
         Créneau {{ frenchFormatFromDate(new Date(timeslot.delivery_time)) }}
       </li>
     </ul>
   </section>
   <section>
-    <h1 class="title mb-8 text-white">
+    <h1 class="u-mb-4">
       Pizzas {{ sortedTimeslotList.length ? 'du Prochain Créneau' : '' }}
     </h1>
-    <div class="mb-12 grid w-full grid-cols-1 gap-4 px-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+    <div class="u-full-width l-gap-2 u-p-main l-grid-3">
       <PizzaCard
         v-for="pizza in pizzas"
         :id="pizza.id"

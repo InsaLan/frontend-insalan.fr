@@ -7,7 +7,11 @@ import { useTournamentStore } from '@/stores/tournament.store';
 
 const { group } = defineProps<{
   group: Group;
+  onBack?: () => void;
+  admin?: boolean;
 }>();
+
+const selectModel = defineModel<Set<number>>();
 
 const { get_matchs_per_round } = useTournamentStore();
 </script>
@@ -15,37 +19,53 @@ const { get_matchs_per_round } = useTournamentStore();
 <template>
   <section
     id="group_detail"
+    class="desktop-row l-gap-2 u-full-width"
   >
-    <div class="flex flex-col justify-center gap-10 lg:flex-row lg:gap-3">
-      <div class="flex lg:w-1/2">
-        <GroupTable
-          :group="group"
-          class="h-min grow"
-        />
-      </div>
+    <div class="l-flex-column l-cross-center">
+      <GroupTable
+        :group="group"
+        :on-back="onBack"
+      />
+    </div>
+    <div
+      class="l-flex-row l-gap-2 l-overflow-auto u-full-width"
+    >
       <div
-        class="flex flex-col lg:w-1/2"
+        v-for="matchs in get_matchs_per_round(group.matchs ?? []).reverse()"
+        :key="matchs[0].id"
+        class="c-frame u-p-1 l-flex-column l-gap-1 u-full-width"
       >
-        <div
-          v-for="matchs in get_matchs_per_round(group.matchs ?? []).reverse()"
-          :key="matchs[0].id"
-        >
-          <h1 class="text-center text-3xl font-black">
-            Tour {{ matchs[0].round_number }}
-          </h1>
-          <div
-            class="flex flex-wrap items-center justify-center"
-          >
-            <MatchCard
-              v-for="match in matchs"
-              :key="match.id"
-              :match="match"
-              :match-type="{ type: MatchTypeEnum.GROUP, id: match.group }"
-              class="w-[21rem] shrink"
-            />
-          </div>
+        <div class="u-text-center u-big-text">
+          Tour {{ matchs[0].round_number }}
         </div>
+        <MatchCard
+          v-for="match in matchs"
+          :key="match.id"
+          v-model="selectModel"
+          :match="match"
+          :match-type="{ type: MatchTypeEnum.GROUP, id: match.group }"
+          :editable="admin"
+          :selectable="admin"
+        />
       </div>
     </div>
   </section>
 </template>
+
+<style scoped>
+.desktop-row {
+  display: flex;
+}
+
+@media (max-width: 50rem) {
+  .desktop-row {
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 50rem) {
+  .desktop-row {
+    flex-direction: row;
+  }
+}
+</style>

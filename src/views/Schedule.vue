@@ -11,7 +11,7 @@ await fetchOngoingEvents();
 </script>
 
 <template>
-  <div class="m-5 overflow-auto overscroll-y-auto">
+  <div class="u-mx-2 l-overflow-auto">
     <Planning
       :link="ongoingEvents?.[0]?.planning_file"
     />

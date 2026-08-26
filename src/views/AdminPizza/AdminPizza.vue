@@ -34,8 +34,8 @@ enum OrderType {
 }
 
 const orderTypeToString = {
-  [OrderType.PUBLIC]: 'Publique',
-  [OrderType.PLAYER]: 'Joueur',
+  [OrderType.PUBLIC]: 'Public',
+  [OrderType.PLAYER]: 'Joueur·euse',
   [OrderType.STAFF]: 'Staff',
 };
 
@@ -296,118 +296,101 @@ const factorise = (pizzas: number[]) => {
 };
 </script>
 <template>
-  <div v-if="timeslotList && Object.keys(timeslotList).length > 0" class="flex flex-1 flex-col">
+  <div v-if="timeslotList && Object.keys(timeslotList).length > 0" class="l-flex-column l-cross-center u-px-2 u-pb-2">
     <div
-      class="absolute z-10 flex w-screen rounded-xl text-center text-3xl hover:cursor-pointer"
-      :class="{ 'bg-black': extend }"
+      v-if="extend"
+      class="backdrop l-absolute-position"
+      @click="extend = false"
+      @keyup="extend = false"
+    />
+
+    <button
+      class="c-btn-bg-2"
+      type="button"
+      @click="extend = !extend"
+    >
+      Créneau {{ frenchFormatFromDate(new Date(timeslotList[selectedTimeslotId]?.delivery_time)) }}
+      <fa-awesome-icon
+        class="c-inline-icon u-mr-0"
+        icon="fa-chevron-down"
+      />
+    </button>
+    <div
+      class="ontop l-absolute-position u-text-center c-card-bg-3 u-p-0 l-gap-0"
+      :class="{ 'u-hidden': !extend }"
       @click="extend = !extend"
       @keydown.enter="extend = !extend"
     >
-      <div class="flex-1">
-        <div
-          v-for="timeslot in timeslotList"
-          :key="timeslot.id"
-          class="flex flex-row hover:cursor-pointer"
-          :class="{ hidden: !extend }"
-          @click="selectedTimeslotId = timeslot.id"
-          @keydown.enter="selectedTimeslotId = timeslot.id"
-        >
-          <div class="m-2 flex-1">
-            Créneau {{ frenchFormatFromDate(new Date(timeslot.delivery_time)) }}
-            <fa-awesome-icon
-              class="ml-2 text-red-500"
-              icon="fa-trash-can"
-              @click.stop="showDeleteModal = true; selectedDelete = timeslot.id"
-            />
-          </div>
-        </div>
-        <div class="flex flex-row hover:cursor-pointer" :class="{ hidden: !extend }">
-          <div
-            class="m-2 flex-1"
-            @click="openModal"
-            @keydown.enter="openModal"
-          >
-            Ajouter un créneau
-            <fa-awesome-icon
-              class="ml-2"
-              icon="fa-circle-plus"
-            />
-          </div>
-        </div>
-      </div>
-      <div>
-        <div
-          class="m-2
-          hover:cursor-pointer"
-        >
-          <fa-awesome-icon
-            v-if="extend"
-            class="ml-2"
-            icon="fa-chevron-up"
-          />
-          <fa-awesome-icon
-            v-else
-            class="ml-2"
-            icon="fa-chevron-down"
-          />
-        </div>
-      </div>
-    </div>
-    <div>
       <div
-        class="flex w-screen rounded-xl bg-black text-center text-3xl"
+        v-for="timeslot in timeslotList"
+        :key="timeslot.id"
+        type="button"
+        class="l-flex-row l-cross-center u-full-width"
       >
-        <div class="m-2 flex-1">
-          Créneau {{ frenchFormatFromDate(new Date(timeslotList[selectedTimeslotId]?.delivery_time)) }}
-        </div>
-        <div
-          class="m-2"
+        <button
+          type="button"
+          class="c-btn-bg-3 l-grow u-text-left"
+          @click="selectedTimeslotId = timeslot.id"
+        >
+          Créneau {{ frenchFormatFromDate(new Date(timeslot.delivery_time)) }}
+        </button>
+        <button
+          type="button"
+          title="Supprimer le créneau"
+          @click="showDeleteModal = true; selectedDelete = timeslot.id"
         >
           <fa-awesome-icon
-            v-if="extend"
-            class="ml-2"
-            icon="fa-chevron-up"
+            class="c-image-btn u-color-error-1 c-inline-icon u-mr-2"
+            icon="fa-trash-can"
           />
-          <fa-awesome-icon
-            v-else
-            class="ml-2"
-            icon="fa-chevron-down"
-          />
-        </div>
+        </button>
       </div>
+      <button
+        type="button"
+        class="c-btn-secondary u-full-width"
+        @click="openModal"
+        @keydown.enter="openModal"
+      >
+        <fa-awesome-icon
+          class="c-inline-icon"
+          icon="fa-circle-plus"
+        />
+        Ajouter un créneau
+      </button>
     </div>
-    <div class="m-2 flex flex-1 flex-col gap-5 md:flex-row" :class="{ blur: extend }">
-      <div class="flex flex-1 flex-col">
-        <div class="title my-2 text-center text-white">
-          Liste des Pizzas disponibles
+    <div class="desktop-only-row u-mt-2 l-grow l-gap-2 u-full-width">
+      <div class="l-flex-column l-gap-2 c-card-bg-2 u-full-width">
+        <h2 class="u-text-center u-m-0">
+          Nouvelle commande
+        </h2>
+        <div
+          v-if="new Date(timeslotList[selectedTimeslotId]?.end) < new Date()"
+          class="u-text-center c-card-error u-full-width"
+        >
+          <fa-awesome-icon
+            class="c-inline-icon"
+            icon="fa-warning"
+          />
+          <strong>L'heure de fin de commande est dépassée</strong>
         </div>
-        <form id="add_pizza" class="flex flex-1 flex-col gap-5">
-          <div class="flex gap-2 rounded-2xl bg-gray-500 p-1 text-center text-black">
-            <div class="flex flex-col">
-              <fa-awesome-icon
-                class="ml-2 flex-1"
-                icon="fa-magnifying-glass"
-              />
-            </div>
-            <div class="flex-1">
-              <label for="searchPizza" class="sr-only">Rechercher une pizza</label>
-              <input id="searchPizza" v-model="pizzaSearch" type="text" class="w-full rounded-xl border-2 border-black bg-gray-300 p-0 text-center" placeholder="Rechercher une pizza"/>
-            </div>
-          </div>
-          <div class="grow overflow-y-auto bg-gray-300 text-center text-black md:h-px">
-            <div v-for="pizzaId in timeslotList[selectedTimeslotId]?.pizza" :key="pizzaId" class="flex flex-row justify-between">
-              <div :class="{ hidden: !pizzaList[pizzaId]?.name.toLowerCase().includes(pizzaSearch.toLowerCase()) }" class="flex flex-1 border-b-2 border-black">
-                <label :for="`pizzaQuantity-${pizzaId}`" class="flex flex-1 flex-col justify-center">
-                  {{ pizzaList[pizzaId]?.name }}: {{ pizzaList[pizzaId]?.ingredients.join(', ') }}
+        <form id="add_pizza" class="l-flex-column l-gap-2 u-full-width">
+          <label for="searchPizza" class="sr-only">Rechercher une pizza</label>
+          <input id="searchPizza" v-model="pizzaSearch" type="text" placeholder="Rechercher une pizza"/>
+          <div class="l-flex-column l-gap-1 reasonable-height">
+            <div v-for="pizzaId in timeslotList[selectedTimeslotId]?.pizza" :key="pizzaId">
+              <div v-if="pizzaList[pizzaId]?.name.toLowerCase().includes(pizzaSearch.toLowerCase())" class="l-flex-row l-cross-center l-gap-1">
+                <label :for="`pizzaQuantity-${pizzaId}`" :title="pizzaList[pizzaId]?.ingredients.join(', ')" class="u-big-text">
+                  {{ pizzaList[pizzaId]?.name }}
                 </label>
-                <input :id="`pizzaQuantity-${pizzaId}`" type="number" class="w-20 border-0 bg-gray-300 text-center" :value="0" min="0" @wheel="handleWheel"/>
+                <div class="l-grow"/>
+                <input :id="`pizzaQuantity-${pizzaId}`" type="number" class="number-width" :value="0" min="0" max="99" @wheel="handleWheel"/>
               </div>
             </div>
           </div>
-          <div class="flex flex-col rounded-2xl bg-gray-500 text-center md:flex-row">
-            <div class="flex-1">
-              <label for="paymentMethod" class="sr-only">Payment Method</label>
-              <select id="paymentMethod" v-model="selectedPaymentMethod" class="m-2 rounded-xl bg-gray-300 p-0 pl-2 pr-8 text-left text-black">
+          <div class="desktop-only-row l-cross-end u-text-center l-gap-1">
+            <div class="l-grow">
+              <label for="paymentMethod">Méthode de paiement</label>
+              <select id="paymentMethod" v-model="selectedPaymentMethod">
                 <option value="default" selected>
                   Choisir un moyen de paiement
                 </option>
@@ -416,95 +399,73 @@ const factorise = (pizzas: number[]) => {
                 </option>
               </select>
             </div>
-            <div class="flex-1">
-              <label for="order-type" class="sr-only">Type de commande</label>
-              <select id="order-type" v-model="selectedOrderType" class="m-2 rounded-xl bg-gray-300 p-0 pl-2 pr-8 text-left text-black">
+            <div class="l-grow">
+              <label for="order-type">Type de commande</label>
+              <select id="order-type" v-model="selectedOrderType">
                 <option v-for="type in OrderType" :key="type" :value="type">
                   {{ orderTypeToString[type] }}
                 </option>
               </select>
             </div>
-            <div class="flex flex-1">
-              <label for="InputPseudo" class="sr-only">Input Text</label>
-              <input id="InputPseudo" v-model="pseudo" type="text" class="m-2 flex-1 rounded-xl border-2 border-black bg-gray-300 p-0 text-center text-black" placeholder="Pseudo"/>
+            <div class="l-grow">
+              <label for="InputPseudo">Pseudo</label>
+              <input id="InputPseudo" v-model="pseudo" type="text" placeholder="Pseudo"/>
             </div>
-            <div class="flex justify-center">
-              <button type="submit" class="m-2 w-20 flex-1 rounded-xl bg-green-600 p-0 text-center text-white" @click.prevent="validatePizza">
-                Ajouter
-              </button>
-            </div>
+            <button type="submit" class="c-btn-secondary" @click.prevent="validatePizza">
+              Ajouter
+            </button>
           </div>
         </form>
       </div>
-      <div class="flex flex-1 flex-col">
-        <div class="title my-2 rounded-xl text-center text-white" :class="{ 'bg-red-600': pizzaCount >= timeslotList[selectedTimeslotId]?.pizza_max }">
+      <div class="l-flex-column l-gap-2 c-card-bg-2 u-full-width">
+        <h2 class="u-text-center u-m-0">
           Commandes : {{ pizzaCount }} /
           {{ timeslotList[selectedTimeslotId]?.pizza_max }}
-          <fa-awesome-icon
-            class="ml-2 hover:cursor-pointer"
-            icon="fa-download"
+          <button
+            type="button"
+            title="Exporter les commandes"
             @click="exportOrders(selectedTimeslotId)"
-            @keydown.enter="exportOrders(selectedTimeslotId)"
-          />
-        </div>
-        <div class="flex flex-1 flex-col gap-5">
-          <div class="flex gap-2 rounded-2xl bg-gray-500 p-1 text-center text-black">
-            <div class="flex flex-col">
-              <fa-awesome-icon
-                class="ml-2 flex-1"
-                icon="fa-magnifying-glass"
-              />
-            </div>
-            <div class="flex-1">
-              <label for="searchPizza" class="sr-only">Rechercher une commande</label>
-              <input id="searchPizza" v-model="orderSearch" type="text" class="w-full rounded-xl border-2 border-black bg-gray-300 p-0 text-center" placeholder="Rechercher une commande"/>
-            </div>
-          </div>
-          <div class="flex flex-1 flex-col">
-            <div class="flex bg-gray-500 text-center text-2xl">
-              <div class="flex-1">
-                pseudo
-              </div>
-              <div class="flex-1">
-                pizza
-              </div>
-              <div class="flex-1">
-                récupéré
-              </div>
-            </div>
-            <div class="flex grow flex-col overflow-y-auto bg-gray-300 text-black md:h-px">
-              <div v-for="order in (timeslotList[selectedTimeslotId] as AdminTimeslotDeref)?.orders" :key="order.id">
-                <div v-if="order.user.toLowerCase().includes(orderSearch.toLowerCase())" class="align-center mx-2 my-1 flex flex-row justify-center rounded-xl bg-gray-200 text-center">
-                  <div class="flex flex-1 items-center justify-center">
-                    {{ order.user }}
-                  </div>
-                  <div class="flex-1 text-left">
-                    {{ factorise(order.pizza) }}
-                  </div>
-                  <div class="flex flex-1 flex-col items-center">
-                    <label for="isTakenCheckbox-{{ order.id }}" class="flex flex-1 flex-col justify-center">
-                      <input id="isTakenCheckbox-{{ order.id }}" type="checkbox" class="size-5 bg-gray-300" :value="order.delivered" :checked="order.delivered" @change="patchOrder(selectedTimeslotId, order.id, !order.delivered)"/>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="flex flex-col rounded-2xl bg-gray-500 text-center md:flex-row"
-            :class="{
-              'bg-red-600': new Date(timeslotList[selectedTimeslotId]?.end) < new Date(),
-            }"
           >
-            <div class="flex flex-1">
-              <div
-                class="m-1 flex flex-1 justify-center text-center text-2xl text-black"
-                :class="{
-                  invisible: new Date(timeslotList[selectedTimeslotId]?.end) > new Date(),
-                }"
-              >
-                L'heure de fin de commande est dépassée
-                <div class="invisible border-2 border-red-600 p-4"/>
+            <fa-awesome-icon
+              class="c-inline-icon c-image-btn"
+              icon="fa-download"
+            />
+          </button>
+        </h2>
+        <div
+          v-if="pizzaCount > timeslotList[selectedTimeslotId]?.pizza_max"
+          class="u-text-center c-card-error u-full-width"
+        >
+          <fa-awesome-icon
+            class="c-inline-icon"
+            icon="fa-warning"
+          />
+          <strong>Le nombre maximum de pizzas a été dépassé</strong>
+        </div>
+        <label for="searchPizza" class="sr-only">Rechercher une commande</label>
+        <input id="searchPizza" v-model="orderSearch" type="text" placeholder="Rechercher une commande"/>
+        <div class="l-flex-row u-text-center u-big-text c-card-bg-3 u-full-width u-bold">
+          <div class="l-grow">
+            Pseudo
+          </div>
+          <div class="l-grow">
+            Pizza(s)
+          </div>
+          <div class="l-grow">
+            Récupéré ?
+          </div>
+        </div>
+        <div class="l-flex-column l-gap-1 u-full-width reasonable-height">
+          <div v-for="order in (timeslotList[selectedTimeslotId] as AdminTimeslotDeref)?.orders" :key="order.id">
+            <div v-if="order.user.toLowerCase().includes(orderSearch.toLowerCase())" class="l-flex-row l-cross-center u-text-center u-big-text">
+              <div class="l-grow">
+                {{ order.user }}
+              </div>
+              <div class="l-grow">
+                {{ factorise(order.pizza) }}
+              </div>
+              <div class="l-flex-row l-grow l-main-center">
+                <input id="isTakenCheckbox-{{ order.id }}" type="checkbox" class="size-5" :value="order.delivered" :checked="order.delivered" @change="patchOrder(selectedTimeslotId, order.id, !order.delivered)"/>
               </div>
             </div>
           </div>
@@ -512,258 +473,215 @@ const factorise = (pizzas: number[]) => {
       </div>
     </div>
   </div>
-  <div v-else class="">
-    <div
-      class="flex w-screen rounded-xl bg-black text-center text-3xl hover:cursor-pointer"
+  <div v-else class="l-flex-column l-cross-center u-py-2">
+    <button
+      type="button"
+      class="c-btn-secondary"
+      @click="openModal"
+      @keydown.enter="openModal"
     >
-      <div class="flex-1">
-        <div class="flex flex-row hover:cursor-pointer">
-          <div
-            class="m-2 flex-1"
-            @click="openModal"
-            @keydown.enter="openModal"
-          >
-            Ajouter un créneau
-            <fa-awesome-icon
-              class="ml-2"
-              icon="fa-circle-plus"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="mt-6 text-center text-4xl">
+      <fa-awesome-icon
+        class="c-inline-icon"
+        icon="fa-circle-plus"
+      />
+      Ajouter un créneau
+    </button>
+    <div class="u-m-text u-my-2 u-text-center u-big-text">
       Il n'y a pas de créneau de commande
     </div>
   </div>
 
   <Modal v-if="showModal" @close="showModal = false">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Créer un créneau
-      </h3>
+      Créer un créneau
     </template>
     <template #body>
-      <form id="patch-user" class="mt-2 flex flex-col md:flex-row" @submit.prevent="validateModal">
-        <div class="">
+      <form id="patch-user" class="l-grid-3" @submit.prevent="validateModal">
+        <div class="l-flex-column l-gap-2">
           <FormField
-            v-slot="context"
             :validations="v$_create.delivery_time"
-            class="m-2 flex flex-col"
-            label="Date de livraison"
           >
             <label for="delivery_time">
               Date de livraison
             </label>
             <input
+              id="delivery_time"
               v-model="data_create.delivery_time"
               aria-label="Date de livraison"
-              class="border-2 bg-theme-bg"
               placeholder="2021-01-01 00:00"
               required
               type="text"
-              :class="{ 'border-red-500': context.invalid }"
               @blur="v$_create.delivery_time.$touch"
             />
           </FormField>
           <FormField
-            v-slot="context"
             :validations="v$_create.start"
-            class="m-2 flex flex-col"
-            label="Début de la commande"
           >
             <label for="start">
               Début de la commande
             </label>
             <input
+              id="start"
               v-model="data_create.start"
               aria-label="Début de la commande"
-              class="border-2 bg-theme-bg"
               placeholder="2021-01-01 00:00"
               required
               type="text"
-              :class="{ 'border-red-500': context.invalid }"
               @blur="v$_create.delivery_time.$touch"
             />
           </FormField>
           <FormField
-            v-slot="context"
             :validations="v$_create.end"
-            class="m-2 flex flex-col"
-            label="Fin de la commande"
           >
             <label for="end">
               Fin de la commande
             </label>
             <input
+              id="end"
               v-model="data_create.end"
               aria-label="Fin de la commande"
-              class="border-2 bg-theme-bg"
               placeholder="2021-01-01 00:00"
               required
               type="text"
-              :class="{ 'border-red-500': context.invalid }"
               @blur="v$_create.delivery_time.$touch"
             />
           </formfield>
         </div>
-        <div>
+        <div class="l-flex-column l-gap-2">
           <FormField
-            v-slot="context"
             :validations="v$_create.player_price"
-            class="m-2 flex flex-col"
-            label="Prix pour les joueurs"
           >
             <label for="player_price">
-              Prix pour les joueurs
+              Prix pour les joueur·euse·s
             </label>
             <input
+              id="player_price"
               v-model="data_create.player_price"
-              aria-label="Prix pour les joueurs"
-              class="border-2 bg-theme-bg"
+              aria-label="Prix pour les joueur·euse·s"
               placeholder="0"
               required
               type="number"
-              :class="{ 'border-red-500': context.invalid }"
               @blur="v$_create.player_price.$touch"
             />
           </FormField>
           <FormField
-            v-slot="context"
             :validations="v$_create.staff_price"
-            class="m-2 flex flex-col"
-            label="Prix pour les staffs"
           >
             <label for="staff_price">
-              Prix pour les staffs
+              Prix pour le staff
             </label>
             <input
+              id="staff_price"
               v-model="data_create.staff_price"
-              aria-label="Prix pour les staffs"
-              class="border-2 bg-theme-bg"
+              aria-label="Prix pour le staff"
               placeholder="0"
               required
               type="number"
-              :class="{ 'border-red-500': context.invalid }"
               @blur="v$_create.staff_price.$touch"
             />
           </FormField>
           <FormField
-            v-slot="context"
             :validations="v$_create.external_price"
-            class="m-2 flex flex-col"
-            label="Prix pour les externes"
           >
             <label for="external_price">
               Prix pour les externes
             </label>
             <input
+              id="external_price"
               v-model="data_create.external_price"
               aria-label="Prix pour les externes"
-              class="border-2 bg-theme-bg"
               placeholder="0"
               required
               type="number"
-              :class="{ 'border-red-500': context.invalid }"
               @blur="v$_create.external_price.$touch"
             />
           </FormField>
         </div>
-        <div>
+        <div class="l-flex-column l-gap-2">
           <FormField
-            v-slot="context"
             :validations="v$_create.pizza_max"
-            class="m-2 flex flex-col"
-            label="Nombre de pizza maximum"
           >
             <label for="pizza_max">
-              Nombre de pizza maximum
+              Nombre de pizzas maximum
             </label>
             <input
+              id="pizza_max"
               v-model="data_create.pizza_max"
-              aria-label="Nombre de pizza maximum"
-              class="border-2 bg-theme-bg"
+              aria-label="Nombre de pizzas maximum"
               placeholder="0"
               required
               type="number"
-              :class="{ 'border-red-500': context.invalid }"
               @blur="v$_create.pizza_max.$touch"
             />
           </FormField>
           <FormField
-            v-slot="context"
             :validations="v$_create.pizza_selection"
-            class="m-2 flex max-w-xs flex-col"
-            label="Sélection de pizza"
           >
             <label for="pizza_selection">
-              Sélection de pizza
+              Sélection de pizzas
             </label>
             <multiselect
+              id="pizza_selection"
               v-model="data_create.pizza_selection"
               :options="Object.values(pizzaList).map((pizza) => ({ id: pizza.id, name: pizza.name }))"
               :multiple="true"
               :close-on-select="false"
               :clear-on-select="false"
               :preserve-search="true"
-              placeholder="Sélection de pizza"
+              placeholder="Sélection de pizzas"
               label="name"
               track-by="id"
               :preselect-first="false"
               :max-height="100"
-              :class="{ 'border-red-500': context.invalid }"
               @blur="v$_create.pizza_selection.$touch"
             />
           </FormField>
         </div>
-        <button class="hidden" type="submit"/>
+        <button class="u-hidden" type="submit"/>
       </form>
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="validateModal"
-      >
-        Valider
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="showModal = false"
       >
         Annuler
       </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="validateModal"
+      >
+        Valider
+      </button>
     </template>
   </Modal>
 
   <Modal v-if="showDeleteModal" @close="showDeleteModal = false">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Supprimer un créneau
-      </h3>
+      Supprimer un créneau
     </template>
     <template #body>
-      <div class="m-2">
-        Vous allez suppimer le créneau du {{
-          frenchFormatFromDate(new Date(timeslotList[selectedDelete].delivery_time))
-        }}
-        <br/>
-        ainsi que les {{ (timeslotList[selectedDelete] as AdminTimeslotDeref).orders.length }} commandes associées
-        <br/>
-        <br/>
-        Ne supprimez pas un créneau terminé, les données seront perdues
-      </div>
+      Vous allez suppimer le créneau du
+      <strong>{{ frenchFormatFromDate(new Date(timeslotList[selectedDelete].delivery_time)) }}</strong>
+      ainsi que les
+      <strong>{{ (timeslotList[selectedDelete] as AdminTimeslotDeref).orders.length }}</strong>
+      commandes associées.
+      <br/>
+      <br/>
+      <em>Ne supprimez pas un créneau terminé, les données seront perdues.</em>
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+        class="c-btn-bg-3"
+        type="button"
+        @click="showDeleteModal = false"
+      >
+        Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
         type="submit"
         @click="
           showDeleteModal = false;
@@ -778,55 +696,82 @@ const factorise = (pizzas: number[]) => {
       >
         Valider
       </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
-        type="button"
-        @click="showDeleteModal = false"
-      >
-        Annuler
-      </button>
     </template>
   </Modal>
 
   <Modal v-if="showConfirmationModal" @close="showConfirmationModal = false">
-    <template #icon>
-      <div/>
-    </template>
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Résumé de la commande
-      </h3>
+      Résumé de la commande
     </template>
     <template #body>
-      <div class="m-2 text-left">
-        <p>Pseudo : {{ pseudo }} </p>
-        <p>Type de command : {{ orderTypeToString[selectedOrderType] }}</p>
-        <p>Pizza{{ Object.values(pizzaQuantities).reduce((acc, val) => acc + val) > 1 ? 's' : '' }} :</p>
+      <p>Pseudo : <strong>{{ pseudo }}</strong> </p>
+      <p>Type de commande : <strong>{{ orderTypeToString[selectedOrderType] }}</strong></p>
+      <p v-if="Object.values(pizzaQuantities).reduce((acc, val) => acc + val) <= 1">
+        Pizza : <strong>{{ pizzaList[Number(Object.keys(pizzaQuantities)[0])]?.name }}</strong>
+      </p>
+      <div v-else>
+        Pizzas :
         <ul>
           <li v-for="(quantity, pizzaId) in pizzaQuantities" :key="pizzaId">
-            - {{ quantity }} x {{ pizzaList[pizzaId].name }}
+            <strong>{{ quantity }} x {{ pizzaList[pizzaId].name }}</strong>
           </li>
         </ul>
-        <p>Méthode de paiement : {{ PAYMENT_METHODS[selectedPaymentMethod as Payment] }}</p>
-        <p>Total : {{ totalPrice }} €</p>
       </div>
+      <p>Méthode de paiement : <strong>{{ PAYMENT_METHODS[selectedPaymentMethod as Payment] }}</strong></p>
+      <p>Total : <strong>{{ totalPrice }} €</strong></p>
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+        type="button"
+        class="c-btn-bg-3"
+        @click="showConfirmationModal = false"
+      >
+        Annuler
+      </button>
+      <button
+        class="c-btn-secondary"
         type="submit"
         @click="sendOrder"
       >
         Valider
       </button>
-      <button
-        type="button"
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
-        @click="showConfirmationModal = false"
-      >
-        Annuler
-      </button>
     </template>
   </Modal>
 </template>
+
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
+
+<style scoped>
+.backdrop {
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  transition: opacity 0.2s;
+}
+
+.ontop {
+  z-index: 10;
+}
+
+.number-width {
+  width: 6rem;
+}
+
+.reasonable-height { /* yeah I could have done something cleaner, but I don't really care actually */
+  overflow-y: scroll;
+  max-height: 30vh;
+}
+
+@media (max-width: 50rem) {
+  .desktop-only-row {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 50rem) {
+  .desktop-only-row {
+    display: flex;
+    flex-direction: row;
+  }
+}
+</style>

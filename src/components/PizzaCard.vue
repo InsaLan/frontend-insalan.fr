@@ -8,6 +8,8 @@ const pizzaStore = usePizzaStore();
 
 const props = defineProps<{
   id: number;
+  onEdit?: (pizza: Pizza) => void;
+  onDelete?: (pizza: Pizza) => void;
 }>();
 
 const { pizzaList } = storeToRefs(pizzaStore);
@@ -15,24 +17,49 @@ const pizza = computed<Pizza | undefined>(() => pizzaList.value[props.id]);
 
 </script>
 <template>
-  <div class="grid bg-cyan-900 shadow-lg">
+  <div class="c-card-bg-2 u-p-0 u-pb-2 l-flex-column l-cross-center u-full-height u-full-width">
     <img
       :alt="`Image de ${pizza?.name}`"
       :src="pizza?.image"
-      class="max-w-screen aspect-video h-48 w-full text-clip object-cover"
+      class="pizza-thumbnail u-full-width u-rounded"
     />
-    <div class="flex w-full flex-col items-center p-2">
-      <div class="mb-2 w-3/4 border-b-2">
-        <p class="text-center text-2xl font-bold">
+    <div class="l-flex-row l-cross-center u-full-width u-px-2 l-grow l-gap-1">
+      <div class="l-flex-column l-cross-center l-main-center u-full-width l-grow">
+        <p class="u-mb-1 u-text-center u-big-text u-bold">
           {{ pizza?.name }}
         </p>
-      </div>
-      <div class="flex">
-        <p class="text-center">
-          <span class="font-black">Ingrédients :</span> {{ pizza?.ingredients.join(', ') }}<br>
-          <span class="font-black">Allergènes :</span> {{ pizza?.allergens.join(', ') }}
+        <p class="u-text-center">
+          <strong>Ingrédients :</strong> {{ pizza?.ingredients.join(', ') }}<br>
+          <strong>Allergènes :</strong> {{ pizza?.allergens.join(', ') }}
         </p>
+      </div>
+      <div v-if="onEdit || onDelete" class="l-flex-column l-gap-1 u-big-text l-cross-center">
+        <button
+          v-if="onEdit"
+          type="button"
+          class="c-image-btn"
+          title="Modifier"
+          @click="onEdit?.(pizza!)"
+        >
+          <fa-awesome-icon icon="fa-pen-to-square"/>
+        </button>
+        <button
+          v-if="onDelete"
+          type="button"
+          class="c-image-btn u-color-error-1"
+          title="Supprimer"
+          @click="onDelete?.(pizza!)"
+        >
+          <fa-awesome-icon icon="fa-trash-can"/>
+        </button>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.pizza-thumbnail {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+</style>

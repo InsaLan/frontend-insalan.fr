@@ -27,44 +27,25 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="status.type === ReturnType.RETURN" class="grid h-48 place-items-center">
-    <div v-if="status.code === ReturnState.REFUSED">
-      <h1 class="mb-6 text-3xl md:m-8 md:text-5xl">
-        ❌ Votre paiement a été refusé.
-      </h1>
+  <div v-if="status.type === ReturnType.RETURN" class="l-flex-column l-cross-center l-main-center u-full-height">
+    <div v-if="status.code === ReturnState.REFUSED" class="u-color-error-1 u-big-text">
+      ❌ Votre paiement a été refusé.
     </div>
-    <div v-else-if="status.code === ReturnState.SUCCEEDED" class="grid place-items-center">
-      <h1 class="mb-6 text-3xl md:m-8 md:text-5xl">
-        🎉 Votre paiement a été accepté
-      </h1>
-      <RouterLink to="/me" class="rounded bg-blue-800 p-2 font-bold text-white transition duration-150 ease-in-out hover:ring hover:ring-pink-500 md:p-6">
-        <p class="text-xl">
-          Retour vers le profil
-        </p>
+    <div v-else-if="status.code === ReturnState.SUCCEEDED" class="l-flex-column l-cross-center l-main-center u-full-height u-big-text">
+      🎉 Votre paiement a été accepté !
+      <RouterLink to="/me" class="c-btn-primary">
+        Retour vers le profil
       </RouterLink>
     </div>
-    <div v-else class="grid place-items-center">
-      <h1 class="mb-6 text-3xl md:m-8 md:text-5xl">
-        🛸 Erreur inconnue
-      </h1>
+    <div v-else class="u-color-error-1 u-big-text">
+      🛸 Erreur inconnue
     </div>
   </div>
-  <div v-else-if="status.type === ReturnType.REFUSED" class="grid place-items-center">
-    <h1 class="mb-6 text-3xl md:m-8 md:text-5xl">
-      Une erreur est survenue
-    </h1>
+  <div v-else-if="status.type === ReturnType.REFUSED" class="l-flex-column l-cross-center l-main-center u-full-height u-color-error-1 u-big-text">
+    Une erreur est survenue lors du traitement du paiement :
     <p>{{ status.error }}</p>
   </div>
-  <div v-else class="grid place-items-center">
-    <h1 class="text-2xl">
-      🛸 Erreur inconnue
-    </h1>
-  </div>
-  <div class="m-6 flex items-center justify-center md:m-32">
-    <img
-      alt="Logo InsaLan"
-      class="image-center m-6 w-20 justify-center md:max-h-full md:w-max md:max-w-full"
-      src="@/assets/images/logo_home.png"
-    />
+  <div v-else class="l-flex-column l-cross-center l-main-center u-full-height u-color-error-1 u-big-text">
+    🛸 Erreur inconnue
   </div>
 </template>

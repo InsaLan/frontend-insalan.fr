@@ -10,13 +10,9 @@ const props = defineProps<{
 
 <template>
   <section id="planning">
-    <div class="m-1 flex justify-center rounded bg-cyan-900 p-2">
+    <div class="u-mb-2 u-m-text u-text-center u-color-text-2">
       Les plannings peuvent varier en fonction de l'avancement des tournois et sont donnés à titre indicatif.
     </div>
-    <div
-      class="m-4"
-    >
-      <Planning :link="props.tournament?.planning_file"/>
-    </div>
+    <Planning :link="props.tournament?.planning_file"/>
   </section>
 </template>

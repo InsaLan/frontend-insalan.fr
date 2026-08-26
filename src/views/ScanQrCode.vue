@@ -24,7 +24,7 @@ const search = ref('');
 function paintOutline([detectedCode]: DetectedBarcode[], ctx: CanvasRenderingContext2D) {
   const [firstPoint, ...otherPoints] = detectedCode.cornerPoints;
 
-  ctx.strokeStyle = 'red';
+  ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-secondary-1').trim() || 'red';
 
   ctx.beginPath();
   ctx.moveTo(firstPoint.x, firstPoint.y);
@@ -85,97 +85,112 @@ const ticketStatus = computed(() => {
   }
 });
 
+const filteredRegistrations = computed(() => {
+  const term = search.value.trim().toLowerCase();
+  if (!term) return [];
+  return unpaidRegistration.value.filter((registration) => registration.user.toLowerCase().includes(term));
+});
+
 await get_unpaid_registration();
 
 type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
 </script>
 
 <template>
-  <section class="mx-4 flex flex-col items-center gap-4">
-    <qrcode-stream
-      :paused="paused"
-      :torch="torchActive"
-      :track="paintOutline"
-      @detect="onDetect"
-      @error="onError"
-      @camera-on="(capabilities: TorchCapabilities) => (torchNotSupported = !capabilities.torch)"
-    >
-      <button
-        :disabled="torchNotSupported"
-        type="button"
-        @click="torchActive = !torchActive"
+  <div class="u-m-main u-pb-2 l-flex-column l-cross-center l-main-center l-gap-2 u-full-height">
+    <div class="camera u-rounded">
+      <qrcode-stream
+        :paused="paused"
+        :torch="torchActive"
+        :track="paintOutline"
+        @detect="onDetect"
+        @error="onError"
+        @camera-on="(capabilities: TorchCapabilities) => (torchNotSupported = !capabilities.torch)"
       >
-        <fa-awesome-icon
+        <button
           v-if="torchNotSupported === false"
-          :class="torchActive ? 'text-green-500' : 'text-red-500'"
-          class="ml-3 mt-3 text-5xl"
-          icon="fa-solid fa-bolt"
-        />
-      </button>
-    </qrcode-stream>
-
-    <div v-if="qrcodeData">
-      <p>Joueur : {{ qrcodeData.user }}</p>
-      <p>Identité : {{ qrcodeData.identity }}</p>
-      <p>Statut : {{ ticketStatus }}</p>
-      <p>Tournois : {{ qrcodeData.tournament }}</p>
-      <p>Equipe : {{ qrcodeData.team }}</p>
-      <div class="mb-6 flex gap-7">
-        <button
-          v-if="qrcodeData.status === TicketStatus.VALID"
           type="button"
-          class="form-btn"
-          @click="validate"
+          @click="torchActive = !torchActive"
         >
-          Valider
-        </button>
-        <button
-          type="button"
-          class="form-btn bg-red-600"
-          @click="cancel"
-        >
-          Annuler
-        </button>
-      </div>
-    </div>
-    <div v-else class="mb-4 flex max-h-[100px] w-full flex-col gap-1">
-      <div class="flex gap-2 rounded-2xl bg-gray-500 p-1 text-center text-black">
-        <div class="flex flex-col">
           <fa-awesome-icon
-            class="ml-2 flex-1"
-            icon="fa-magnifying-glass"
+            :class="torchActive ? 'u-color-text-1' : 'u-color-text-3'"
+            class="u-m-2 u-huge-text"
+            icon="fa-bolt"
           />
+        </button>
+      </qrcode-stream>
+    </div>
+
+    <div class="u-full-width">
+      <div class="u-m-text">
+        <div v-if="qrcodeData" class="c-card-bg-2 l-flex-column l-gap-2">
+          <p>
+            Joueur·euse : {{ qrcodeData.user }} <br/>
+            Identité : {{ qrcodeData.identity }} <br/>
+            Statut : {{ ticketStatus }} <br/>
+            Tournoi : {{ qrcodeData.tournament }} <br/>
+            Équipe : {{ qrcodeData.team }}
+          </p>
+          <div class="l-flex-row l-main-center l-cross-center l-gap-2 u-full-width">
+            <button
+              type="button"
+              class="c-btn-bg-3"
+              @click="cancel"
+            >
+              Annuler
+            </button>
+            <button
+              :disabled="qrcodeData.status !== TicketStatus.VALID"
+              type="button"
+              class="c-btn-secondary"
+              @click="validate"
+            >
+              Valider
+            </button>
+          </div>
         </div>
-        <div class="flex-1">
-          <label for="search" class="sr-only">Rechercher une inscription</label>
-          <input id="search" v-model="search" type="text" class="w-full rounded-xl border-2 border-black bg-gray-300 p-0 text-center" placeholder="Rechercher une inscription non payé"/>
+        <div v-else class="l-flex-column u-full-width l-gap-1">
+          <label for="search">Rechercher une inscription non payée</label>
+          <input
+            id="search"
+            v-model="search"
+            type="text"
+            placeholder="Nom d'utilisateur"
+          />
+          <div v-if="search && filteredRegistrations.length > 0" class="l-flex-column l-gap-1">
+            <div v-for="registration in filteredRegistrations" :key="registration.id" class="c-card-bg-3 u-full-width l-flex-row">
+              {{ unpaidRegistration[0]?.user }} ({{ unpaidRegistration[0]?.team }})
+              <div class="l-grow"/>
+              <button
+                type="button"
+                class="c-btn-secondary u-normal-text"
+                @click="
+                  validate_registration(
+                    registration.type,
+                    registration.id,
+                  );
+                  search = ''
+                "
+              >
+                Valider le paiement
+              </button>
+            </div>
+          </div>
+          <div v-else-if="search" class="c-card-error u-p-0 u-text-center u-full-width">
+            Aucune inscription trouvée
+          </div>
         </div>
-      </div>
-      <div v-if="search && unpaidRegistration.filter((registration) => registration.user.includes(search)).length > 0">
-        <div class="rounded-2xl bg-green-600 text-center">
-          {{ unpaidRegistration.filter((registration) => registration.user.includes(search))[0]?.user }} :
-          {{ unpaidRegistration.filter((registration) => registration.user.includes(search))[0]?.team }}
-        </div>
-        <div class="flex justify-center">
-          <button
-            type="button"
-            class="form-btn"
-            @click="
-              validate_registration(
-                unpaidRegistration.filter((registration) => registration.user.includes(search))[0]?.type,
-                unpaidRegistration.filter((registration) => registration.user.includes(search))[0]?.id,
-              );
-              search = ''
-            "
-          >
-            Valider le paiement de
-            {{ unpaidRegistration.filter((registration) => registration.user.includes(search))[0]?.user }}
-          </button>
-        </div>
-      </div>
-      <div v-else-if="search" class="rounded-2xl bg-red-500 text-center">
-        Aucune inscription trouvée
       </div>
     </div>
-  </section>
+  </div>
 </template>
+
+<style scoped>
+.camera {
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: min(100%, 100vmin);
+  height: min(100%, 100vmin);
+  overflow: hidden;
+}
+</style>

@@ -23,63 +23,29 @@ const { username } = await verifMail(props);
 
 <template>
   <!-- Cas fonctionnel -->
-  <div v-if="MailVerified">
-    <div>
-      <p class="mb-6 text-center text-3xl md:m-8 md:text-5xl">
-        - Création de compte -
-      </p>
-      <p class="mb-4 text-center text-xl md:m-10 md:text-2xl">
-        <em class="text-cyan-300">{{ username }}</em>, votre adresse Email a été vérifiée
-      </p>
-      <p class="text-center md:m-8 md:text-2xl">
-        Vous pouvez désormais vous connecter à
-        <router-link class="hover:text-cyan-300" to="/me">
-          votre compte !
-        </router-link>
-      </p>
-      <p class="m-8 text-center text-2xl md:m-6">
-        <router-link class="border border-white p-4 hover:text-cyan-300 md:border-4" to="/me">
-          Mon compte
-        </router-link>
-      </p>
-    </div>
-
-    <div class="m-6 flex items-center justify-center md:m-32">
-      <img
-        alt="Logo InsaLan"
-        class="image-center m-6 w-20 justify-center md:max-h-full md:w-max md:max-w-full"
-        src="@/assets/images/logo_home.png"
-      />
-    </div>
+  <div v-if="MailVerified" class="u-m-text u-text-center u-big-text">
+    <h1>
+      Création de compte
+    </h1>
+    <em class="u-color-secondary-1">{{ username }}</em>, votre adresse e-mail a été vérifiée !
+    <br><br>
+    Vous pouvez désormais vous connecter à votre compte !
+    <router-link class="c-btn-primary" to="/me">
+      Mon compte
+    </router-link>
   </div>
   <!-- Cas où erreur verif -->
-  <div v-else>
-    <div>
-      <p class="mb-6 text-center text-3xl md:m-8 md:text-5xl">
-        - Création de compte -
-      </p>
-      <p class="mb-4 text-center text-2xl md:m-10 md:text-2xl">
-        Échec vérification
-      </p>
-      <p class="text-center md:m-8 md:text-2xl">
-        L'adresse a déjà été vérifiée ou le lien est invalide
-      </p>
-      <p class="m-4 text-center md:m-8 md:text-2xl">
-        Revenir à :
-      </p>
-      <p class="m-6 text-center text-2xl md:m-6">
-        <router-link class="border-4 border-white p-4 hover:text-cyan-300" to="/register">
-          Créer un compte
-        </router-link>
-      </p>
-    </div>
-
-    <div class="m-6 flex items-center justify-center md:m-32">
-      <img
-        alt="Logo InsaLan"
-        class="image-center m-6 w-20 justify-center md:max-h-full md:w-max md:max-w-full"
-        src="@/assets/images/logo_home.png"
-      />
-    </div>
+  <div v-else class="u-m-text u-text-center u-big-text">
+    <h1>
+      Création de compte
+    </h1>
+    Échec de la vérification
+    <br><br>
+    L'adresse a déjà été vérifiée ou le lien est invalide.
+    <br><br>
+    Revenir à :
+    <router-link class="c-btn-primary" to="/register">
+      Créer un compte
+    </router-link>
   </div>
 </template>

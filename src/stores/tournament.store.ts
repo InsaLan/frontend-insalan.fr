@@ -504,14 +504,9 @@ export const useTournamentStore = defineStore('tournament', () => {
     return round_matchs[round];
   }
 
-  function get_col_class(bracket: Bracket) {
-    const nb_cols = get_bracket_cols_count(bracket);
-    return `grid-cols-[repeat(${nb_cols},17rem)]`;
-  }
-
   function get_col_style(bracket: Bracket) {
     const nb_cols = get_bracket_cols_count(bracket);
-    return { 'grid-template-columns': `repeat(${nb_cols},17rem)` };
+    return { 'grid-template-columns': `repeat(${nb_cols},auto)` };
   }
 
   const get_matchs_per_round = <T extends GroupMatch | KnockoutMatch | SwissMatch>(matchs: T[]) => {
@@ -1011,7 +1006,6 @@ export const useTournamentStore = defineStore('tournament', () => {
     get_validated_team_by_id,
     get_winner_matchs_per_round,
     get_group_by_id,
-    get_col_class,
     get_col_style,
     get_bracket_cols_count,
     get_matchs_per_round,

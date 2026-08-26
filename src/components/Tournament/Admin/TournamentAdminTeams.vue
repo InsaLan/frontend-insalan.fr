@@ -83,68 +83,68 @@ const save_seeds = async () => {
 </script>
 
 <template>
-  <h4 class="py-4 text-center text-2xl">
-    Liste des équipes et seeding
-  </h4>
-  <p class="mx-4 text-center">
-    Le seed d'une équipe doit être un entier compris entre 1 et
-    {{ tournament.max_team_thresholds[tournament?.current_threshold_index] }}.
-    Chaque seed doit être unique.
-    Une équipe avec un seed de 0 sera ignorer lors des calculs faisant intervenir le seeding.
-    <br>
-    Toutes les équipes sans seed seront placées aléatoirement après toutes les équipes seedées.
-  </p>
-  <div class="flex justify-center">
-    <table class="m-4 w-full border-2 lg:w-3/5">
-      <colgroup>
-        <col class="w-4/5"/>
-        <col class="w-1/5"/>
-      </colgroup>
-      <thead>
-        <tr>
-          <th class="border-2 p-2 text-xl">
-            Équipe
-          </th>
-          <th class="border-2 p-2 text-xl">
-            Seed
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="team in tourney_teams.validated_teams"
-          :key="team.id"
-        >
-          <td class="border p-2">
-            {{ team.name }}
-          </td>
-          <td align="center" class="border p-1">
-            <FormField
-              v-slot="context"
-              :validations="v$[team.id]"
-              class="flex flex-col"
+  <section class="u-m-main l-flex-column l-gap-2">
+    <h2 class="u-m-0 u-text-center">
+      Liste des équipes et seeding
+    </h2>
+    <p class="u-m-text">
+      Le seed d'une équipe doit être un entier compris entre 1 et
+      {{ tournament.max_team_thresholds[tournament?.current_threshold_index] }}.
+      Chaque seed doit être unique.
+      Une équipe avec un seed de 0 sera ignorée lors des calculs faisant intervenir le seeding.
+      <br><br>
+      Toutes les équipes sans seed seront placées aléatoirement après toutes les équipes seedées.
+    </p>
+    <div class="l-flex-column l-cross-center">
+      <div class="c-card-bg-2">
+        <table>
+          <thead>
+            <tr>
+              <th class="u-big-text">
+                Équipe
+              </th>
+              <th class="u-big-text">
+                Seed
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="team in tourney_teams.validated_teams"
+              :key="team.id"
             >
-              <input
-                id="seed"
-                v-model="seeding_form[team.id]"
-                type="number"
-                class="border-2 bg-inherit text-center"
-                :class="{ error: context.invalid, 'text-orange-300': team.seed !== seeding_form[team.id], 'text-red-500': context.invalid }"
-                @blur="v$[team.id].$touch"
-              >
-            </FormField>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <button type="submit" class="mx-auto mb-8 rounded bg-blue-800 p-2 text-xl font-bold text-white transition duration-150 ease-in-out hover:bg-blue-700" @click="save_seeds">
-    Sauvegarder
-  </button>
+              <td>
+                {{ team.name }}
+              </td>
+              <td class="reasonable-width">
+                <FormField
+                  :validations="v$[team.id]"
+                >
+                  <input
+                    id="seed"
+                    v-model="seeding_form[team.id]"
+                    type="number"
+                    min="1"
+                    value="1"
+                    :max="tournament.max_team_thresholds[tournament?.current_threshold_index]"
+                    :class="{ 'u-color-warn-1': team.seed !== seeding_form[team.id] }"
+                    @blur="v$[team.id].$touch"
+                  >
+                </FormField>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <button type="submit" class="c-btn-secondary" @click="save_seeds">
+      Sauvegarder
+    </button>
+  </section>
 </template>
 
-<style>
-input[type="number"] {
-  appearance: textfield;
+<style scoped>
+.reasonable-width {
+  max-width: 8rem;
 }
 </style>

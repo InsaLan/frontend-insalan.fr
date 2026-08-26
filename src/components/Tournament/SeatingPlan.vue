@@ -24,7 +24,16 @@ const props = defineProps<{
 const hoveredTeamSlot = ref<number | null>(null);
 const hoveredTeamSlotName = ref<string | null>(null);
 
-// compute the seating plan to get max X and Y
+const minX = computed(() => {
+  const seats = props.tournament?.event.seats;
+  if (seats.length === 0) return 0;
+  return Math.min(...seats.map((s) => s[0]));
+});
+const minY = computed(() => {
+  const seats = props.tournament?.event.seats;
+  if (seats.length === 0) return 0;
+  return Math.min(...seats.map((s) => s[1]));
+});
 const maxX = computed(() => {
   const seats = props.tournament?.event.seats;
   if (seats.length === 0) return 0;
@@ -37,8 +46,8 @@ const maxY = computed(() => {
 });
 
 const getCoordinates = (index: number) => {
-  const x = (index % (maxX.value + 1)) + 1;
-  const y = Math.floor(index / (maxX.value + 1)) + 1;
+  const x = (index % (maxX.value - minX.value + 1)) + minX.value;
+  const y = Math.floor(index / (maxX.value - minX.value + 1)) + minY.value;
   return [x, y] as [number, number];
 };
 
@@ -58,9 +67,20 @@ const isFocused = (index: number) => {
   const slot = props.tournament.seatslots.find(
     (seatslot) => seatslot.seats.some((seat) => seat.x === x && seat.y === y),
   );
-  if (props.team && slot && slot.id === props.team?.seat_slot) return true;
 
   return slot ? slot.id === hoveredTeamSlot.value : false;
+};
+
+const isTeamSeat = (index: number) => {
+  const [x, y] = getCoordinates(index);
+  // find the seatslot containing the hovered seat
+  const slot = props.tournament.seatslots.find(
+    (seatslot) => seatslot.seats.some((seat) => seat.x === x && seat.y === y),
+  );
+  if (!slot) return false;
+  // find the team occupying the hovered seat
+  const team = props.tournament.teams.find((t) => (t as unknown as TeamDeref).seat_slot === slot?.id);
+  return team ? (team as unknown as TeamDeref).id === props.team?.id : false;
 };
 
 const isPicked = (index: number) => {
@@ -93,7 +113,7 @@ const handleHover = (index: number, e: Event) => {
     if (tooltip) {
       tooltip.style.left = `${(e as MouseEvent).clientX - 50}px`;
       tooltip.style.top = `${(e as MouseEvent).clientY + 10}px`;
-      tooltip.classList.remove('hidden');
+      tooltip.classList.remove('u-hidden');
     }
   } else if (!slot) {
     hoveredTeamSlot.value = null;
@@ -102,7 +122,7 @@ const handleHover = (index: number, e: Event) => {
     // hide the tooltip
     const tooltip = document.getElementById('tooltip');
     if (tooltip) {
-      tooltip.classList.add('hidden');
+      tooltip.classList.add('u-hidden');
     }
   }
 };
@@ -144,152 +164,98 @@ const closeModal = () => {
 </script>
 
 <template>
-  <section id="seating" class="w-full">
-    <div v-if="tournament?.event.seats.length !== 0" class="flex flex-col items-center justify-center">
+  <section id="seating" class="u-full-width">
+    <div v-if="tournament?.event.seats.length !== 0" class="l-flex-column l-cross-center l-gap-2">
+      <h2 class="u-text-center">
+        Placement des équipes ({{ tournament.event.name }})
+      </h2>
       <div
-        class="m-2 flex w-full flex-col items-center"
+        class="u-full-width overflow-x-auto"
       >
-        <h2 class="text-center text-2xl font-bold">
-          Placement des équipes pour : {{ tournament.event.name }}
-        </h2>
         <div
-          class="w-full overflow-x-auto"
+          id="tooltip"
+          class="tooltip u-hidden c-card-bg-3"
+        >
+          <div v-if="hoveredTeamSlotName" class="truncate">
+            Équipe : <strong>
+              {{ hoveredTeamSlotName }}
+            </strong>
+          </div>
+          <template v-else>
+            Places libres
+          </template>
+        </div>
+        <div
+          class="l-grid-arbitrary l-overflow-hidden u-mx-2"
+          TournamentDeref
           :style="{
-            maxWidth: `${(maxX + 1) * 32}px`,
+            gridTemplateColumns: `repeat(${maxX - minX + 1}, minmax(0, 1fr))`,
+            gridTemplateRows: `repeat(${maxY - minY + 1}, minmax(0, 1fr))`,
           }"
+          @mouseleave="handleHover(-1, $event)"
+          @focusout="handleHover(-1, $event)"
         >
           <div
-            id="tooltip"
-            class="z-1 fixed hidden max-w-60 items-center justify-center overflow-hidden rounded-lg border border-black bg-gray-600 p-2 text-white"
-          >
-            <div v-if="hoveredTeamSlotName" class="truncate">
-              Équipe : <strong class="text-blue-500">
-                {{ hoveredTeamSlotName }}
-              </strong>
-            </div>
-            <template v-else>
-              Places libres
-            </template>
-          </div>
-          <div
-            class="grid overflow-hidden"
-            TournamentDeref
-            :style="{
-              gridTemplateColumns: `repeat(${maxX + 1}, minmax(0, 1fr))`,
-              gridTemplateRows: `repeat(${maxY + 1}, minmax(0, 1fr))`,
-              width: `${(maxX + 1) * 32}px`,
-            }"
-            @mouseleave="handleHover(-1, $event)"
-            @focusout="handleHover(-1, $event)"
+            v-for="(_, index) in (maxY - minY + 1) * (maxX - minX + 1)"
+            :key="index"
+            @click="team ? handleClick(index) : handleHover(index, $event)"
+            @keydown.enter="team ? handleClick(index) : handleHover(index, $event)"
+            @mouseover="handleHover(index, $event)"
+            @focusin="handleHover(index, $event)"
           >
             <div
-              v-for="(_, index) in (maxY + 1) * (maxX + 1)"
-              :key="index"
-              :class="[
-                'flex size-8 items-center justify-center text-xs',
-              ]"
-              @click="team ? handleClick(index) : handleHover(index, $event)"
-              @keydown.enter="team ? handleClick(index) : handleHover(index, $event)"
-              @mouseover="handleHover(index, $event)"
-              @focusin="handleHover(index, $event)"
-            >
-              <template v-if="isEventSeat(index)">
-                <template v-if="isTournamentSeat(index)">
-                  <template v-if="isFocused(index)">
-                    <img
-                      src="@/assets/images/seat-selected.png"
-                      :alt="`Seat ${getCoordinates(index)[0]},${getCoordinates(index)[1]}`"
-                      class="size-8"
-                    />
-                  </template>
-                  <template v-else>
-                    <template v-if="isPicked(index)">
-                      <img
-                        src="@/assets/images/seat-taken.png"
-                        :alt="`Seat ${getCoordinates(index)[0]},${getCoordinates(index)[1]}`"
-                        class="size-8"
-                      />
-                    </template>
-                    <template v-else>
-                      <img
-                        src="@/assets/images/seat-empty.png"
-                        :alt="`Seat ${getCoordinates(index)[0]},${getCoordinates(index)[1]}`"
-                        class="size-8"
-                      />
-                    </template>
-                  </template>
-                </template>
-                <template v-else>
-                  <img
-                    src="@/assets/images/seat-event.png"
-                    :alt="`Seat ${getCoordinates(index)[0]},${getCoordinates(index)[1]}`"
-                    class="size-8"
-                  />
-                </template>
-              </template>
-              <template v-else>
-                <div class="size-full"/>
-              </template>
-            </div>
+              v-if="isEventSeat(index)"
+              :aria-label="`Seat ${getCoordinates(index)[0]},${getCoordinates(index)[1]}`"
+              :class="{
+                'team-square': isTournamentSeat(index) && isTeamSeat(index),
+                'taken-square': isTournamentSeat(index) && isPicked(index) && !isTeamSeat(index),
+                'free-square': isTournamentSeat(index) && !isPicked(index) && !isTeamSeat(index),
+                'unused-square': !isTournamentSeat(index),
+                darken: isTournamentSeat(index) && isFocused(index),
+              }"
+            />
           </div>
-        </div>
-        <div class="m-4 flex flex-col items-center text-sm">
-          <div
-            class="grid grid-cols-1 items-center gap-4"
-            :class="{
-              'sm:grid-cols-4': team,
-              'sm:grid-cols-3': !team,
-            }"
-          >
-            <div class="flex items-center gap-2">
-              <img
-                alt="Event Seat"
-                src="@/assets/images/seat-empty.png"
-                class="size-8 object-cover"
-              />
-              <span>Places libres du tournoi : {{ tournament.name }}</span>
-            </div>
-            <div v-if="team" class="flex items-center gap-2">
-              <img
-                alt="Event Seat"
-                src="@/assets/images/seat-selected.png"
-                class="size-8 object-cover"
-              />
-              <span>Place actuelle de l'équipe</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <img
-                alt="Event Seat"
-                src="@/assets/images/seat-taken.png"
-                class="size-8 object-cover"
-              />
-              <span>Places occupées du tournoi : {{ tournament.name }}</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <img
-                alt="Event Seat"
-                src="@/assets/images/seat-event.png"
-                class="size-8 object-cover"
-              />
-              <span>Places utilisées pour les autres tournois</span>
-            </div>
-          </div>
-          <p
-            v-if="!team"
-            class="mt-2"
-          >
-            Pour modifier votre placement, rendez-vous sur la page de votre équipe, accessible depuis
-            <router-link
-              to="/me"
-              class="text-blue-500 underline"
-            >
-              la page "Mon compte"
-            </router-link>
-          </p>
         </div>
       </div>
+      <div class="u-m-2 l-flex-column l-cross-center">
+        <div
+          class="l-cross-center l-gap-2 u-text-left"
+          :class="{
+            'l-grid-4': team,
+            'l-grid-3': !team,
+          }"
+        >
+          <div class="l-flex-row l-cross-center l-gap-1">
+            <div class="smol unused-square"/>
+            <span>Places utilisées pour les autres tournois</span>
+          </div>
+          <div class="l-flex-row l-cross-center l-gap-1">
+            <div class="smol free-square"/>
+            <span>Places libres du tournoi : {{ tournament.name }}</span>
+          </div>
+          <div v-if="team" class="l-flex-row l-cross-center l-gap-1">
+            <div class="smol team-square"/>
+            <span>Place actuelle de l'équipe</span>
+          </div>
+          <div class="l-flex-row l-cross-center l-gap-1">
+            <div class="smol taken-square"/>
+            <span>Places occupées du tournoi : {{ tournament.name }}</span>
+          </div>
+        </div>
+      </div>
+      <p
+        v-if="!team"
+      >
+        Pour modifier votre placement, rendez-vous sur la page de votre équipe, accessible depuis
+        <router-link
+          to="/me"
+          class="c-link"
+        >
+          Mon compte
+        </router-link>
+      </p>
     </div>
-    <div v-else class="flex justify-center">
+    <div v-else class="u-text-center u-my-4 u-big-text">
       Le plan de la salle n'est pas encore disponible, revenez plus tard !
     </div>
   </section>
@@ -298,32 +264,65 @@ const closeModal = () => {
     v-if="showModal"
   >
     <template #title>
-      <h3 id="modal-title" class="text-white-900 text-base font-semibold leading-6">
-        Sélection des places
-      </h3>
+      Sélection des places
     </template>
     <template #body>
-      <p class="mt-2">
-        Êtes vous sûr de vouloir sélectionner ces places ?
-        <br/>
-        Vous pourrez les modifier jusqu'à la fin des inscription
-      </p>
+      Êtes vous sûr·e de vouloir sélectionner ces places ?
+      <br/><br/>
+      Vous pourrez les modifier jusqu'à la fin des inscriptions.
     </template>
     <template #buttons>
       <button
-        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-        type="submit"
-        @click="validateModal"
-      >
-        Valider
-      </button>
-      <button
-        class="inline-flex w-full justify-center rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-300 sm:mt-0 sm:w-auto"
+        class="c-btn-bg-3"
         type="button"
         @click="closeModal"
       >
         Annuler
       </button>
+      <button
+        class="c-btn-secondary"
+        type="submit"
+        @click="validateModal"
+      >
+        Valider
+      </button>
     </template>
   </Modal>
 </template>
+
+<style scoped>
+.unused-square, .free-square, .taken-square, .team-square {
+  aspect-ratio: 1;
+  border-radius: 30%;
+}
+
+.unused-square {
+  background-color: var(--color-bg-3);
+}
+
+.free-square {
+  background-color: var(--color-text-2);
+}
+
+.taken-square {
+  background-color: var(--color-secondary-1);
+}
+
+.team-square {
+  background-color: var(--color-primary-1);
+}
+
+.smol {
+  width: 2rem;
+  height: 2rem;
+}
+
+.darken {
+  filter: brightness(.7);
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 1;
+}
+</style>

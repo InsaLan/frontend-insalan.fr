@@ -1,0 +1,94 @@
+<svg
+id="instagram"
+viewBox="30 30 140 140"
+xml:space="preserve"
+xmlns="http://www.w3.org/2000/svg"
+>
+<title>
+  Instagram
+</title>
+<g>
+  <g transform="matrix(2.0 0 0 2.0 100 100)">
+    <linearGradient
+    id="SVGID_452"
+    gradientTransform="matrix(1 0 0 -1 -120.9449 379.3622)"
+    gradientUnits="userSpaceOnUse"
+    x1="194.4528"
+    x2="259.0692"
+    y1="117.067"
+    y2="190.3156"
+    >
+    <stop offset="0%" style="stop-color:rgb(236,174,83);stop-opacity: 1"/>
+    <stop offset="33%" style="stop-color:rgb(224,33,63);stop-opacity: 1"/>
+    <stop offset="65%" style="stop-color:rgb(155,53,139);stop-opacity: 1"/>
+    <stop offset="100%" style="stop-color:rgb(74,74,154);stop-opacity: 1"/>
+  </linearGradient>
+</g>
+<g transform="matrix(2.0 0 0 2.0 100 100)">
+  <linearGradient
+  id="SVGID_462"
+  gradientTransform="matrix(1 0 0 -1 -120.9449 379.3622)"
+  gradientUnits="userSpaceOnUse"
+  x1="189.1479"
+  x2="266.6987"
+  y1="111.0581"
+  y2="198.9453"
+  >
+  <stop offset="0%" style="stop-color:rgb(236,174,83);stop-opacity: 1"/>
+  <stop offset="33%" style="stop-color:rgb(224,33,63);stop-opacity: 1"/>
+  <stop offset="65%" style="stop-color:rgb(155,53,139);stop-opacity: 1"/>
+  <stop offset="100%" style="stop-color:rgb(74,74,154);stop-opacity: 1"/>
+</linearGradient>
+<path
+d="M 118.47 203.25 H 92.71 c -5.27 -0.05 -9.59 4.17 -9.67 9.44 v 26.51 c 0.06 5.28 4.39 9.5 9.66 9.44 c 0 0 0 0 0 0 h 25.73 c 5.28 0.06 9.6 -4.16 9.67 -9.44 c 0 0 0 0 0 0 v -26.51 C 128.04 207.42 123.73 203.2 118.47 203.25 z M 124.25 239.2 c 0 3.09 -2.5 5.59 -5.58 5.59 c -0.07 0 -0.13 0 -0.2 0 H 92.71 c -3.08 0.11 -5.67 -2.3 -5.78 -5.39 c 0 -0.07 0 -0.13 0 -0.2 v -26.51 c 0 -3.09 2.5 -5.59 5.58 -5.59 c 0.07 0 0.13 0 0.2 0 h 25.73 c 3.08 -0.11 5.67 2.3 5.78 5.39 c 0 0.07 0 0.13 0 0.2 L 124.25 239.2 z"
+stroke-linecap="round"
+style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_462); fill-rule: nonzero; opacity: 1;"
+transform=" translate(-105.57, -225.9451)"
+/>
+</g>
+<g transform="matrix(2.0 0 0 2.0 100 100)">
+  <linearGradient
+  id="SVGID_472"
+  gradientTransform="matrix(1 0 0 -1 -120.9449 379.3622)"
+  gradientUnits="userSpaceOnUse"
+  x1="189.1445"
+  x2="266.6953"
+  y1="111.0611"
+  y2="198.9482"
+  >
+  <stop offset="0%" style="stop-color:rgb(236,174,83);stop-opacity: 1"/>
+  <stop offset="33%" style="stop-color:rgb(224,33,63);stop-opacity: 1"/>
+  <stop offset="65%" style="stop-color:rgb(155,53,139);stop-opacity: 1"/>
+  <stop offset="100%" style="stop-color:rgb(74,74,154);stop-opacity: 1"/>
+</linearGradient>
+<path
+d="M 105.59 214.14 c -6.51 0 -11.79 5.28 -11.79 11.79 s 5.28 11.79 11.79 11.79 c 6.51 0 11.79 -5.28 11.79 -11.79 S 112.1 214.14 105.59 214.14 L 105.59 214.14 z M 105.59 233.7 c -4.35 0 -7.88 -3.53 -7.88 -7.88 c 0 -4.35 3.53 -7.88 7.88 -7.88 s 7.88 3.53 7.88 7.88 c 0 0.04 0 0.07 0 0.11 c -0.02 4.34 -3.53 7.86 -7.88 7.88 V 233.7 z"
+stroke-linecap="round"
+style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_472); fill-rule: nonzero; opacity: 1;"
+transform=" translate(-105.59, -225.93)"
+/>
+</g>
+<g transform="matrix(2.0 0 0 2.0 125 75)">
+  <linearGradient
+  id="SVGID_482"
+  gradientTransform="matrix(1 0 0 -1 -239.1849 165.8122)"
+  gradientUnits="userSpaceOnUse"
+  x1="190.1421"
+  x2="267.665"
+  y1="110.2055"
+  y2="198.0926"
+  >
+  <stop offset="0%" style="stop-color:rgb(236,174,83);stop-opacity: 1"/>
+  <stop offset="33%" style="stop-color:rgb(224,33,63);stop-opacity: 1"/>
+  <stop offset="65%" style="stop-color:rgb(155,53,139);stop-opacity: 1"/>
+  <stop offset="100%" style="stop-color:rgb(74,74,154);stop-opacity: 1"/>
+</linearGradient>
+<circle
+cx="0"
+cy="0"
+r="2.77"
+style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_482); fill-rule: nonzero; opacity: 1;"
+/>
+</g>
+</g>
+</svg>
