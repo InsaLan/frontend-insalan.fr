@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia';
 import {
   computed, reactive, ref,
 } from 'vue';
+import { useI18n } from 'vue-i18n';
 import placeholder from '@/assets/images/empty_pp.webp';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
@@ -18,9 +19,10 @@ import {
   email,
   minLength,
   required, sameAs,
-} from '@/support/locales/errors.fr';
+} from '@/support/locales/errors';
 
 const userStore = useUserStore();
+const { t } = useI18n();
 const tournamentStore = useTournamentStore();
 const {
   user, role, inscriptions, ongoing_match, cart,
@@ -63,7 +65,7 @@ const v$_password = useVuelidate(rules_password, data_password);
 
 const focus = ref('');
 
-const title = ref('Test title');
+const title = ref('');
 
 const modal_payment = ref(false);
 
@@ -104,15 +106,15 @@ const validateModal = async () => {
 const editField = (field: string) => {
   switch (field) {
     case 'name':
-      title.value = 'Changer de Prénom et Nom';
+      title.value = t('views.me.changeName');
       focus.value = 'name';
       break;
     case 'email':
-      title.value = 'Changer d\'email';
+      title.value = t('views.me.changeEmail');
       focus.value = 'email';
       break;
     case 'password':
-      title.value = 'Changer son mot de passe';
+      title.value = t('views.me.changePassword');
       focus.value = 'password';
       break;
     default:
@@ -126,20 +128,20 @@ const editField = (field: string) => {
   <div class="u-m-main me-grid l-gap-2">
     <div id="profile" class="l-flex-column l-cross-center c-card-bg-2 u-full-width">
       <h2 class="u-text-center">
-        Mon compte
+        {{ $t('views.me.account') }}
       </h2>
       <img
         :src="user.image ? user.image : placeholder"
-        alt="Image de profil"
+        :alt="$t('views.me.profileImageAlt')"
         class="profile"
       />
       <div class="u-text-left u-big-text">
-        Pseudo : <em>{{ user.username }}</em>
+        {{ $t('views.me.username') }}{{ $t('common.colon') }}<em>{{ user.username }}</em>
         <br>
-        Prénom et Nom : <em>{{ user.first_name }} {{ user.last_name }}</em>
+        {{ $t('views.me.fullName') }}{{ $t('common.colon') }}<em>{{ user.first_name }} {{ user.last_name }}</em>
         <button
           type="button"
-          title="Changer le prénom et le nom"
+          :title="$t('views.me.changeName')"
           class="c-image-btn c-inline-icon"
           @click="editField('name')"
         >
@@ -148,10 +150,10 @@ const editField = (field: string) => {
           />
         </button>
         <br>
-        Email : <em>{{ user.email }}</em>
+        {{ $t('views.me.email') }}{{ $t('common.colon') }}<em>{{ user.email }}</em>
         <button
           type="button"
-          title="Changer l'email"
+          :title="$t('views.me.changeEmail')"
           class="c-image-btn c-inline-icon"
           @click="editField('email')"
         >
@@ -160,10 +162,10 @@ const editField = (field: string) => {
           />
         </button>
         <br>
-        Mot de passe : <em class="u-color-text-2">**********</em>
+        {{ $t('views.me.password') }}{{ $t('common.colon') }}<em class="u-color-text-2">**********</em>
         <button
           type="button"
-          title="Changer le mot de passe"
+          :title="$t('views.me.changePassword')"
           class="c-image-btn c-inline-icon"
           @click="editField('password')"
         >
@@ -172,20 +174,20 @@ const editField = (field: string) => {
           />
         </button>
         <br>
-        Rôle : <em :class="{ ['u-color-secondary-1']: role === 'dev' }">{{ role === 'joueur' ? 'joueur·euse' : role }}</em>
+        {{ $t('views.me.role') }}{{ $t('common.colon') }}<em :class="{ ['u-color-secondary-1']: role === 'dev' }">{{ role === 'joueur' ? $t('views.me.player') : role }}</em>
       </div>
       <div
         v-if="cart.length > 0"
         class="l-flex-row l-cross-center c-card-bg-3"
       >
         <div class="u-big-text u-text-left">
-          Vous avez <strong>{{ cart.length }}</strong> article{{ cart.length !== 1 ? 's' : '' }} dans votre panier.
+          {{ $t('views.me.cartItems', { count: cart.length }) }}
         </div>
         <router-link
           class="c-btn-secondary"
           to="/cart"
         >
-          Voir le panier
+          {{ $t('views.me.viewCart') }}
         </router-link>
       </div>
       <!-- <button
@@ -197,22 +199,19 @@ const editField = (field: string) => {
     </div>
     <div id="team">
       <h1 class="u-m-1 u-text-center">
-        Mes Équipes
+        {{ $t('views.me.myTeams') }}
       </h1>
       <div class="l-flex-column l-cross-center">
         <div v-if="Object.keys(inscriptions.unpaid).length" class="c-card-error l-flex-row l-cross-center l-main-center u-py-1 u-m-1 u-big-text">
           <fa-awesome-icon icon="fa-warning"/>
-          <div v-if="Object.keys(inscriptions.unpaid).length === 1">
-            Vous avez une inscription non payée
-          </div>
-          <div v-else>
-            Vous avez des inscriptions non payées
+          <div>
+            {{ $t('views.me.unpaidRegistration', Object.keys(inscriptions.unpaid).length) }}
           </div>
         </div>
       </div>
       <div v-if="(inscriptions.ongoing as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="u-mt-2">
         <h2 class="u-m-2">
-          Édition Actuelle
+          {{ $t('views.me.currentEdition') }}
         </h2>
         <div class="l-grid-2 l-gap-2">
           <MeTournamentCard
@@ -231,7 +230,7 @@ const editField = (field: string) => {
       </div>
       <div v-if="(inscriptions.past as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="u-mt-2">
         <h2 class="u-m-2">
-          Autres Éditions
+          {{ $t('views.me.otherEditions') }}
         </h2>
         <div class="l-grid-2 l-gap-2">
           <MeTournamentCard
@@ -243,7 +242,7 @@ const editField = (field: string) => {
       </div>
       <div v-if="(inscriptions.private_regs as [string, PlayerRegistrationDeref | RegistrationDeref][])?.length > 0" class="u-mt-2">
         <h2 class="u-m-2">
-          Tournois secondaires
+          {{ $t('views.me.secondaryTournaments') }}
         </h2>
         <div class="l-grid-2 l-gap-2">
           <MeTournamentCard
@@ -270,13 +269,13 @@ const editField = (field: string) => {
           :validations="v$_name.first_name"
         >
           <label for="prenom">
-            Nouveau Prénom
+            {{ $t('views.me.newFirstName') }}
           </label>
           <input
             id="prenom"
             v-model="data_name.first_name"
-            aria-label="Nouveau Prénom"
-            placeholder="John"
+            :aria-label="$t('views.me.newFirstName')"
+            :placeholder="$t('views.me.firstNamePlaceholder')"
             required
             type="text"
             @blur="v$_name.first_name.$touch"
@@ -287,13 +286,13 @@ const editField = (field: string) => {
           :validations="v$_name.last_name"
         >
           <label for="nom">
-            Nouveau Nom
+            {{ $t('views.me.newLastName') }}
           </label>
           <input
             id="nom"
             v-model="data_name.last_name"
-            aria-label="Nouveau Nom"
-            placeholder="Doe"
+            :aria-label="$t('views.me.newLastName')"
+            :placeholder="$t('views.me.lastNamePlaceholder')"
             required
             type="text"
             @blur="v$_name.last_name.$touch"
@@ -305,13 +304,13 @@ const editField = (field: string) => {
           :validations="v$_email.email"
         >
           <label for="email">
-            Nouvel email
+            {{ $t('views.me.newEmail') }}
           </label>
           <input
             id="email"
             v-model="data_email.email"
-            aria-label="Email"
-            placeholder="john-doe@gmail.com"
+            :aria-label="$t('views.me.email')"
+            :placeholder="$t('views.me.emailPlaceholder')"
             required
             type="text"
             @blur="v$_email.email.$touch"
@@ -323,13 +322,13 @@ const editField = (field: string) => {
           :validations="v$_password.current_password"
         >
           <label for="current_password">
-            Mot de passe actuel
+            {{ $t('views.me.currentPassword') }}
           </label>
           <PasswordInput
             id="current_password"
             v-model="data_password.current_password"
-            aria-label="mot de passe actuel"
-            placeholder="Mot de passe actuel"
+            :aria-label="$t('views.me.currentPassword')"
+            :placeholder="$t('views.me.currentPassword')"
             required
             :on-blur="v$_password.current_password.$touch"
           />
@@ -339,13 +338,13 @@ const editField = (field: string) => {
           :validations="v$_password.new_password"
         >
           <label for="new_password">
-            Nouveau mot de passe
+            {{ $t('views.me.newPassword') }}
           </label>
           <PasswordInput
             id="new_password"
             v-model="data_password.new_password"
-            aria-label="Nouveau mot de passe"
-            placeholder="Nouveau mot de passe"
+            :aria-label="$t('views.me.newPassword')"
+            :placeholder="$t('views.me.newPassword')"
             required
             :on-blur="v$_password.new_password.$touch"
           />
@@ -355,13 +354,13 @@ const editField = (field: string) => {
           :validations="v$_password.password_validation"
         >
           <label for="repeat_password">
-            Confirmer le nouveau mot de passe
+            {{ $t('views.me.confirmNewPassword') }}
           </label>
           <PasswordInput
             id="repeat_password"
             v-model="data_password.password_validation"
-            aria-label="Confirmer le nouveau mot de passe"
-            placeholder="Confirmer le nouveau mot de passe"
+            :aria-label="$t('views.me.confirmNewPassword')"
+            :placeholder="$t('views.me.confirmNewPassword')"
             required
             :on-blur="v$_password.password_validation.$touch"
           />
@@ -376,14 +375,14 @@ const editField = (field: string) => {
         type="button"
         @click="closeModal"
       >
-        Annuler
+        {{ $t('views.me.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="validateModal"
       >
-        Valider
+        {{ $t('views.me.validate') }}
       </button>
     </template>
   </Modal>
@@ -391,12 +390,12 @@ const editField = (field: string) => {
   <!-- Simple modal with a loading text for the payment -->
   <Modal v-if="modal_payment">
     <template #title>
-      Paiement
+      {{ $t('views.me.payment') }}
     </template>
     <template #body>
-      Votre inscription a été ajoutée au panier.
+      {{ $t('views.me.registrationAddedToCart') }}
       <br><br>
-      Vous pouvez retrouver votre panier depuis votre compte.
+      {{ $t('views.me.findCartFromAccount') }}
     </template>
     <template #buttons>
       <button
@@ -404,13 +403,13 @@ const editField = (field: string) => {
         type="button"
         @click="modal_payment = false"
       >
-        Rester sur cette page
+        {{ $t('views.me.stayOnPage') }}
       </button>
       <router-link
         class="c-btn-secondary"
         :to="`/cart`"
       >
-        Aller au panier
+        {{ $t('views.me.goToCart') }}
       </router-link>
     </template>
   </Modal>

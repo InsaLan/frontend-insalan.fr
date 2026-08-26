@@ -3,12 +3,14 @@ import axios from 'axios';
 import type { DetectedBarcode } from 'barcode-detector/pure';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { QrcodeStream } from 'vue-qrcode-reader';
 import { type QRData, TicketStatus } from '@/models/tickets';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const { addNotification } = useNotificationStore();
+const { t } = useI18n();
 
 const tournamentStore = useTournamentStore();
 const { get_unpaid_registration, validate_registration } = tournamentStore;
@@ -58,15 +60,15 @@ function cancel() {
 
 const onError = (err: Error) => {
   if (err.name === 'NotAllowedError') {
-    addNotification('Vous devez accorder l\'autorisation d\'accès à la caméra', 'error');
+    addNotification(t('views.scanQrCode.cameraPermissionRequired'), 'error');
   } else if (err.name === 'NotFoundError') {
-    addNotification('Pas d\'appareil photo sur cet appareil', 'error');
+    addNotification(t('views.scanQrCode.noCameraDevice'), 'error');
   } else if (err.name === 'NotSupportedError' || err.name === 'InsecureContextError') {
-    addNotification('Contexte sécurisé requis (HTTPS, localhost)', 'error');
+    addNotification(t('views.scanQrCode.secureContextRequired'), 'error');
   } else if (err.name === 'NotReadableError') {
-    addNotification('La caméra est-elle déjà utilisée ?', 'error');
+    addNotification(t('views.scanQrCode.cameraAlreadyInUse'), 'error');
   } else if (err.name === 'OverconstrainedError') {
-    addNotification('Les caméras installées ne sont pas adaptées', 'error');
+    addNotification(t('views.scanQrCode.unsupportedCamera'), 'error');
   } else {
     addNotification(err.message, 'error');
   }
@@ -75,13 +77,13 @@ const onError = (err: Error) => {
 const ticketStatus = computed(() => {
   switch (qrcodeData.value?.status) {
     case TicketStatus.CANCELLED:
-      return 'Ticket annulé';
+      return t('views.scanQrCode.ticketCancelled');
     case TicketStatus.SCANNED:
-      return 'Ticket déjà scanné';
+      return t('views.scanQrCode.ticketAlreadyScanned');
     case TicketStatus.VALID:
-      return 'Ticket valide';
+      return t('views.scanQrCode.ticketValid');
     default:
-      return 'Erreur dans le scan du ticket';
+      return t('views.scanQrCode.ticketScanError');
   }
 });
 
@@ -125,11 +127,11 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
       <div class="u-m-text">
         <div v-if="qrcodeData" class="c-card-bg-2 l-flex-column l-gap-2">
           <p>
-            Joueur·euse : {{ qrcodeData.user }} <br/>
-            Identité : {{ qrcodeData.identity }} <br/>
-            Statut : {{ ticketStatus }} <br/>
-            Tournoi : {{ qrcodeData.tournament }} <br/>
-            Équipe : {{ qrcodeData.team }}
+            {{ $t('views.scanQrCode.player') }} {{ qrcodeData.user }} <br/>
+            {{ $t('views.scanQrCode.identity') }} {{ qrcodeData.identity }} <br/>
+            {{ $t('views.scanQrCode.status') }} {{ ticketStatus }} <br/>
+            {{ $t('views.scanQrCode.tournament') }} {{ qrcodeData.tournament }} <br/>
+            {{ $t('views.scanQrCode.team') }} {{ qrcodeData.team }}
           </p>
           <div class="l-flex-row l-main-center l-cross-center l-gap-2 u-full-width">
             <button
@@ -137,7 +139,7 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
               class="c-btn-bg-3"
               @click="cancel"
             >
-              Annuler
+              {{ $t('views.scanQrCode.cancel') }}
             </button>
             <button
               :disabled="qrcodeData.status !== TicketStatus.VALID"
@@ -145,17 +147,17 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
               class="c-btn-secondary"
               @click="validate"
             >
-              Valider
+              {{ $t('views.scanQrCode.validate') }}
             </button>
           </div>
         </div>
         <div v-else class="l-flex-column u-full-width l-gap-1">
-          <label for="search">Rechercher une inscription non payée</label>
+          <label for="search">{{ $t('views.scanQrCode.searchUnpaidRegistration') }}</label>
           <input
             id="search"
             v-model="search"
             type="text"
-            placeholder="Nom d'utilisateur"
+            :placeholder="$t('views.scanQrCode.usernamePlaceholder')"
           />
           <div v-if="search && filteredRegistrations.length > 0" class="l-flex-column l-gap-1">
             <div v-for="registration in filteredRegistrations" :key="registration.id" class="c-card-bg-3 u-full-width l-flex-row">
@@ -172,12 +174,12 @@ type TorchCapabilities = MediaTrackConstraints & { torch?: boolean };
                   search = ''
                 "
               >
-                Valider le paiement
+                {{ $t('views.scanQrCode.validatePayment') }}
               </button>
             </div>
           </div>
           <div v-else-if="search" class="c-card-error u-p-0 u-text-center u-full-width">
-            Aucune inscription trouvée
+            {{ $t('views.scanQrCode.noRegistrationFound') }}
           </div>
         </div>
       </div>

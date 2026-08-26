@@ -4,6 +4,7 @@ import Footer from '@/components/Footer.vue';
 import NameConfirmationModal from '@/components/NameConfirmationModal.vue';
 import Navigation from '@/components/Navigation.vue';
 import Notification from '@/components/Notification.vue';
+import { initializeLocale } from '@/i18n';
 import { useContentStore } from '@/stores/content.store';
 import { useUserStore } from '@/stores/user.store';
 
@@ -28,6 +29,7 @@ const updateTopOffset = () => {
 
 onMounted(async () => {
   await handle_session_cookie_expiration();
+  await initializeLocale();
   await fetchStatic();
   updateTopOffset();
   window.addEventListener('resize', updateTopOffset);
@@ -50,7 +52,7 @@ onUnmounted(() => {
           <template #fallback>
             <div class="l-flex-column l-main-center l-cross-center l-gap-2 u-full-height l-grow">
               <div class="u-big-text">
-                Chargement...
+                {{ $t('components.app.loading') }}
               </div>
               <div role="status" aria-hidden="true" class="c-spinner"/>
             </div>

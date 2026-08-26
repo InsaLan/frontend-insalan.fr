@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n';
 import TeamCard from '@/components/Tournament/TeamCard.vue';
 import type { EventTournamentDeref, PrivateTournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
@@ -12,6 +13,7 @@ const props = defineProps<{
 
 const tournamentStore = useTournamentStore();
 const { getTournamentTeams } = tournamentStore;
+const { t } = useI18n();
 
 getTournamentTeams();
 
@@ -28,24 +30,23 @@ const next_threshold = props.tournament.max_team_thresholds[props.tournament.cur
 <template>
   <section id="teams" class="u-m-main l-flex-column l-gap-4">
     <div v-if="props.tournament?.teams.length === 0" class="u-my-4 u-text-center u-big-text">
-      Aucune équipe inscrite.
+      {{ t('components.tournament.tournamentTeams.noRegisteredTeam') }}
     </div>
     <div v-if="tourney_teams?.validated_teams.length > 0" class="l-flex-column l-gap-2">
       <div class="u-m-text l-flex-column l-gap-2">
         <h2 class="u-m-0 u-text-center">
-          Équipes validées
+          {{ t('components.tournament.tournamentTeams.validatedTeamsTitle') }}
         </h2>
         <div class="u-mx-4 progressbar-height">
           <progress-bar
             :bg-color-level="2"
             :quantity1="n_validated_teams"
             :max1="max_validated_teams"
-            description1="équipes validées"
+            :description1="t('components.tournament.tournamentTeams.validatedTeamsTitle').toLocaleLowerCase()"
           />
         </div>
         <p>
-          Les équipes validées ont rempli toutes les conditions pour participer au tournoi.
-          Si votre équipe apparaît ici, félicitations !
+          {{ t('components.tournament.tournamentTeams.validatedTeamsDescription') }}
         </p>
       </div>
       <div class="l-grid-4 l-gap-2">
@@ -60,22 +61,18 @@ const next_threshold = props.tournament.max_team_thresholds[props.tournament.cur
     <div v-if="tourney_teams?.waiting_validation_teams.length > 0" class="l-flex-column l-gap-2">
       <div class="u-m-text l-flex-column l-gap-2">
         <h2 class="u-text-center u-m-0">
-          Équipes en attente du palier
+          {{ t('components.tournament.tournamentTeams.waitingThresholdTitle') }}
         </h2>
         <div class="u-mx-4 progressbar-height">
           <progress-bar
             :bg-color-level="2"
             :quantity1="n_waiting_threshold"
             :max1="next_threshold"
-            description1="équipes en attente du palier"
+            :description1="t('components.tournament.tournamentTeams.waitingThresholdTitle').toLocaleLowerCase()"
           />
         </div>
-        <p>
-          Les équipes en attente du palier ont rempli les conditions minimales mais
-          doivent attendre que le prochain palier d'équipe soit atteint pour être validées.
-          Encore <strong>{{ next_threshold - n_waiting_threshold }} autres équipes</strong>
-          doivent remplir les conditions pour atteindre le prochain palier.
-        </p>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <p v-html="t('components.tournament.tournamentTeams.waitingThresholdDescription', { count: next_threshold - n_waiting_threshold })"/>
       </div>
       <div class="l-grid-4 l-gap-2">
         <TeamCard
@@ -88,12 +85,10 @@ const next_threshold = props.tournament.max_team_thresholds[props.tournament.cur
     <div v-if="tourney_teams?.non_validated_teams.length > 0" class="l-flex-column l-gap-2">
       <div class="u-m-text l-flex-column l-gap-2">
         <h2 class="u-text-center u-m-0">
-          Équipes en cours de validation
+          {{ t('components.tournament.tournamentTeams.validatingTeamsTitle') }}
         </h2>
         <p>
-          Les équipes en cours de validation n'ont pas encore rempli les conditions nécessaires
-          pour participer au tournoi. Pour être validées, il faut qu'au moins la moitié des membres
-          de l'équipe aient payé leur inscription.
+          {{ t('components.tournament.tournamentTeams.validatingTeamsDescription') }}
         </p>
       </div>
       <div class="l-grid-4 l-gap-2">

@@ -2,6 +2,7 @@
 import useVuelidate from '@vuelidate/core';
 import { storeToRefs } from 'pinia';
 import { computed, reactive, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import AdminGroups from '@/components/Tournament/Admin/AdminGroups.vue';
@@ -23,7 +24,7 @@ import {
   minLength,
   minValue,
   required,
-} from '@/support/locales/errors.fr';
+} from '@/support/locales/errors';
 
 import Bracket from './Bracket.vue';
 
@@ -33,6 +34,7 @@ const { tournament, admin } = defineProps<{
 }>();
 
 const { addNotification } = useNotificationStore();
+const { t } = useI18n();
 
 const {
   createBracket,
@@ -79,7 +81,7 @@ const create_stage = async () => {
 
   const res = await createStage({ tournament: tournament.id, ...stage_data });
 
-  if (res) addNotification('La phase a bien été créée', 'info');
+  if (res) addNotification(t('components.tournament.tournamentStages.stageCreated'), 'info');
 
   create_stage_modal.value = false;
 };
@@ -91,7 +93,7 @@ const update_stage = async (stage_id: number) => {
     index: (tournament.stages.filter((s: Stage) => s.id === stage_id).at(0) as Stage).index,
   });
 
-  if (res) addNotification('La phase a bien été mise à jour', 'info');
+  if (res) addNotification(t('components.tournament.tournamentStages.stageUpdated'), 'info');
 
   edit_stage.value = 0;
 };
@@ -99,7 +101,7 @@ const update_stage = async (stage_id: number) => {
 const delete_stage = async (stage_id: number) => {
   const res = await deleteStage(stage_id);
 
-  if (res) addNotification('La phase a bien été supprimée', 'info');
+  if (res) addNotification(t('components.tournament.tournamentStages.stageDeleted'), 'info');
 
   delete_stage_id.value = 0;
   selected_stage.value = tournament.stages.at(0)?.id ?? 0;
@@ -132,7 +134,7 @@ const add_bracket = async () => {
 
   const res = await createBracket(selected_stage.value, bracket_data);
 
-  if (res) addNotification(`L'arbre ${bracket_data.name} a bien été créé`, 'info');
+  if (res) addNotification(t('components.tournament.tournamentStages.bracketCreated', { name: bracket_data.name }), 'info');
 
   add_format_modal.value = false;
 };
@@ -181,7 +183,7 @@ const add_groups = async () => {
 
   const res = await createGroups(selected_stage.value, group_data);
 
-  if (res) addNotification('Les poules ont bien été créées', 'info');
+  if (res) addNotification(t('components.tournament.tournamentStages.groupsCreated'), 'info');
 
   add_format_modal.value = false;
 };
@@ -224,7 +226,7 @@ const add_swiss = async () => {
 
   const res = await createSwiss(selected_stage.value, swiss_data);
 
-  if (res) addNotification('La ronde suisse a bien été créée', 'info');
+  if (res) addNotification(t('components.tournament.tournamentStages.swissRoundCreated'), 'info');
 
   add_format_modal.value = false;
 };
@@ -271,7 +273,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
       v-if="tournament.stages.length === 0 && !has_formats && !admin"
     >
       <p class="u-big-text u-text-center">
-        Les phases du tournoi ne sont pas encore disponibles.
+        {{ $t('components.tournament.tournamentStages.stagesUnavailable') }}
       </p>
     </template>
     <!-- This case is for the archive tournaments, so we don't need to have an admin version of it -->
@@ -280,7 +282,11 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
     >
       <div class="l-flex-row l-wrap l-main-center l-cross-center l-gap-2">
         <button
-          v-for="(format_name, format) in { group: 'Poules', swiss: 'Ronde Suisse', bracket: 'Arbres' }"
+          v-for="(format_name, format) in {
+            group: $t('components.tournament.tournamentStages.groups'),
+            swiss: $t('components.tournament.tournamentStages.swissRound'),
+            bracket: $t('components.tournament.tournamentStages.brackets'),
+          }"
           :key="format"
           type="button"
           :class="format === selected_format ? 'c-btn-bg-3' : 'c-btn-bg-2 u-color-text-2'"
@@ -295,7 +301,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
           v-if="tournament.brackets.length === 0"
           class="u-text-center u-big-text"
         >
-          Les arbres ne sont pas disponibles.
+          {{ $t('components.tournament.tournamentStages.bracketsUnavailable') }}
         </div>
         <div
           v-else
@@ -321,7 +327,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
           v-if="tournament.groups.length === 0"
           class="u-text-center u-big-text"
         >
-          Les poules ne sont pas disponibles.
+          {{ $t('components.tournament.tournamentStages.groupsUnavailable') }}
         </div>
         <div
           v-else
@@ -357,7 +363,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
           v-if="tournament.swissRounds.length === 0"
           class="u-text-center u-big-text"
         >
-          Les rondes suisses ne sont pas disponibles.
+          {{ $t('components.tournament.tournamentStages.swissRoundsUnavailable') }}
         </div>
         <SwissRoundTable
           v-for="swiss in tournament.swissRounds"
@@ -396,7 +402,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             >
             <button
               type="button"
-              title="Sauvegarder la phase"
+              :title="$t('components.tournament.tournamentStages.saveStage')"
               @click.stop="update_stage(stage.id)"
             >
               <fa-awesome-icon
@@ -406,7 +412,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             </button>
             <button
               type="button"
-              title="Annuler"
+              :title="$t('components.tournament.tournamentStages.cancel')"
               @click.stop="edit_stage = 0"
             >
               <fa-awesome-icon
@@ -422,7 +428,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             {{ stage.name }}
             <button
               type="button"
-              title="Éditer la phase"
+              :title="$t('components.tournament.tournamentStages.editStage')"
               @click.stop="edit_stage = stage.id; stage_data.name = stage.name"
             >
               <fa-awesome-icon
@@ -432,7 +438,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             </button>
             <button
               type="button"
-              title="Supprimer la phase"
+              :title="$t('components.tournament.tournamentStages.deleteStage')"
               @click.stop="delete_stage_id = stage.id"
             >
               <fa-awesome-icon
@@ -449,14 +455,14 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
           class="c-btn-primary"
           @click="create_stage_modal = true"
         >
-          Nouvelle Phase
+          {{ $t('components.tournament.tournamentStages.newStage') }}
         </button>
         <button
           type="button"
           class="c-btn-secondary"
           @click="add_format_modal = true"
         >
-          Ajouter un format
+          {{ $t('components.tournament.tournamentStages.addFormat') }}
         </button>
       </div>
 
@@ -570,7 +576,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
     @close="create_stage_modal = false"
   >
     <template #title>
-      Nouvelle phase de tournoi
+      {{ $t('components.tournament.tournamentStages.newTournamentStage') }}
     </template>
     <template #body>
       <form
@@ -579,7 +585,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
       >
         <FormField :validations="v$.name">
           <label for="stage_name">
-            Nom de la phase :
+            {{ $t('components.tournament.tournamentStages.stageName') }}
           </label>
           <input
             id="stage_name"
@@ -598,14 +604,14 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
         type="button"
         @click="create_stage_modal = false"
       >
-        Annuler
+        {{ $t('components.tournament.tournamentStages.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click="create_stage()"
       >
-        Valider
+        {{ $t('components.tournament.tournamentStages.validate') }}
       </button>
     </template>
   </Modal>
@@ -615,10 +621,10 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
     @close="delete_stage_id = 0;"
   >
     <template #title>
-      Supprimer la phase
+      {{ $t('components.tournament.tournamentStages.deleteStage') }}
     </template>
     <template #body>
-      La phase va être supprimée ainsi que tous les formats qui lui sont liés.
+      {{ $t('components.tournament.tournamentStages.deleteStageDescription') }}
     </template>
     <template #buttons>
       <button
@@ -626,14 +632,14 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
         type="button"
         @click="delete_stage_id = 0;"
       >
-        Annuler
+        {{ $t('components.tournament.tournamentStages.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click="delete_stage(delete_stage_id)"
       >
-        Valider
+        {{ $t('components.tournament.tournamentStages.validate') }}
       </button>
     </template>
   </Modal>
@@ -643,7 +649,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
     @close="add_format_modal = false"
   >
     <template #title>
-      Ajouter un format à {{ selected_stage_name }}
+      {{ $t('components.tournament.tournamentStages.addFormatToStage', { name: selected_stage_name }) }}
     </template>
     <template #body>
       <form
@@ -655,7 +661,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
           :validations="v$"
         >
           <label for="format_type">
-            Type de format
+            {{ $t('components.tournament.tournamentStages.formatType') }}
           </label>
           <select
             id="format_type"
@@ -663,13 +669,13 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             name="format_type"
           >
             <option value="bracket">
-              Arbre
+              {{ $t('components.tournament.tournamentStages.bracket') }}
             </option>
             <option value="group">
-              Poules
+              {{ $t('components.tournament.tournamentStages.groups') }}
             </option>
             <option value="swiss">
-              Ronde suisse
+              {{ $t('components.tournament.tournamentStages.swissRound') }}
             </option>
           </select>
         </FormField>
@@ -680,14 +686,14 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             :validations="v_bracket$.name"
           >
             <label for="bracket_name">
-              Nom de l'arbre
+              {{ $t('components.tournament.tournamentStages.bracketName') }}
             </label>
             <input
               id="bracket_name"
               v-model="bracket_data.name"
               type="text"
               name="bracket_name"
-              aria-label="Bracket's name"
+              :aria-label="$t('components.tournament.tournamentStages.bracketName')"
               @blur="v_bracket$.name.$touch"
             />
           </FormField>
@@ -695,12 +701,12 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             :validations="v_bracket$.bracket_type"
           >
             <label for="bracket_type">
-              Type d'arbre
+              {{ $t('components.tournament.tournamentStages.bracketType') }}
             </label>
             <select
               id="bracket_type"
               v-model="bracket_data.bracket_type"
-              aria-label="Bracket's type"
+              :aria-label="$t('components.tournament.tournamentStages.bracketType')"
               @blur="v_bracket$.bracket_type.$touch"
             >
               <option
@@ -708,7 +714,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
                 :key="bracket_type"
                 :value="bracket_type"
               >
-                {{ bracket_type === BracketType.SINGLE ? 'Élimination direct' : 'Double élimination' }}
+                {{ bracket_type === BracketType.SINGLE ? $t('components.tournament.tournamentStages.singleElimination') : $t('components.tournament.tournamentStages.doubleElimination') }}
               </option>
             </select>
           </FormField>
@@ -716,7 +722,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             :validations="v_bracket$.team_count"
           >
             <label for="bracket_team_count">
-              Nombre d'équipes
+              {{ $t('components.tournament.tournamentStages.teamCount') }}
             </label>
             <input
               id="bracket_team_count"
@@ -730,7 +736,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             :validations="v_bracket$.bo_type"
           >
             <label for="bo_type">
-              Type de BO
+              {{ $t('components.tournament.tournamentStages.boType') }}
             </label>
             <select
               id="bo_type"
@@ -744,14 +750,14 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
                 :key="value"
                 :value="value"
               >
-                {{ value === '0' ? 'Classement' : `BO ${value}` }}
+                {{ value === '0' ? $t('components.tournament.tournamentStages.classification') : $t('components.tournament.tournamentStages.bestOf', { value }) }}
               </option>
               <option
                 v-for="value in Object.keys(BestofType).map(Number).filter((v) => Number.isInteger(v) && v > 1)"
                 :key="value - 1"
                 :value="value - 1"
               >
-                {{ `PA ${value}` }}
+                {{ $t('components.tournament.tournamentStages.playAll', { value }) }}
               </option>
             </select>
           </FormField>
@@ -763,12 +769,12 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             :validations="v_group$.count"
           >
             <label for="group_count">
-              Nombre de poules
+              {{ $t('components.tournament.tournamentStages.groupCount') }}
             </label>
             <input
               id="group_count"
               v-model="group_data.count"
-              aria-label="Group count"
+              :aria-label="$t('components.tournament.tournamentStages.groupCount')"
               type="number"
               @blur="v_group$.count.$touch"
             >
@@ -777,12 +783,12 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             :validations="v_group$.team_per_group"
           >
             <label for="team_per_group">
-              Nombre d'équipes par poule
+              {{ $t('components.tournament.tournamentStages.teamsPerGroup') }}
             </label>
             <input
               id="team_per_group"
               v-model="group_data.team_per_group"
-              aria-label="Team per group"
+              :aria-label="$t('components.tournament.tournamentStages.teamsPerGroup')"
               type="number"
               @blur="v_group$.team_per_group.$touch"
             >
@@ -791,11 +797,11 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             :validations="v_group$.names"
           >
             <label for="names">
-              Noms des poules (Liste de noms séparées par des virgules)
+              {{ $t('components.tournament.tournamentStages.groupNames') }}
             </label>
             <input
               id="names"
-              aria-label="Group names"
+              :aria-label="$t('components.tournament.tournamentStages.groupNames')"
               type="text"
               :value="group_data.names.join(',')"
               @input="update_names"
@@ -806,12 +812,12 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             :validations="v_group$.use_seeding"
           >
             <label for="auto_fill">
-              Remplir automatiquement les poules
+              {{ $t('components.tournament.tournamentStages.autoFillGroups') }}
             </label>
             <input
               id="auto_fill"
               v-model="group_data.auto_fill"
-              aria-label="Autofill groups at creation"
+              :aria-label="$t('components.tournament.tournamentStages.autoFillGroups')"
               type="checkbox"
               @blur="v_group$.auto_fill.$touch"
             >
@@ -820,13 +826,13 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             :validations="v_group$.use_seeding"
           >
             <label for="seeding">
-              Utiliser le seeding des équipes
+              {{ $t('components.tournament.tournamentStages.useTeamSeeding') }}
             </label>
             <input
               id="seeding"
               v-model="group_data.use_seeding"
               :disabled="!group_data.auto_fill"
-              aria-label="Use team seeding"
+              :aria-label="$t('components.tournament.tournamentStages.useTeamSeeding')"
               type="checkbox"
               @blur="v_group$.use_seeding.$touch"
             >
@@ -835,13 +841,13 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             :validations="v_group$.round_count"
           >
             <label for="group_round_count">
-              Nombre de tours (mettre un nombre négatif pour laisser le calcul automatique)
+              {{ $t('components.tournament.tournamentStages.groupRoundCount') }}
             </label>
             <input
               id="group_round_count"
               v-model="group_data.round_count"
               type="number"
-              aria-label="Number of rounds"
+              :aria-label="$t('components.tournament.tournamentStages.roundCount')"
               @blur="v_group$.round_count.$touch"
             >
           </FormField>
@@ -853,13 +859,13 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             :validations="v_swiss$.name"
           >
             <label for="swiss_name">
-              Nom de la ronde suisse
+              {{ $t('components.tournament.tournamentStages.swissRoundName') }}
             </label>
             <input
               id="swiss_name"
               v-model="swiss_data.name"
               type="text"
-              aria-label="Name of the Swiss Round"
+              :aria-label="$t('components.tournament.tournamentStages.swissRoundName')"
               @blur="v_swiss$.name.$touch"
             >
           </FormField>
@@ -867,14 +873,14 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             :validations="v_swiss$.team_count"
           >
             <label for="swiss_team_count">
-              Nombre d'équipes
+              {{ $t('components.tournament.tournamentStages.teamCount') }}
             </label>
             <input
               id="swiss_team_count"
               v-model="swiss_data.team_count"
               type="number"
               name="swiss_team_count"
-              aria-label="Number of teams"
+              :aria-label="$t('components.tournament.tournamentStages.teamCount')"
               @blur="v_swiss$.team_count.$touch"
             />
           </FormField>
@@ -893,7 +899,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
                   class="switch-btn"
                   :class="{ active: !use_round_count }"
                 >
-                  Score de qualification
+                  {{ $t('components.tournament.tournamentStages.qualificationScore') }}
                 </label>
               </button>
               <button
@@ -905,7 +911,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
                   class="switch-btn"
                   :class="{ active: use_round_count }"
                 >
-                  Nombre de tours
+                  {{ $t('components.tournament.tournamentStages.roundCount') }}
                 </label>
               </button>
             </div>
@@ -915,7 +921,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
               v-model="swiss_data.round_count"
               type="number"
               name="round_count"
-              aria-label="Number of rounds"
+              :aria-label="$t('components.tournament.tournamentStages.roundCount')"
               @blur="v_swiss$.round_count.$touch"
             />
             <input
@@ -924,7 +930,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
               v-model="swiss_data.min_score"
               type="number"
               name="min_score"
-              aria-label="Score for qualification"
+              :aria-label="$t('components.tournament.tournamentStages.qualificationScore')"
               @blur="v_swiss$.min_score.$touch"
             />
           </FormField>
@@ -932,12 +938,12 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             :validations="v_swiss$.use_seeding"
           >
             <label for="auto_fill">
-              Remplir automatiquement la ronde suisse
+              {{ $t('components.tournament.tournamentStages.autoFillSwissRound') }}
             </label>
             <input
               id="auto_fill"
               v-model="swiss_data.auto_fill"
-              aria-label="Autofill swiss round at creation"
+              :aria-label="$t('components.tournament.tournamentStages.autoFillSwissRound')"
               type="checkbox"
               @blur="v_swiss$.auto_fill.$touch"
             >
@@ -946,13 +952,13 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             :validations="v_swiss$.use_seeding"
           >
             <label for="seeding">
-              Utiliser le seeding des équipes
+              {{ $t('components.tournament.tournamentStages.useTeamSeeding') }}
             </label>
             <input
               id="seeding"
               v-model="swiss_data.use_seeding"
               :disabled="!swiss_data.auto_fill"
-              aria-label="Use team seeding"
+              :aria-label="$t('components.tournament.tournamentStages.useTeamSeeding')"
               type="checkbox"
               @blur="v_swiss$.use_seeding.$touch"
             >
@@ -961,7 +967,7 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
             :validations="v_swiss$.bo_type"
           >
             <label for="bo_type">
-              Type de BO
+              {{ $t('components.tournament.tournamentStages.boType') }}
             </label>
             <select
               id="bo_type"
@@ -975,14 +981,14 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
                 :key="value"
                 :value="value"
               >
-                {{ value === '0' ? 'Classement' : `BO ${value}` }}
+                {{ value === '0' ? $t('components.tournament.tournamentStages.classification') : $t('components.tournament.tournamentStages.bestOf', { value }) }}
               </option>
               <option
                 v-for="value in Object.keys(BestofType).map(Number).filter((v) => Number.isInteger(v) && v > 1)"
                 :key="value - 1"
                 :value="value - 1"
               >
-                {{ `PA ${value}` }}
+                {{ $t('components.tournament.tournamentStages.playAll', { value }) }}
               </option>
             </select>
           </FormField>
@@ -996,14 +1002,14 @@ const edit_bo_type = (event: Event, data: { bo_type: BestofType; play_all: boole
         type="button"
         @click="add_format_modal = false"
       >
-        Annuler
+        {{ $t('components.tournament.tournamentStages.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click="add_format()"
       >
-        Valider
+        {{ $t('components.tournament.tournamentStages.validate') }}
       </button>
     </template>
   </Modal>

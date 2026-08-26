@@ -2,12 +2,13 @@
 import { useVuelidate, type ValidationRule } from '@vuelidate/core';
 import { storeToRefs } from 'pinia';
 import { computed, reactive } from 'vue';
+import { useI18n } from 'vue-i18n';
 import FormField from '@/components/FormField.vue';
 import type { Team } from '@/models/team';
 import type { EventTournamentDeref } from '@/models/tournament';
 import { useNotificationStore } from '@/stores/notification.store';
 import { useTournamentStore } from '@/stores/tournament.store';
-import { between, integer, required } from '@/support/locales/errors.fr';
+import { between, integer, required } from '@/support/locales/errors';
 
 const { tournament } = defineProps<{
   tournament: EventTournamentDeref;
@@ -15,6 +16,7 @@ const { tournament } = defineProps<{
 
 const NotificationStore = useNotificationStore();
 const { addNotification } = NotificationStore;
+const { t } = useI18n();
 
 const tournamentStore = useTournamentStore();
 const { updateTeamsSeeding } = tournamentStore;
@@ -48,7 +50,7 @@ const save_seeds = async () => {
   if (!isValid) return;
 
   if (unique.size !== non_zero.length) {
-    addNotification('Les seeds doivent être unique', 'error');
+    addNotification(t('components.tournament.admin.tournamentAdminTeams.duplicateSeeds'), 'error');
     return;
   }
 
@@ -60,7 +62,7 @@ const save_seeds = async () => {
   }, [] as { id: number; seed: number }[]);
 
   if (modified_seed.length === 0) {
-    addNotification('Pas de modification', 'info');
+    addNotification(t('components.tournament.admin.tournamentAdminTeams.noChanges'), 'info');
     return;
   }
 
@@ -77,7 +79,7 @@ const save_seeds = async () => {
     }
   });
 
-  addNotification('Seed modifiés avec succès.', 'info');
+  addNotification(t('components.tournament.admin.tournamentAdminTeams.seedsUpdated'), 'info');
 };
 
 </script>
@@ -85,15 +87,16 @@ const save_seeds = async () => {
 <template>
   <section class="u-m-main l-flex-column l-gap-2">
     <h2 class="u-m-0 u-text-center">
-      Liste des équipes et seeding
+      {{ t('components.tournament.admin.tournamentAdminTeams.title') }}
     </h2>
     <p class="u-m-text">
-      Le seed d'une équipe doit être un entier compris entre 1 et
-      {{ tournament.max_team_thresholds[tournament?.current_threshold_index] }}.
-      Chaque seed doit être unique.
-      Une équipe avec un seed de 0 sera ignorée lors des calculs faisant intervenir le seeding.
+      {{ t('components.tournament.admin.tournamentAdminTeams.seedDescription', { max: tournament.max_team_thresholds[tournament?.current_threshold_index] }) }}
+      <br>
+      {{ t('components.tournament.admin.tournamentAdminTeams.seedUnique') }}
+      <br>
+      {{ t('components.tournament.admin.tournamentAdminTeams.zeroSeedIgnored') }}
       <br><br>
-      Toutes les équipes sans seed seront placées aléatoirement après toutes les équipes seedées.
+      {{ t('components.tournament.admin.tournamentAdminTeams.unseededDescription') }}
     </p>
     <div class="l-flex-column l-cross-center">
       <div class="c-card-bg-2">
@@ -101,10 +104,10 @@ const save_seeds = async () => {
           <thead>
             <tr>
               <th class="u-big-text">
-                Équipe
+                {{ t('common.team') }}
               </th>
               <th class="u-big-text">
-                Seed
+                {{ t('components.tournament.admin.tournamentAdminTeams.seed') }}
               </th>
             </tr>
           </thead>
@@ -138,7 +141,7 @@ const save_seeds = async () => {
       </div>
     </div>
     <button type="submit" class="c-btn-secondary" @click="save_seeds">
-      Sauvegarder
+      {{ t('common.save') }}
     </button>
   </section>
 </template>

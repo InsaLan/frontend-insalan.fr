@@ -17,7 +17,7 @@ await getPrivateTournaments();
 <template>
   <div class="l-flex-column l-cross-center u-m-main">
     <div v-if="!tournaments_id">
-      Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !
+      {{ $t('views.tournamentView.noTournament') }}
     </div>
     <div class="l-grid-3 l-gap-2 u-full-width">
       <TournamentCard
@@ -31,10 +31,10 @@ await getPrivateTournaments();
       to="/archives"
       class="u-my-2 c-btn-primary"
     >
-      Voir les anciennes éditions
+      {{ $t('views.tournamentView.seePastEditions') }}
     </router-link>
     <h1 v-if="Object.keys(privateTournamentsList).length > 0">
-      Tournois privés
+      {{ $t('views.tournamentView.privateTournaments') }}
     </h1>
     <div v-if="Object.keys(privateTournamentsList).length > 0" class="l-grid-3 l-gap-2 u-full-width">
       <TournamentCard

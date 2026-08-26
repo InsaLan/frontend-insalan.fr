@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import type { Team } from '@/models/team';
 import type { EventTournament, EventTournamentDeref, PrivateTournament } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
@@ -15,6 +16,7 @@ const props = defineProps<{
 }>();
 
 const { getTournamentFull, getPrivateTournament } = tournamentStore;
+const { t } = useI18n();
 const {
   eventTournamentsList, privateTournamentsList, eventsList,
 } = storeToRefs(tournamentStore);
@@ -64,6 +66,18 @@ const waiting_validation_teams_count = computed(() => {
   }, 0);
 });
 
+const cashprizeText = computed(() => {
+  if (!tournament.value || !('cashprizes' in tournament.value)) return '';
+
+  const total = tournament.value.cashprizes?.length !== 0
+    ? `${tournament.value.cashprizes.reduce((acc, val) => {
+      acc += Number(val);
+      return acc;
+    }, 0)} €`
+    : t('common.comingSoon');
+  return `${t('components.tournament.tournamentCard.cashprize')} ${total}`;
+});
+
 onMounted(async () => {
   if (props.isPrivate) {
     await getPrivateTournament(props.id);
@@ -75,7 +89,7 @@ onMounted(async () => {
 <template>
   <div v-if="isPrivate || (tournament && 'is_announced' in tournament && tournament.is_announced)" class="l-flex-column l-cross-center c-card-bg-2 u-p-0 l-gap-2 u-full-width">
     <img
-      :alt="`Logo du ${tournament?.name}`"
+      :alt="t('components.tournament.tournamentCard.logoAlt', { name: tournament?.name })"
       :src="tournament?.logo"
       class="c-thumbnail"
     />
@@ -86,22 +100,22 @@ onMounted(async () => {
       <progress-bar
         :quantity1="validated_teams"
         :max1="thresholds[current_threshold_index]"
-        description1="équipes validées"
+        :description1="t('components.tournament.tournamentCard.validatedTeams').toLocaleLowerCase()"
         :quantity2="waiting_validation_teams_count"
         :max2="isNaN(thresholds[current_threshold_index + 1]) ? undefined
           : thresholds[current_threshold_index + 1] - thresholds[current_threshold_index]"
-        description2="en attente du palier"
+        :description2="t('components.tournament.tournamentCard.waitingThreshold').toLocaleLowerCase()"
       />
     </div>
     <p v-if="!isPrivate" class="u-big-text">
-      {{ !isPrivate ? tournament && 'cashprizes' in tournament && `Cashprize: ${tournament?.cashprizes?.length !== 0 ? `${tournament?.cashprizes?.reduce((acc, val) => acc += Number(val), 0)} €` : "À venir"}` : '' }}
+      {{ !isPrivate ? cashprizeText : '' }}
     </p>
     <div class="l-flex-row l-main-center l-cross-center l-gap-2 u-px-2 u-pb-2">
       <router-link
         :to="`tournament/${isPrivate ? 'private/' : ''}${tournament?.id as number}/info`"
         class="c-btn-bg-3"
       >
-        Plus d'infos
+        {{ t('components.tournament.tournamentCard.moreInfo') }}
       </router-link>
       <button
         v-if="tournament && 'registration_open' in tournament && Date.parse(tournament.registration_open) > Date.now()"
@@ -109,14 +123,14 @@ onMounted(async () => {
         class="c-btn-secondary"
         disabled
       >
-        Inscriptions à venir
+        {{ t('components.tournament.tournamentCard.registrationsSoon') }}
       </button>
       <router-link
         v-else-if="event_ongoing && (isPrivate || (tournament && 'registration_close' in tournament && Date.parse(tournament.registration_close) > Date.now()))"
         :to="`tournament/${isPrivate ? 'private/' : ''}${tournament?.id as number}/register`"
         class="c-btn-secondary"
       >
-        S'inscrire
+        {{ t('components.tournament.tournamentCard.register') }}
       </router-link>
       <button
         v-else
@@ -124,7 +138,7 @@ onMounted(async () => {
         class="c-btn-secondary"
         disabled
       >
-        Inscriptions fermées
+        {{ t('components.tournament.tournamentCard.registrationsClosed') }}
       </button>
     </div>
   </div>
@@ -163,7 +177,7 @@ onMounted(async () => {
       </g>
     </svg>
     <p class="u-text-center u-big-text u-py-2">
-      Ce tournoi sera annoncé prochainement !
+      {{ t('components.tournament.tournamentCard.announcedSoon') }}
     </p>
   </div>
 </template>

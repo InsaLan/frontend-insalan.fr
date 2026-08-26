@@ -4,7 +4,6 @@ import { computed } from 'vue';
 import Content from '@/components/Content.vue';
 import PizzaCard from '@/components/PizzaCard.vue';
 import { usePizzaStore } from '@/stores/pizza.store';
-import { frenchFormatFromDate } from '@/utils';
 
 const pizzaStore = usePizzaStore();
 const { timeslotList, pizzaList } = storeToRefs(pizzaStore);
@@ -34,20 +33,20 @@ await fetchNextTimeslots();
   <Content class="u-m-text u-mb-4 l-flex-column l-gap-4 u-text-indent" name="Restauration"/>
   <section v-if="sortedTimeslotList.length" class="u-m-text u-mb-4">
     <h1 class="u-mb-4">
-      Prochains créneaux
+      {{ $t('views.eat.nextTimeslots') }}
     </h1>
     <p>
-      Les prochains créneaux sont :
+      {{ $t('views.eat.nextTimeslotsDescription') }}
     </p>
     <ul>
       <li v-for="timeslot in sortedTimeslotList" :key="timeslot.id" class="ml-16">
-        Créneau {{ frenchFormatFromDate(new Date(timeslot.delivery_time)) }}
+        {{ $t('views.eat.timeslot', { date: $d(new Date(timeslot.delivery_time), 'long') }) }}
       </li>
     </ul>
   </section>
   <section>
     <h1 class="u-mb-4">
-      Pizzas {{ sortedTimeslotList.length ? 'du Prochain Créneau' : '' }}
+      {{ sortedTimeslotList.length ? $t('views.eat.pizzasOfNextTimeslot') : $t('views.eat.pizzas') }}
     </h1>
     <div class="u-full-width l-gap-2 u-p-main l-grid-3">
       <PizzaCard

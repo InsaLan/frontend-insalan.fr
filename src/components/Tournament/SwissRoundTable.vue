@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import MatchCard from '@/components/Tournament/MatchCard.vue';
@@ -12,7 +13,7 @@ import {
   between,
   integer,
   required,
-} from '@/support/locales/errors.fr';
+} from '@/support/locales/errors';
 
 const { swiss } = defineProps<{
   swiss: SwissRound;
@@ -20,6 +21,7 @@ const { swiss } = defineProps<{
 }>();
 
 const { addNotification } = useNotificationStore();
+const { t } = useI18n();
 
 const {
   launchMatchs,
@@ -55,19 +57,19 @@ const selected_matchs = ref(new Set<number>());
 
 const launch_selected_matchs = async () => {
   if (!has_matchs.value) {
-    addNotification('Il n\'existe pas de matchs.', 'info');
+    addNotification(t('components.tournament.swissRoundTable.noMatches'), 'info');
     return;
   }
 
   if (selected_matchs.value.size === 0) {
-    addNotification('Aucun match sélectionné', 'info');
+    addNotification(t('components.tournament.swissRoundTable.noMatchSelected'), 'info');
   }
 
   await launchMatchs([{ id: swiss.id, matchs: Array.from(selected_matchs.value) }], 'swiss');
 
   selected_matchs.value.clear();
 
-  addNotification('Les matchs ont bien été lancés.', 'info');
+  addNotification(t('components.tournament.swissRoundTable.matchesLaunched'), 'info');
 };
 
 const modal_open = ref(false);
@@ -81,14 +83,14 @@ const open_modal = (type: string) => {
 const delete_swiss = async () => {
   const res = await deleteSwiss(swiss.id);
 
-  if (res) addNotification('La ronde suisse a bien été supprimées.', 'info');
+  if (res) addNotification(t('components.tournament.swissRoundTable.roundDeleted'), 'info');
 
   modal_open.value = false;
 };
 
 const open_launch_round_modal = () => {
   if (!has_matchs.value) {
-    addNotification('Il n\'existe pas de matchs.', 'info');
+    addNotification(t('components.tournament.swissRoundTable.noMatches'), 'info');
     return;
   }
 
@@ -113,14 +115,14 @@ const launch_round_matchs = async () => {
 
   await launchMatchs([{ id: swiss.id, round: round_to_launch.value }], 'swiss');
 
-  addNotification(`Les matchs du round ${round_to_launch.value} ont bien été lancés.`, 'info');
+  addNotification(t('components.tournament.swissRoundTable.roundMatchesLaunched', { round: round_to_launch.value }), 'info');
 
   modal_open.value = false;
 };
 
 const open_fill_round_modal = () => {
   if (!has_matchs.value) {
-    addNotification('Il n\'existe pas de matchs.', 'info');
+    addNotification(t('components.tournament.swissRoundTable.noMatches'), 'info');
     return;
   }
 
@@ -145,7 +147,7 @@ const swiss_fill_round = async () => {
   await swissFillRound(swiss.id, round_to_create.value);
 
   modal_open.value = false;
-  addNotification(`Les matchs du tour ${round_to_create.value} ont bien été générés.`, 'info');
+  addNotification(t('components.tournament.swissRoundTable.roundMatchesGenerated', { round: round_to_create.value }), 'info');
 };
 
 </script>
@@ -157,7 +159,7 @@ const swiss_fill_round = async () => {
       <button
         v-if="admin"
         type="button"
-        title="Supprimer la ronde suisse"
+        :title="$t('components.tournament.swissRoundTable.deleteRound')"
         @click="open_modal('delete_swiss')"
       >
         <fa-awesome-icon
@@ -176,7 +178,7 @@ const swiss_fill_round = async () => {
         class="c-btn-bg-2"
         @click="open_fill_round_modal"
       >
-        Générer un tour
+        {{ $t('components.tournament.swissRoundTable.generateRound') }}
       </button>
       <button
         type="button"
@@ -184,7 +186,7 @@ const swiss_fill_round = async () => {
         :disabled="!has_matchs"
         @click="open_launch_round_modal"
       >
-        Lancer un tour
+        {{ $t('components.tournament.swissRoundTable.launchRound') }}
       </button>
       <button
         type="button"
@@ -192,7 +194,7 @@ const swiss_fill_round = async () => {
         :disabled="!has_matchs || selected_matchs.size === 0"
         @click="launch_selected_matchs"
       >
-        Lancer les matchs sélectionnés
+        {{ $t('components.tournament.swissRoundTable.launchSelectedMatches') }}
       </button>
     </div>
 
@@ -205,7 +207,7 @@ const swiss_fill_round = async () => {
         :key="round_idx"
         class="u-text-center u-big-text"
       >
-        Tour {{ round_idx }}
+        {{ $t('components.tournament.swissRoundTable.round', { round: round_idx }) }}
       </div>
       <div
         v-for="(round_matchs, round_idx) in groupBy(swiss.matchs, 'round_number')"
@@ -258,10 +260,10 @@ const swiss_fill_round = async () => {
     @close="modal_open = false;"
   >
     <template #title>
-      Supprimer la ronde suisse
+      {{ $t('components.tournament.swissRoundTable.deleteRound') }}
     </template>
     <template #body>
-      La ronde suisse va être supprimée ainsi que les matchs qui lui sont liés.
+      {{ $t('components.tournament.swissRoundTable.deleteRoundDescription') }}
     </template>
     <template #buttons>
       <button
@@ -269,14 +271,14 @@ const swiss_fill_round = async () => {
         type="button"
         @click="modal_open = false;"
       >
-        Annuler
+        {{ $t('components.tournament.swissRoundTable.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click="delete_swiss"
       >
-        Valider
+        {{ $t('components.tournament.swissRoundTable.validate') }}
       </button>
     </template>
   </Modal>
@@ -286,7 +288,7 @@ const swiss_fill_round = async () => {
     @close="modal_open = false;"
   >
     <template #title>
-      Lancer les matchs d'un tour
+      {{ $t('components.tournament.swissRoundTable.launchRoundMatches') }}
     </template>
     <template #body>
       <form
@@ -297,14 +299,14 @@ const swiss_fill_round = async () => {
           :validations="v_round$.round_to_launch"
         >
           <label for="round">
-            Numéro du tour
+            {{ $t('components.tournament.swissRoundTable.roundNumber') }}
           </label>
           <input
             id="round"
             v-model="round_to_launch"
             type="number"
             name="round"
-            aria-label="Round number"
+            :aria-label="$t('components.tournament.swissRoundTable.roundNumber')"
             @blur="v_round$.round_to_launch.$touch"
           >
         </FormField>
@@ -316,14 +318,14 @@ const swiss_fill_round = async () => {
         type="button"
         @click="modal_open = false;"
       >
-        Annuler
+        {{ $t('components.tournament.swissRoundTable.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click="launch_round_matchs"
       >
-        Lancer le tour
+        {{ $t('components.tournament.swissRoundTable.launchRound') }}
       </button>
     </template>
   </Modal>
@@ -333,7 +335,7 @@ const swiss_fill_round = async () => {
     @close="modal_open = false;"
   >
     <template #title>
-      Générer les matchs d'un tour
+      {{ $t('components.tournament.swissRoundTable.generateRoundMatches') }}
     </template>
     <template #body>
       <form
@@ -341,22 +343,22 @@ const swiss_fill_round = async () => {
         @submit.prevent="swiss_fill_round"
       >
         <p>
-          Les résultats du tour précédent vont être utilisés pour produire les nouveaux matchs.
+          {{ $t('components.tournament.swissRoundTable.generateRoundDescription') }}
           <br>
-          Les rencontres au sein d'un même groupe de score sont déterminées aléatoirement.
+          {{ $t('components.tournament.swissRoundTable.randomPairingDescription') }}
         </p>
         <FormField
           :validations="v_create_round$.round_to_create"
         >
           <label for="round">
-            Numéro du tour
+            {{ $t('components.tournament.swissRoundTable.roundNumber') }}
           </label>
           <input
             id="round"
             v-model="round_to_create"
             type="number"
             name="round"
-            aria-label="Round number"
+            :aria-label="$t('components.tournament.swissRoundTable.roundNumber')"
             @blur="v_create_round$.round_to_create.$touch"
           >
         </FormField>
@@ -368,14 +370,14 @@ const swiss_fill_round = async () => {
         type="button"
         @click="modal_open = false;"
       >
-        Annuler
+        {{ $t('components.tournament.swissRoundTable.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click="swiss_fill_round"
       >
-        Générer le tour
+        {{ $t('components.tournament.swissRoundTable.generateRound') }}
       </button>
     </template>
   </Modal>

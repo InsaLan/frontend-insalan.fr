@@ -2,12 +2,13 @@
 
 import { storeToRefs } from 'pinia';
 import { computed, reactive, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import Modal from '@/components/Modal.vue';
 import type { Export } from '@/models/timeslot';
 import { usePizzaStore } from '@/stores/pizza.store';
-import { frenchFormatFromDate } from '@/utils';
 
 const pizzaStore = usePizzaStore();
+const { t } = useI18n();
 const { timeslotList, timeslotExportList } = storeToRefs(pizzaStore);
 const {
   fetchAllTimeslotsPaginated,
@@ -100,10 +101,10 @@ Object.values(timeslotList.value).forEach((timeslot) => {
 <template>
   <div class="u-pb-2 l-flex-column u-m-main u-full-height">
     <h1>
-      Liste des exports
+      {{ t('adminPizza.exportsTitle') }}
     </h1>
     <div v-if="timeslots_id.length === 0" class="u-text-center u-big-text">
-      Il n'y a pas de créneau de commande.
+      {{ t('adminPizza.noTimeslot') }}
     </div>
     <div
       v-else
@@ -114,7 +115,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
         class="l-flex-column l-main-center l-cross-center l-gap-2 l-grow"
       >
         <div class="u-big-text">
-          Chargement...
+          {{ t('common.loading') }}
         </div>
         <div role="status" aria-hidden="true" class="c-spinner"/>
       </div>
@@ -133,7 +134,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
             type="button"
             class="u-big-text"
             :class="{ 'c-image-btn': timeslotExportList[timeslot.id].length !== 0 }"
-            title="Afficher les exports du créneau"
+            :title="t('adminPizza.showTimeslotExports')"
             :disabled="timeslotExportList[timeslot.id].length === 0"
             @click="timeslotsExpand[timeslot.id] = !timeslotsExpand[timeslot.id]"
             @keydown.enter="timeslotsExpand[timeslot.id] = !timeslotsExpand[timeslot.id]"
@@ -144,15 +145,15 @@ Object.values(timeslotList.value).forEach((timeslot) => {
             v-if="timeslotExportList[timeslot.id].length > 0"
             type="button"
             class="u-big-text c-image-btn"
-            title="Exporter les commandes du créneau"
+            :title="t('adminPizza.exportTimeslotOrders')"
             @click="exportOrders(timeslot.id)"
             @keydown.enter="exportOrders(timeslot.id)"
           >
             <fa-awesome-icon icon="fa-download"/>
           </button>
-          Créneau {{ frenchFormatFromDate(new Date(timeslot.delivery_time)) }}
+          {{ t('adminPizza.timeslot', { date: $d(new Date(timeslot.delivery_time), 'long') }) }}
           <div class="l-grow"/>
-          {{ timeslotExportList[timeslot.id].length }} export{{ timeslotExportList[timeslot.id].length > 1 ? 's' : '' }}
+          {{ t('adminPizza.exportCount', { count: timeslotExportList[timeslot.id].length }) }}
         </div>
         <div
           v-for="timeslotExport in timeslotExportList[timeslot.id]"
@@ -160,7 +161,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
           type="button"
           class="c-card-bg-3 u-p-0 u-full-width l-flex-row l-cross-center l-gap-1 u-regular u-normal-text"
           :class="{ 'u-hidden': !timeslotsExpand[timeslot.id] }"
-          title="Télécharger l'export"
+          :title="t('adminPizza.downloadExport')"
         >
           <button
             type="button"
@@ -168,13 +169,13 @@ Object.values(timeslotList.value).forEach((timeslot) => {
             @click="downloadTimeslotDetails(timeslotExport.id)"
           >
             <fa-awesome-icon icon="fa-file"/>
-            <strong> Export {{ frenchFormatFromDate(new Date(timeslotExport.created_at)) }} </strong>
-            ({{ Object.values(timeslotExport.orders).reduce((acc, nb) => acc + nb, 0) }} pizza{{ Object.values(timeslotExport.orders).reduce((acc, nb) => acc + nb, 0) > 1 ? 's' : '' }})
+            <strong>{{ t('adminPizza.export', { date: $d(new Date(timeslotExport.created_at), 'long') }) }}</strong>
+            ({{ t('adminPizza.pizzaCount', { count: Object.values(timeslotExport.orders).reduce((acc, nb) => acc + nb, 0) }) }})
           </button>
           <button
             type="button"
             class="c-image-btn u-color-error-1 u-big-text u-mr-2"
-            title="Supprimer"
+            :title="t('common.delete')"
             @click.stop="exportToDelete = timeslotExport"
           >
             <fa-awesome-icon icon="fa-trash-can"/>
@@ -186,7 +187,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
           type="button"
           class="c-image-btn"
           :disabled="page === 1"
-          title="Page précédente"
+          :title="t('adminPizza.previousPage')"
           @click="changePage(page - 1)"
         >
           <fa-awesome-icon
@@ -200,7 +201,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
             type="button"
             class="c-image-btn u-px-1"
             :disabled="_page === page"
-            :title="`Page ${_page}`"
+            :title="t('adminPizza.page', { page: _page })"
             @click="changePage(_page)"
           >
             {{ _page }}
@@ -212,7 +213,7 @@ Object.values(timeslotList.value).forEach((timeslot) => {
           type="button"
           class="c-image-btn"
           :disabled="page >= max_pages"
-          title="Page suivante"
+          :title="t('adminPizza.nextPage')"
           @click="changePage(page + 1)"
         >
           <fa-awesome-icon
@@ -225,11 +226,10 @@ Object.values(timeslotList.value).forEach((timeslot) => {
 
   <Modal v-if="exportToDelete" @close="closeConfirmDeleteModal">
     <template #title>
-      Supprimer un export
+      {{ t('adminPizza.deleteExportTitle') }}
     </template>
     <template #body>
-      Voulez-vous supprimer l'export du
-      <strong>{{ frenchFormatFromDate(new Date(exportToDelete.created_at)) }}</strong> ?
+      {{ t('adminPizza.deleteExportQuestion', { date: $d(new Date(exportToDelete.created_at), 'long') }) }}
     </template>
     <template #buttons>
       <button
@@ -237,14 +237,14 @@ Object.values(timeslotList.value).forEach((timeslot) => {
         type="button"
         @click="closeConfirmDeleteModal"
       >
-        Annuler
+        {{ t('common.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="confirmDeleteExport"
       >
-        Valider
+        {{ t('common.validate') }}
       </button>
     </template>
   </Modal>

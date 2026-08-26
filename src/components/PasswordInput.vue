@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const showPassword = ref(false);
+const { t } = useI18n();
 
 interface Props {
   id?: string;
@@ -49,8 +51,8 @@ const onGeneratePassword = (): void => {
         :id="id"
         :value="modelValue"
         :type="showPassword ? 'text' : 'password'"
-        :placeholder="placeholder || 'Mot de passe'"
-        :aria-label="ariaLabel || 'Mot de passe'"
+        :placeholder="placeholder || t('components.passwordInput.password')"
+        :aria-label="ariaLabel || t('components.passwordInput.password')"
         :required="required"
         @input="onInput"
         @blur="onBlur"
@@ -61,7 +63,7 @@ const onGeneratePassword = (): void => {
           v-if="generatePassword && generatePassword === true"
           type="button"
           class="action-btn c-image-btn"
-          title="Générer un mot de passe"
+          :title="t('components.passwordInput.generatePassword')"
           @click="onGeneratePassword"
         >
           <fa-awesome-icon
@@ -73,7 +75,7 @@ const onGeneratePassword = (): void => {
         <button
           type="button"
           class="action-btn c-image-btn"
-          title="Afficher le mot de passe"
+          :title="t('components.passwordInput.showPassword')"
           @click="onViewToggle"
         >
           <fa-awesome-icon

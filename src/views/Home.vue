@@ -23,10 +23,10 @@ await getOngoingEvents();
   <Content id="main_page" name="main_page" class="u-m-text"/>
   <section>
     <h1 class="u-my-1">
-      Tournois
+      {{ $t('views.home.titleTournament') }}
     </h1>
     <div v-if="!tournaments_id" class="l-flex-column l-cross-center u-m-text">
-      Aucun tournoi n'est en cours ou à venir pour le moment, revenez plus tard !
+      {{ $t('views.home.noTournament') }}
     </div>
     <div class="u-m-main l-grid-4 l-gap-2 u-mb-2">
       <TournamentCard
@@ -41,7 +41,7 @@ await getOngoingEvents();
         to="/tournament"
         class="c-btn-primary"
       >
-        Voir tous les tournois
+        {{ $t('views.home.seeAllTournament') }}
       </router-link>
     </div>
     <div class="l-grid-2 u-m-double-text l-horizontal-gap-4">

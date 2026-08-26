@@ -5,7 +5,7 @@ import {
   computed, reactive, ref, watch,
 } from 'vue';
 import { useUserStore } from '@/stores/user.store';
-import { required } from '@/support/locales/errors.fr';
+import { required } from '@/support/locales/errors';
 
 import FormField from './FormField.vue';
 import Modal from './Modal.vue';
@@ -56,14 +56,14 @@ const validateModal = async () => {
 <template>
   <Modal v-if="modal_open">
     <template #title>
-      Confirmez votre nom
+      {{ $t('components.nameConfirmationModal.title') }}
     </template>
     <template #body>
-      Nous avons besoin de votre nom pour vérifier votre identité à l'entrée
+      {{ $t('components.nameConfirmationModal.description') }}
       <form>
         <FormField :validations="v$.first_name">
           <label for="first_name">
-            Prénom
+            {{ $t('components.nameConfirmationModal.firstname') }}
           </label>
           <input
             id="first_name"
@@ -75,7 +75,7 @@ const validateModal = async () => {
         </FormField>
         <FormField :validations="v$.last_name">
           <label for="last_name">
-            Nom
+            {{ $t('components.nameConfirmationModal.lastname') }}
           </label>
           <input
             id="last_name"
@@ -93,7 +93,7 @@ const validateModal = async () => {
         type="submit"
         @click="validateModal"
       >
-        Confirmer
+        {{ $t('components.nameConfirmationModal.validate') }}
       </button>
     </template>
   </Modal>

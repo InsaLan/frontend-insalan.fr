@@ -2,12 +2,14 @@
 import {
   computed, ref,
 } from 'vue';
+import { useI18n } from 'vue-i18n';
 import Modal from '@/components/Modal.vue';
 import type { Team, TeamDeref } from '@/models/team';
 import type { EventTournamentDeref } from '@/models/tournament';
 import { useTournamentStore } from '@/stores/tournament.store';
 
 const tournamentStore = useTournamentStore();
+const { t } = useI18n();
 
 const {
   patch_team,
@@ -79,7 +81,7 @@ const isTeamSeat = (index: number) => {
   );
   if (!slot) return false;
   // find the team occupying the hovered seat
-  const team = props.tournament.teams.find((t) => (t as unknown as TeamDeref).seat_slot === slot?.id);
+  const team = props.tournament.teams.find((te) => (te as unknown as TeamDeref).seat_slot === slot?.id);
   return team ? (team as unknown as TeamDeref).id === props.team?.id : false;
 };
 
@@ -91,7 +93,7 @@ const isPicked = (index: number) => {
   );
   if (!slot) return false;
   // find the team occupying the hovered seat
-  const team = props.tournament.teams.find((t) => (t as unknown as TeamDeref).seat_slot === slot?.id);
+  const team = props.tournament.teams.find((te) => (te as unknown as TeamDeref).seat_slot === slot?.id);
   return !!team;
 };
 
@@ -105,7 +107,7 @@ const handleHover = (index: number, e: Event) => {
 
   if (slot) {
     hoveredTeamSlot.value = slot.id;
-    const team = props.tournament.teams.find((t) => (t as unknown as TeamDeref).seat_slot === slot.id);
+    const team = props.tournament.teams.find((te) => (te as unknown as TeamDeref).seat_slot === slot.id);
     hoveredTeamSlotName.value = team ? (team as unknown as TeamDeref).name : null;
 
     // display the tooltip
@@ -138,7 +140,7 @@ const handleClick = (index: number) => {
   );
   if (slot) {
     // find the team occupying the hovered seat
-    const team = props.tournament.teams.find((t) => (t as unknown as TeamDeref).seat_slot === slot.id);
+    const team = props.tournament.teams.find((te) => (te as unknown as TeamDeref).seat_slot === slot.id);
     if (!team) {
       selectedTeamSlot.value = slot.id;
       showModal.value = true;
@@ -167,7 +169,7 @@ const closeModal = () => {
   <section id="seating" class="u-full-width">
     <div v-if="tournament?.event.seats.length !== 0" class="l-flex-column l-cross-center l-gap-2">
       <h2 class="u-text-center">
-        Placement des équipes ({{ tournament.event.name }})
+        {{ t('components.tournament.seatingPlan.teamSeating', { event: tournament.event.name }) }}
       </h2>
       <div
         class="u-full-width overflow-x-auto"
@@ -177,12 +179,12 @@ const closeModal = () => {
           class="tooltip u-hidden c-card-bg-3"
         >
           <div v-if="hoveredTeamSlotName" class="truncate">
-            Équipe : <strong>
+            {{ t('components.tournament.seatingPlan.team') }} <strong>
               {{ hoveredTeamSlotName }}
             </strong>
           </div>
           <template v-else>
-            Places libres
+            {{ t('components.tournament.seatingPlan.freeSeats') }}
           </template>
         </div>
         <div
@@ -227,36 +229,36 @@ const closeModal = () => {
         >
           <div class="l-flex-row l-cross-center l-gap-1">
             <div class="smol unused-square"/>
-            <span>Places utilisées pour les autres tournois</span>
+            <span>{{ t('components.tournament.seatingPlan.usedByOtherTournaments') }}</span>
           </div>
           <div class="l-flex-row l-cross-center l-gap-1">
             <div class="smol free-square"/>
-            <span>Places libres du tournoi : {{ tournament.name }}</span>
+            <span>{{ t('components.tournament.seatingPlan.tournamentFreeSeats', { name: tournament.name }) }}</span>
           </div>
           <div v-if="team" class="l-flex-row l-cross-center l-gap-1">
             <div class="smol team-square"/>
-            <span>Place actuelle de l'équipe</span>
+            <span>{{ t('components.tournament.seatingPlan.currentTeamSeat') }}</span>
           </div>
           <div class="l-flex-row l-cross-center l-gap-1">
             <div class="smol taken-square"/>
-            <span>Places occupées du tournoi : {{ tournament.name }}</span>
+            <span>{{ t('components.tournament.seatingPlan.tournamentTakenSeats', { name: tournament.name }) }}</span>
           </div>
         </div>
       </div>
       <p
         v-if="!team"
       >
-        Pour modifier votre placement, rendez-vous sur la page de votre équipe, accessible depuis
+        {{ t('components.tournament.seatingPlan.editPlacementInstruction') }}
         <router-link
           to="/me"
           class="c-link"
         >
-          Mon compte
+          {{ t('components.tournament.seatingPlan.myAccount') }}
         </router-link>
       </p>
     </div>
     <div v-else class="u-text-center u-my-4 u-big-text">
-      Le plan de la salle n'est pas encore disponible, revenez plus tard !
+      {{ t('components.tournament.seatingPlan.unavailable') }}
     </div>
   </section>
 
@@ -264,12 +266,12 @@ const closeModal = () => {
     v-if="showModal"
   >
     <template #title>
-      Sélection des places
+      {{ t('components.tournament.seatingPlan.selectSeatsTitle') }}
     </template>
     <template #body>
-      Êtes vous sûr·e de vouloir sélectionner ces places ?
+      {{ t('components.tournament.seatingPlan.selectSeatsConfirm') }}
       <br/><br/>
-      Vous pourrez les modifier jusqu'à la fin des inscriptions.
+      {{ t('components.tournament.seatingPlan.selectSeatsNotice') }}
     </template>
     <template #buttons>
       <button
@@ -277,14 +279,14 @@ const closeModal = () => {
         type="button"
         @click="closeModal"
       >
-        Annuler
+        {{ t('components.tournament.seatingPlan.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="validateModal"
       >
-        Valider
+        {{ t('components.tournament.seatingPlan.validate') }}
       </button>
     </template>
   </Modal>

@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { useVuelidate, type ValidationRule } from '@vuelidate/core';
 import { computed, reactive, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import { BestofType, type OngoingMatch, type ScorePatch } from '@/models/match';
 import { useUserStore } from '@/stores/user.store';
-import { between, required } from '@/support/locales/errors.fr';
+import { between, required } from '@/support/locales/errors';
 
 interface Props {
   ongoingMatch: OngoingMatch;
 }
 
 const props = defineProps<Props>();
+const { t } = useI18n();
 
 const userStore = useUserStore();
 const { send_score } = userStore;
@@ -71,7 +73,7 @@ const NextModalEnterScore = () => {
     const score_total = Object.values(data_score.score).reduce((a, b) => a + b, 0);
     if (score_total > (props.ongoingMatch.bo_type as number)
         || Object.keys(data_score.score).length === 0) {
-      invalid_score.value = 'Les scores que vous avez rentrés ne sont pas valide !';
+      invalid_score.value = t('components.tournamentMeCard.invalidScores');
     } else {
       invalid_score.value = '';
       modal_enter_times.value = true;
@@ -81,7 +83,7 @@ const NextModalEnterScore = () => {
     const ranks = Object.values(data_score.score).reduce((a, b) => a + b, 0);
     const n = Object.keys(props.ongoingMatch.teams).length;
     if (ranks !== (n * (n + 1)) / 2) {
-      invalid_score.value = 'Les scores que vous avez rentrés ne sont pas valide !';
+      invalid_score.value = t('components.tournamentMeCard.invalidScores');
     } else {
       invalid_score.value = '';
       modal_enter_times.value = true;
@@ -100,7 +102,7 @@ const sendScore = async () => {
   const scores = ({} as ScorePatch);
   const times = data_score.times.filter((time) => time !== null);
   if (times.length !== game_number.value) {
-    invalid_score.value = 'Les temps ne peuvent pas être nuls';
+    invalid_score.value = t('components.tournamentMeCard.invalidTimes');
     return;
   }
   scores.times = times;
@@ -124,9 +126,9 @@ const gameSpecificData = computed(() => {
       }
       return {
         type: 'lol',
-        title: 'Codes de tournoi :',
+        title: t('components.tournamentMeCard.tournamentCodes'),
         items: (pregame as string[]).map((code, index) => ({
-          label: `Game ${index + 1}`,
+          label: t('components.tournamentMeCard.game', { number: index + 1 }),
           value: code,
         })),
       };
@@ -140,7 +142,7 @@ const gameSpecificData = computed(() => {
 <template>
   <div id="ongoing_match" class="c-card-bg-3 u-full-width l-flex-column l-gap-2 u-text-center">
     <h2>
-      Partie en cours
+      {{ t('components.tournamentMeCard.ongoingMatch') }}
     </h2>
     <div>
       <span v-for="(team, team_id, index) in ongoingMatch.teams" :key="team_id">
@@ -156,13 +158,13 @@ const gameSpecificData = computed(() => {
       </p>
     </div>
     <button type="button" class="c-btn-secondary u-full-width" @click="openScoreModal()">
-      Terminer la partie manuellement
+      {{ t('components.tournamentMeCard.finishMatchManually') }}
     </button>
   </div>
 
   <Modal v-if="modal_enter_score">
     <template #title>
-      Enregistrer le {{ ongoingMatch.bo_type === BestofType.RANKING ? 'classement' : 'score' }}
+      {{ t('components.tournamentMeCard.record', { type: ongoingMatch.bo_type === BestofType.RANKING ? t('components.tournamentMeCard.ranking') : t('components.tournamentMeCard.score') }) }}
     </template>
     <template #body>
       <form id="patch-user" @submit.prevent="">
@@ -175,8 +177,8 @@ const gameSpecificData = computed(() => {
           <input
             :id="`input${id}`"
             v-model="data_score.score[Number(id)]"
-            aria-label="score"
-            placeholder="score"
+            :aria-label="t('components.tournamentMeCard.score')"
+            :placeholder="t('components.tournamentMeCard.score')"
             required
             type="number"
             @blur="v$_time_game.score[id].$touch"
@@ -195,21 +197,21 @@ const gameSpecificData = computed(() => {
         type="button"
         @click="closeModalEnterScore"
       >
-        Annuler
+        {{ t('components.tournamentMeCard.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="button"
         @click.prevent="NextModalEnterScore"
       >
-        Suivant
+        {{ t('components.tournamentMeCard.next') }}
       </button>
     </template>
   </Modal>
 
   <Modal v-if="modal_enter_times">
     <template #title>
-      Enregistrer les durées de match (en minutes)
+      {{ t('components.tournamentMeCard.recordDurations') }}
     </template>
     <template #body>
       <form id="patch-user" @submit.prevent="">
@@ -219,12 +221,12 @@ const gameSpecificData = computed(() => {
           :validations="v$_time_game.times"
           @blur="v$_time_game.$touch"
         >
-          <label :for="`input${n}`">Partie {{ n }} </label>
+          <label :for="`input${n}`">{{ t('components.tournamentMeCard.game', { number: n }) }} </label>
           <input
             :id="`input${n}`"
             v-model="data_score.times[n]"
-            aria-label="duration (minutes)"
-            placeholder="5"
+            :aria-label="t('components.tournamentMeCard.durationMinutes')"
+            :placeholder="t('components.tournamentMeCard.durationPlaceholder')"
             required
             type="number"
             min="1"
@@ -243,14 +245,14 @@ const gameSpecificData = computed(() => {
         type="button"
         @click="PrevModalEnterScore"
       >
-        Retour
+        {{ t('components.tournamentMeCard.back') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="sendScore"
       >
-        Envoyer
+        {{ t('components.tournamentMeCard.send') }}
       </button>
     </template>
   </Modal>

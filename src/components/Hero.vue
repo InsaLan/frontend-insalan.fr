@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
+import i18n from '@/i18n';
 import type { Event } from '@/models/event';
 import { useContentStore } from '@/stores/content.store';
 
@@ -14,18 +15,18 @@ const props = defineProps<Props>();
 
 const eventText = computed(() => {
   if (props.event === undefined) {
-    return getConstant('message_remerciement');
+    return getConstant('message_remerciement', i18n.global.locale.value);
   }
 
   const { date_start, date_end } = props.event;
 
   if (date_start.getFullYear() === date_end.getFullYear()) {
     if (date_start.getMonth() === date_end.getMonth()) {
-      return `${date_start.getDate()} - ${date_end.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()}`;
+      return `${date_start.getDate()} - ${date_end.getDate()} ${date_start.toLocaleString(i18n.global.locale.value, { month: 'long' })} ${date_start.getFullYear()}`;
     }
-    return `${date_start.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} - ${date_end.getDate()} ${date_end.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()}`;
+    return `${date_start.getDate()} ${date_start.toLocaleString(i18n.global.locale.value, { month: 'long' })} - ${date_end.getDate()} ${date_end.toLocaleString(i18n.global.locale.value, { month: 'long' })} ${date_start.getFullYear()}`;
   }
-  return `${date_start.getDate()} ${date_start.toLocaleString('default', { month: 'long' })} ${date_start.getFullYear()} - ${date_end.getDate()} ${date_end.toLocaleString('default', { month: 'long' })} ${date_end.getFullYear()}`;
+  return `${date_start.getDate()} ${date_start.toLocaleString(i18n.global.locale.value, { month: 'long' })} ${date_start.getFullYear()} - ${date_end.getDate()} ${date_end.toLocaleString(i18n.global.locale.value, { month: 'long' })} ${date_end.getFullYear()}`;
 });
 
 const topOffset = ref(0);

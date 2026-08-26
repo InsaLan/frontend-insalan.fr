@@ -8,18 +8,19 @@ import Content from '@/components/Content.vue';
 import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
+import i18n from '@/i18n';
 import { useContentStore } from '@/stores/content.store';
 import { useUserStore } from '@/stores/user.store';
 import {
   acceptGCU, email, minLength, required, sameAs,
-} from '@/support/locales/errors.fr';
+} from '@/support/locales/errors';
 
 const contentStore = useContentStore();
 const { getContent } = contentStore;
 
 const modal_cgu = ref(false);
 const show_modal_cgu = (event: MouseEvent | KeyboardEvent) => {
-  if (getContent('cgu')) {
+  if (getContent('cgu', i18n.global.locale.value)) {
     event.preventDefault();
     modal_cgu.value = true;
   }
@@ -79,7 +80,7 @@ onMounted(async () => {
     <div class="l-flex-column l-cross-center c-card-bg-2 u-p-4">
       <div class="l-flex-column l-cross-center u-mb-2">
         <h1 class="u-m-0">
-          S'enregistrer
+          {{ $t('views.login.signin') }}
         </h1>
         <router-link
           to="/login"
@@ -87,7 +88,7 @@ onMounted(async () => {
           <div
             class="l-flex-row l-cross-center c-text-btn u-m-0"
           >
-            J'ai déjà un compte
+            {{ $t('views.login.alreadyExists') }}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="c-inline-icon"
@@ -110,7 +111,7 @@ onMounted(async () => {
           <div class="l-flex-column l-gap-2">
             <FormField :validations="v$.email">
               <label for="email">
-                Email
+                {{ $t('views.login.email') }}
               </label>
               <input
                 id="email"
@@ -123,7 +124,7 @@ onMounted(async () => {
             </FormField>
             <FormField :validations="v$.username">
               <label for="username_register">
-                Nom d'utilisateur·rice
+                {{ $t('views.login.username') }}
               </label>
               <input
                 id="username_register"
@@ -146,7 +147,7 @@ onMounted(async () => {
           <div class="l-flex-column l-gap-2">
             <FormField :validations="v$.password" required>
               <label for="password_register">
-                Mot de passe
+                {{ $t('views.login.password') }}
               </label>
               <PasswordInput
                 id="password_register"
@@ -156,7 +157,7 @@ onMounted(async () => {
             </FormField>
             <FormField :validations="v$.password_confirm">
               <label for="repeat">
-                Répéter mot de passe
+                {{ $t('views.login.passwordConfirm') }}
               </label>
               <PasswordInput
                 id="repeat"
@@ -174,22 +175,24 @@ onMounted(async () => {
             class="u-mr-1"
             type="checkbox"
           >
-          <label for="accept">J'accepte les <a
-            class="c-link"
-            href="#"
-            @click="show_modal_cgu"
-            @keydown.enter="show_modal_cgu"
-          >CGU</a> de l'InsaLan</label>
+          <i18n-t keypath="views.login.acceptCgu" tag="label" for="accept">
+            <a
+              class="c-link"
+              href="#"
+              @click="show_modal_cgu"
+              @keydown.enter="show_modal_cgu"
+            >{{ $t('views.login.cgu') }}</a>
+          </i18n-t>
         </FormField>
         <button class="c-btn-primary" type="submit">
-          Créer un compte
+          {{ $t('views.login.signin') }}
         </button>
       </form>
     </div>
 
     <Modal v-if="modal_cgu" @close="modal_cgu = false">
       <template #title>
-        Conditions générales d'utilisation
+        {{ $t('views.login.cgu') }}
       </template>
       <template #body>
         <Content name="cgu"/>

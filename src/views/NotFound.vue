@@ -4,18 +4,17 @@
       404
     </h1>
     <h2 class="u-big-text u-mb-2">
-      Page Invalide
+      {{ $t('views.error.title404') }}
     </h2>
     <p>
-      La page que vous cherchez n'existe pas ou a été supprimée. Si vous pensez que ce message est une erreur,
-      n'hésitez pas à nous contacter.
+      {{ $t('views.error.description404') }}
     </p>
     <div class="u-my-4 l-flex-column l-cross-center">
       <router-link
         to="/"
         class="c-btn-primary"
       >
-        Page d'accueil
+        {{ $t('views.error.backToHome') }}
       </router-link>
     </div>
   </div>

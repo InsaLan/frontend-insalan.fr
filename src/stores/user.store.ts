@@ -2,12 +2,15 @@ import axios, { type AxiosError, isAxiosError } from 'axios';
 import { defineStore } from 'pinia';
 import { computed, type Ref, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import i18n from '@/i18n';
 import type { CartElement } from '@/models/cart';
 import type { OngoingMatch, ScorePatch } from '@/models/match';
 import { PaymentStatus, type PlayerRegistrationDeref, type RegistrationDeref } from '@/models/registration';
 import type { User, UserPatch, UserPatchError } from '@/models/user';
 
 import { useNotificationStore } from './notification.store';
+
+const { t } = i18n.global;
 
 export const useUserStore = defineStore('user', () => {
   const user = ref<User>({} as User);
@@ -85,7 +88,7 @@ export const useUserStore = defineStore('user', () => {
       withCredentials: true,
     });
 
-    addNotification(`Un email a été envoyé à ${email} pour confirmer votre compte`, 'info');
+    addNotification(t('userStore.registrationEmailSent', { email }), 'info');
   }
 
   async function fetchUser() {
@@ -95,7 +98,7 @@ export const useUserStore = defineStore('user', () => {
     } catch (err) {
       isConnected.value = false;
       user.value = {} as User;
-      addNotification("Une erreur est survenue lors de la récupération de l'utilisateur·rice, essayez de vous reconnecter", 'error');
+      addNotification(t('userStore.fetchUserError'), 'error');
     }
   }
 
@@ -113,7 +116,7 @@ export const useUserStore = defineStore('user', () => {
 
       await fetchUser();
       isConnected.value = true;
-      addNotification(`Bienvenue, ${username}`, 'info');
+      addNotification(t('userStore.welcome', { username }), 'info');
       connectionTimestamp.value = Date.now();
       await router.push('/me');
     } catch (err) {
@@ -130,7 +133,7 @@ export const useUserStore = defineStore('user', () => {
       },
       withCredentials: true,
     });
-    addNotification(`Un email a été envoyé à ${email} pour réinitialiser votre compte`, 'info');
+    addNotification(t('userStore.passwordResetEmailSent', { email }), 'info');
   }
 
   async function reset_password(username: string, token: string, password: string, password_confirm: string) {
@@ -150,7 +153,7 @@ export const useUserStore = defineStore('user', () => {
         },
       },
     );
-    addNotification('Votre mot de passe a été réinitialisé', 'info');
+    addNotification(t('userStore.passwordReset'), 'info');
     await router.push('/register');
   }
 
@@ -225,7 +228,7 @@ export const useUserStore = defineStore('user', () => {
         unpaid,
       };
     } catch (err) {
-      addNotification('Impossible de récupérer vos inscriptions, veuillez réessayer plus tard ou contacter un administrateur', 'error');
+      addNotification(t('userStore.fetchRegistrationsError'), 'error');
     }
   }
 
@@ -241,11 +244,11 @@ export const useUserStore = defineStore('user', () => {
       });
       if (res.status === 200) {
         if (data.current_password) {
-          addNotification('Vos informations ont été mises à jour, vous devez vous reconnecter', 'info');
+          addNotification(t('userStore.updatedAndReconnect'), 'info');
           await logout();
         } else {
           user.value = { ...user.value, ...data };
-          addNotification('Vos informations ont été mises à jour', 'info');
+          addNotification(t('userStore.updated'), 'info');
         }
       }
     } catch (err: unknown) {
@@ -253,7 +256,7 @@ export const useUserStore = defineStore('user', () => {
       if (isAxiosError(error)) {
         const request = error.request as XMLHttpRequest;
         if (request.status === 403) {
-          addNotification('Le mot de passe actuel est différent de celui que vous avez entré', 'error');
+          addNotification(t('userStore.wrongCurrentPassword'), 'error');
         } else if (request.status === 400) {
           const response = JSON.parse(request.responseText) as UserPatchError;
           if (response.user) {
@@ -261,7 +264,7 @@ export const useUserStore = defineStore('user', () => {
           } else if (response.password) {
             addNotification(response.password, 'error');
           } else {
-            addNotification('Une erreur est survenue', 'error');
+            addNotification(t('common.genericError'), 'error');
           }
         }
       }
@@ -277,7 +280,7 @@ export const useUserStore = defineStore('user', () => {
     ) {
       await logout();
       await router.push('/login');
-      addNotification('Votre session a expiré, veuillez vous reconnecter', 'error');
+      addNotification(t('userStore.sessionExpired'), 'error');
     }
   }
 
@@ -294,7 +297,7 @@ export const useUserStore = defineStore('user', () => {
         },
       });
       if (res.status === 200) {
-        addNotification('Le score a bien été mis à jour', 'info');
+        addNotification(t('userStore.scoreUpdated'), 'info');
       }
     } catch (err: unknown) {
       const error = err as Error | AxiosError;

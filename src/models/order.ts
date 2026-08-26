@@ -20,11 +20,5 @@ export interface OrderDeref extends BaseOrder {
   timeslot: Timeslot;
 }
 
-export type Payment = 'CB' | 'CH' | 'ES' | 'LI' | 'FR';
-export const PAYMENT_METHODS = {
-  CB: 'Carte bancaire',
-  CH: 'Chèque',
-  ES: 'Espèces',
-  LI: 'LyfPay',
-  FR: 'Gratuit',
-};
+export const PAYMENT_METHODS = ['CB', 'CH', 'ES', 'LI', 'FR'] as const;
+export type Payment = typeof PAYMENT_METHODS[number];

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import i18n, { setLocale } from '@/i18n';
 import { useContentStore } from '@/stores/content.store';
 import { useUserStore } from '@/stores/user.store';
 
@@ -9,22 +10,30 @@ import Content from './Content.vue';
 
 const contentStore = useContentStore();
 const { getContent } = contentStore;
+const { t } = i18n.global;
 
-const items = [
-  { url: '/association', text: 'Association' },
-  { url: '/tournament', text: 'Tournois' },
-  { url: '/info', text: 'Informations pratiques' },
-  { url: '/eat', text: 'Restauration' },
-  { url: '/schedule', text: 'Planning' },
-] as const;
-const mobile_items = [
-  { url: '/', text: 'Accueil' },
-  { url: '/association', text: 'Association' },
-  { url: '/tournament', text: 'Tournois' },
-  { url: '/info', text: 'Informations pratiques' },
-  { url: '/eat', text: 'Restauration' },
-  { url: '/schedule', text: 'Planning' },
-] as const;
+const selectedLocale = computed({
+  get: () => i18n.global.locale.value,
+  set: (locale: string) => {
+    setLocale(locale);
+  },
+});
+
+const items = computed(() => [
+  { url: '/association', text: t('components.navigation.association') },
+  { url: '/tournament', text: t('components.navigation.tournament') },
+  { url: '/info', text: t('components.navigation.info') },
+  { url: '/eat', text: t('components.navigation.eat') },
+  { url: '/schedule', text: t('components.navigation.schedule') },
+] as const);
+const mobile_items = computed(() => [
+  { url: '/', text: t('components.navigation.home') },
+  { url: '/association', text: t('components.navigation.association') },
+  { url: '/tournament', text: t('components.navigation.tournament') },
+  { url: '/info', text: t('components.navigation.info') },
+  { url: '/eat', text: t('components.navigation.eat') },
+  { url: '/schedule', text: t('components.navigation.schedule') },
+] as const);
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -80,12 +89,19 @@ const toggleBurgerMenu = () => {
             {{ item.text }}
           </router-link>
         </div>
+        <div class="locale-changer">
+          <select v-model="selectedLocale" aria-label="Change language">
+            <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">
+              {{ locale }}
+            </option>
+          </select>
+        </div>
         <div v-if="!isConnected">
           <router-link
             class="c-btn-primary"
             to="/login"
           >
-            S'identifier
+            {{ $t('components.navigation.login') }}
           </router-link>
         </div>
         <div
@@ -99,7 +115,7 @@ const toggleBurgerMenu = () => {
             <div
               class="admin-text"
             >
-              <span :class="$route.path.startsWith('/admin') ? 'u-underline' : ''">Admin</span>
+              <span :class="$route.path.startsWith('/admin') ? 'u-underline' : ''">{{ $t('components.navigation.adminHead') }}</span>
               <fa-awesome-icon
                 class="u-ml-1 u-color-text-2 admin-group-rotate"
                 icon="fa-chevron-up"
@@ -114,7 +130,7 @@ const toggleBurgerMenu = () => {
                 <div
                   class="u-bold u-color-text-2 u-big-text"
                 >
-                  Staff :
+                  {{ $t('components.navigation.admin') }}
                 </div>
                 <a
                   class="c-text-btn-secondary"
@@ -122,13 +138,13 @@ const toggleBurgerMenu = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Panel admin <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
+                  {{ $t('components.navigation.adminPanel') }} <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
                 </a>
                 <router-link
                   class="c-text-btn-secondary"
                   :to="{ path: '/admin/scan' }"
                 >
-                  Scan billets
+                  {{ $t('components.navigation.ticketScan') }}
                 </router-link>
               </div>
               <div
@@ -138,25 +154,25 @@ const toggleBurgerMenu = () => {
                 <div
                   class="u-bold u-color-text-2 u-big-text"
                 >
-                  Team Bouffe :
+                  {{ $t('components.navigation.eatingTeam') }}
                 </div>
                 <router-link
                   class="c-text-btn-secondary"
                   to="/admin/pizza/export/list"
                 >
-                  Liste des exports
+                  {{ $t('components.navigation.eatingExportList') }}
                 </router-link>
                 <router-link
                   class="c-text-btn-secondary"
                   to="/admin/pizza/list"
                 >
-                  Liste des pizzas
+                  {{ $t('components.navigation.eatingPizzaList') }}
                 </router-link>
                 <router-link
                   class="c-text-btn-secondary"
                   to="/admin/pizza"
                 >
-                  Menu pizza
+                  {{ $t('components.navigation.eatingPizza') }}
                 </router-link>
               </div>
             </div>
@@ -165,7 +181,7 @@ const toggleBurgerMenu = () => {
             to="/me"
             :class="$route.path === '/me' ? 'u-underline c-text-btn-secondary' : 'c-text-btn-secondary'"
           >
-            Mon compte
+            {{ $t('components.navigation.me') }}
           </router-link>
 
           <button
@@ -173,7 +189,7 @@ const toggleBurgerMenu = () => {
             type="button"
             @click="logout_user()"
           >
-            Se déconnecter
+            {{ $t('components.navigation.logout') }}
           </button>
         </div>
       </div>
@@ -194,7 +210,7 @@ const toggleBurgerMenu = () => {
                 class="c-btn-primary"
                 to="/login"
               >
-                S'identifier
+                {{ $t('components.navigation.login') }}
               </router-link>
             </div>
             <div v-else class="l-flex-row l-cross-center l-gap-1">
@@ -202,14 +218,14 @@ const toggleBurgerMenu = () => {
                 class="c-text-btn-secondary u-text-center"
                 to="/me"
               >
-                Mon compte
+                {{ $t('components.navigation.me') }}
               </router-link>
               <button
                 class="c-btn-primary"
                 type="button"
                 @click="logout_user()"
               >
-                Se déconnecter
+                {{ $t('components.navigation.logout') }}
               </button>
             </div>
             <button
@@ -253,7 +269,7 @@ const toggleBurgerMenu = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Panel admin <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
+            {{ $t('components.navigation.adminPanel') }} <fa-awesome-icon class="c-inline-icon" icon="fa-arrow-up-right-from-square"/>
           </a>
           <router-link
             v-if="role === 'dev' || role === 'staff'"
@@ -261,7 +277,7 @@ const toggleBurgerMenu = () => {
             :to="{ path: '/admin/scan' }"
             @click="toggleBurgerMenu()"
           >
-            Scan billets
+            {{ $t('components.navigation.ticketScan') }}
           </router-link>
 
           <router-link
@@ -273,10 +289,18 @@ const toggleBurgerMenu = () => {
           >
             {{ item.text }}
           </router-link>
+
+          <div class="locale-changer">
+            <select v-model="selectedLocale" aria-label="Change language">
+              <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">
+                {{ locale }}
+              </option>
+            </select>
+          </div>
         </div>
       </div>
     </nav>
-    <div v-if="getContent('alert') && !$route.path.startsWith('/admin/')" class="c-card-error u-full-width u-mt-1 l-flex-column l-cross-center u-px-2 u-py-1">
+    <div v-if="getContent('alert', i18n.global.locale.value) && !$route.path.startsWith('/admin/')" class="c-card-error u-full-width u-mt-1 l-flex-column l-cross-center u-px-2 u-py-1">
       <Content name="alert"/>
     </div>
   </div>

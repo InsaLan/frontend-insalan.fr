@@ -8,7 +8,7 @@ import FormField from '@/components/FormField.vue';
 import Modal from '@/components/Modal.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
 import { useUserStore } from '@/stores/user.store';
-import { email, required } from '@/support/locales/errors.fr';
+import { email, required } from '@/support/locales/errors';
 
 const { ask_reset_password, login, isConnected } = useUserStore();
 
@@ -70,7 +70,7 @@ onMounted(async () => {
     <div class="l-flex-column l-cross-center c-card-bg-2 u-p-4">
       <div class="l-flex-column l-cross-center u-mb-2">
         <h1 class="u-m-0">
-          Se connecter
+          {{ $t('views.login.login') }}
         </h1>
         <router-link
           to="/register"
@@ -78,7 +78,7 @@ onMounted(async () => {
           <div
             class="l-flex-row l-cross-center c-text-btn u-m-0"
           >
-            Je n'ai pas de compte
+            {{ $t('views.login.noAccount') }}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="c-inline-icon"
@@ -99,7 +99,7 @@ onMounted(async () => {
       <form id="login" @submit.prevent="login_user">
         <FormField :validations="v$.username">
           <label for="username">
-            Nom d'utilisateur·rice
+            {{ $t('views.login.username') }}
           </label>
           <input
             id="username"
@@ -111,32 +111,33 @@ onMounted(async () => {
         </FormField>
         <FormField :validations="v$.password">
           <label for="password">
-            Mot de passe
+            {{ $t('views.login.password') }}
           </label>
           <PasswordInput
             id="password"
             v-model="login_form.password"
+            :placeholder="$t('views.login.password')"
             :on-blur="v$.password.$touch"
           />
         </FormField>
         <button class="c-btn-primary u-mt-2" type="submit">
-          Se connecter
+          {{ $t('views.login.submit') }}
         </button>
         <button class="c-text-btn" type="button" @click="openModal()">
-          Mot de passe oublié ?
+          {{ $t('views.login.forgotPasswordQuestion') }}
         </button>
       </form>
     </div>
 
     <Modal v-if="modal_open" @close="closeModal">
       <template #title>
-        Mot de passe oublié
+        {{ $t('views.login.forgotPassword') }}
       </template>
       <template #body>
         <form id="password-reset" @submit.prevent="validateModal">
           <FormField :validations="v$_modal.email">
             <label for="email">
-              Email
+              {{ $t('views.login.email') }}
             </label>
             <input
               id="email"
@@ -155,14 +156,14 @@ onMounted(async () => {
           type="button"
           @click="closeModal"
         >
-          Annuler
+          {{ $t('views.login.cancel') }}
         </button>
         <button
           class="c-btn-secondary"
           type="submit"
           @click="validateModal"
         >
-          Valider
+          {{ $t('views.login.validate') }}
         </button>
       </template>
     </Modal>

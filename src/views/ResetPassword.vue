@@ -6,7 +6,7 @@ import PasswordInput from '@/components/PasswordInput.vue';
 import { useUserStore } from '@/stores/user.store';
 import {
   minLength, required, sameAs,
-} from '@/support/locales/errors.fr';
+} from '@/support/locales/errors';
 
 const { reset_password } = useUserStore();
 
@@ -41,12 +41,12 @@ const register_user = async () => {
   <div class="l-flex-column l-cross-center u-m-text">
     <div class="l-flex-column l-cross-center c-card-bg-2 u-p-4">
       <h1 class="u-m-0">
-        Réinitialiser votre mot de passe
+        {{ $t('views.resetPassword.title') }}
       </h1>
       <form id="password-reset" class="l-flex-column" @submit.prevent="register_user">
         <FormField :validations="v$.password" required>
           <label for="password">
-            Nouveau mot de passe
+            {{ $t('views.resetPassword.newPassword') }}
           </label>
           <PasswordInput
             id="password"
@@ -56,18 +56,18 @@ const register_user = async () => {
         </FormField>
         <FormField :validations="v$.password_confirm" required>
           <label for="repeat">
-            Répéter le mot de passe
+            {{ $t('views.resetPassword.repeatPassword') }}
           </label>
           <PasswordInput
             id="repeat"
             v-model="data.password_confirm"
-            placeholder="Mot de passe"
+            :placeholder="$t('views.resetPassword.passwordPlaceholder')"
             required
             :on-blur="v$.password_confirm.$touch"
           />
         </FormField>
         <button class="c-btn-secondary" type="submit">
-          Valider
+          {{ $t('views.resetPassword.submit') }}
         </button>
       </form>
     </div>

@@ -2,6 +2,7 @@
 
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import PizzaModal from '@/components/AdminPizza/PizzaModal.vue';
 import Modal from '@/components/Modal.vue';
 import PizzaCard from '@/components/PizzaCard.vue';
@@ -9,6 +10,7 @@ import type { Pizza } from '@/models/pizza';
 import { usePizzaStore } from '@/stores/pizza.store';
 
 const pizzaStore = usePizzaStore();
+const { t } = useI18n();
 const { pizzaList } = storeToRefs(pizzaStore);
 const {
   addPizza,
@@ -76,7 +78,7 @@ await fetchAllPizzas();
 
 <template>
   <h1>
-    Liste des pizzas
+    {{ t('adminPizza.listTitle') }}
   </h1>
   <div class="u-m-2 l-flex-row l-gap-1 l-cross-center">
     <button
@@ -84,16 +86,16 @@ await fetchAllPizzas();
       class="c-btn-primary"
       @click="showCreatePizzaModal = true"
     >
-      Ajouter une pizza
+      {{ t('adminPizza.addPizza') }}
     </button>
     <div class="l-grow"/>
     <form>
       <input
         id="pizza-search"
         v-model="pizzaSearch"
-        aria-label="Rechercher"
+        :aria-label="t('adminPizza.search')"
         type="text"
-        placeholder="Rechercher"
+        :placeholder="t('adminPizza.search')"
       >
     </form>
   </div>
@@ -110,7 +112,7 @@ await fetchAllPizzas();
 
   <PizzaModal
     v-if="pizzaToEdit"
-    title="Modifier une pizza"
+    :title="t('adminPizza.editPizza')"
     :pizza="pizzaToEdit"
     :validate="handlePizzaEditModalValidate"
     @close="handlePizzaEditModalClose"
@@ -118,21 +120,21 @@ await fetchAllPizzas();
 
   <PizzaModal
     v-if="showCreatePizzaModal"
-    title="Créer une pizza"
+    :title="t('adminPizza.createPizza')"
     :validate="handlePizzaCreateModalValidate"
     @close="handlePizzaCreateModalClose"
   />
 
   <Modal v-if="pizzaToDelete" @close="closeDeleteConfirmModal">
     <template #title>
-      Supprimer une pizza
+      {{ t('adminPizza.deletePizzaTitle') }}
     </template>
     <template #body>
       <p>
-        Voulez-vous supprimer la pizza <strong>{{ pizzaToDelete.name }}</strong> ?
+        {{ t('adminPizza.deletePizzaQuestion', { name: pizzaToDelete.name }) }}
         <br/>
         <br/>
-        <em>Ne supprimez pas une pizza qui pourrait être commandée dans un créneau en cours.</em>
+        <em>{{ t('adminPizza.deletePizzaWarning') }}</em>
       </p>
     </template>
     <template #buttons>
@@ -141,14 +143,14 @@ await fetchAllPizzas();
         type="button"
         @click="closeDeleteConfirmModal"
       >
-        Annuler
+        {{ t('common.cancel') }}
       </button>
       <button
         class="c-btn-secondary"
         type="submit"
         @click="confirmDeletePizza"
       >
-        Valider
+        {{ t('common.validate') }}
       </button>
     </template>
   </Modal>

@@ -7,7 +7,6 @@ import ICAL from 'ical.js';
 import {
   computed, onMounted, ref, watch,
 } from 'vue';
-import { frenchDayFormatFromDate } from '@/utils';
 
 interface Event {
   id: string;
@@ -195,7 +194,7 @@ watch(() => props.link, fetchEvents);
 
 <template>
   <div v-if="events.length === 0" class="l-flex-column u-full-height u-text-center u-big-text">
-    <p>Le planning n'est pas encore disponible, revenez plus tard !</p>
+    <p>{{ $t('components.schedule.unavailable') }}</p>
   </div>
   <div v-else>
     <div
@@ -208,7 +207,7 @@ watch(() => props.link, fetchEvents);
         type="button"
         @click="goBack"
       >
-        &lt; Jours précédents
+        &lt; {{ $t('components.schedule.previousDay') }}
       </button>
       <button
         :disabled="!canGoForward"
@@ -216,7 +215,7 @@ watch(() => props.link, fetchEvents);
         type="button"
         @click="goForward"
       >
-        Jours suivants &gt;
+        {{ $t('components.schedule.nextDay') }} &gt;
       </button>
     </div>
     <div>
@@ -231,7 +230,7 @@ watch(() => props.link, fetchEvents);
         </div>
         <div v-for="day in visibleDays" :key="day.toISOString()" class="u-rounded day u-bg-bg-2 l-overflow-hidden">
           <div class="u-bg-bg-3 u-p-2 u-text-center u-bold">
-            {{ frenchDayFormatFromDate(day) }}
+            {{ $d(day, 'long') }}
           </div>
           <div class="l-relative-position" :style="{ height: `${60 * (24 - START_HOURE)}px` }">
             <div

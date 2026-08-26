@@ -2,6 +2,7 @@
 import useVuelidate from '@vuelidate/core';
 import { maxLength, minLength, required } from '@vuelidate/validators';
 import { reactive, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { TRANSPORTATION_METHOD, type TransportationMethod } from '@/models/travelData';
 import { useEcologyStore } from '@/stores/ecology.store';
 
@@ -17,6 +18,7 @@ interface Props {
 const { event, tournamentId, closeModal } = defineProps<Props>();
 
 const { sendTravelData } = useEcologyStore();
+const { t } = useI18n();
 
 const submittingForm = ref(false);
 
@@ -62,16 +64,14 @@ const handleSubmit = async () => {
       <fa-awesome-icon class="u-color-correct-1" icon="fa-leaf"/>
     </template>
     <template #title>
-      Estimation de l’impact environnemental de la LAN
+      {{ t('components.tournament.travelFormModal.title') }}
     </template>
     <template #body>
-      Ce formulaire est facultatif, mais votre réponse nous serait très utile !
-      En partageant <strong>anonymement</strong> votre ville de départ et le moyen
-      de transport que vous comptez utiliser pour venir à la LAN, vous nous aidez à mieux
-      estimer l’impact environnemental de l’évènement et à l’améliorer chaque année. Merci d’avance !
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <p v-html="t('components.tournament.travelFormModal.body')"/>
       <form class="u-mt-2" @submit.prevent="handleSubmit">
         <FormField :validations="v$.city">
-          <label for="city">Ville</label>
+          <label for="city">{{ t('components.tournament.travelFormModal.city') }}</label>
           <input
             id="city"
             v-model="form_data.city"
@@ -82,7 +82,7 @@ const handleSubmit = async () => {
           />
         </FormField>
         <FormField :validations="v$.transportationMethod">
-          <label for="transportation_method">Méthode de transport</label>
+          <label for="transportation_method">{{ t('components.tournament.travelFormModal.transportMethod') }}</label>
           <select
             id="transportation_method"
             v-model="form_data.transportationMethod"
@@ -90,11 +90,11 @@ const handleSubmit = async () => {
             @blur="v$.transportationMethod.$touch"
           >
             <option
-              v-for="transportation_method in Object.keys(TRANSPORTATION_METHOD) as TransportationMethod[]"
+              v-for="transportation_method in TRANSPORTATION_METHOD"
               :key="transportation_method"
               :value="transportation_method"
             >
-              {{ TRANSPORTATION_METHOD[transportation_method] }}
+              {{ t(`components.tournament.travelFormModal.transportationMethods.${transportation_method}`) }}
             </option>
           </select>
         </FormField>
@@ -107,7 +107,7 @@ const handleSubmit = async () => {
         :disabled="submittingForm"
         @click="closeModal"
       >
-        Ne pas répondre
+        {{ t('components.tournament.travelFormModal.skip') }}
       </button>
       <button
         class="c-btn-secondary"
@@ -115,7 +115,7 @@ const handleSubmit = async () => {
         :disabled="submittingForm"
         @click="handleSubmit"
       >
-        {{ submittingForm ? 'Envoi...' : 'Envoyer' }}
+        {{ submittingForm ? t('components.tournament.travelFormModal.sending') : t('components.tournament.travelFormModal.send') }}
       </button>
     </template>
   </Modal>
